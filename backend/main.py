@@ -3,12 +3,13 @@ AICA-SyS Backend Main Application
 AI-driven Content Curation & Automated Sales System
 """
 
+import os
+
+import uvicorn
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-import uvicorn
-import os
-from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
@@ -54,12 +55,13 @@ async def health_check():
         "timestamp": "2024-01-01T00:00:00Z"
     }
 
-# Import routers (will be created in future phases)
-# from app.routers import content, auth, subscription
+# Import routers
+from routers import analysis_router, collection_router, content_router
 
-# app.include_router(content.router, prefix="/api/content", tags=["content"])
-# app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
-# app.include_router(subscription.router, prefix="/api/subscription", tags=["subscription"])
+# Include routers
+app.include_router(content_router)
+app.include_router(collection_router)
+app.include_router(analysis_router)
 
 if __name__ == "__main__":
     uvicorn.run(

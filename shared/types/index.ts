@@ -16,7 +16,7 @@ export interface User {
 export enum SubscriptionStatus {
   FREE = 'free',
   PREMIUM = 'premium',
-  CANCELLED = 'cancelled'
+  CANCELLED = 'cancelled',
 }
 
 // Content types
@@ -58,14 +58,14 @@ export enum TrendCategory {
   LIBRARY = 'library',
   TOOL = 'tool',
   LANGUAGE = 'language',
-  ECOSYSTEM = 'ecosystem'
+  ECOSYSTEM = 'ecosystem',
 }
 
 export enum TrendImpact {
   LOW = 'low',
   MEDIUM = 'medium',
   HIGH = 'high',
-  CRITICAL = 'critical'
+  CRITICAL = 'critical',
 }
 
 // AI Agent types
@@ -84,14 +84,14 @@ export enum CollectionType {
   GITHUB = 'github',
   RSS = 'rss',
   WEB_SCRAPING = 'web_scraping',
-  API = 'api'
+  API = 'api',
 }
 
 export enum JobStatus {
   PENDING = 'pending',
   RUNNING = 'running',
   COMPLETED = 'completed',
-  FAILED = 'failed'
+  FAILED = 'failed',
 }
 
 export interface AnalysisResult {
@@ -108,7 +108,7 @@ export interface AnalysisResult {
 export enum Sentiment {
   POSITIVE = 'positive',
   NEUTRAL = 'neutral',
-  NEGATIVE = 'negative'
+  NEGATIVE = 'negative',
 }
 
 // Payment types
@@ -126,7 +126,7 @@ export interface Subscription {
 export enum SubscriptionPlan {
   FREE = 'free',
   PREMIUM_MONTHLY = 'premium_monthly',
-  PREMIUM_YEARLY = 'premium_yearly'
+  PREMIUM_YEARLY = 'premium_yearly',
 }
 
 // API Response types

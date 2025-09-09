@@ -2,9 +2,10 @@
 
 ## 1.1 ニッチ市場分析と収益モデル設計
 
-### TypeScriptエコシステム市場調査
+### TypeScript エコシステム市場調査
 
 #### 主要フレームワーク動向
+
 - **Next.js**: App Router、Server Components、Turbopack
 - **SvelteKit**: 軽量性とパフォーマンス
 - **Solid.js**: リアクティブプログラミング
@@ -12,6 +13,7 @@
 - **Remix**: データローディング最適化
 
 #### ライブラリトレンド
+
 - **状態管理**: Zustand、Jotai、Valtio
 - **データフェッチ**: TanStack Query、SWR
 - **フォーム**: React Hook Form、Formik
@@ -19,6 +21,7 @@
 - **スタイリング**: Tailwind CSS、Styled Components
 
 #### ツールチェーン進化
+
 - **ビルドツール**: Turbopack、Vite、esbuild
 - **ランタイム**: Bun、Deno
 - **リンター**: Biome、ESLint
@@ -28,18 +31,21 @@
 ### 収益モデル設計
 
 #### 月額サブスクリプション (¥1,980/月)
-- 週刊TypeScriptトレンドレポート
+
+- 週刊 TypeScript トレンドレポート
 - 月間フレームワーク比較分析
 - 新機能・ライブラリの詳細解説
 - コミュニティアクセス
 
 #### プレミアムレポート販売 (¥4,980/冊)
-- 年次TypeScriptエコシステム総括
+
+- 年次 TypeScript エコシステム総括
 - フレームワーク移行ガイド
 - パフォーマンス最適化完全ガイド
 - 企業導入事例研究
 
 #### アフィリエイト収益
+
 - 開発ツール (Vercel、Netlify、Railway)
 - 書籍 (O'Reilly、Manning)
 - オンラインコース (Udemy、Pluralsight)
@@ -47,17 +53,19 @@
 
 ### ターゲットペルソナ
 
-#### プライマリペルソナ: TypeScript開発者 (中級〜上級)
-- **年齢**: 25-40歳
+#### プライマリペルソナ: TypeScript 開発者 (中級〜上級)
+
+- **年齢**: 25-40 歳
 - **職種**: フロントエンドエンジニア、フルスタックエンジニア
-- **経験**: 3-10年の開発経験
+- **経験**: 3-10 年の開発経験
 - **課題**: 最新技術のキャッチアップ、技術選定の判断
 - **ニーズ**: 効率的な学習、実践的な情報
 
 #### セカンダリペルソナ: 技術リード・アーキテクト
-- **年齢**: 30-45歳
+
+- **年齢**: 30-45 歳
 - **職種**: テックリード、アーキテクト、CTO
-- **経験**: 5-15年の開発経験
+- **経験**: 5-15 年の開発経験
 - **課題**: チームの技術戦略立案、技術選定
 - **ニーズ**: 戦略的な技術情報、導入事例
 
@@ -70,26 +78,26 @@ graph TB
     subgraph "Frontend Layer"
         A[Next.js 14 App] --> B[Vercel Hosting]
     end
-    
+
     subgraph "API Layer"
         C[Next.js API Routes] --> D[Python FastAPI]
     end
-    
+
     subgraph "AI Processing Layer"
         E[Information Collection Agent] --> F[Analysis & Summary Agent]
         F --> G[Content Generation Agent]
     end
-    
+
     subgraph "Data Layer"
         H[PostgreSQL] --> I[Qdrant Vector DB]
         J[Redis Cache] --> K[File Storage]
     end
-    
+
     subgraph "External Services"
         L[Google AI Studio] --> M[Stripe Payment]
         N[GitHub API] --> O[RSS Feeds]
     end
-    
+
     A --> C
     C --> E
     E --> H
@@ -101,29 +109,33 @@ graph TB
 ### 技術スタック詳細
 
 #### フロントエンド
+
 - **Next.js 14**: App Router、Server Components
 - **TypeScript**: 型安全性
 - **Tailwind CSS**: スタイリング
-- **Radix UI**: アクセシブルなUIコンポーネント
+- **Radix UI**: アクセシブルな UI コンポーネント
 - **TanStack Query**: データフェッチ
 - **NextAuth.js**: 認証
 
 #### バックエンド
+
 - **Next.js API Routes**: フロントエンド連携
-- **Python FastAPI**: AI処理・重い計算
+- **Python FastAPI**: AI 処理・重い計算
 - **PostgreSQL**: 構造化データ
 - **Qdrant**: ベクトル検索・RAG
 - **Redis**: キャッシュ・セッション
 
 #### AI・ML
+
 - **Google AI Studio (Gemini Pro)**: テキスト生成
 - **OpenAI API**: バックアップ・比較
 - **Stable Diffusion**: 画像生成
 - **Sentence Transformers**: 埋め込み生成
 
 #### インフラ
+
 - **Vercel**: フロントエンド・API
-- **GCP Cloud Functions**: Python処理
+- **GCP Cloud Functions**: Python 処理
 - **Cloud Storage**: ファイル保存
 - **Cloud SQL**: PostgreSQL
 - **Cloud Run**: コンテナ実行
@@ -131,28 +143,33 @@ graph TB
 ### データフロー設計
 
 #### 1. 情報収集フロー
+
 ```
 外部ソース → 収集エージェント → データ正規化 → PostgreSQL → ベクトル化 → Qdrant
 ```
 
 #### 2. 分析・要約フロー
+
 ```
 Qdrant → RAG検索 → Gemini API → 分析結果 → PostgreSQL
 ```
 
 #### 3. コンテンツ生成フロー
+
 ```
 分析結果 → プロンプト生成 → Gemini API → コンテンツ → 画像生成 → 公開
 ```
 
 #### 4. 販売フロー
+
 ```
 ユーザー → 認証 → 決済 → アクセス権限 → コンテンツ表示
 ```
 
-### API設計
+### API 設計
 
 #### RESTful API
+
 ```
 GET    /api/content/articles          # 記事一覧
 GET    /api/content/articles/:id      # 記事詳細
@@ -163,6 +180,7 @@ GET    /api/user/profile              # ユーザー情報
 ```
 
 #### GraphQL (将来拡張)
+
 ```graphql
 type Article {
   id: ID!
@@ -181,6 +199,7 @@ type Query {
 ## 1.3 開発環境構築
 
 ### プロジェクト構造
+
 ```
 aica-sys/
 ├── frontend/                 # Next.js アプリケーション
@@ -210,6 +229,7 @@ aica-sys/
 ### 開発環境設定
 
 #### フロントエンド (Next.js)
+
 ```json
 {
   "name": "aica-sys-frontend",
@@ -235,6 +255,7 @@ aica-sys/
 ```
 
 #### バックエンド (Python)
+
 ```txt
 fastapi==0.104.0
 uvicorn==0.24.0
@@ -252,9 +273,10 @@ qdrant-client==1.6.0
 sentence-transformers==2.2.0
 ```
 
-### CI/CD設定
+### CI/CD 設定
 
 #### GitHub Actions
+
 ```yaml
 name: CI/CD Pipeline
 
@@ -301,5 +323,5 @@ jobs:
 1. フロントエンド環境構築
 2. バックエンド環境構築
 3. データベース設計・構築
-4. 基本的なAPI実装
+4. 基本的な API 実装
 5. 認証システム実装
