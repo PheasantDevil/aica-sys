@@ -1,21 +1,26 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import { Header } from '@/components/header';
 import { Badge } from '@/components/ui/badge';
-import { 
-  CheckCircle, 
-  XCircle, 
-  Calendar, 
-  CreditCard, 
-  Settings,
-  ExternalLink
-} from 'lucide-react';
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { createPortalSession } from '@/lib/stripe';
+import {
+  CheckCircle,
+  CreditCard,
+  ExternalLink,
+  Settings,
+  XCircle,
+} from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { useState } from 'react';
 
 export default function SubscriptionPage() {
   const { data: session } = useSession();
@@ -59,11 +64,26 @@ export default function SubscriptionPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <Badge className='bg-green-100 text-green-800'><CheckCircle className='w-3 h-3 mr-1' />アクティブ</Badge>;
+        return (
+          <Badge className='bg-green-100 text-green-800'>
+            <CheckCircle className='w-3 h-3 mr-1' />
+            アクティブ
+          </Badge>
+        );
       case 'canceled':
-        return <Badge variant='destructive'><XCircle className='w-3 h-3 mr-1' />キャンセル済み</Badge>;
+        return (
+          <Badge variant='destructive'>
+            <XCircle className='w-3 h-3 mr-1' />
+            キャンセル済み
+          </Badge>
+        );
       case 'past_due':
-        return <Badge variant='destructive'><XCircle className='w-3 h-3 mr-1' />支払い遅延</Badge>;
+        return (
+          <Badge variant='destructive'>
+            <XCircle className='w-3 h-3 mr-1' />
+            支払い遅延
+          </Badge>
+        );
       default:
         return <Badge variant='secondary'>{status}</Badge>;
     }
@@ -72,10 +92,12 @@ export default function SubscriptionPage() {
   return (
     <div className='min-h-screen bg-background'>
       <Header />
-      
+
       <main className='container py-8'>
         <div className='mb-8'>
-          <h1 className='text-3xl font-bold text-foreground'>サブスクリプション管理</h1>
+          <h1 className='text-3xl font-bold text-foreground'>
+            サブスクリプション管理
+          </h1>
           <p className='text-muted-foreground mt-2'>
             現在のプランと支払い情報を管理できます
           </p>
@@ -89,9 +111,7 @@ export default function SubscriptionPage() {
                 現在のプラン
                 {getStatusBadge(subscription.status)}
               </CardTitle>
-              <CardDescription>
-                サブスクリプションの詳細情報
-              </CardDescription>
+              <CardDescription>サブスクリプションの詳細情報</CardDescription>
             </CardHeader>
             <CardContent className='space-y-4'>
               <div className='flex items-center justify-between'>
@@ -100,7 +120,9 @@ export default function SubscriptionPage() {
               </div>
               <div className='flex items-center justify-between'>
                 <span className='text-sm font-medium'>料金</span>
-                <span className='text-sm'>{subscription.price}/{subscription.period}</span>
+                <span className='text-sm'>
+                  {subscription.price}/{subscription.period}
+                </span>
               </div>
               <div className='flex items-center justify-between'>
                 <span className='text-sm font-medium'>次の請求日</span>
@@ -109,7 +131,8 @@ export default function SubscriptionPage() {
               <div className='flex items-center justify-between'>
                 <span className='text-sm font-medium'>支払い方法</span>
                 <span className='text-sm capitalize'>
-                  {subscription.paymentMethod.brand} •••• {subscription.paymentMethod.last4}
+                  {subscription.paymentMethod.brand} ••••{' '}
+                  {subscription.paymentMethod.last4}
                 </span>
               </div>
             </CardContent>
@@ -119,9 +142,7 @@ export default function SubscriptionPage() {
           <Card>
             <CardHeader>
               <CardTitle>支払い履歴</CardTitle>
-              <CardDescription>
-                最近の支払い記録
-              </CardDescription>
+              <CardDescription>最近の支払い記録</CardDescription>
             </CardHeader>
             <CardContent>
               <div className='space-y-3'>
@@ -130,7 +151,9 @@ export default function SubscriptionPage() {
                     <CheckCircle className='h-4 w-4 text-green-600' />
                     <div>
                       <p className='text-sm font-medium'>プレミアムプラン</p>
-                      <p className='text-xs text-muted-foreground'>2024-09-01</p>
+                      <p className='text-xs text-muted-foreground'>
+                        2024-09-01
+                      </p>
                     </div>
                   </div>
                   <span className='text-sm font-medium'>¥1,980</span>
@@ -140,7 +163,9 @@ export default function SubscriptionPage() {
                     <CheckCircle className='h-4 w-4 text-green-600' />
                     <div>
                       <p className='text-sm font-medium'>プレミアムプラン</p>
-                      <p className='text-xs text-muted-foreground'>2024-08-01</p>
+                      <p className='text-xs text-muted-foreground'>
+                        2024-08-01
+                      </p>
                     </div>
                   </div>
                   <span className='text-sm font-medium'>¥1,980</span>
@@ -150,7 +175,9 @@ export default function SubscriptionPage() {
                     <CheckCircle className='h-4 w-4 text-green-600' />
                     <div>
                       <p className='text-sm font-medium'>プレミアムプラン</p>
-                      <p className='text-xs text-muted-foreground'>2024-07-01</p>
+                      <p className='text-xs text-muted-foreground'>
+                        2024-07-01
+                      </p>
                     </div>
                   </div>
                   <span className='text-sm font-medium'>¥1,980</span>

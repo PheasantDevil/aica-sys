@@ -2,6 +2,7 @@
 
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { DashboardNav } from '@/components/dashboard-nav';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -103,117 +104,127 @@ export default function DashboardPage() {
   return (
     <div className='min-h-screen bg-background'>
       <Header />
+ 
+      <div className='container py-8'>
+        <div className='flex gap-8'>
+          {/* サイドバー */}
+          <aside className='hidden lg:block w-64'>
+            <DashboardNav />
+          </aside>
+          
+          {/* メインコンテンツ */}
+          <main className='flex-1'>
+            <div className='mb-8'>
+              <h1 className='text-3xl font-bold text-foreground'>ダッシュボード</h1>
+              <p className='text-muted-foreground mt-2'>
+                おかえりなさい、{session.user?.name || session.user?.email}さん
+              </p>
+            </div>
 
-      <main className='container py-8'>
-        <div className='mb-8'>
-          <h1 className='text-3xl font-bold text-foreground'>ダッシュボード</h1>
-          <p className='text-muted-foreground mt-2'>
-            おかえりなさい、{session.user?.name || session.user?.email}さん
-          </p>
-        </div>
+            {/* 統計カード */}
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
+              {stats.map(stat => (
+                <Card key={stat.title}>
+                  <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+                    <CardTitle className='text-sm font-medium'>
+                      {stat.title}
+                    </CardTitle>
+                    <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                  </CardHeader>
+                  <CardContent>
+                    <div className='text-2xl font-bold'>{stat.value}</div>
+                    <p className={`text-xs ${stat.color}`}>{stat.change} 先月比</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
-        {/* 統計カード */}
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
-          {stats.map(stat => (
-            <Card key={stat.title}>
-              <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-                <CardTitle className='text-sm font-medium'>
-                  {stat.title}
-                </CardTitle>
-                <stat.icon className={`h-4 w-4 ${stat.color}`} />
-              </CardHeader>
-              <CardContent>
-                <div className='text-2xl font-bold'>{stat.value}</div>
-                <p className={`text-xs ${stat.color}`}>{stat.change} 先月比</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
-          {/* 最近の記事 */}
-          <Card>
-            <CardHeader>
-              <CardTitle>最近の記事</CardTitle>
-              <CardDescription>最新のパフォーマンス状況</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className='space-y-4'>
-                {recentArticles.map(article => (
-                  <div
-                    key={article.id}
-                    className='flex items-center justify-between'
-                  >
-                    <div className='space-y-1'>
-                      <p className='text-sm font-medium leading-none'>
-                        {article.title}
-                      </p>
-                      <p className='text-xs text-muted-foreground'>
-                        {article.publishedAt}
-                      </p>
-                    </div>
-                    <div className='flex items-center space-x-4 text-xs text-muted-foreground'>
-                      <div className='flex items-center space-x-1'>
-                        <TrendingUp className='h-3 w-3' />
-                        <span>{article.views}</span>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+              {/* 最近の記事 */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>最近の記事</CardTitle>
+                  <CardDescription>最新のパフォーマンス状況</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className='space-y-4'>
+                    {recentArticles.map(article => (
+                      <div
+                        key={article.id}
+                        className='flex items-center justify-between'
+                      >
+                        <div className='space-y-1'>
+                          <p className='text-sm font-medium leading-none'>
+                            {article.title}
+                          </p>
+                          <p className='text-xs text-muted-foreground'>
+                            {article.publishedAt}
+                          </p>
+                        </div>
+                        <div className='flex items-center space-x-4 text-xs text-muted-foreground'>
+                          <div className='flex items-center space-x-1'>
+                            <TrendingUp className='h-3 w-3' />
+                            <span>{article.views}</span>
+                          </div>
+                          <div className='flex items-center space-x-1'>
+                            <Star className='h-3 w-3' />
+                            <span>{article.likes}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className='flex items-center space-x-1'>
-                        <Star className='h-3 w-3' />
-                        <span>{article.likes}</span>
+                    ))}
+                  </div>
+                  <Button variant='outline' className='w-full mt-4'>
+                    すべての記事を見る
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* 今週のスケジュール */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>今週のスケジュール</CardTitle>
+                  <CardDescription>自動生成・公開予定</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className='space-y-4'>
+                    <div className='flex items-center space-x-4'>
+                      <Calendar className='h-4 w-4 text-primary' />
+                      <div>
+                        <p className='text-sm font-medium'>月曜日 9:00</p>
+                        <p className='text-xs text-muted-foreground'>
+                          TypeScript週間レポート自動生成
+                        </p>
+                      </div>
+                    </div>
+                    <div className='flex items-center space-x-4'>
+                      <Calendar className='h-4 w-4 text-primary' />
+                      <div>
+                        <p className='text-sm font-medium'>水曜日 14:00</p>
+                        <p className='text-xs text-muted-foreground'>
+                          技術記事自動公開
+                        </p>
+                      </div>
+                    </div>
+                    <div className='flex items-center space-x-4'>
+                      <Calendar className='h-4 w-4 text-primary' />
+                      <div>
+                        <p className='text-sm font-medium'>金曜日 10:00</p>
+                        <p className='text-xs text-muted-foreground'>
+                          ニュースレター配信
+                        </p>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-              <Button variant='outline' className='w-full mt-4'>
-                すべての記事を見る
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* 今週のスケジュール */}
-          <Card>
-            <CardHeader>
-              <CardTitle>今週のスケジュール</CardTitle>
-              <CardDescription>自動生成・公開予定</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className='space-y-4'>
-                <div className='flex items-center space-x-4'>
-                  <Calendar className='h-4 w-4 text-primary' />
-                  <div>
-                    <p className='text-sm font-medium'>月曜日 9:00</p>
-                    <p className='text-xs text-muted-foreground'>
-                      TypeScript週間レポート自動生成
-                    </p>
-                  </div>
-                </div>
-                <div className='flex items-center space-x-4'>
-                  <Calendar className='h-4 w-4 text-primary' />
-                  <div>
-                    <p className='text-sm font-medium'>水曜日 14:00</p>
-                    <p className='text-xs text-muted-foreground'>
-                      技術記事自動公開
-                    </p>
-                  </div>
-                </div>
-                <div className='flex items-center space-x-4'>
-                  <Calendar className='h-4 w-4 text-primary' />
-                  <div>
-                    <p className='text-sm font-medium'>金曜日 10:00</p>
-                    <p className='text-xs text-muted-foreground'>
-                      ニュースレター配信
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <Button variant='outline' className='w-full mt-4'>
-                スケジュールを管理
-              </Button>
-            </CardContent>
-          </Card>
+                  <Button variant='outline' className='w-full mt-4'>
+                    スケジュールを管理
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </main>
         </div>
-      </main>
+      </div>
 
       <Footer />
     </div>

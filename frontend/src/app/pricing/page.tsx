@@ -1,14 +1,20 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { Check, Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { Header } from '@/components/header';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { createCheckoutSession } from '@/lib/stripe';
+import { Check, Loader2 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function PricingPage() {
   const { data: session } = useSession();
@@ -70,7 +76,7 @@ export default function PricingPage() {
     },
   ];
 
-  const handleSubscribe = async (plan: typeof plans[0]) => {
+  const handleSubscribe = async (plan: (typeof plans)[0]) => {
     if (!session) {
       router.push('/auth/signin');
       return;
@@ -95,11 +101,11 @@ export default function PricingPage() {
     setLoading(plan.id);
     try {
       const sessionId = await createCheckoutSession(plan.priceId);
-      
+
       const stripe = (await import('@stripe/stripe-js')).loadStripe(
         process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
       );
-      
+
       const stripeInstance = await stripe;
       if (stripeInstance) {
         await stripeInstance.redirectToCheckout({ sessionId });
@@ -114,7 +120,7 @@ export default function PricingPage() {
   return (
     <div className='min-h-screen bg-background'>
       <Header />
-      
+
       <main className='container py-20'>
         <div className='mx-auto max-w-2xl text-center mb-16'>
           <h1 className='text-4xl font-bold tracking-tight sm:text-6xl mb-6'>
@@ -124,15 +130,13 @@ export default function PricingPage() {
             あなたのニーズに合わせたプランを選択してください
           </p>
         </div>
-        
+
         <div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
-          {plans.map((plan) => (
+          {plans.map(plan => (
             <Card
               key={plan.id}
               className={`relative ${
-                plan.popular
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border'
+                plan.popular ? 'border-primary bg-primary/5' : 'border-border'
               }`}
             >
               {plan.popular && (
@@ -142,30 +146,34 @@ export default function PricingPage() {
                   </span>
                 </div>
               )}
-              
+
               <CardHeader className='text-center'>
-                <CardTitle className='text-xl font-semibold'>{plan.name}</CardTitle>
+                <CardTitle className='text-xl font-semibold'>
+                  {plan.name}
+                </CardTitle>
                 <CardDescription className='mt-2 text-sm text-muted-foreground'>
                   {plan.description}
                 </CardDescription>
                 <div className='mt-4'>
                   <span className='text-4xl font-bold'>{plan.price}</span>
                   {plan.period && (
-                    <span className='text-muted-foreground'>/{plan.period}</span>
+                    <span className='text-muted-foreground'>
+                      /{plan.period}
+                    </span>
                   )}
                 </div>
               </CardHeader>
-              
+
               <CardContent>
                 <ul className='space-y-4'>
-                  {plan.features.map((feature) => (
+                  {plan.features.map(feature => (
                     <li key={feature} className='flex items-start'>
                       <Check className='mr-3 h-5 w-5 flex-shrink-0 text-primary' />
                       <span className='text-sm'>{feature}</span>
                     </li>
                   ))}
                 </ul>
-                
+
                 <div className='mt-8'>
                   <Button
                     className='w-full'
