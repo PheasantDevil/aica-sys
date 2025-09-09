@@ -1,8 +1,13 @@
+import {
+  getNewsletterEmailTemplate,
+  getPasswordResetEmailTemplate,
+  getSubscriptionConfirmationEmailTemplate,
+  getWelcomeEmailTemplate,
+} from '@/lib/email-templates';
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { getWelcomeEmailTemplate, getNewsletterEmailTemplate, getSubscriptionConfirmationEmailTemplate, getPasswordResetEmailTemplate } from '@/lib/email-templates';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key');
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,7 +38,10 @@ export async function POST(request: NextRequest) {
 
       case 'subscription_confirmation':
         recipientEmail = data.email;
-        emailTemplate = getSubscriptionConfirmationEmailTemplate(data.plan, data.amount);
+        emailTemplate = getSubscriptionConfirmationEmailTemplate(
+          data.plan,
+          data.amount
+        );
         break;
 
       case 'password_reset':
@@ -60,7 +68,6 @@ export async function POST(request: NextRequest) {
       success: true,
       messageId: result.data?.id,
     });
-
   } catch (error) {
     console.error('Email sending error:', error);
     return NextResponse.json(

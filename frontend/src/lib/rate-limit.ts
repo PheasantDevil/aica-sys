@@ -32,11 +32,17 @@ class RateLimiter {
 
   private cleanup(): void {
     const now = Date.now();
-    for (const [key, entry] of this.store.entries()) {
+    const keysToDelete: string[] = [];
+    
+    this.store.forEach((entry, key) => {
       if (now > entry.resetTime) {
-        this.store.delete(key);
+        keysToDelete.push(key);
       }
-    }
+    });
+    
+    keysToDelete.forEach(key => {
+      this.store.delete(key);
+    });
   }
 
   async check(req: Request): Promise<{

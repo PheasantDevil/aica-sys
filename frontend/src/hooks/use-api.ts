@@ -22,7 +22,11 @@ export function useApi<T = any>(options: UseApiOptions = {}) {
   });
 
   const { handleError } = useErrorHandler({
-    onError: options.onError,
+    onError: options.onError ? (error: Error) => {
+      if ('status' in error && 'timestamp' in error) {
+        options.onError!(error as ApiError);
+      }
+    } : undefined,
   });
 
   const execute = useCallback(async <R = T>(

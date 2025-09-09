@@ -99,10 +99,17 @@ export function getNewsletterEmailTemplate(newsletter: {
             <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <div style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px;">
                 <p style="margin: 0; color: #666; font-size: 14px;">
-                  著者: ${newsletter.author} | 公開日: ${new Date(newsletter.publishedAt).toLocaleDateString('ja-JP')}
+                  著者: ${newsletter.author} | 公開日: ${new Date(
+                    newsletter.publishedAt
+                  ).toLocaleDateString('ja-JP')}
                 </p>
                 <div style="margin-top: 10px;">
-                  ${newsletter.tags.map(tag => `<span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 5px;">${tag}</span>`).join('')}
+                  ${newsletter.tags
+                    .map(
+                      tag =>
+                        `<span style="background: #e3f2fd; color: #1976d2; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 5px;">${tag}</span>`
+                    )
+                    .join('')}
                 </div>
               </div>
               
@@ -144,7 +151,10 @@ export function getNewsletterEmailTemplate(newsletter: {
 }
 
 // サブスクリプション確認メール
-export function getSubscriptionConfirmationEmailTemplate(plan: string, amount: number): EmailTemplate {
+export function getSubscriptionConfirmationEmailTemplate(
+  plan: string,
+  amount: number
+): EmailTemplate {
   return {
     subject: 'サブスクリプション開始のご確認',
     html: `
@@ -176,7 +186,9 @@ export function getSubscriptionConfirmationEmailTemplate(plan: string, amount: n
                 </tr>
                 <tr>
                   <td style="padding: 10px 0; font-weight: bold;">次回請求日</td>
-                  <td style="padding: 10px 0;">${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('ja-JP')}</td>
+                  <td style="padding: 10px 0;">${new Date(
+                    Date.now() + 30 * 24 * 60 * 60 * 1000
+                  ).toLocaleDateString('ja-JP')}</td>
                 </tr>
               </table>
             </div>
@@ -205,7 +217,9 @@ export function getSubscriptionConfirmationEmailTemplate(plan: string, amount: n
       サブスクリプション詳細:
       - プラン: ${plan}
       - 月額料金: ¥${amount.toLocaleString()}
-      - 次回請求日: ${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('ja-JP')}
+      - 次回請求日: ${new Date(
+        Date.now() + 30 * 24 * 60 * 60 * 1000
+      ).toLocaleDateString('ja-JP')}
       
       🎉 プレミアム機能が利用可能になりました！
       
@@ -216,7 +230,9 @@ export function getSubscriptionConfirmationEmailTemplate(plan: string, amount: n
 }
 
 // パスワードリセットメール
-export function getPasswordResetEmailTemplate(resetLink: string): EmailTemplate {
+export function getPasswordResetEmailTemplate(
+  resetLink: string
+): EmailTemplate {
   return {
     subject: 'パスワードリセットのご案内',
     html: `

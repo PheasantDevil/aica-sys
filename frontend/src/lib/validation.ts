@@ -117,7 +117,7 @@ export const newsletterSchemas = {
 export const subscriptionSchemas = {
   create: z.object({
     planId: z.enum(['free', 'premium', 'enterprise'], {
-      errorMap: () => ({ message: '有効なプランを選択してください' }),
+      message: '有効なプランを選択してください',
     }),
     paymentMethodId: z.string().min(1, '支払い方法を選択してください'),
   }),
@@ -165,7 +165,7 @@ export function validateData<T>(schema: z.ZodSchema<T>, data: unknown): {
 export function formatValidationErrors(errors: z.ZodError): Record<string, string> {
   const formattedErrors: Record<string, string> = {};
   
-  errors.errors.forEach((error) => {
+  errors.issues.forEach((error) => {
     const path = error.path.join('.');
     formattedErrors[path] = error.message;
   });

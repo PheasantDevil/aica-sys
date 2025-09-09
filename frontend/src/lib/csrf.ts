@@ -56,11 +56,17 @@ class CSRFProtection {
   // 期限切れトークンをクリーンアップ
   cleanup(): void {
     const now = Date.now();
-    for (const [sessionId, { expires }] of this.tokenStore.entries()) {
+    const keysToDelete: string[] = [];
+    
+    this.tokenStore.forEach(({ expires }, sessionId) => {
       if (now > expires) {
-        this.tokenStore.delete(sessionId);
+        keysToDelete.push(sessionId);
       }
-    }
+    });
+    
+    keysToDelete.forEach(sessionId => {
+      this.tokenStore.delete(sessionId);
+    });
   }
 
   // トークンのハッシュ値を生成（セキュアな比較用）

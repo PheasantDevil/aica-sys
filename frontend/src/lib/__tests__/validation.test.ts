@@ -92,7 +92,7 @@ describe('Validation Schemas', () => {
   describe('formatValidationErrors', () => {
     it('formats validation errors correctly', () => {
       const mockError = {
-        errors: [
+        issues: [
           { path: ['email'], message: 'Invalid email' },
           { path: ['password'], message: 'Password too short' },
           { path: ['profile', 'name'], message: 'Name required' },

@@ -1,5 +1,8 @@
 import { ApiResponse, ApiError, ErrorCode, ERROR_MESSAGES } from '@/types/api';
 
+export type { ApiResponse, ApiError, ErrorCode };
+export { ERROR_MESSAGES };
+
 class ApiClient {
   private baseURL: string;
   private defaultHeaders: Record<string, string>;

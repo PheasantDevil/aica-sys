@@ -1,8 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
+import {
+  analyticsEvents,
+  loadGA,
+  trackEvent,
+  trackPageView,
+} from '@/lib/analytics';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { loadGA, trackPageView, trackEvent, analyticsEvents } from '@/lib/analytics';
+import { useEffect } from 'react';
 
 // Google Analytics プロバイダー
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
@@ -19,7 +24,8 @@ export function PageViewTracker() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const url = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '');
+    const url =
+      pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '');
     trackPageView(url);
   }, [pathname, searchParams]);
 
@@ -33,8 +39,10 @@ export function ScrollDepthTracker() {
     let scrollDepthTracked = false;
 
     const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const documentHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const scrollDepth = Math.round((scrollTop / documentHeight) * 100);
 
       if (scrollDepth > maxScrollDepth) {
@@ -66,11 +74,11 @@ export function ExternalLinkTracker() {
     const handleClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const link = target.closest('a');
-      
+
       if (link && link.href) {
         const url = new URL(link.href);
         const currentDomain = window.location.hostname;
-        
+
         // 外部リンクの場合
         if (url.hostname !== currentDomain) {
           const linkText = link.textContent?.trim() || 'Unknown';
@@ -93,40 +101,61 @@ export function PerformanceTracker() {
     const trackWebVitals = () => {
       // LCP (Largest Contentful Paint)
       if ('PerformanceObserver' in window) {
-        const lcpObserver = new PerformanceObserver((list) => {
+        const lcpObserver = new PerformanceObserver(list => {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
-          trackEvent('timing_complete', 'performance', 'LCP', Math.round(lastEntry.startTime));
+          trackEvent(
+            'timing_complete',
+            'performance',
+            'LCP',
+            Math.round(lastEntry.startTime)
+          );
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
 
         // FID (First Input Delay)
-        const fidObserver = new PerformanceObserver((list) => {
+        const fidObserver = new PerformanceObserver(list => {
           const entries = list.getEntries();
           entries.forEach((entry: any) => {
-            trackEvent('timing_complete', 'performance', 'FID', Math.round(entry.processingStart - entry.startTime));
+            trackEvent(
+              'timing_complete',
+              'performance',
+              'FID',
+              Math.round(entry.processingStart - entry.startTime)
+            );
           });
         });
         fidObserver.observe({ entryTypes: ['first-input'] });
 
         // CLS (Cumulative Layout Shift)
         let clsValue = 0;
-        const clsObserver = new PerformanceObserver((list) => {
+        const clsObserver = new PerformanceObserver(list => {
           const entries = list.getEntries();
           entries.forEach((entry: any) => {
             if (!entry.hadRecentInput) {
               clsValue += entry.value;
             }
           });
-          trackEvent('timing_complete', 'performance', 'CLS', Math.round(clsValue * 1000));
+          trackEvent(
+            'timing_complete',
+            'performance',
+            'CLS',
+            Math.round(clsValue * 1000)
+          );
         });
         clsObserver.observe({ entryTypes: ['layout-shift'] });
       }
 
       // ページ読み込み時間
       window.addEventListener('load', () => {
-        const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-        trackEvent('timing_complete', 'performance', 'page_load_time', loadTime);
+        const loadTime =
+          performance.timing.loadEventEnd - performance.timing.navigationStart;
+        trackEvent(
+          'timing_complete',
+          'performance',
+          'page_load_time',
+          loadTime
+        );
       });
     };
 
@@ -152,7 +181,10 @@ export function ErrorTracker() {
 
     return () => {
       window.removeEventListener('error', handleError);
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+      window.removeEventListener(
+        'unhandledrejection',
+        handleUnhandledRejection
+      );
     };
   }, []);
 

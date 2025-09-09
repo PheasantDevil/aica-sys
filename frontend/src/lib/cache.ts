@@ -7,7 +7,9 @@ class MemoryCache {
     // キャッシュサイズ制限
     if (this.cache.size >= this.maxSize) {
       const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
+      if (firstKey) {
+        this.cache.delete(firstKey);
+      }
     }
 
     this.cache.set(key, {
@@ -43,11 +45,17 @@ class MemoryCache {
   // 期限切れアイテムのクリーンアップ
   cleanup(): void {
     const now = Date.now();
-    for (const [key, item] of this.cache.entries()) {
+    const keysToDelete: string[] = [];
+    
+    this.cache.forEach((item, key) => {
       if (now > item.expiry) {
-        this.cache.delete(key);
+        keysToDelete.push(key);
       }
-    }
+    });
+    
+    keysToDelete.forEach(key => {
+      this.cache.delete(key);
+    });
   }
 }
 

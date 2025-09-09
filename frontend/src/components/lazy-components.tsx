@@ -1,12 +1,12 @@
 import { lazy, Suspense } from 'react';
 
 // ダッシュボードコンポーネントの遅延読み込み
-export const LazyDashboard = lazy(() => import('./dashboard-nav'));
+export const LazyDashboard = lazy(() => import('./dashboard-nav').then(module => ({ default: module.DashboardNav })));
 
 // 重いコンポーネントの遅延読み込み
-export const LazyPricing = lazy(() => import('./pricing'));
-export const LazyFeatures = lazy(() => import('./features'));
-export const LazyHero = lazy(() => import('./hero'));
+export const LazyPricing = lazy(() => import('../app/pricing/page'));
+export const LazyArticles = lazy(() => import('../app/articles/page'));
+export const LazyNewsletters = lazy(() => import('../app/newsletters/page'));
 
 // ローディングコンポーネント
 export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {

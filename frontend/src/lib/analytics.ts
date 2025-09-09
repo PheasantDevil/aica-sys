@@ -36,7 +36,12 @@ export const trackPageView = (url: string, title?: string) => {
 };
 
 // イベント追跡
-export const trackEvent = (action: string, category: string, label?: string, value?: number) => {
+export const trackEvent = (
+  action: string,
+  category: string,
+  label?: string,
+  value?: number
+) => {
   if (typeof window === 'undefined' || !window.gtag) return;
 
   window.gtag('event', action, {
@@ -111,7 +116,11 @@ export const analyticsEvents = {
 };
 
 // コンバージョン追跡
-export const trackConversion = (conversionId: string, value?: number, currency?: string) => {
+export const trackConversion = (
+  conversionId: string,
+  value?: number,
+  currency?: string
+) => {
   if (typeof window === 'undefined' || !window.gtag) return;
 
   window.gtag('event', 'conversion', {

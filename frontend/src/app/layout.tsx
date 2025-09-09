@@ -1,24 +1,24 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { Providers } from './providers'
-import { PerformanceMonitor } from '@/components/performance-monitor'
-import { AnalyticsProvider, Analytics } from '@/components/analytics'
-import { defaultSEO } from '@/lib/seo'
+import { Analytics, AnalyticsProvider } from '@/components/analytics';
+import { PerformanceMonitor } from '@/components/performance-monitor';
+import { defaultSEO } from '@/lib/seo';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { Providers } from './providers';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   ...defaultSEO,
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
+    <html lang='ja'>
       <body className={inter.className}>
         <AnalyticsProvider>
           <Providers>
@@ -29,5 +29,5 @@ export default function RootLayout({
         </AnalyticsProvider>
       </body>
     </html>
-  )
+  );
 }
