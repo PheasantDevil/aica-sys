@@ -1,17 +1,16 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import {
-  LayoutDashboard,
-  FileText,
-  Mail,
   BarChart3,
   CreditCard,
+  FileText,
+  LayoutDashboard,
+  Mail,
   User,
-  Settings,
 } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const navigation = [
   {
@@ -50,8 +49,8 @@ export function DashboardNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col space-y-2">
-      {navigation.map((item) => {
+    <nav className='flex flex-col space-y-2'>
+      {navigation.map(item => {
         const isActive = pathname === item.href;
         return (
           <Link
@@ -64,7 +63,7 @@ export function DashboardNav() {
                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
             )}
           >
-            <item.icon className="h-4 w-4" />
+            <item.icon className='h-4 w-4' />
             <span>{item.name}</span>
           </Link>
         );

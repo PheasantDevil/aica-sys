@@ -2,26 +2,20 @@
 
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import {
-  Search,
-  Plus,
-  Edit,
-  Trash2,
-  Eye,
-  Send,
   Calendar,
-  Users,
+  Edit,
+  Eye,
   Mail,
+  Plus,
+  Search,
+  Send,
+  Trash2,
+  Users,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -92,12 +86,14 @@ export default function NewslettersPage() {
   return (
     <div className='min-h-screen bg-background'>
       <Header />
-      
+
       <main className='container py-8'>
         <div className='mb-8'>
           <div className='flex items-center justify-between'>
             <div>
-              <h1 className='text-3xl font-bold text-foreground'>ニュースレター管理</h1>
+              <h1 className='text-3xl font-bold text-foreground'>
+                ニュースレター管理
+              </h1>
               <p className='text-muted-foreground mt-2'>
                 ニュースレターの作成・送信・分析ができます
               </p>
@@ -188,10 +184,12 @@ export default function NewslettersPage() {
                 <div className='flex items-start justify-between'>
                   <div className='flex-1'>
                     <div className='flex items-center gap-3 mb-2'>
-                      <h3 className='text-lg font-semibold'>{newsletter.title}</h3>
+                      <h3 className='text-lg font-semibold'>
+                        {newsletter.title}
+                      </h3>
                       {getStatusBadge(newsletter.status)}
                     </div>
-                    
+
                     <div className='grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-muted-foreground mb-3'>
                       <div className='flex items-center gap-1'>
                         <Users className='h-4 w-4' />
@@ -232,7 +230,11 @@ export default function NewslettersPage() {
                         <Send className='h-4 w-4' />
                       </Button>
                     )}
-                    <Button variant='outline' size='sm' className='text-destructive'>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      className='text-destructive'
+                    >
                       <Trash2 className='h-4 w-4' />
                     </Button>
                   </div>

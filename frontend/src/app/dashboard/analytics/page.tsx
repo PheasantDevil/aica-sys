@@ -2,6 +2,7 @@
 
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,17 +11,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import {
   BarChart3,
-  TrendingUp,
-  TrendingDown,
-  Users,
+  Download,
   Eye,
   Star,
-  Mail,
-  Calendar,
-  Download,
+  TrendingDown,
+  TrendingUp,
+  Users,
 } from 'lucide-react';
 
 export default function AnalyticsPage() {
@@ -97,12 +95,14 @@ export default function AnalyticsPage() {
   return (
     <div className='min-h-screen bg-background'>
       <Header />
-      
+
       <main className='container py-8'>
         <div className='mb-8'>
           <div className='flex items-center justify-between'>
             <div>
-              <h1 className='text-3xl font-bold text-foreground'>分析レポート</h1>
+              <h1 className='text-3xl font-bold text-foreground'>
+                分析レポート
+              </h1>
               <p className='text-muted-foreground mt-2'>
                 コンテンツのパフォーマンスと収益を分析できます
               </p>
@@ -274,9 +274,7 @@ export default function AnalyticsPage() {
           <Card>
             <CardHeader>
               <CardTitle>ニュースレター統計</CardTitle>
-              <CardDescription>
-                配信パフォーマンスの詳細
-              </CardDescription>
+              <CardDescription>配信パフォーマンスの詳細</CardDescription>
             </CardHeader>
             <CardContent>
               <div className='space-y-6'>
@@ -294,7 +292,7 @@ export default function AnalyticsPage() {
                     <p className='text-sm text-muted-foreground'>購読者数</p>
                   </div>
                 </div>
-                
+
                 <div className='space-y-4'>
                   <div className='flex items-center justify-between'>
                     <span className='text-sm font-medium'>平均開封率</span>
@@ -312,7 +310,7 @@ export default function AnalyticsPage() {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className='flex items-center justify-between'>
                     <span className='text-sm font-medium'>平均クリック率</span>
                     <div className='flex items-center gap-2'>
@@ -333,7 +331,9 @@ export default function AnalyticsPage() {
 
                 <div className='pt-4 border-t'>
                   <div className='flex items-center justify-between'>
-                    <span className='text-sm font-medium'>今月の新規購読者</span>
+                    <span className='text-sm font-medium'>
+                      今月の新規購読者
+                    </span>
                     <Badge className='bg-green-100 text-green-800'>
                       +{analytics.newsletterStats.newSubscribers}
                     </Badge>
@@ -348,14 +348,15 @@ export default function AnalyticsPage() {
         <Card className='mt-8'>
           <CardHeader>
             <CardTitle>月別収益推移</CardTitle>
-            <CardDescription>
-              過去6ヶ月の収益パフォーマンス
-            </CardDescription>
+            <CardDescription>過去6ヶ月の収益パフォーマンス</CardDescription>
           </CardHeader>
           <CardContent>
             <div className='h-64 flex items-end justify-between gap-2'>
               {analytics.revenueData.map((data, index) => (
-                <div key={data.month} className='flex flex-col items-center gap-2'>
+                <div
+                  key={data.month}
+                  className='flex flex-col items-center gap-2'
+                >
                   <div
                     className='bg-primary rounded-t w-12'
                     style={{
