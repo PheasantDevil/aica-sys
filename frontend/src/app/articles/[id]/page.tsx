@@ -2,20 +2,18 @@
 
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
+  ArrowLeft,
+  Bookmark,
   Calendar,
   Clock,
   Eye,
-  Star,
-  User,
-  Tag,
   Share2,
-  Bookmark,
-  ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
+  Star,
+  Tag,
+  User,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -130,7 +128,8 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
     {
       id: 2,
       title: 'Next.js 14 App Router完全ガイド',
-      excerpt: 'Next.js 14のApp Routerの基本から応用まで、実践的な使い方をステップバイステップで解説します。',
+      excerpt:
+        'Next.js 14のApp Routerの基本から応用まで、実践的な使い方をステップバイステップで解説します。',
       publishedAt: '2024-09-07',
       readTime: '12分',
       views: 987,
@@ -139,7 +138,8 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
     {
       id: 3,
       title: 'React Server Componentsの実践的活用法',
-      excerpt: 'React Server Componentsの概念から実装まで、パフォーマンス向上のための具体的な手法を紹介します。',
+      excerpt:
+        'React Server Componentsの概念から実装まで、パフォーマンス向上のための具体的な手法を紹介します。',
       publishedAt: '2024-09-06',
       readTime: '10分',
       views: 756,
@@ -148,7 +148,8 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
     {
       id: 4,
       title: 'TypeScript型安全性の向上テクニック',
-      excerpt: 'TypeScriptでより安全なコードを書くための高度なテクニックとパターンを詳しく解説します。',
+      excerpt:
+        'TypeScriptでより安全なコードを書くための高度なテクニックとパターンを詳しく解説します。',
       publishedAt: '2024-09-05',
       readTime: '6分',
       views: 543,
@@ -164,7 +165,11 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
       'Build Tools': 'bg-purple-100 text-purple-800',
     };
     return (
-      <Badge className={colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800'}>
+      <Badge
+        className={
+          colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800'
+        }
+      >
         {category}
       </Badge>
     );
@@ -172,7 +177,7 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
 
   const handleLike = () => {
     setIsLiked(!isLiked);
-    setLikeCount(prev => isLiked ? prev - 1 : prev + 1);
+    setLikeCount(prev => (isLiked ? prev - 1 : prev + 1));
   };
 
   const handleBookmark = () => {
@@ -221,14 +226,16 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
               <div className='flex items-center gap-2 mb-4'>
                 {getCategoryBadge(article.category)}
                 {article.featured && (
-                  <Badge className='bg-yellow-100 text-yellow-800'>おすすめ</Badge>
+                  <Badge className='bg-yellow-100 text-yellow-800'>
+                    おすすめ
+                  </Badge>
                 )}
               </div>
-              
+
               <h1 className='text-4xl font-bold text-foreground mb-4'>
                 {article.title}
               </h1>
-              
+
               <div className='flex items-center justify-between text-sm text-muted-foreground mb-6'>
                 <div className='flex items-center gap-6'>
                   <div className='flex items-center gap-2'>
@@ -244,7 +251,7 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
                     {article.readTime}
                   </div>
                 </div>
-                
+
                 <div className='flex items-center gap-4'>
                   <div className='flex items-center gap-1'>
                     <Eye className='h-4 w-4' />
@@ -264,7 +271,9 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
                   onClick={handleLike}
                   className='flex items-center gap-2'
                 >
-                  <Star className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
+                  <Star
+                    className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`}
+                  />
                   {isLiked ? 'いいね済み' : 'いいね'}
                 </Button>
                 <Button
@@ -272,7 +281,9 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
                   onClick={handleBookmark}
                   className='flex items-center gap-2'
                 >
-                  <Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} />
+                  <Bookmark
+                    className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`}
+                  />
                   {isBookmarked ? '保存済み' : '保存'}
                 </Button>
                 <Button
@@ -302,13 +313,16 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
                 className='whitespace-pre-wrap'
                 dangerouslySetInnerHTML={{
                   __html: article.content
-                    .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
+                    .replace(
+                      /```(\w+)?\n([\s\S]*?)```/g,
+                      '<pre><code class="language-$1">$2</code></pre>'
+                    )
                     .replace(/`([^`]+)`/g, '<code>$1</code>')
                     .replace(/^# (.*$)/gm, '<h1>$1</h1>')
                     .replace(/^## (.*$)/gm, '<h2>$1</h2>')
                     .replace(/^### (.*$)/gm, '<h3>$1</h3>')
                     .replace(/^\- (.*$)/gm, '<li>$1</li>')
-                    .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+                    .replace(/^\d+\. (.*$)/gm, '<li>$1</li>'),
                 }}
               />
             </div>
@@ -356,13 +370,22 @@ TypeScript 5.0は、開発者体験を大幅に改善する多くの新機能を
               <div>
                 <h3 className='text-lg font-semibold mb-4'>目次</h3>
                 <nav className='space-y-2'>
-                  <a href='#新機能' className='block text-sm text-muted-foreground hover:text-foreground'>
+                  <a
+                    href='#新機能'
+                    className='block text-sm text-muted-foreground hover:text-foreground'
+                  >
                     主な新機能
                   </a>
-                  <a href='#ベストプラクティス' className='block text-sm text-muted-foreground hover:text-foreground'>
+                  <a
+                    href='#ベストプラクティス'
+                    className='block text-sm text-muted-foreground hover:text-foreground'
+                  >
                     ベストプラクティス
                   </a>
-                  <a href='#まとめ' className='block text-sm text-muted-foreground hover:text-foreground'>
+                  <a
+                    href='#まとめ'
+                    className='block text-sm text-muted-foreground hover:text-foreground'
+                  >
                     まとめ
                   </a>
                 </nav>

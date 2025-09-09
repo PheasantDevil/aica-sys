@@ -2,6 +2,7 @@
 
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,16 +11,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import {
-  TrendingUp,
-  TrendingDown,
-  Calendar,
-  BarChart3,
-  Star,
-  GitBranch,
   Download,
   ExternalLink,
+  Star,
+  TrendingDown,
+  TrendingUp,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -118,7 +115,11 @@ export default function TrendsPage() {
       'Build Tools': 'bg-purple-100 text-purple-800',
     };
     return (
-      <Badge className={colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800'}>
+      <Badge
+        className={
+          colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800'
+        }
+      >
         {category}
       </Badge>
     );
@@ -143,7 +144,8 @@ export default function TrendsPage() {
   };
 
   const filteredTrends = trends.filter(trend => {
-    const matchesCategory = selectedCategory === 'all' || trend.category === selectedCategory;
+    const matchesCategory =
+      selectedCategory === 'all' || trend.category === selectedCategory;
     const matchesPeriod = trend.period === selectedPeriod;
     return matchesCategory && matchesPeriod;
   });
@@ -157,7 +159,9 @@ export default function TrendsPage() {
 
       <main className='container py-8'>
         <div className='mb-8'>
-          <h1 className='text-4xl font-bold text-foreground mb-4'>トレンド分析</h1>
+          <h1 className='text-4xl font-bold text-foreground mb-4'>
+            トレンド分析
+          </h1>
           <p className='text-lg text-muted-foreground'>
             TypeScriptエコシステムの最新動向とトレンドを分析
           </p>
@@ -203,14 +207,18 @@ export default function TrendsPage() {
         {/* おすすめトレンド */}
         {featuredTrends.length > 0 && (
           <div className='mb-12'>
-            <h2 className='text-2xl font-bold text-foreground mb-6'>注目のトレンド</h2>
+            <h2 className='text-2xl font-bold text-foreground mb-6'>
+              注目のトレンド
+            </h2>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
               {featuredTrends.map(trend => (
                 <Card key={trend.id} className='border-primary bg-primary/5'>
                   <CardHeader>
                     <div className='flex items-center justify-between mb-2'>
                       {getCategoryBadge(trend.category)}
-                      <Badge className='bg-yellow-100 text-yellow-800'>注目</Badge>
+                      <Badge className='bg-yellow-100 text-yellow-800'>
+                        注目
+                      </Badge>
                     </div>
                     <CardTitle className='text-xl'>{trend.title}</CardTitle>
                     <CardDescription className='text-base'>
@@ -221,15 +229,26 @@ export default function TrendsPage() {
                     <div className='flex items-center justify-between mb-4'>
                       <div className='flex items-center gap-2'>
                         {getTrendIcon(trend.trend)}
-                        <span className={`text-lg font-semibold ${getTrendColor(trend.trend, trend.change)}`}>
-                          {trend.change > 0 ? '+' : ''}{trend.change}%
+                        <span
+                          className={`text-lg font-semibold ${getTrendColor(
+                            trend.trend,
+                            trend.change
+                          )}`}
+                        >
+                          {trend.change > 0 ? '+' : ''}
+                          {trend.change}%
                         </span>
                       </div>
                       <div className='text-sm text-muted-foreground'>
-                        {selectedPeriod === 'week' ? '1週間' : selectedPeriod === 'month' ? '1ヶ月' : '3ヶ月'}の変化
+                        {selectedPeriod === 'week'
+                          ? '1週間'
+                          : selectedPeriod === 'month'
+                          ? '1ヶ月'
+                          : '3ヶ月'}
+                        の変化
                       </div>
                     </div>
-                    
+
                     <div className='grid grid-cols-2 gap-4 text-sm text-muted-foreground mb-4'>
                       <div className='flex items-center gap-2'>
                         <Star className='h-4 w-4' />
@@ -244,7 +263,11 @@ export default function TrendsPage() {
                     <div className='flex items-center justify-between'>
                       <div className='flex flex-wrap gap-2'>
                         {trend.tags.map(tag => (
-                          <Badge key={tag} variant='outline' className='text-xs'>
+                          <Badge
+                            key={tag}
+                            variant='outline'
+                            className='text-xs'
+                          >
                             {tag}
                           </Badge>
                         ))}
@@ -268,12 +291,17 @@ export default function TrendsPage() {
           </h2>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {regularTrends.map(trend => (
-              <Card key={trend.id} className='hover:shadow-lg transition-shadow'>
+              <Card
+                key={trend.id}
+                className='hover:shadow-lg transition-shadow'
+              >
                 <CardHeader>
                   <div className='flex items-center justify-between mb-2'>
                     {getCategoryBadge(trend.category)}
                   </div>
-                  <CardTitle className='text-lg line-clamp-2'>{trend.title}</CardTitle>
+                  <CardTitle className='text-lg line-clamp-2'>
+                    {trend.title}
+                  </CardTitle>
                   <CardDescription className='line-clamp-2'>
                     {trend.description}
                   </CardDescription>
@@ -282,19 +310,29 @@ export default function TrendsPage() {
                   <div className='flex items-center justify-between mb-4'>
                     <div className='flex items-center gap-2'>
                       {getTrendIcon(trend.trend)}
-                      <span className={`text-lg font-semibold ${getTrendColor(trend.trend, trend.change)}`}>
-                        {trend.change > 0 ? '+' : ''}{trend.change}%
+                      <span
+                        className={`text-lg font-semibold ${getTrendColor(
+                          trend.trend,
+                          trend.change
+                        )}`}
+                      >
+                        {trend.change > 0 ? '+' : ''}
+                        {trend.change}%
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className='grid grid-cols-2 gap-2 text-xs text-muted-foreground mb-4'>
                     <div className='text-center'>
-                      <div className='font-medium'>{trend.stars.toLocaleString()}</div>
+                      <div className='font-medium'>
+                        {trend.stars.toLocaleString()}
+                      </div>
                       <div>stars</div>
                     </div>
                     <div className='text-center'>
-                      <div className='font-medium'>{trend.downloads.toLocaleString()}</div>
+                      <div className='font-medium'>
+                        {trend.downloads.toLocaleString()}
+                      </div>
                       <div>downloads</div>
                     </div>
                   </div>

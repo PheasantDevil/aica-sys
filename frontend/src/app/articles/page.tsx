@@ -2,6 +2,7 @@
 
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -11,17 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import {
-  Search,
-  Filter,
-  Calendar,
-  Eye,
-  Star,
-  Clock,
-  User,
-  Tag,
-} from 'lucide-react';
+import { Calendar, Clock, Eye, Search, Star, Tag, User } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ArticlesPage() {
@@ -34,7 +25,8 @@ export default function ArticlesPage() {
     {
       id: 1,
       title: 'TypeScript 5.0の新機能とベストプラクティス',
-      excerpt: 'TypeScript 5.0で導入された新機能を詳しく解説し、実際のプロジェクトでの活用法を紹介します。',
+      excerpt:
+        'TypeScript 5.0で導入された新機能を詳しく解説し、実際のプロジェクトでの活用法を紹介します。',
       author: 'AICA Team',
       publishedAt: '2024-09-08',
       readTime: '8分',
@@ -47,7 +39,8 @@ export default function ArticlesPage() {
     {
       id: 2,
       title: 'Next.js 14 App Router完全ガイド',
-      excerpt: 'Next.js 14のApp Routerの基本から応用まで、実践的な使い方をステップバイステップで解説します。',
+      excerpt:
+        'Next.js 14のApp Routerの基本から応用まで、実践的な使い方をステップバイステップで解説します。',
       author: 'AICA Team',
       publishedAt: '2024-09-07',
       readTime: '12分',
@@ -60,7 +53,8 @@ export default function ArticlesPage() {
     {
       id: 3,
       title: 'React Server Componentsの実践的活用法',
-      excerpt: 'React Server Componentsの概念から実装まで、パフォーマンス向上のための具体的な手法を紹介します。',
+      excerpt:
+        'React Server Componentsの概念から実装まで、パフォーマンス向上のための具体的な手法を紹介します。',
       author: 'AICA Team',
       publishedAt: '2024-09-06',
       readTime: '10分',
@@ -73,7 +67,8 @@ export default function ArticlesPage() {
     {
       id: 4,
       title: 'TypeScript型安全性の向上テクニック',
-      excerpt: 'TypeScriptでより安全なコードを書くための高度なテクニックとパターンを詳しく解説します。',
+      excerpt:
+        'TypeScriptでより安全なコードを書くための高度なテクニックとパターンを詳しく解説します。',
       author: 'AICA Team',
       publishedAt: '2024-09-05',
       readTime: '6分',
@@ -86,7 +81,8 @@ export default function ArticlesPage() {
     {
       id: 5,
       title: 'Vite vs Webpack: 2024年の比較',
-      excerpt: 'ViteとWebpackの最新の比較を行い、プロジェクトに最適なビルドツールの選び方を解説します。',
+      excerpt:
+        'ViteとWebpackの最新の比較を行い、プロジェクトに最適なビルドツールの選び方を解説します。',
       author: 'AICA Team',
       publishedAt: '2024-09-04',
       readTime: '7分',
@@ -121,7 +117,11 @@ export default function ArticlesPage() {
       'Build Tools': 'bg-purple-100 text-purple-800',
     };
     return (
-      <Badge className={colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800'}>
+      <Badge
+        className={
+          colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800'
+        }
+      >
         {category}
       </Badge>
     );
@@ -129,17 +129,20 @@ export default function ArticlesPage() {
 
   const filteredAndSortedArticles = articles
     .filter(article => {
-      const matchesSearch = article.title
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase()) ||
+      const matchesSearch =
+        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         article.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = selectedCategory === 'all' || article.category === selectedCategory;
+      const matchesCategory =
+        selectedCategory === 'all' || article.category === selectedCategory;
       return matchesSearch && matchesCategory;
     })
     .sort((a, b) => {
       switch (sortBy) {
         case 'newest':
-          return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+          return (
+            new Date(b.publishedAt).getTime() -
+            new Date(a.publishedAt).getTime()
+          );
         case 'popular':
           return b.views - a.views;
         case 'views':
@@ -151,8 +154,12 @@ export default function ArticlesPage() {
       }
     });
 
-  const featuredArticles = filteredAndSortedArticles.filter(article => article.featured);
-  const regularArticles = filteredAndSortedArticles.filter(article => !article.featured);
+  const featuredArticles = filteredAndSortedArticles.filter(
+    article => article.featured
+  );
+  const regularArticles = filteredAndSortedArticles.filter(
+    article => !article.featured
+  );
 
   return (
     <div className='min-h-screen bg-background'>
@@ -210,14 +217,18 @@ export default function ArticlesPage() {
         {/* おすすめ記事 */}
         {featuredArticles.length > 0 && (
           <div className='mb-12'>
-            <h2 className='text-2xl font-bold text-foreground mb-6'>おすすめ記事</h2>
+            <h2 className='text-2xl font-bold text-foreground mb-6'>
+              おすすめ記事
+            </h2>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
               {featuredArticles.map(article => (
                 <Card key={article.id} className='border-primary bg-primary/5'>
                   <CardHeader>
                     <div className='flex items-center justify-between mb-2'>
                       {getCategoryBadge(article.category)}
-                      <Badge className='bg-yellow-100 text-yellow-800'>おすすめ</Badge>
+                      <Badge className='bg-yellow-100 text-yellow-800'>
+                        おすすめ
+                      </Badge>
                     </div>
                     <CardTitle className='text-xl'>{article.title}</CardTitle>
                     <CardDescription className='text-base'>
@@ -276,12 +287,17 @@ export default function ArticlesPage() {
           </h2>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {regularArticles.map(article => (
-              <Card key={article.id} className='hover:shadow-lg transition-shadow'>
+              <Card
+                key={article.id}
+                className='hover:shadow-lg transition-shadow'
+              >
                 <CardHeader>
                   <div className='flex items-center justify-between mb-2'>
                     {getCategoryBadge(article.category)}
                   </div>
-                  <CardTitle className='text-lg line-clamp-2'>{article.title}</CardTitle>
+                  <CardTitle className='text-lg line-clamp-2'>
+                    {article.title}
+                  </CardTitle>
                   <CardDescription className='line-clamp-3'>
                     {article.excerpt}
                   </CardDescription>

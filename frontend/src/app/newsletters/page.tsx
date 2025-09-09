@@ -2,6 +2,7 @@
 
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -11,16 +12,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import {
-  Search,
+  ArrowRight,
   Calendar,
-  Users,
-  Mail,
   Clock,
+  Mail,
+  Search,
   Star,
   Tag,
-  ArrowRight,
+  Users,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -33,7 +33,8 @@ export default function NewslettersPage() {
     {
       id: 1,
       title: 'TypeScript週間レポート #42',
-      excerpt: '今週のTypeScriptエコシステムの動向、新機能、ベストプラクティスをまとめた週間レポートです。',
+      excerpt:
+        '今週のTypeScriptエコシステムの動向、新機能、ベストプラクティスをまとめた週間レポートです。',
       type: 'weekly',
       publishedAt: '2024-09-08',
       readTime: '5分',
@@ -46,7 +47,8 @@ export default function NewslettersPage() {
     {
       id: 2,
       title: 'Next.js 14新機能まとめ',
-      excerpt: 'Next.js 14で導入された新機能を詳しく解説し、実際のプロジェクトでの活用法を紹介します。',
+      excerpt:
+        'Next.js 14で導入された新機能を詳しく解説し、実際のプロジェクトでの活用法を紹介します。',
       type: 'feature',
       publishedAt: '2024-09-07',
       readTime: '8分',
@@ -59,7 +61,8 @@ export default function NewslettersPage() {
     {
       id: 3,
       title: 'React Server Components完全ガイド',
-      excerpt: 'React Server Componentsの概念から実装まで、パフォーマンス向上のための具体的な手法を紹介します。',
+      excerpt:
+        'React Server Componentsの概念から実装まで、パフォーマンス向上のための具体的な手法を紹介します。',
       type: 'tutorial',
       publishedAt: '2024-09-06',
       readTime: '12分',
@@ -72,7 +75,8 @@ export default function NewslettersPage() {
     {
       id: 4,
       title: 'TypeScript型安全性のベストプラクティス',
-      excerpt: 'TypeScriptでより安全なコードを書くための高度なテクニックとパターンを詳しく解説します。',
+      excerpt:
+        'TypeScriptでより安全なコードを書くための高度なテクニックとパターンを詳しく解説します。',
       type: 'best-practices',
       publishedAt: '2024-09-05',
       readTime: '6分',
@@ -85,7 +89,8 @@ export default function NewslettersPage() {
     {
       id: 5,
       title: 'Vite vs Webpack: 2024年の比較',
-      excerpt: 'ViteとWebpackの最新の比較を行い、プロジェクトに最適なビルドツールの選び方を解説します。',
+      excerpt:
+        'ViteとWebpackの最新の比較を行い、プロジェクトに最適なビルドツールの選び方を解説します。',
       type: 'comparison',
       publishedAt: '2024-09-04',
       readTime: '7分',
@@ -115,23 +120,31 @@ export default function NewslettersPage() {
       comparison: 'bg-cyan-100 text-cyan-800',
     };
     return (
-      <Badge className={colors[type as keyof typeof colors] || 'bg-gray-100 text-gray-800'}>
+      <Badge
+        className={
+          colors[type as keyof typeof colors] || 'bg-gray-100 text-gray-800'
+        }
+      >
         {types.find(t => t.id === type)?.name || type}
       </Badge>
     );
   };
 
   const filteredNewsletters = newsletters.filter(newsletter => {
-    const matchesSearch = newsletter.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase()) ||
+    const matchesSearch =
+      newsletter.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       newsletter.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = selectedType === 'all' || newsletter.type === selectedType;
+    const matchesType =
+      selectedType === 'all' || newsletter.type === selectedType;
     return matchesSearch && matchesType;
   });
 
-  const featuredNewsletters = filteredNewsletters.filter(newsletter => newsletter.featured);
-  const regularNewsletters = filteredNewsletters.filter(newsletter => !newsletter.featured);
+  const featuredNewsletters = filteredNewsletters.filter(
+    newsletter => newsletter.featured
+  );
+  const regularNewsletters = filteredNewsletters.filter(
+    newsletter => !newsletter.featured
+  );
 
   return (
     <div className='min-h-screen bg-background'>
@@ -139,7 +152,9 @@ export default function NewslettersPage() {
 
       <main className='container py-8'>
         <div className='mb-8'>
-          <h1 className='text-4xl font-bold text-foreground mb-4'>ニュースレター</h1>
+          <h1 className='text-4xl font-bold text-foreground mb-4'>
+            ニュースレター
+          </h1>
           <p className='text-lg text-muted-foreground'>
             TypeScriptエコシステムの最新情報をお届けします
           </p>
@@ -178,16 +193,25 @@ export default function NewslettersPage() {
         {/* おすすめニュースレター */}
         {featuredNewsletters.length > 0 && (
           <div className='mb-12'>
-            <h2 className='text-2xl font-bold text-foreground mb-6'>おすすめニュースレター</h2>
+            <h2 className='text-2xl font-bold text-foreground mb-6'>
+              おすすめニュースレター
+            </h2>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
               {featuredNewsletters.map(newsletter => (
-                <Card key={newsletter.id} className='border-primary bg-primary/5'>
+                <Card
+                  key={newsletter.id}
+                  className='border-primary bg-primary/5'
+                >
                   <CardHeader>
                     <div className='flex items-center justify-between mb-2'>
                       {getTypeBadge(newsletter.type)}
-                      <Badge className='bg-yellow-100 text-yellow-800'>おすすめ</Badge>
+                      <Badge className='bg-yellow-100 text-yellow-800'>
+                        おすすめ
+                      </Badge>
                     </div>
-                    <CardTitle className='text-xl'>{newsletter.title}</CardTitle>
+                    <CardTitle className='text-xl'>
+                      {newsletter.title}
+                    </CardTitle>
                     <CardDescription className='text-base'>
                       {newsletter.excerpt}
                     </CardDescription>
@@ -222,7 +246,11 @@ export default function NewslettersPage() {
                     <div className='flex items-center justify-between'>
                       <div className='flex flex-wrap gap-2'>
                         {newsletter.tags.map(tag => (
-                          <Badge key={tag} variant='outline' className='text-xs'>
+                          <Badge
+                            key={tag}
+                            variant='outline'
+                            className='text-xs'
+                          >
                             <Tag className='h-3 w-3 mr-1' />
                             {tag}
                           </Badge>
@@ -243,16 +271,23 @@ export default function NewslettersPage() {
         {/* 通常ニュースレター */}
         <div>
           <h2 className='text-2xl font-bold text-foreground mb-6'>
-            {featuredNewsletters.length > 0 ? 'その他のニュースレター' : 'ニュースレター一覧'}
+            {featuredNewsletters.length > 0
+              ? 'その他のニュースレター'
+              : 'ニュースレター一覧'}
           </h2>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {regularNewsletters.map(newsletter => (
-              <Card key={newsletter.id} className='hover:shadow-lg transition-shadow'>
+              <Card
+                key={newsletter.id}
+                className='hover:shadow-lg transition-shadow'
+              >
                 <CardHeader>
                   <div className='flex items-center justify-between mb-2'>
                     {getTypeBadge(newsletter.type)}
                   </div>
-                  <CardTitle className='text-lg line-clamp-2'>{newsletter.title}</CardTitle>
+                  <CardTitle className='text-lg line-clamp-2'>
+                    {newsletter.title}
+                  </CardTitle>
                   <CardDescription className='line-clamp-3'>
                     {newsletter.excerpt}
                   </CardDescription>
@@ -272,7 +307,9 @@ export default function NewslettersPage() {
                   </div>
                   <div className='grid grid-cols-3 gap-2 text-xs text-muted-foreground mb-4'>
                     <div className='text-center'>
-                      <div className='font-medium'>{newsletter.subscribers.toLocaleString()}</div>
+                      <div className='font-medium'>
+                        {newsletter.subscribers.toLocaleString()}
+                      </div>
                       <div>購読者</div>
                     </div>
                     <div className='text-center'>
