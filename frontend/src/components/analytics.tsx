@@ -7,7 +7,7 @@ import {
   trackPageView,
 } from '@/lib/analytics';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
 // Google Analytics プロバイダー
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
@@ -18,8 +18,8 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-// ページビュー追跡コンポーネント
-export function PageViewTracker() {
+// ページビュー追跡コンポーネント（内部）
+function PageViewTrackerInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -30,6 +30,15 @@ export function PageViewTracker() {
   }, [pathname, searchParams]);
 
   return null;
+}
+
+// ページビュー追跡コンポーネント（Suspense境界付き）
+export function PageViewTracker() {
+  return (
+    <Suspense fallback={null}>
+      <PageViewTrackerInner />
+    </Suspense>
+  );
 }
 
 // スクロール深度追跡コンポーネント
