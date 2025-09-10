@@ -91,7 +91,7 @@ jobs:
             --entry-point main \
             --memory 512MB \
             --timeout 540s \
-            --set-env-vars="GOOGLE_AI_API_KEY=${{ secrets.GOOGLE_AI_API_KEY }},OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }},GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }},DATABASE_URL=${{ secrets.DATABASE_URL }},REDIS_URL=${{ secrets.REDIS_URL }},QDRANT_URL=${{ secrets.QDRANT_URL }},QDRANT_API_KEY=${{ secrets.QDRANT_API_KEY }},JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }},ENCRYPTION_KEY=${{ secrets.ENCRYPTION_KEY }}"
+             --set-env-vars="GOOGLE_AI_API_KEY=${{ secrets.GOOGLE_AI_API_KEY }},OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }},GITHUB_TOKEN=${{ secrets.GITHUBPA_TOKEN }},DATABASE_URL=${{ secrets.DATABASE_URL }},REDIS_URL=${{ secrets.REDIS_URL }},QDRANT_URL=${{ secrets.QDRANT_URL }},QDRANT_API_KEY=${{ secrets.QDRANT_API_KEY }},JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }},ENCRYPTION_KEY=${{ secrets.ENCRYPTION_KEY }}"
 
       - name: Comment deployment URL
         uses: actions/github-script@v7
