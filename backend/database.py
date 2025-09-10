@@ -1,41 +1,28 @@
 """
-Database configuration for AICA-SyS
+データベース接続設定
 """
-
-import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
+import os
 
-# Database URL from environment variable
+# データベースURL（環境変数から取得、デフォルトはSQLite）
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./aica_sys.db")
 
-# Create engine
-engine = create_engine(
-    DATABASE_URL,
-    poolclass=StaticPool,
-    connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {}
-)
+# エンジン作成
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False} if "sqlite" in DATABASE_URL else {})
 
-# Create session factory
+# セッションファクトリ
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Create base class
+# ベースクラス
 Base = declarative_base()
 
-
 def get_db():
-    """Get database session"""
+    """データベースセッションを取得"""
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-
-
-def create_tables():
-    """Create all tables"""
-    from models.base import Base
-    Base.metadata.create_all(bind=engine)
