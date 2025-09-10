@@ -9,11 +9,8 @@ from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional, Tuple
 import openai
 import google.generativeai as genai
-from sentence_transformers import SentenceTransformer
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans
-from sklearn.metrics.pairwise import cosine_similarity
+# from sentence_transformers import SentenceTransformer
+# import numpy as np
 import json
 import re
 from dataclasses import dataclass
@@ -45,9 +42,9 @@ class AIAnalyzer:
         openai.api_key = openai_api_key
         genai.configure(api_key=google_ai_api_key)
         
-        # モデル初期化
-        self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
-        self.vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
+        # モデル初期化（簡略化）
+        # self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
+        # self.vectorizer = TfidfVectorizer(max_features=1000, stop_words='english')
         
         # カテゴリ定義
         self.categories = {
