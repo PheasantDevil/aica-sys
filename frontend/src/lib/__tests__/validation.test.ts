@@ -1,4 +1,9 @@
-import { commonSchemas, userSchemas, validateData, formatValidationErrors } from '../validation';
+import {
+  commonSchemas,
+  formatValidationErrors,
+  userSchemas,
+  validateData,
+} from '../validation';
 
 describe('Validation Schemas', () => {
   describe('commonSchemas', () => {
@@ -101,8 +106,8 @@ describe('Validation Schemas', () => {
 
       const formatted = formatValidationErrors(mockError);
       expect(formatted).toEqual({
-        'email': 'Invalid email',
-        'password': 'Password too short',
+        email: 'Invalid email',
+        password: 'Password too short',
         'profile.name': 'Name required',
       });
     });
