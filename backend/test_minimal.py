@@ -4,8 +4,9 @@
 依存関係なしでAI機能の基本構造をテスト
 """
 
-import sys
 import os
+import sys
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 def test_file_structure():
@@ -73,13 +74,13 @@ def test_import_structure():
     
     # 基本的なPythonモジュールのテスト
     try:
+        import asyncio
         import json
         import re
-        import asyncio
-        from datetime import datetime
-        from typing import List, Dict, Any, Optional
-        from dataclasses import dataclass
         from collections import Counter, defaultdict
+        from dataclasses import dataclass
+        from datetime import datetime
+        from typing import Any, Dict, List, Optional
         print("✅ Basic Python modules")
     except ImportError as e:
         print(f"❌ Basic modules: {e}")
