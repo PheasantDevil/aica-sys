@@ -14,6 +14,12 @@
   ],
   "env": {
     "NEXTAUTH_URL": "https://aica-sys.vercel.app",
-    "NEXT_PUBLIC_BASE_URL": "https://aica-sys.vercel.app"
+    "NEXT_PUBLIC_BASE_URL": "https://aica-sys.vercel.app",
+    "NEXT_PUBLIC_API_URL": "https://aica-sys-backend.vercel.app"
+  },
+  "functions": {
+    "frontend/api/**/*.ts": {
+      "maxDuration": 30
+    }
   }
 }

@@ -40,8 +40,15 @@ jobs:
       - name: Build application
         run: npm run build
       
-      - name: Run tests (when available)
-        run: npm test --if-present
+      - name: Run tests
+        run: npm test -- --coverage --watchAll=false
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./frontend/coverage/lcov.info
+          flags: frontend
+          name: frontend-coverage
 
   backend-test:
     runs-on: ubuntu-latest
@@ -81,7 +88,14 @@ jobs:
         run: mypy .
       
       - name: Run tests
-        run: pytest
+        run: pytest --cov=. --cov-report=xml --cov-report=html
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./backend/coverage.xml
+          flags: backend
+          name: backend-coverage
 
   security-scan:
     runs-on: ubuntu-latest
