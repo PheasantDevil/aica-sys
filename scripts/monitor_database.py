@@ -6,9 +6,11 @@ Database monitoring script for AICA-SyS
 import os
 import sys
 import time
+
 import psutil
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
+
 
 def check_database_connection(database_url: str):
     """Check database connection"""
