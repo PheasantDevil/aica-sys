@@ -132,3 +132,4 @@ secrets/
 tmp/
 temp/
 .vercel
+.env*.local

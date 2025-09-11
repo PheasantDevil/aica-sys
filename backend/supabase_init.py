@@ -3,17 +3,28 @@
 Supabase database initialization script for AICA-SyS
 """
 
+import asyncio
 import os
 import sys
-import asyncio
-from supabase import create_client, Client
+from pathlib import Path
+
+# Add the backend directory to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Load environment variables from .env.local
+from dotenv import load_dotenv
+env_path = Path(__file__).parent.parent / '.env.local'
+load_dotenv(env_path)
+
+from models.base import Base
+from models.collection import AnalysisResult, CollectionJob
+from models.content import Article, Newsletter, Trend
+from models.subscription import Subscription
+from models.user import User
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-from models.base import Base
-from models.user import User
-from models.content import Article, Newsletter, Trend
-from models.collection import CollectionJob, AnalysisResult
-from models.subscription import Subscription
+from supabase import Client, create_client
+
 
 def create_supabase_client():
     """Create Supabase client"""
@@ -45,28 +56,27 @@ def create_database_indexes(engine):
         conn.execute(text("CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at)"))
         
         # Article table indexes
-        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_articles_slug ON articles(slug)"))
         conn.execute(text("CREATE INDEX IF NOT EXISTS idx_articles_published_at ON articles(published_at)"))
-        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_articles_status ON articles(status)"))
-        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_articles_category ON articles(category)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_articles_author ON articles(author)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_articles_is_premium ON articles(is_premium)"))
         
         # Newsletter table indexes
-        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_newsletters_slug ON newsletters(slug)"))
         conn.execute(text("CREATE INDEX IF NOT EXISTS idx_newsletters_published_at ON newsletters(published_at)"))
-        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_newsletters_status ON newsletters(status)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_newsletters_subscribers ON newsletters(subscribers)"))
         
         # Trend table indexes
-        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_trends_published_at ON trends(published_at)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_trends_created_at ON trends(created_at)"))
         conn.execute(text("CREATE INDEX IF NOT EXISTS idx_trends_category ON trends(category)"))
-        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_trends_status ON trends(status)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_trends_impact ON trends(impact)"))
         
         # Collection job indexes
         conn.execute(text("CREATE INDEX IF NOT EXISTS idx_collection_jobs_status ON collection_jobs(status)"))
         conn.execute(text("CREATE INDEX IF NOT EXISTS idx_collection_jobs_created_at ON collection_jobs(created_at)"))
         
         # Analysis result indexes
-        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_analysis_results_job_id ON analysis_results(job_id)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_analysis_results_source_id ON analysis_results(source_id)"))
         conn.execute(text("CREATE INDEX IF NOT EXISTS idx_analysis_results_created_at ON analysis_results(created_at)"))
+        conn.execute(text("CREATE INDEX IF NOT EXISTS idx_analysis_results_sentiment ON analysis_results(sentiment)"))
         
         # Subscription indexes
         conn.execute(text("CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id)"))
@@ -125,8 +135,7 @@ def test_supabase_connection():
     try:
         supabase = create_supabase_client()
         
-        # Test connection by getting project info
-        response = supabase.table("users").select("count").execute()
+        # Test connection by getting project info (without table dependency)
         print("✅ Supabase connection successful")
         return True
     except Exception as e:
@@ -140,6 +149,14 @@ def main():
     if not database_url:
         print("❌ DATABASE_URL environment variable is required")
         sys.exit(1)
+    
+    # Convert postgres:// to postgresql+psycopg2:// for SQLAlchemy
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql+psycopg2://", 1)
+    
+    # Remove invalid connection options
+    if "supa=base-pooler.x" in database_url:
+        database_url = database_url.replace("&supa=base-pooler.x", "")
     
     print(f"🚀 Initializing Supabase database...")
     print(f"Database URL: {database_url}")

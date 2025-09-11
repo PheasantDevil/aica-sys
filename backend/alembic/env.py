@@ -1,8 +1,14 @@
 from logging.config import fileConfig
 import os
 import sys
+from pathlib import Path
 
-from sqlalchemy import engine_from_config
+# Load environment variables from .env.local
+from dotenv import load_dotenv
+env_path = Path(__file__).parent.parent.parent / '.env.local'
+load_dotenv(env_path)
+
+from sqlalchemy import engine_from_config, create_engine
 from sqlalchemy import pool
 
 from alembic import context
@@ -48,7 +54,19 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    # Use environment variable for database URL
+    url = os.getenv("DATABASE_URL")
+    if not url:
+        raise ValueError("DATABASE_URL environment variable is required")
+    
+    # Convert postgres:// to postgresql+psycopg2:// for SQLAlchemy
+    if url.startswith("postgres://"):
+        url = url.replace("postgres://", "postgresql+psycopg2://", 1)
+    
+    # Remove invalid connection options
+    if "supa=base-pooler.x" in url:
+        url = url.replace("&supa=base-pooler.x", "")
+    
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -67,9 +85,21 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
-        prefix="sqlalchemy.",
+    # Use environment variable for database URL
+    database_url = os.getenv("DATABASE_URL")
+    if not database_url:
+        raise ValueError("DATABASE_URL environment variable is required")
+    
+    # Convert postgres:// to postgresql+psycopg2:// for SQLAlchemy
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql+psycopg2://", 1)
+    
+    # Remove invalid connection options
+    if "supa=base-pooler.x" in database_url:
+        database_url = database_url.replace("&supa=base-pooler.x", "")
+    
+    connectable = create_engine(
+        database_url,
         poolclass=pool.NullPool,
     )
 
