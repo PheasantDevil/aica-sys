@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aica-sys-config
+  namespace: aica-sys
+data:
+  # Database Configuration
+  POSTGRES_DB: "aica_sys"
+  POSTGRES_USER: "aica_user"
+  
+  # Redis Configuration
+  REDIS_URL: "redis://redis-service:6379"
+  
+  # Qdrant Configuration
+  QDRANT_URL: "http://qdrant-service:6333"
+  
+  # Application Configuration
+  ENVIRONMENT: "production"
+  CORS_ORIGINS: "https://aica-sys.vercel.app"
+  
+  # Frontend Configuration
+  NEXT_PUBLIC_API_URL: "https://api.aica-sys.com"
+  NEXTAUTH_URL: "https://aica-sys.vercel.app"
+  
+  # Nginx Configuration
+  NGINX_WORKER_PROCESSES: "auto"
+  NGINX_WORKER_CONNECTIONS: "1024"
+  
+  # Monitoring Configuration
+  PROMETHEUS_RETENTION_TIME: "200h"
+  GRAFANA_ADMIN_PASSWORD: "admin"
