@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
@@ -30,7 +30,7 @@ export function useSubscription() {
     queryKey: ['subscription', session?.user?.id],
     queryFn: async (): Promise<Subscription | null> => {
       if (!session?.user?.id) return null;
-      
+
       const response = await fetch('/api/subscription');
       if (!response.ok) {
         throw new Error('Failed to fetch subscription');
@@ -57,7 +57,7 @@ export function useSubscription() {
       const { url } = await response.json();
       return url;
     },
-    onSuccess: (url) => {
+    onSuccess: url => {
       window.location.href = url;
     },
   });
@@ -73,7 +73,10 @@ export function useSubscription() {
 
   const handleContact = () => {
     // エンタープライズプランのお問い合わせ処理
-    window.open('mailto:sales@aica-sys.com?subject=エンタープライズプランについて', '_blank');
+    window.open(
+      'mailto:sales@aica-sys.com?subject=エンタープライズプランについて',
+      '_blank'
+    );
   };
 
   return {
