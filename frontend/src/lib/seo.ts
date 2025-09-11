@@ -1,220 +1,290 @@
-import type { Metadata } from 'next';
+import { Metadata } from 'next';
 
-// サイト全体のSEO設定
-export const defaultSEO: Metadata = {
-  title: 'AICA-SyS - AI-driven Content Curation & Automated Sales System',
-  description:
-    'TypeScriptエコシステム特化型のAI自動コンテンツ生成・販売システム。高品質な技術記事、ニュースレター、トレンド分析を自動生成し、月額¥10,000以上の収益を実現。',
-  metadataBase: new URL('https://aica-sys.com'),
-  openGraph: {
-    type: 'website',
-    locale: 'ja_JP',
-    url: 'https://aica-sys.com',
-    siteName: 'AICA-SyS',
-    title: 'AICA-SyS - AI-driven Content Curation & Automated Sales System',
-    description:
-      'TypeScriptエコシステム特化型のAI自動コンテンツ生成・販売システム',
-    images: [
-      {
-        url: 'https://aica-sys.com/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'AICA-SyS - AI-driven Content Curation & Automated Sales System',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    site: '@aica_sys',
-    creator: '@aica_sys',
-  },
-  keywords: [
-    'TypeScript',
-    'AI',
-    'コンテンツ生成',
-    '自動販売',
-    '技術記事',
-    'ニュースレター',
-    'トレンド分析',
-    'プログラミング',
-    '開発者向け',
-  ],
-  authors: [{ name: 'AICA-SyS Team' }],
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-    },
-  },
-  icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
-  },
-  manifest: '/manifest.json',
-};
-
-// ページ別SEO設定
-export const pageSEO = {
-  home: {
-    title: 'ホーム',
-    description:
-      'AICA-SySはTypeScriptエコシステムに特化したAI自動コンテンツ生成・販売システムです。高品質な技術記事、ニュースレター、トレンド分析を自動生成し、月額¥10,000以上の収益を実現します。',
-    keywords:
-      'TypeScript, AI, コンテンツ生成, 自動販売, 技術記事, ニュースレター, トレンド分析',
-  },
-  pricing: {
-    title: '料金プラン',
-    description:
-      'AICA-SySの料金プランをご確認ください。フリープラン、プレミアムプラン、エンタープライズプランからお選びいただけます。',
-    keywords:
-      '料金, プラン, 価格, サブスクリプション, フリー, プレミアム, エンタープライズ',
-  },
-  articles: {
-    title: '技術記事一覧',
-    description:
-      'TypeScriptエコシステムに関する高品質な技術記事を掲載しています。最新の技術動向、ベストプラクティス、チュートリアルをご提供します。',
-    keywords:
-      '技術記事, TypeScript, プログラミング, チュートリアル, ベストプラクティス, 技術動向',
-  },
-  newsletters: {
-    title: 'ニュースレター一覧',
-    description:
-      'TypeScriptエコシステムの最新情報をお届けするニュースレターです。週次・月次で技術動向、新機能、イベント情報を配信します。',
-    keywords:
-      'ニュースレター, TypeScript, 技術情報, 週次, 月次, 配信, メールマガジン',
-  },
-  trends: {
-    title: 'トレンド分析',
-    description:
-      'TypeScriptエコシステムの最新トレンドをAIが分析し、可視化します。技術の流行、需要の変化、将来予測を提供します。',
-    keywords:
-      'トレンド分析, TypeScript, 技術動向, 需要分析, 将来予測, データ可視化',
-  },
-  dashboard: {
-    title: 'ダッシュボード',
-    description:
-      'AICA-SySのダッシュボードで、コンテンツ管理、収益分析、ユーザー統計を確認できます。',
-    keywords:
-      'ダッシュボード, 管理画面, 収益分析, ユーザー統計, コンテンツ管理',
-  },
-};
-
-// 動的SEO設定生成
-export function generateSEO(
-  page: keyof typeof pageSEO,
-  additionalProps?: Partial<Metadata>
-): Metadata {
-  const pageConfig = pageSEO[page];
-
-  return {
-    ...defaultSEO,
-    title: pageConfig.title,
-    description: pageConfig.description,
-    keywords: [
-      ...(Array.isArray(defaultSEO.keywords) ? defaultSEO.keywords : []),
-      ...pageConfig.keywords.split(', '),
-    ],
-    ...additionalProps,
-  };
-}
-
-// 記事用SEO設定
-export function generateArticleSEO(article: {
+export interface SEOData {
   title: string;
   description: string;
-  publishedTime: string;
-  modifiedTime?: string;
-  author: string;
-  tags: string[];
-  slug: string;
-}): Metadata {
-  return {
-    ...defaultSEO,
-    title: article.title,
-    description: article.description,
-    openGraph: {
-      ...defaultSEO.openGraph,
-      title: article.title,
-      description: article.description,
-      type: 'article',
-      publishedTime: article.publishedTime,
-      modifiedTime: article.modifiedTime || article.publishedTime,
-      authors: [article.author],
-      tags: article.tags,
-      url: `https://aica-sys.com/articles/${article.slug}`,
-    },
-    keywords: [
-      ...(Array.isArray(defaultSEO.keywords) ? defaultSEO.keywords : []),
-      ...article.tags,
-    ],
-    authors: [{ name: article.author }],
-  };
+  keywords?: string[];
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article' | 'product';
+  twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
+  noindex?: boolean;
+  nofollow?: boolean;
+  structuredData?: Record<string, any>;
 }
 
-// 構造化データ生成
-export function generateStructuredData(
-  type: 'website' | 'article' | 'organization',
-  data?: any
-) {
-  const baseStructuredData = {
-    '@context': 'https://schema.org',
-  };
+export class SEOUtils {
+  private static baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://aica-sys.vercel.app';
+  private static siteName = 'AICA-SyS';
+  private static defaultDescription = 'AI駆動型TypeScriptエコシステム特化型の自動コンテンツ生成・販売システム';
+  private static defaultKeywords = [
+    'TypeScript',
+    'AI',
+    '自動コンテンツ生成',
+    'プログラミング',
+    '開発ツール',
+    '技術情報',
+    'キュレーション',
+    'サブスクリプション'
+  ];
 
-  switch (type) {
-    case 'website':
-      return {
-        ...baseStructuredData,
-        '@type': 'WebSite',
-        name: 'AICA-SyS',
-        description: 'AI-driven Content Curation & Automated Sales System',
-        url: 'https://aica-sys.com',
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: 'https://aica-sys.com/search?q={search_term_string}',
-          'query-input': 'required name=search_term_string',
-        },
-      };
+  static generateMetadata(data: SEOData): Metadata {
+    const {
+      title,
+      description,
+      keywords = [],
+      canonical,
+      ogImage,
+      ogType = 'website',
+      twitterCard = 'summary_large_image',
+      noindex = false,
+      nofollow = false,
+      structuredData
+    } = data;
 
-    case 'article':
-      return {
-        ...baseStructuredData,
-        '@type': 'Article',
-        headline: data.title,
-        description: data.description,
-        author: {
-          '@type': 'Person',
-          name: data.author,
+    const fullTitle = title.includes(this.siteName) ? title : `${title} | ${this.siteName}`;
+    const fullDescription = description || this.defaultDescription;
+    const fullKeywords = [...this.defaultKeywords, ...keywords];
+    const canonicalUrl = canonical || this.baseUrl;
+    const ogImageUrl = ogImage || `${this.baseUrl}/og-image.jpg`;
+
+    return {
+      title: fullTitle,
+      description: fullDescription,
+      keywords: fullKeywords.join(', '),
+      authors: [{ name: this.siteName }],
+      creator: this.siteName,
+      publisher: this.siteName,
+      robots: {
+        index: !noindex,
+        follow: !nofollow,
+        googleBot: {
+          index: !noindex,
+          follow: !nofollow,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
         },
-        publisher: {
-          '@type': 'Organization',
-          name: 'AICA-SyS',
-          logo: {
-            '@type': 'ImageObject',
-            url: 'https://aica-sys.com/logo.png',
+      },
+      openGraph: {
+        type: ogType,
+        locale: 'ja_JP',
+        url: canonicalUrl,
+        title: fullTitle,
+        description: fullDescription,
+        siteName: this.siteName,
+        images: [
+          {
+            url: ogImageUrl,
+            width: 1200,
+            height: 630,
+            alt: fullTitle,
           },
-        },
-        datePublished: data.publishedTime,
-        dateModified: data.modifiedTime || data.publishedTime,
-        mainEntityOfPage: {
-          '@type': 'WebPage',
-          '@id': `https://aica-sys.com/articles/${data.slug}`,
-        },
-      };
-
-    case 'organization':
-      return {
-        ...baseStructuredData,
-        '@type': 'Organization',
-        name: 'AICA-SyS',
-        description: 'AI-driven Content Curation & Automated Sales System',
-        url: 'https://aica-sys.com',
-        logo: 'https://aica-sys.com/logo.png',
-        sameAs: ['https://twitter.com/aica_sys', 'https://github.com/aica-sys'],
-      };
-
-    default:
-      return baseStructuredData;
+        ],
+      },
+      twitter: {
+        card: twitterCard,
+        title: fullTitle,
+        description: fullDescription,
+        images: [ogImageUrl],
+        creator: '@aica_sys',
+        site: '@aica_sys',
+      },
+      alternates: {
+        canonical: canonicalUrl,
+      },
+      other: {
+        'application-name': this.siteName,
+        'apple-mobile-web-app-title': this.siteName,
+        'msapplication-TileColor': '#000000',
+        'theme-color': '#000000',
+      },
+    };
   }
+
+  static generateStructuredData(type: 'website' | 'article' | 'organization' | 'breadcrumb', data: any) {
+    const baseStructuredData = {
+      '@context': 'https://schema.org',
+      '@type': type === 'website' ? 'WebSite' : 
+               type === 'article' ? 'Article' :
+               type === 'organization' ? 'Organization' : 'BreadcrumbList',
+    };
+
+    switch (type) {
+      case 'website':
+        return {
+          ...baseStructuredData,
+          name: this.siteName,
+          description: this.defaultDescription,
+          url: this.baseUrl,
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: `${this.baseUrl}/search?q={search_term_string}`,
+            'query-input': 'required name=search_term_string',
+          },
+        };
+
+      case 'article':
+        return {
+          ...baseStructuredData,
+          headline: data.title,
+          description: data.description,
+          image: data.image || `${this.baseUrl}/og-image.jpg`,
+          author: {
+            '@type': 'Person',
+            name: data.author || this.siteName,
+          },
+          publisher: {
+            '@type': 'Organization',
+            name: this.siteName,
+            logo: {
+              '@type': 'ImageObject',
+              url: `${this.baseUrl}/logo.png`,
+            },
+          },
+          datePublished: data.publishedAt,
+          dateModified: data.updatedAt || data.publishedAt,
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': data.url || this.baseUrl,
+          },
+        };
+
+      case 'organization':
+        return {
+          ...baseStructuredData,
+          name: this.siteName,
+          description: this.defaultDescription,
+          url: this.baseUrl,
+          logo: `${this.baseUrl}/logo.png`,
+          sameAs: [
+            'https://twitter.com/aica_sys',
+            'https://github.com/PheasantDevil/aica-sys',
+          ],
+        };
+
+      case 'breadcrumb':
+        return {
+          ...baseStructuredData,
+          itemListElement: data.items.map((item: any, index: number) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.name,
+            item: item.url,
+          })),
+        };
+
+      default:
+        return baseStructuredData;
+    }
+  }
+
+  static generateSitemapData(pages: Array<{
+    url: string;
+    lastModified: string;
+    changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+    priority: number;
+  }>) {
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${pages.map(page => `
+    <url>
+      <loc>${this.baseUrl}${page.url}</loc>
+      <lastmod>${page.lastModified}</lastmod>
+      <changefreq>${page.changeFrequency}</changefreq>
+      <priority>${page.priority}</priority>
+    </url>
+  `).join('')}
+</urlset>`;
+  }
+
+  static generateRobotsTxt(disallowPaths: string[] = []) {
+    const disallowRules = disallowPaths.map(path => `Disallow: ${path}`).join('\n');
+    
+    return `User-agent: *
+Allow: /
+
+${disallowRules}
+
+Sitemap: ${this.baseUrl}/sitemap.xml
+Host: ${this.baseUrl}`;
+  }
+
+  static optimizeTitle(title: string, maxLength: number = 60): string {
+    if (title.length <= maxLength) return title;
+    
+    const words = title.split(' ');
+    let optimized = '';
+    
+    for (const word of words) {
+      if ((optimized + ' ' + word).length <= maxLength) {
+        optimized += (optimized ? ' ' : '') + word;
+      } else {
+        break;
+      }
+    }
+    
+    return optimized || title.substring(0, maxLength - 3) + '...';
+  }
+
+  static optimizeDescription(description: string, maxLength: number = 160): string {
+    if (description.length <= maxLength) return description;
+    
+    return description.substring(0, maxLength - 3) + '...';
+  }
+
+  static extractKeywords(text: string, maxKeywords: number = 10): string[] {
+    // Simple keyword extraction (in production, use more sophisticated NLP)
+    const words = text
+      .toLowerCase()
+      .replace(/[^\w\s]/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 3);
+    
+    const wordCount: Record<string, number> = {};
+    words.forEach(word => {
+      wordCount[word] = (wordCount[word] || 0) + 1;
+    });
+    
+    return Object.entries(wordCount)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, maxKeywords)
+      .map(([word]) => word);
+  }
+
+  static generateCanonicalUrl(path: string): string {
+    return `${this.baseUrl}${path.startsWith('/') ? path : `/${path}`}`;
+  }
+
+  static generateOGImageUrl(title: string, description?: string): string {
+    const params = new URLSearchParams({
+      title: this.optimizeTitle(title, 50),
+      description: description ? this.optimizeDescription(description, 100) : '',
+      theme: 'dark',
+    });
+    
+    return `${this.baseUrl}/api/og?${params.toString()}`;
+  }
+}
+
+// SEO hooks
+export function useSEO() {
+  const generateMetadata = (data: SEOData) => SEOUtils.generateMetadata(data);
+  const generateStructuredData = (type: 'website' | 'article' | 'organization' | 'breadcrumb', data: any) => 
+    SEOUtils.generateStructuredData(type, data);
+  const optimizeTitle = (title: string, maxLength?: number) => SEOUtils.optimizeTitle(title, maxLength);
+  const optimizeDescription = (description: string, maxLength?: number) => SEOUtils.optimizeDescription(description, maxLength);
+  const extractKeywords = (text: string, maxKeywords?: number) => SEOUtils.extractKeywords(text, maxKeywords);
+  const generateCanonicalUrl = (path: string) => SEOUtils.generateCanonicalUrl(path);
+  const generateOGImageUrl = (title: string, description?: string) => SEOUtils.generateOGImageUrl(title, description);
+
+  return {
+    generateMetadata,
+    generateStructuredData,
+    optimizeTitle,
+    optimizeDescription,
+    extractKeywords,
+    generateCanonicalUrl,
+    generateOGImageUrl,
+  };
 }

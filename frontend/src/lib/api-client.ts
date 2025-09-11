@@ -1,3 +1,5 @@
+import { SecurityUtils, apiRateLimiter } from './security';
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export interface ApiResponse<T = any> {
@@ -8,19 +10,40 @@ export interface ApiResponse<T = any> {
 
 export class ApiClient {
   private baseURL: string;
+  private csrfToken: string | null = null;
 
   constructor(baseURL: string = API_BASE_URL) {
     this.baseURL = baseURL;
+  }
+
+  private async getCSRFToken(): Promise<string> {
+    if (!this.csrfToken) {
+      this.csrfToken = await SecurityUtils.getCSRFToken();
+    }
+    return this.csrfToken;
   }
 
   private async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
+    // Check rate limit
+    if (!apiRateLimiter.isAllowed()) {
+      return {
+        error: 'Rate limit exceeded. Please try again later.',
+      };
+    }
+
     const url = `${this.baseURL}${endpoint}`;
+    
+    // Get security headers
+    const sessionId = SecurityUtils.getSessionId();
+    const csrfToken = await this.getCSRFToken();
     
     const defaultHeaders = {
       'Content-Type': 'application/json',
+      'X-Session-ID': sessionId || '',
+      'X-CSRF-Token': csrfToken,
     };
 
     const config: RequestInit = {
@@ -29,10 +52,32 @@ export class ApiClient {
         ...defaultHeaders,
         ...options.headers,
       },
+      credentials: 'include', // Include cookies for authentication
     };
 
     try {
       const response = await fetch(url, config);
+      
+      // Handle different response types
+      if (response.status === 429) {
+        return {
+          error: 'Rate limit exceeded. Please try again later.',
+        };
+      }
+      
+      if (response.status === 403) {
+        return {
+          error: 'Access forbidden. Please check your permissions.',
+        };
+      }
+      
+      if (response.status === 401) {
+        // Clear session on unauthorized
+        SecurityUtils.clearSession();
+        return {
+          error: 'Authentication required. Please log in again.',
+        };
+      }
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
