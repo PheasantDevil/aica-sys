@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { apiClient } from '@/lib/api-client';
 
 interface Trend {
   id: string;
@@ -31,17 +32,17 @@ export function useTrends(filters: Filters) {
   return useQuery({
     queryKey: ['trends', filters],
     queryFn: async (): Promise<Trend[]> => {
-      const params = new URLSearchParams();
-      if (filters.timeframe) params.append('timeframe', filters.timeframe);
-      if (filters.category !== 'all')
-        params.append('category', filters.category);
-      if (filters.sortBy) params.append('sortBy', filters.sortBy);
+      const response = await apiClient.getTrends({
+        timeframe: filters.timeframe,
+        category: filters.category !== 'all' ? filters.category : undefined,
+        sortBy: filters.sortBy,
+      });
 
-      const response = await fetch(`/api/trends?${params.toString()}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch trends');
+      if (response.error) {
+        throw new Error(response.error);
       }
-      return response.json();
+
+      return response.data?.trends || [];
     },
     // モックデータを返す（実際の実装ではAPIから取得）
     placeholderData: () => [

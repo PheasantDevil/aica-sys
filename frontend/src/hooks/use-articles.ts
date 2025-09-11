@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import { apiClient } from '@/lib/api-client';
 
 interface Article {
   id: string;
@@ -34,17 +35,17 @@ export function useArticles(filters: Filters) {
   return useQuery({
     queryKey: ['articles', filters],
     queryFn: async (): Promise<Article[]> => {
-      const params = new URLSearchParams();
-      if (filters.category !== 'all')
-        params.append('category', filters.category);
-      if (filters.sortBy) params.append('sortBy', filters.sortBy);
-      if (filters.search) params.append('search', filters.search);
+      const response = await apiClient.getArticles({
+        category: filters.category !== 'all' ? filters.category : undefined,
+        sortBy: filters.sortBy,
+        search: filters.search || undefined,
+      });
 
-      const response = await fetch(`/api/articles?${params.toString()}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch articles');
+      if (response.error) {
+        throw new Error(response.error);
       }
-      return response.json();
+
+      return response.data?.articles || [];
     },
     // モックデータを返す（実際の実装ではAPIから取得）
     placeholderData: () => [

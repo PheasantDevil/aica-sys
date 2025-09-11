@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { apiClient } from '@/lib/api-client';
 
 interface Newsletter {
   id: string;
@@ -20,11 +21,13 @@ export function useNewsletters() {
   return useQuery({
     queryKey: ['newsletters'],
     queryFn: async (): Promise<Newsletter[]> => {
-      const response = await fetch('/api/newsletters');
-      if (!response.ok) {
-        throw new Error('Failed to fetch newsletters');
+      const response = await apiClient.getNewsletters();
+      
+      if (response.error) {
+        throw new Error(response.error);
       }
-      return response.json();
+
+      return response.data?.newsletters || [];
     },
     // モックデータを返す（実際の実装ではAPIから取得）
     placeholderData: () => [
