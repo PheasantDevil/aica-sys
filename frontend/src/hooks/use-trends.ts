@@ -33,7 +33,8 @@ export function useTrends(filters: Filters) {
     queryFn: async (): Promise<Trend[]> => {
       const params = new URLSearchParams();
       if (filters.timeframe) params.append('timeframe', filters.timeframe);
-      if (filters.category !== 'all') params.append('category', filters.category);
+      if (filters.category !== 'all')
+        params.append('category', filters.category);
       if (filters.sortBy) params.append('sortBy', filters.sortBy);
 
       const response = await fetch(`/api/trends?${params.toString()}`);
@@ -47,7 +48,8 @@ export function useTrends(filters: Filters) {
       {
         id: '1',
         title: 'TypeScript 5.0の採用率が急上昇',
-        description: 'TypeScript 5.0のリリースから1ヶ月で、主要プロジェクトでの採用率が前月比150%増加。新機能のconst assertionsとtemplate literal typesが特に人気。',
+        description:
+          'TypeScript 5.0のリリースから1ヶ月で、主要プロジェクトでの採用率が前月比150%増加。新機能のconst assertionsとtemplate literal typesが特に人気。',
         category: 'ecosystem',
         tags: ['TypeScript', '5.0', 'Adoption', 'Growth'],
         publishedAt: '2024-01-15T10:00:00Z',
@@ -65,7 +67,8 @@ export function useTrends(filters: Filters) {
       {
         id: '2',
         title: 'Next.js 14とTypeScriptの組み合わせが主流に',
-        description: 'Next.js 14のApp RouterとTypeScriptの組み合わせが、フルスタック開発の新たな標準として急速に普及。開発者体験の向上が主な要因。',
+        description:
+          'Next.js 14のApp RouterとTypeScriptの組み合わせが、フルスタック開発の新たな標準として急速に普及。開発者体験の向上が主な要因。',
         category: 'frameworks',
         tags: ['Next.js', 'TypeScript', 'Full Stack', 'App Router'],
         publishedAt: '2024-01-14T14:30:00Z',
@@ -83,7 +86,8 @@ export function useTrends(filters: Filters) {
       {
         id: '3',
         title: 'Zodライブラリの使用率が爆発的に増加',
-        description: 'TypeScriptの型安全性をランタイムでも実現するZodライブラリの使用率が、過去3ヶ月で300%増加。APIバリデーションでの採用が特に顕著。',
+        description:
+          'TypeScriptの型安全性をランタイムでも実現するZodライブラリの使用率が、過去3ヶ月で300%増加。APIバリデーションでの採用が特に顕著。',
         category: 'libraries',
         tags: ['Zod', 'TypeScript', 'Validation', 'Runtime Safety'],
         publishedAt: '2024-01-13T09:15:00Z',
@@ -101,7 +105,8 @@ export function useTrends(filters: Filters) {
       {
         id: '4',
         title: 'React 18のConcurrent FeaturesとTypeScript',
-        description: 'React 18のConcurrent FeaturesをTypeScriptで活用するパターンが確立されつつある。SuspenseとError Boundariesの型安全性が注目の的。',
+        description:
+          'React 18のConcurrent FeaturesをTypeScriptで活用するパターンが確立されつつある。SuspenseとError Boundariesの型安全性が注目の的。',
         category: 'frameworks',
         tags: ['React', 'TypeScript', 'Concurrent Features', 'Suspense'],
         publishedAt: '2024-01-12T16:45:00Z',
@@ -119,9 +124,15 @@ export function useTrends(filters: Filters) {
       {
         id: '5',
         title: 'TypeScriptの型操作テクニックが進化',
-        description: 'Template Literal TypesやConditional Typesを使った高度な型操作テクニックが、ライブラリ開発者を中心に急速に普及。型レベルプログラミングの新時代。',
+        description:
+          'Template Literal TypesやConditional Typesを使った高度な型操作テクニックが、ライブラリ開発者を中心に急速に普及。型レベルプログラミングの新時代。',
         category: 'patterns',
-        tags: ['TypeScript', 'Type Manipulation', 'Advanced', 'Template Literal Types'],
+        tags: [
+          'TypeScript',
+          'Type Manipulation',
+          'Advanced',
+          'Template Literal Types',
+        ],
         publishedAt: '2024-01-11T11:20:00Z',
         trendScore: 71,
         changeRate: 67,
@@ -137,7 +148,8 @@ export function useTrends(filters: Filters) {
       {
         id: '6',
         title: 'ViteとTypeScriptの組み合わせが人気',
-        description: 'Viteの高速な開発サーバーとTypeScriptの組み合わせが、モダンフロントエンド開発の新たな選択肢として注目。ビルド時間の短縮が主な利点。',
+        description:
+          'Viteの高速な開発サーバーとTypeScriptの組み合わせが、モダンフロントエンド開発の新たな選択肢として注目。ビルド時間の短縮が主な利点。',
         category: 'tools',
         tags: ['Vite', 'TypeScript', 'Build Tool', 'Development'],
         publishedAt: '2024-01-10T13:10:00Z',

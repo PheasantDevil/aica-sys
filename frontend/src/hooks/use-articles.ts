@@ -35,7 +35,8 @@ export function useArticles(filters: Filters) {
     queryKey: ['articles', filters],
     queryFn: async (): Promise<Article[]> => {
       const params = new URLSearchParams();
-      if (filters.category !== 'all') params.append('category', filters.category);
+      if (filters.category !== 'all')
+        params.append('category', filters.category);
       if (filters.sortBy) params.append('sortBy', filters.sortBy);
       if (filters.search) params.append('search', filters.search);
 
@@ -50,7 +51,8 @@ export function useArticles(filters: Filters) {
       {
         id: '1',
         title: 'TypeScript 5.0の新機能とベストプラクティス',
-        description: '最新のTypeScript 5.0で追加された新機能について詳しく解説します。const assertions、template literal types、そして新しいコンパイラオプションについて学びましょう。',
+        description:
+          '最新のTypeScript 5.0で追加された新機能について詳しく解説します。const assertions、template literal types、そして新しいコンパイラオプションについて学びましょう。',
         content: '',
         author: {
           name: '田中太郎',
@@ -68,7 +70,8 @@ export function useArticles(filters: Filters) {
       {
         id: '2',
         title: 'React 18とTypeScriptの完全ガイド',
-        description: 'React 18の新機能をTypeScriptと組み合わせて使用する方法を詳しく解説します。Concurrent Features、Suspense、そして新しいHooksについて学びましょう。',
+        description:
+          'React 18の新機能をTypeScriptと組み合わせて使用する方法を詳しく解説します。Concurrent Features、Suspense、そして新しいHooksについて学びましょう。',
         content: '',
         author: {
           name: '佐藤花子',
@@ -86,7 +89,8 @@ export function useArticles(filters: Filters) {
       {
         id: '3',
         title: 'TypeScriptの型安全性を最大化する10のテクニック',
-        description: 'TypeScriptの型システムを最大限活用して、より安全で保守しやすいコードを書くための実践的なテクニックを紹介します。',
+        description:
+          'TypeScriptの型システムを最大限活用して、より安全で保守しやすいコードを書くための実践的なテクニックを紹介します。',
         content: '',
         author: {
           name: '山田次郎',
@@ -104,7 +108,8 @@ export function useArticles(filters: Filters) {
       {
         id: '4',
         title: 'Next.js 14とTypeScriptで作るフルスタックアプリ',
-        description: 'Next.js 14の最新機能とTypeScriptを組み合わせて、本格的なフルスタックアプリケーションを構築する方法をステップバイステップで解説します。',
+        description:
+          'Next.js 14の最新機能とTypeScriptを組み合わせて、本格的なフルスタックアプリケーションを構築する方法をステップバイステップで解説します。',
         content: '',
         author: {
           name: '鈴木一郎',
@@ -122,7 +127,8 @@ export function useArticles(filters: Filters) {
       {
         id: '5',
         title: 'TypeScript 4.9から5.0への移行ガイド',
-        description: 'TypeScript 4.9から5.0への移行時に注意すべき点と、新機能を活用するための移行戦略について詳しく解説します。',
+        description:
+          'TypeScript 4.9から5.0への移行時に注意すべき点と、新機能を活用するための移行戦略について詳しく解説します。',
         content: '',
         author: {
           name: '高橋美咲',
@@ -140,7 +146,8 @@ export function useArticles(filters: Filters) {
       {
         id: '6',
         title: 'TypeScriptの高度な型操作テクニック',
-        description: 'TypeScriptの条件型、マッピング型、テンプレートリテラル型などの高度な型操作テクニックを実例とともに詳しく解説します。',
+        description:
+          'TypeScriptの条件型、マッピング型、テンプレートリテラル型などの高度な型操作テクニックを実例とともに詳しく解説します。',
         content: '',
         author: {
           name: '伊藤健太',
