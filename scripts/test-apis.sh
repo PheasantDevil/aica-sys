@@ -47,7 +47,7 @@ import google.generativeai as genai
 import os
 try:
     genai.configure(api_key='$GOOGLE_AI_API_KEY')
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-1.5-pro')
     response = model.generate_content('Hello, test message')
     print('✅ Google AI API: 接続成功')
     print(f'   レスポンス: {response.text[:100]}...')
@@ -115,9 +115,10 @@ print_step "データベース接続テスト"
 
 if python3 -c "
 from database import engine
+from sqlalchemy import text
 try:
     with engine.connect() as conn:
-        result = conn.execute('SELECT 1')
+        result = conn.execute(text('SELECT 1'))
         print('✅ データベース: 接続成功')
 except Exception as e:
     print(f'❌ データベース: エラー - {e}')

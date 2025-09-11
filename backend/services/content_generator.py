@@ -4,20 +4,21 @@ AIを使用して記事、ニュースレター、ソーシャルメディア投
 """
 
 import asyncio
-import logging
-from datetime import datetime
-from typing import List, Dict, Any, Optional
-import openai
-import google.generativeai as genai
-from PIL import Image
-import requests
 import json
+import logging
 import re
 from dataclasses import dataclass
+from datetime import datetime
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
-from .data_collector import ContentItem
+import google.generativeai as genai
+import openai
+import requests
+from PIL import Image
+
 from .ai_analyzer import AnalysisResult
+from .data_collector import ContentItem
 
 logger = logging.getLogger(__name__)
 
@@ -54,7 +55,7 @@ class ContentGenerator:
         self.stable_diffusion_api_key = stable_diffusion_api_key
         
         # モデル初期化
-        self.gemini_model = genai.GenerativeModel('gemini-pro')
+        self.gemini_model = genai.GenerativeModel('gemini-1.5-pro')
         
         # コンテンツテンプレート
         self.templates = {

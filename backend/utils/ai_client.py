@@ -59,7 +59,7 @@ class AIClient:
         # Initialize Google AI
         if google_api_key:
             genai.configure(api_key=google_api_key)
-            self.gemini_model = genai.GenerativeModel('gemini-pro')
+            self.gemini_model = genai.GenerativeModel('gemini-1.5-pro')
         else:
             self.gemini_model = None
         

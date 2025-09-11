@@ -1,10 +1,10 @@
 # FastAPI and web framework
 fastapi==0.104.0
 uvicorn[standard]==0.24.0
-pydantic==2.4.0
+pydantic==2.8.0
 
 # Database
-sqlalchemy==2.0.0
+sqlalchemy==2.0.36
 
 # Web scraping and data collection
 requests==2.31.0
