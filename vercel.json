@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/next"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
@@ -18,7 +12,7 @@
     "NEXT_PUBLIC_API_URL": "https://aica-sys-backend.vercel.app"
   },
   "functions": {
-    "frontend/api/**/*.ts": {
+    "frontend/src/app/api/**/*.ts": {
       "maxDuration": 30
     }
   }
