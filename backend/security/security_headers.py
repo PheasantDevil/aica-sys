@@ -3,10 +3,11 @@ Security Headers Middleware
 Implements comprehensive security headers for API responses
 """
 
+import logging
+from typing import Dict, List, Optional
+
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
-from typing import Dict, List, Optional
-import logging
 
 logger = logging.getLogger(__name__)
 

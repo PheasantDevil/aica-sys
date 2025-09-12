@@ -5,6 +5,8 @@ Provides comprehensive security for API endpoints
 
 import jwt
 import time
+import hashlib
+import bcrypt
 from datetime import datetime, timedelta
 from typing import Optional, Dict, Any, List
 from functools import wraps
@@ -41,6 +43,16 @@ class SecurityConfig:
         """Get JWT secret from environment"""
         import os
         return os.getenv("JWT_SECRET_KEY", self.jwt_secret)
+    
+    def hash_password(self, password: str) -> str:
+        """Hash password using bcrypt"""
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+        return hashed.decode('utf-8')
+    
+    def verify_password(self, password: str, hashed_password: str) -> bool:
+        """Verify password against hash"""
+        return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 # Rate limiting storage (in production, use Redis)
 rate_limit_storage: Dict[str, List[float]] = {}
