@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
+import { optimizeImageUrl, generateBlurDataURL, lazyLoadImage } from '@/lib/asset-optimizer';
 
 interface LazyImageProps {
   src: string;
@@ -14,6 +15,8 @@ interface LazyImageProps {
   blurDataURL?: string;
   quality?: number;
   sizes?: string;
+  format?: 'webp' | 'avif' | 'jpeg' | 'png' | 'auto';
+  enableCDN?: boolean;
 }
 
 const LazyImage = ({
@@ -27,6 +30,8 @@ const LazyImage = ({
   blurDataURL,
   quality = 75,
   sizes,
+  format = 'auto',
+  enableCDN = true,
 }: LazyImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(priority);
@@ -59,6 +64,14 @@ const LazyImage = ({
     setIsLoaded(true);
   };
 
+  // 最適化された画像URLを生成
+  const optimizedSrc = enableCDN 
+    ? optimizeImageUrl(src, width, height, { quality, format })
+    : src;
+
+  // プレースホルダーの生成
+  const defaultBlurDataURL = blurDataURL || generateBlurDataURL(width, height);
+
   return (
     <div
       ref={imgRef}
@@ -67,13 +80,13 @@ const LazyImage = ({
     >
       {isInView && (
         <Image
-          src={src}
+          src={optimizedSrc}
           alt={alt}
           width={width}
           height={height}
           priority={priority}
           placeholder={placeholder}
-          blurDataURL={blurDataURL}
+          blurDataURL={defaultBlurDataURL}
           quality={quality}
           sizes={sizes}
           onLoad={handleLoad}

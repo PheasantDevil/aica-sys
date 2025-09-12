@@ -39,12 +39,12 @@ const nextConfig = {
       '@': require('path').resolve(__dirname, 'src'),
     };
     
-    // Tree shaking optimization
-    config.optimization = {
-      ...config.optimization,
-      usedExports: true,
-      sideEffects: false,
-    };
+    // Tree shaking optimization (disabled due to webpack conflict)
+    // config.optimization = {
+    //   ...config.optimization,
+    //   usedExports: true,
+    //   sideEffects: false,
+    // };
     
     return config;
   },
