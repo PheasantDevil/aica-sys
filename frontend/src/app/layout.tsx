@@ -4,8 +4,15 @@ import './globals.css';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { PerformanceProvider } from '@/components/PerformanceProvider';
 import { ErrorProvider } from '@/components/ErrorProvider';
+import PerformanceMonitor from '@/components/PerformanceMonitor';
 
-const inter = Inter({ subsets: ['latin'] });
+// Optimize font loading
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial'],
+});
 
 export const metadata: Metadata = {
   title: 'AICA-SyS - AI-driven Information Curation System',
@@ -80,6 +87,19 @@ export default function RootLayout({
           <PerformanceProvider>
             <ErrorBoundary>
               {children}
+              <PerformanceMonitor 
+                enabled={process.env.NODE_ENV === 'production'}
+                onMetricsUpdate={(metrics) => {
+                  // Send metrics to analytics service
+                  if (typeof window !== 'undefined' && window.gtag) {
+                    window.gtag('event', 'performance_metrics', {
+                      custom_parameter_1: metrics.CLS,
+                      custom_parameter_2: metrics.LCP,
+                      custom_parameter_3: metrics.FID,
+                    });
+                  }
+                }}
+              />
             </ErrorBoundary>
           </PerformanceProvider>
         </ErrorProvider>

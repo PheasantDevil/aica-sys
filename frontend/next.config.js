@@ -1,7 +1,52 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Performance optimizations
   experimental: {
     optimizeCss: true,
+    optimizePackageImports: ['@supabase/supabase-js', 'react-hot-toast'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
+  
+  // Compiler optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+    styledComponents: true,
+  },
+  
+  // Bundle analyzer
+  webpack: (config, { dev, isServer }) => {
+    // Bundle analyzer
+    if (process.env.ANALYZE === 'true') {
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+          openAnalyzer: false,
+        })
+      );
+    }
+    
+    // Optimize imports
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': require('path').resolve(__dirname, 'src'),
+    };
+    
+    // Tree shaking optimization
+    config.optimization = {
+      ...config.optimization,
+      usedExports: true,
+      sideEffects: false,
+    };
+    
+    return config;
   },
   async headers() {
     return [
@@ -45,15 +90,41 @@ const nextConfig = {
       },
     ];
   },
+  // Image optimization
   images: {
     domains: ['images.unsplash.com', 'via.placeholder.com'],
     formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+  
+  // Performance settings
   compress: true,
   poweredByHeader: false,
   generateEtags: false,
   httpAgentOptions: {
     keepAlive: true,
+  },
+  
+  // Output optimization
+  output: 'standalone',
+  swcMinify: true,
+  
+  // Experimental features for performance
+  experimental: {
+    ...nextConfig.experimental,
+    serverComponentsExternalPackages: ['@supabase/supabase-js'],
+    optimizeCss: true,
+    optimizePackageImports: ['@supabase/supabase-js', 'react-hot-toast'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
 };
 
