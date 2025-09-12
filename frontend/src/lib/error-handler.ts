@@ -40,7 +40,7 @@ class ErrorHandler {
     if (typeof window === 'undefined') return;
 
     // Global error handler
-    window.addEventListener('error', (event) => {
+    window.addEventListener('error', event => {
       this.handleError({
         message: event.message,
         stack: event.error?.stack,
@@ -55,7 +55,7 @@ class ErrorHandler {
     });
 
     // Unhandled promise rejection handler
-    window.addEventListener('unhandledrejection', (event) => {
+    window.addEventListener('unhandledrejection', event => {
       this.handleError({
         message: event.reason?.message || 'Unhandled Promise Rejection',
         stack: event.reason?.stack,
@@ -75,10 +75,10 @@ class ErrorHandler {
     const originalFetch = window.fetch;
     const self = this;
 
-    window.fetch = async function(...args) {
+    window.fetch = async function (...args) {
       try {
         const response = await originalFetch.apply(this, args);
-        
+
         if (!response.ok) {
           self.handleError({
             message: `Network request failed: ${response.status} ${response.statusText}`,
@@ -91,7 +91,7 @@ class ErrorHandler {
             },
           });
         }
-        
+
         return response;
       } catch (error) {
         self.handleError({
@@ -283,7 +283,9 @@ class ErrorHandler {
     const last24h = now - 24 * 60 * 60 * 1000;
     const last1h = now - 60 * 60 * 1000;
 
-    const last24hErrors = this.errors.filter(error => error.timestamp > last24h);
+    const last24hErrors = this.errors.filter(
+      error => error.timestamp > last24h
+    );
     const last1hErrors = this.errors.filter(error => error.timestamp > last1h);
 
     return {

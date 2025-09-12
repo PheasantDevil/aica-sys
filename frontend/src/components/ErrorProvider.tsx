@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, ReactNode } from 'react';
 import { errorHandler } from '@/lib/error-handler';
+import { createContext, ReactNode, useContext, useEffect } from 'react';
 
 interface ErrorContextType {
   handleError: (errorData: Partial<any>) => void;
@@ -38,10 +38,13 @@ export function ErrorProvider({ children }: ErrorProviderProps) {
   }, []);
 
   const contextValue: ErrorContextType = {
-    handleError: (errorData: Partial<any>) => errorHandler.handleError(errorData),
+    handleError: (errorData: Partial<any>) =>
+      errorHandler.handleError(errorData),
     getErrors: () => errorHandler.getErrors(),
-    getErrorsBySeverity: (severity: string) => errorHandler.getErrorsBySeverity(severity as any),
-    getErrorsByCategory: (category: string) => errorHandler.getErrorsByCategory(category as any),
+    getErrorsBySeverity: (severity: string) =>
+      errorHandler.getErrorsBySeverity(severity as any),
+    getErrorsByCategory: (category: string) =>
+      errorHandler.getErrorsByCategory(category as any),
     clearErrors: () => errorHandler.clearErrors(),
     getErrorStats: () => errorHandler.getErrorStats(),
   };

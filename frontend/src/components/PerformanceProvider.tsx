@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, ReactNode } from 'react';
 import { performanceMonitor } from '@/lib/performance';
+import { createContext, ReactNode, useContext, useEffect } from 'react';
 
 interface PerformanceContextType {
   getMetrics: () => any[];
@@ -11,7 +11,9 @@ interface PerformanceContextType {
   clearMetrics: () => void;
 }
 
-const PerformanceContext = createContext<PerformanceContextType | undefined>(undefined);
+const PerformanceContext = createContext<PerformanceContextType | undefined>(
+  undefined
+);
 
 interface PerformanceProviderProps {
   children: ReactNode;
@@ -56,8 +58,10 @@ export function PerformanceProvider({ children }: PerformanceProviderProps) {
 
   const contextValue: PerformanceContextType = {
     getMetrics: () => performanceMonitor.getMetrics(),
-    getMetricsByName: (name: string) => performanceMonitor.getMetricsByName(name),
-    getAverageMetric: (name: string) => performanceMonitor.getAverageMetric(name),
+    getMetricsByName: (name: string) =>
+      performanceMonitor.getMetricsByName(name),
+    getAverageMetric: (name: string) =>
+      performanceMonitor.getAverageMetric(name),
     getLatestMetric: (name: string) => performanceMonitor.getLatestMetric(name),
     clearMetrics: () => performanceMonitor.clearMetrics(),
   };
