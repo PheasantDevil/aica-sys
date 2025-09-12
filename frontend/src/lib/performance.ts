@@ -1,257 +1,191 @@
-'use client';
+/**
+ * Performance Monitoring Utilities
+ * Tracks Core Web Vitals and custom metrics
+ */
 
-interface PerformanceMetric {
+export interface PerformanceMetric {
+  name: string;
+  value: number;
+  delta: number;
+  id: string;
+  navigationType: string;
+}
+
+export interface CustomMetric {
   name: string;
   value: number;
   timestamp: number;
-  type: 'navigation' | 'paint' | 'measure' | 'custom';
+  metadata?: Record<string, any>;
 }
 
 class PerformanceMonitor {
-  private metrics: PerformanceMetric[] = [];
+  private metrics: CustomMetric[] = [];
   private observers: PerformanceObserver[] = [];
 
   constructor() {
-    if (typeof window !== 'undefined') {
-      this.initializeObservers();
-    }
+    this.initializeWebVitals();
+    this.initializeCustomMetrics();
   }
 
-  private initializeObservers(): void {
-    // Observe navigation timing
-    if ('PerformanceObserver' in window) {
-      const navObserver = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (entry.entryType === 'navigation') {
-            const navEntry = entry as PerformanceNavigationTiming;
-            this.recordMetric('navigation', {
-              name: 'page_load_time',
-              value: navEntry.loadEventEnd - navEntry.loadEventStart,
-              timestamp: Date.now(),
-              type: 'navigation',
-            });
-          }
-        }
-      });
-      navObserver.observe({ entryTypes: ['navigation'] });
-      this.observers.push(navObserver);
+  private initializeWebVitals() {
+    if (typeof window === 'undefined') return;
 
-      // Observe paint timing
-      const paintObserver = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          if (entry.entryType === 'paint') {
-            this.recordMetric('paint', {
-              name: entry.name,
-              value: entry.startTime,
-              timestamp: Date.now(),
-              type: 'paint',
-            });
-          }
-        }
-      });
-      paintObserver.observe({ entryTypes: ['paint'] });
-      this.observers.push(paintObserver);
+    // LCP (Largest Contentful Paint)
+    this.observeMetric('largest-contentful-paint', (entry) => {
+      this.recordMetric('LCP', entry.startTime);
+    });
 
-      // Observe largest contentful paint
-      const lcpObserver = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          this.recordMetric('lcp', {
-            name: 'largest_contentful_paint',
-            value: entry.startTime,
-            timestamp: Date.now(),
-            type: 'paint',
-          });
-        }
-      });
-      lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-      this.observers.push(lcpObserver);
+    // FID (First Input Delay)
+    this.observeMetric('first-input', (entry) => {
+      this.recordMetric('FID', entry.processingStart - entry.startTime);
+    });
 
-      // Observe first input delay
-      const fidObserver = new PerformanceObserver((list) => {
-        for (const entry of list.getEntries()) {
-          this.recordMetric('fid', {
-            name: 'first_input_delay',
-            value: (entry as any).processingStart - entry.startTime,
-            timestamp: Date.now(),
-            type: 'measure',
-          });
-        }
-      });
-      fidObserver.observe({ entryTypes: ['first-input'] });
-      this.observers.push(fidObserver);
-    }
-  }
+    // CLS (Cumulative Layout Shift)
+    this.observeMetric('layout-shift', (entry) => {
+      if (!(entry as any).hadRecentInput) {
+        this.recordMetric('CLS', (entry as any).value);
+      }
+    });
 
-  private recordMetric(category: string, metric: PerformanceMetric): void {
-    this.metrics.push(metric);
-    
-    // Log to console in development
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[Performance] ${category}:`, metric);
-    }
+    // FCP (First Contentful Paint)
+    this.observeMetric('paint', (entry) => {
+      if (entry.name === 'first-contentful-paint') {
+        this.recordMetric('FCP', entry.startTime);
+      }
+    });
 
-    // Send to analytics in production
-    if (process.env.NODE_ENV === 'production') {
-      this.sendToAnalytics(category, metric);
-    }
-  }
-
-  private sendToAnalytics(category: string, metric: PerformanceMetric): void {
-    // Send to Google Analytics or other analytics service
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'performance_metric', {
-        event_category: category,
-        event_label: metric.name,
-        value: Math.round(metric.value),
-        custom_map: {
-          metric_type: metric.type,
-        },
-      });
-    }
-  }
-
-  // Custom performance measurement
-  measure(name: string, fn: () => void): void {
-    const start = performance.now();
-    fn();
-    const end = performance.now();
-    
-    this.recordMetric('custom', {
-      name,
-      value: end - start,
-      timestamp: Date.now(),
-      type: 'measure',
+    // TTFB (Time to First Byte)
+    this.observeMetric('navigation', (entry) => {
+      this.recordMetric('TTFB', entry.responseStart - entry.requestStart);
     });
   }
 
-  // Measure async operations
-  async measureAsync<T>(name: string, fn: () => Promise<T>): Promise<T> {
-    const start = performance.now();
+  private observeMetric(type: string, callback: (entry: PerformanceEntry) => void) {
+    if (typeof window === 'undefined') return;
+
     try {
-      const result = await fn();
-      const end = performance.now();
-      
-      this.recordMetric('custom', {
-        name,
-        value: end - start,
-        timestamp: Date.now(),
-        type: 'measure',
+      const observer = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          callback(entry);
+        }
       });
-      
-      return result;
+
+      observer.observe({ type, buffered: true });
+      this.observers.push(observer);
     } catch (error) {
-      const end = performance.now();
-      
-      this.recordMetric('custom', {
-        name: `${name}_error`,
-        value: end - start,
-        timestamp: Date.now(),
-        type: 'measure',
-      });
-      
-      throw error;
+      console.warn(`Failed to observe ${type}:`, error);
     }
   }
 
-  // Get performance metrics
-  getMetrics(category?: string): PerformanceMetric[] {
-    if (category) {
-      return this.metrics.filter(m => m.name.includes(category));
+  private initializeCustomMetrics() {
+    if (typeof window === 'undefined') return;
+
+    // Page load time
+    window.addEventListener('load', () => {
+      const loadTime = performance.now();
+      this.recordMetric('PageLoad', loadTime);
+    });
+
+    // DOM content loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      const domTime = performance.now();
+      this.recordMetric('DOMContentLoaded', domTime);
+    });
+
+    // Memory usage (if available)
+    if ('memory' in performance) {
+      setInterval(() => {
+        const memory = (performance as any).memory;
+        this.recordMetric('MemoryUsed', memory.usedJSHeapSize, {
+          total: memory.totalJSHeapSize,
+          limit: memory.jsHeapSizeLimit,
+        });
+      }, 30000); // Every 30 seconds
     }
+  }
+
+  private recordMetric(name: string, value: number, metadata?: Record<string, any>) {
+    const metric: CustomMetric = {
+      name,
+      value,
+      timestamp: Date.now(),
+      metadata,
+    };
+
+    this.metrics.push(metric);
+
+    // Send to analytics (if available)
+    this.sendToAnalytics(metric);
+
+    // Log in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`📊 Performance Metric: ${name} = ${value}ms`, metadata);
+    }
+  }
+
+  private sendToAnalytics(metric: CustomMetric) {
+    // Send to Google Analytics 4
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'performance_metric', {
+        metric_name: metric.name,
+        metric_value: Math.round(metric.value),
+        metric_timestamp: metric.timestamp,
+        ...metric.metadata,
+      });
+    }
+
+    // Send to custom analytics endpoint
+    this.sendToCustomAnalytics(metric);
+  }
+
+  private async sendToCustomAnalytics(metric: CustomMetric) {
+    try {
+      await fetch('/api/analytics/performance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(metric),
+      });
+    } catch (error) {
+      console.warn('Failed to send performance metric:', error);
+    }
+  }
+
+  // Public methods
+  public getMetrics(): CustomMetric[] {
     return [...this.metrics];
   }
 
-  // Get performance summary
-  getSummary(): {
-    totalMetrics: number;
-    averageLoadTime: number;
-    averagePaintTime: number;
-    slowestOperations: PerformanceMetric[];
-  } {
-    const loadTimes = this.metrics.filter(m => m.name === 'page_load_time');
-    const paintTimes = this.metrics.filter(m => m.type === 'paint');
-    
-    const averageLoadTime = loadTimes.length > 0 
-      ? loadTimes.reduce((sum, m) => sum + m.value, 0) / loadTimes.length 
-      : 0;
-    
-    const averagePaintTime = paintTimes.length > 0 
-      ? paintTimes.reduce((sum, m) => sum + m.value, 0) / paintTimes.length 
-      : 0;
-    
-    const slowestOperations = [...this.metrics]
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
-    
-    return {
-      totalMetrics: this.metrics.length,
-      averageLoadTime,
-      averagePaintTime,
-      slowestOperations,
-    };
+  public getMetricsByName(name: string): CustomMetric[] {
+    return this.metrics.filter(metric => metric.name === name);
   }
 
-  // Cleanup
-  destroy(): void {
-    this.observers.forEach(observer => observer.disconnect());
-    this.observers = [];
+  public getAverageMetric(name: string): number {
+    const metrics = this.getMetricsByName(name);
+    if (metrics.length === 0) return 0;
+    
+    const sum = metrics.reduce((acc, metric) => acc + metric.value, 0);
+    return sum / metrics.length;
+  }
+
+  public getLatestMetric(name: string): CustomMetric | undefined {
+    const metrics = this.getMetricsByName(name);
+    return metrics[metrics.length - 1];
+  }
+
+  public clearMetrics() {
     this.metrics = [];
   }
+
+  public destroy() {
+    this.observers.forEach(observer => observer.disconnect());
+    this.observers = [];
+  }
 }
 
-// Global performance monitor instance
+// Singleton instance
 export const performanceMonitor = new PerformanceMonitor();
 
-// Performance utilities
-export function measurePerformance(name: string, fn: () => void): void {
-  performanceMonitor.measure(name, fn);
-}
-
-export async function measureAsyncPerformance<T>(
-  name: string, 
-  fn: () => Promise<T>
-): Promise<T> {
-  return performanceMonitor.measureAsync(name, fn);
-}
-
-// Web Vitals measurement
-export function measureWebVitals(): void {
-  if (typeof window === 'undefined') return;
-
-  // Measure Core Web Vitals
-  const measureCLS = () => {
-    let clsValue = 0;
-    let clsEntries: any[] = [];
-    
-    const observer = new PerformanceObserver((list) => {
-      for (const entry of list.getEntries()) {
-        if (!(entry as any).hadRecentInput) {
-          clsEntries.push(entry);
-          clsValue += (entry as any).value;
-        }
-      }
-    });
-    
-    observer.observe({ entryTypes: ['layout-shift'] });
-    
-    // Report CLS when page is hidden
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') {
-        performanceMonitor.recordMetric('web-vitals', {
-          name: 'cumulative_layout_shift',
-          value: clsValue,
-          timestamp: Date.now(),
-          type: 'paint',
-        });
-        observer.disconnect();
-      }
-    });
-  };
-
-  measureCLS();
-}
-
-// Initialize performance monitoring
-if (typeof window !== 'undefined') {
-  measureWebVitals();
-}
+// Export for use in components
+export default performanceMonitor;

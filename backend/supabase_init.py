@@ -13,6 +13,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Load environment variables from .env.local
 from dotenv import load_dotenv
+
 env_path = Path(__file__).parent.parent / '.env.local'
 load_dotenv(env_path)
 

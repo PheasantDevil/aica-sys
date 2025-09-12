@@ -1,27 +1,26 @@
-from logging.config import fileConfig
 import os
 import sys
+from logging.config import fileConfig
 from pathlib import Path
 
 # Load environment variables from .env.local
 from dotenv import load_dotenv
+
 env_path = Path(__file__).parent.parent.parent / '.env.local'
 load_dotenv(env_path)
 
-from sqlalchemy import engine_from_config, create_engine
-from sqlalchemy import pool
-
 from alembic import context
+from sqlalchemy import create_engine, engine_from_config, pool
 
 # Add the backend directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Import your models
 from models.base import Base
-from models.user import User
+from models.collection import AnalysisResult, CollectionJob
 from models.content import Article, Newsletter, Trend
-from models.collection import CollectionJob, AnalysisResult
 from models.subscription import Subscription
+from models.user import User
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
