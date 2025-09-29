@@ -1,0 +1,170 @@
+{
+  "timestamp": "2025-09-29T09:11:39.347Z",
+  "summary": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0,
+    "successRate": 100
+  },
+  "performanceMetrics": {
+    "averageQueryTime": 62.714285714285715,
+    "minQueryTime": 5,
+    "maxQueryTime": 318,
+    "averageResponseSize": 45,
+    "totalErrors": 0,
+    "errorRate": 0
+  },
+  "tests": [
+    {
+      "name": "Database Health Check",
+      "status": "PASSED",
+      "duration": 48,
+      "result": {
+        "status": "healthy",
+        "timestamp": "2024-01-01T00:00:00Z"
+      }
+    },
+    {
+      "name": "Articles Performance Test",
+      "status": "PASSED",
+      "duration": 318,
+      "result": {
+        "All articles": {
+          "duration": 42,
+          "status": 200,
+          "dataSize": 45,
+          "articleCount": 0
+        },
+        "Premium articles": {
+          "duration": 259,
+          "status": 200,
+          "dataSize": 45,
+          "articleCount": 0
+        },
+        "Recent articles": {
+          "duration": 10,
+          "status": 200,
+          "dataSize": 45,
+          "articleCount": 0
+        },
+        "Popular articles": {
+          "duration": 7,
+          "status": 200,
+          "dataSize": 45,
+          "articleCount": 0
+        },
+        "totalDuration": 318
+      }
+    },
+    {
+      "name": "Newsletters Performance Test",
+      "status": "PASSED",
+      "duration": 8,
+      "result": {
+        "duration": 7,
+        "status": 200,
+        "dataSize": 48,
+        "newsletterCount": 0
+      }
+    },
+    {
+      "name": "Trends Performance Test",
+      "status": "PASSED",
+      "duration": 7,
+      "result": {
+        "duration": 7,
+        "status": 200,
+        "dataSize": 43,
+        "trendCount": 0
+      }
+    },
+    {
+      "name": "Audit Events Performance Test",
+      "status": "PASSED",
+      "duration": 5,
+      "result": {
+        "duration": 5,
+        "status": 200,
+        "dataSize": 2,
+        "eventCount": 0
+      }
+    },
+    {
+      "name": "Concurrent Requests Test",
+      "status": "PASSED",
+      "duration": 24,
+      "result": {
+        "totalRequests": 10,
+        "successCount": 10,
+        "failureCount": 0,
+        "successRate": 100,
+        "totalDuration": 23,
+        "averageDuration": 22,
+        "results": [
+          {
+            "success": true,
+            "duration": 20,
+            "status": 200
+          },
+          {
+            "success": true,
+            "duration": 21,
+            "status": 200
+          },
+          {
+            "success": true,
+            "duration": 23,
+            "status": 200
+          },
+          {
+            "success": true,
+            "duration": 23,
+            "status": 200
+          },
+          {
+            "success": true,
+            "duration": 22,
+            "status": 200
+          },
+          {
+            "success": true,
+            "duration": 23,
+            "status": 200
+          },
+          {
+            "success": true,
+            "duration": 22,
+            "status": 200
+          },
+          {
+            "success": true,
+            "duration": 22,
+            "status": 200
+          },
+          {
+            "success": true,
+            "duration": 23,
+            "status": 200
+          },
+          {
+            "success": true,
+            "duration": 21,
+            "status": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "Database Connection Pool Test",
+      "status": "PASSED",
+      "duration": 29,
+      "result": {
+        "totalRequests": 20,
+        "successCount": 20,
+        "successRate": 100,
+        "totalDuration": 28,
+        "averageDuration": 25.4
+      }
+    }
+  ]
+}

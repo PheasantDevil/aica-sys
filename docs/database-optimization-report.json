@@ -1,0 +1,55 @@
+{
+  "timestamp": "2025-09-29T08:57:02.251027",
+  "tables": {
+    "articles": {
+      "stats": {
+        "table_name": "articles",
+        "error": "(psycopg2.OperationalError) connection to server at \"localhost\" (::1), port 5432 failed: FATAL:  role \"user\" does not exist\n\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      "indexes": [],
+      "index_count": 0
+    },
+    "newsletters": {
+      "stats": {
+        "table_name": "newsletters",
+        "error": "(psycopg2.OperationalError) connection to server at \"localhost\" (::1), port 5432 failed: FATAL:  role \"user\" does not exist\n\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      "indexes": [],
+      "index_count": 0
+    },
+    "trends": {
+      "stats": {
+        "table_name": "trends",
+        "error": "(psycopg2.OperationalError) connection to server at \"localhost\" (::1), port 5432 failed: FATAL:  role \"user\" does not exist\n\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      "indexes": [],
+      "index_count": 0
+    },
+    "subscriptions": {
+      "stats": {
+        "table_name": "subscriptions",
+        "error": "(psycopg2.OperationalError) connection to server at \"localhost\" (::1), port 5432 failed: FATAL:  role \"user\" does not exist\n\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      "indexes": [],
+      "index_count": 0
+    },
+    "audit_events": {
+      "stats": {
+        "table_name": "audit_events",
+        "error": "(psycopg2.OperationalError) connection to server at \"localhost\" (::1), port 5432 failed: FATAL:  role \"user\" does not exist\n\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      "indexes": [],
+      "index_count": 0
+    },
+    "users": {
+      "stats": {
+        "table_name": "users",
+        "error": "(psycopg2.OperationalError) connection to server at \"localhost\" (::1), port 5432 failed: FATAL:  role \"user\" does not exist\n\n(Background on this error at: https://sqlalche.me/e/20/e3q8)"
+      },
+      "indexes": [],
+      "index_count": 0
+    }
+  },
+  "total_indexes": 0,
+  "total_size": "0 MB"
+}
