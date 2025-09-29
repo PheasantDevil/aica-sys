@@ -9,7 +9,7 @@ from typing import List, Optional
 
 import stripe
 from database import get_db
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from models.subscription import Subscription, SubscriptionPlan
 from models.user import User
 from security.auth_middleware import get_current_user

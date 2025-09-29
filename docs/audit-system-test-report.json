@@ -1,0 +1,71 @@
+{
+  "timestamp": "2025-09-29T08:34:31.292Z",
+  "summary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "successRate": 100
+  },
+  "tests": [
+    {
+      "name": "Audit Events Endpoint",
+      "status": "PASSED",
+      "result": []
+    },
+    {
+      "name": "Audit Stats Endpoint",
+      "status": "PASSED",
+      "result": {}
+    },
+    {
+      "name": "Audit Dashboard Endpoint",
+      "status": "PASSED",
+      "result": {
+        "stats": {},
+        "chart_data": [
+          {
+            "date": "2024-01-01",
+            "count": 10
+          },
+          {
+            "date": "2024-01-02",
+            "count": 15
+          },
+          {
+            "date": "2024-01-03",
+            "count": 12
+          }
+        ],
+        "event_type_data": [
+          {
+            "name": "USER_LOGIN",
+            "value": 50,
+            "color": "#0088FE"
+          },
+          {
+            "name": "DATA_ACCESS",
+            "value": 30,
+            "color": "#00C49F"
+          },
+          {
+            "name": "DATA_MODIFICATION",
+            "value": 20,
+            "color": "#FFBB28"
+          }
+        ],
+        "user_activity_data": [],
+        "resource_activity_data": [],
+        "recent_events": [],
+        "timestamp": "2025-09-29T08:34:31.207420"
+      }
+    },
+    {
+      "name": "Frontend Audit Page Display",
+      "status": "PASSED",
+      "result": {
+        "status": 200,
+        "content_preview": "<!DOCTYPE html><html lang=\"en\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><l..."
+      }
+    }
+  ]
+}
