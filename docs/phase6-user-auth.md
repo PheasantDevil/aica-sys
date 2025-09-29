@@ -2,43 +2,47 @@
 
 ## 概要
 
-Phase 6-2では、AICA-SySシステムのユーザー認証・アクセス管理システムを本格運用向けに実装します。
+Phase 6-2 では、AICA-SyS システムのユーザー認証・アクセス管理システムを本格運用向けに実装します。
 
 ## 目標
 
-- NextAuth.js本番環境での完全設定
-- Google OAuth本番認証の実装
+- NextAuth.js 本番環境での完全設定
+- Google OAuth 本番認証の実装
 - ユーザー管理システムの完成
 - ダッシュボード機能の実装
 - 認証フローの最適化
 
 ## Phase 6-2: ユーザーアクセス・認証システム
 
-### 6.2.1 NextAuth.js本番設定
+### 6.2.1 NextAuth.js 本番設定
 
 #### 実装内容
+
 - [ ] 本番環境変数の設定
 - [ ] セッション管理の最適化
 - [ ] セキュリティ強化
 - [ ] エラーハンドリングの改善
 
 #### 設定項目
-- NEXTAUTH_URL: 本番URL
+
+- NEXTAUTH_URL: 本番 URL
 - NEXTAUTH_SECRET: セキュリティシークレット
 - GOOGLE_CLIENT_ID: Google OAuth Client ID
 - GOOGLE_CLIENT_SECRET: Google OAuth Client Secret
 
-### 6.2.2 Google OAuth本番設定
+### 6.2.2 Google OAuth 本番設定
 
 #### 実装内容
-- [ ] Google Cloud Console設定
-- [ ] OAuth 2.0認証フロー
+
+- [ ] Google Cloud Console 設定
+- [ ] OAuth 2.0 認証フロー
 - [ ] スコープ設定の最適化
-- [ ] リダイレクトURL設定
+- [ ] リダイレクト URL 設定
 
 ### 6.2.3 ユーザー管理システム
 
 #### 実装内容
+
 - [ ] ユーザープロフィール管理
 - [ ] サブスクリプション状態管理
 - [ ] アクセス権限管理
@@ -47,6 +51,7 @@ Phase 6-2では、AICA-SySシステムのユーザー認証・アクセス管理
 ### 6.2.4 ダッシュボード機能
 
 #### 実装内容
+
 - [ ] メインダッシュボード
 - [ ] サブスクリプション管理
 - [ ] プロフィール設定
@@ -54,8 +59,8 @@ Phase 6-2では、AICA-SySシステムのユーザー認証・アクセス管理
 
 ## 実装ステップ
 
-1. **NextAuth.js本番設定**
-2. **Google OAuth本番設定**
+1. **NextAuth.js 本番設定**
+2. **Google OAuth 本番設定**
 3. **ユーザー管理システム**
 4. **ダッシュボード機能**
 5. **認証システムテスト**
@@ -63,6 +68,6 @@ Phase 6-2では、AICA-SySシステムのユーザー認証・アクセス管理
 ## 期待される成果
 
 - 本番環境での安定した認証システム
-- Google OAuth認証の完全実装
+- Google OAuth 認証の完全実装
 - ユーザー管理機能の完成
 - ダッシュボード機能の実装

@@ -60,11 +60,7 @@ class AuthSystemTester {
   }
 
   async testAuthEndpoints() {
-    const endpoints = [
-      '/auth/providers',
-      '/auth/session',
-      '/auth/csrf',
-    ];
+    const endpoints = ['/auth/providers', '/auth/session', '/auth/csrf'];
 
     const results = {};
 
@@ -99,9 +95,10 @@ class AuthSystemTester {
       }
 
       // Check if Google OAuth button is present
-      const hasGoogleAuth = response.data.includes('Google') || 
-                           response.data.includes('google') ||
-                           response.data.includes('oauth');
+      const hasGoogleAuth =
+        response.data.includes('Google') ||
+        response.data.includes('google') ||
+        response.data.includes('oauth');
 
       return {
         status: response.status,
@@ -139,10 +136,11 @@ class AuthSystemTester {
       });
 
       // Should redirect to sign-in page
-      const isRedirected = response.status === 302 || 
-                          response.status === 307 ||
-                          response.data.includes('signin') ||
-                          response.data.includes('auth');
+      const isRedirected =
+        response.status === 302 ||
+        response.status === 307 ||
+        response.data.includes('signin') ||
+        response.data.includes('auth');
 
       return {
         status: response.status,
@@ -154,7 +152,8 @@ class AuthSystemTester {
         return {
           status: error.response.status,
           isRedirected: true,
-          redirectLocation: error.response.headers.location || 'No redirect header',
+          redirectLocation:
+            error.response.headers.location || 'No redirect header',
         };
       }
       throw new Error(`Dashboard access test failed: ${error.message}`);
@@ -184,7 +183,8 @@ class AuthSystemTester {
       } catch (error) {
         results[endpoint] = {
           error: error.message,
-          requiresAuth: error.response?.status === 401 || error.response?.status === 403,
+          requiresAuth:
+            error.response?.status === 401 || error.response?.status === 403,
         };
       }
     }
@@ -204,11 +204,13 @@ class AuthSystemTester {
       return {
         providers: Object.keys(providers),
         hasGoogle: hasGoogle,
-        googleConfig: hasGoogle ? {
-          id: providers.google.id,
-          name: providers.google.name,
-          type: providers.google.type,
-        } : null,
+        googleConfig: hasGoogle
+          ? {
+              id: providers.google.id,
+              name: providers.google.name,
+              type: providers.google.type,
+            }
+          : null,
       };
     } catch (error) {
       throw new Error(`OAuth configuration test failed: ${error.message}`);
@@ -333,19 +335,29 @@ async function main() {
   try {
     // Core authentication tests
     await tester.runTest('Auth Endpoints', () => tester.testAuthEndpoints());
-    await tester.runTest('OAuth Configuration', () => tester.testOAuthConfiguration());
-    await tester.runTest('Session Management', () => tester.testSessionManagement());
+    await tester.runTest('OAuth Configuration', () =>
+      tester.testOAuthConfiguration()
+    );
+    await tester.runTest('Session Management', () =>
+      tester.testSessionManagement()
+    );
 
     // Frontend authentication tests
     await tester.runTest('Sign-in Page', () => tester.testSignInPage());
     await tester.runTest('Sign-out Page', () => tester.testSignOutPage());
-    await tester.runTest('Dashboard Access Control', () => tester.testDashboardAccess());
+    await tester.runTest('Dashboard Access Control', () =>
+      tester.testDashboardAccess()
+    );
 
     // User management tests
-    await tester.runTest('User Management Endpoints', () => tester.testUserManagementEndpoints());
+    await tester.runTest('User Management Endpoints', () =>
+      tester.testUserManagementEndpoints()
+    );
 
     // Security tests
-    await tester.runTest('Security Headers', () => tester.testSecurityHeaders());
+    await tester.runTest('Security Headers', () =>
+      tester.testSecurityHeaders()
+    );
 
     // Generate final report
     const success = tester.generateReport();

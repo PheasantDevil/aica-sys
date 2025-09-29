@@ -1,7 +1,7 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Activity, BookOpen, Mail, TrendingUp } from 'lucide-react';
 
 export function RecentActivity() {
@@ -14,7 +14,7 @@ export function RecentActivity() {
       description: '記事を読みました',
       timestamp: '2時間前',
       icon: BookOpen,
-      color: 'blue'
+      color: 'blue',
     },
     {
       id: '2',
@@ -23,7 +23,7 @@ export function RecentActivity() {
       description: 'ニュースレターを受信しました',
       timestamp: '1日前',
       icon: Mail,
-      color: 'green'
+      color: 'green',
     },
     {
       id: '3',
@@ -32,7 +32,7 @@ export function RecentActivity() {
       description: 'トレンド分析を確認しました',
       timestamp: '2日前',
       icon: TrendingUp,
-      color: 'purple'
+      color: 'purple',
     },
     {
       id: '4',
@@ -41,8 +41,8 @@ export function RecentActivity() {
       description: 'サブスクリプションを開始しました',
       timestamp: '3日前',
       icon: Activity,
-      color: 'orange'
-    }
+      color: 'orange',
+    },
   ];
 
   const getActivityIcon = (type: string) => {
@@ -63,30 +63,34 @@ export function RecentActivity() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Activity className="h-5 w-5" />
+        <CardTitle className='flex items-center gap-2'>
+          <Activity className='h-5 w-5' />
           最近のアクティビティ
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          {activities.map((activity) => {
+        <div className='space-y-4'>
+          {activities.map(activity => {
             const Icon = activity.icon;
             return (
-              <div key={activity.id} className="flex items-start gap-3">
-                <div className={`p-2 rounded-full ${getActivityColor(activity.type)}`}>
-                  <Icon className="h-4 w-4" />
+              <div key={activity.id} className='flex items-start gap-3'>
+                <div
+                  className={`p-2 rounded-full ${getActivityColor(
+                    activity.type
+                  )}`}
+                >
+                  <Icon className='h-4 w-4' />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-gray-900 truncate">
+                <div className='flex-1 min-w-0'>
+                  <div className='flex items-center justify-between'>
+                    <p className='text-sm font-medium text-gray-900 truncate'>
                       {activity.title}
                     </p>
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant='outline' className='text-xs'>
                       {activity.timestamp}
                     </Badge>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className='text-sm text-gray-500 mt-1'>
                     {activity.description}
                   </p>
                 </div>
@@ -94,11 +98,11 @@ export function RecentActivity() {
             );
           })}
         </div>
-        
-        <div className="mt-4 pt-4 border-t">
+
+        <div className='mt-4 pt-4 border-t'>
           <a
-            href="/dashboard/activity"
-            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+            href='/dashboard/activity'
+            className='text-sm text-blue-600 hover:text-blue-800 font-medium'
           >
             すべてのアクティビティを見る →
           </a>

@@ -24,13 +24,16 @@ function log(message, color = 'reset') {
 function generateGoogleOAuthSetupGuide() {
   log('🚀 Google OAuth Production Setup Guide', 'blue');
   log('', 'reset');
-  
+
   log('📋 Step 1: Google Cloud Console Setup', 'yellow');
-  log('1. Go to Google Cloud Console: https://console.cloud.google.com/', 'reset');
+  log(
+    '1. Go to Google Cloud Console: https://console.cloud.google.com/',
+    'reset'
+  );
   log('2. Create a new project or select existing project', 'reset');
   log('3. Enable Google+ API and Google OAuth2 API', 'reset');
   log('', 'reset');
-  
+
   log('📋 Step 2: OAuth Consent Screen Configuration', 'yellow');
   log('1. Go to APIs & Services > OAuth consent screen', 'reset');
   log('2. Choose "External" user type', 'reset');
@@ -44,7 +47,7 @@ function generateGoogleOAuthSetupGuide() {
   log('   - openid', 'reset');
   log('5. Add test users (for testing phase)', 'reset');
   log('', 'reset');
-  
+
   log('📋 Step 3: OAuth Client ID Creation', 'yellow');
   log('1. Go to APIs & Services > Credentials', 'reset');
   log('2. Click "Create Credentials" > "OAuth client ID"', 'reset');
@@ -57,30 +60,33 @@ function generateGoogleOAuthSetupGuide() {
   log('   - https://www.aica-sys.vercel.app/api/auth/callback/google', 'reset');
   log('6. Copy the Client ID and Client Secret', 'reset');
   log('', 'reset');
-  
+
   log('📋 Step 4: Environment Variables Setup', 'yellow');
-  log('Add the following environment variables to your production environment:', 'reset');
+  log(
+    'Add the following environment variables to your production environment:',
+    'reset'
+  );
   log('', 'reset');
   log('GOOGLE_CLIENT_ID=your-google-client-id', 'green');
   log('GOOGLE_CLIENT_SECRET=your-google-client-secret', 'green');
   log('NEXTAUTH_URL=https://aica-sys.vercel.app', 'green');
   log('NEXTAUTH_SECRET=your-nextauth-secret', 'green');
   log('', 'reset');
-  
+
   log('📋 Step 5: Domain Verification (Optional)', 'yellow');
   log('1. Go to Google Search Console', 'reset');
   log('2. Add your domain: aica-sys.vercel.app', 'reset');
   log('3. Verify domain ownership', 'reset');
   log('4. This helps with OAuth consent screen approval', 'reset');
   log('', 'reset');
-  
+
   log('📋 Step 6: Production Testing', 'yellow');
   log('1. Test OAuth flow in production', 'reset');
   log('2. Verify user data is correctly retrieved', 'reset');
   log('3. Test sign-in and sign-out functionality', 'reset');
   log('4. Check session management', 'reset');
   log('', 'reset');
-  
+
   log('⚠️  Important Security Notes:', 'red');
   log('- Never commit OAuth credentials to version control', 'red');
   log('- Use environment variables for all sensitive data', 'red');
@@ -165,11 +171,11 @@ GOOGLE_OAUTH_APP_DOMAIN=aica-sys.vercel.app
 function main() {
   log('🎯 Starting Google OAuth Production Setup...', 'blue');
   log('', 'reset');
-  
+
   generateGoogleOAuthSetupGuide();
   createOAuthTestScript();
   createEnvironmentTemplate();
-  
+
   log('🎉 Google OAuth production setup guide completed!', 'green');
   log('', 'reset');
   log('📋 Next steps:', 'yellow');

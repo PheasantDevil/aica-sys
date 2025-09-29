@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
         token.uid = user.id;
         token.role = 'user'; // デフォルトロール
       }
-      
+
       // Google OAuth情報の保存
       if (account && profile) {
         token.googleId = profile.sub;
@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
         token.name = profile.name;
         token.picture = profile.picture;
       }
-      
+
       return token;
     },
     async redirect({ url, baseUrl }) {
