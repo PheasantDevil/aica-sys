@@ -17,6 +17,8 @@ import openai
 import requests
 from PIL import Image
 
+from ..utils.cache_decorators import (cache_article_data,
+                                      cache_newsletter_data, cache_result)
 from .ai_analyzer import AnalysisResult
 from .data_collector import ContentItem
 
@@ -86,6 +88,7 @@ class ContentGenerator:
             }
         }
 
+    @cache_result(expire=3600, key_prefix="content_generation")
     async def generate_content(
         self, 
         content_type: ContentType, 

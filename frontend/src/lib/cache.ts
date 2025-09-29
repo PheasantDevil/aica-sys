@@ -1,5 +1,7 @@
 'use client';
 
+import { QueryClient } from '@tanstack/react-query';
+
 interface CacheItem<T> {
   data: T;
   timestamp: number;
@@ -153,6 +155,104 @@ export function invalidateContentCache(): void {
   invalidateCache('articles:');
   invalidateCache('newsletters:');
   invalidateCache('trends:');
+}
+
+// React Query configuration with cache optimization
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      cacheTime: 10 * 60 * 1000, // 10 minutes
+      retry: 3,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: 'always',
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+});
+
+// Query key factory for consistent cache keys
+export const queryKeys = {
+  articles: {
+    all: ['articles'] as const,
+    lists: () => [...queryKeys.articles.all, 'list'] as const,
+    list: (filters: Record<string, any>) =>
+      [...queryKeys.articles.lists(), { filters }] as const,
+    details: () => [...queryKeys.articles.all, 'detail'] as const,
+    detail: (id: string) => [...queryKeys.articles.details(), id] as const,
+  },
+  newsletters: {
+    all: ['newsletters'] as const,
+    lists: () => [...queryKeys.newsletters.all, 'list'] as const,
+    list: (filters: Record<string, any>) =>
+      [...queryKeys.newsletters.lists(), { filters }] as const,
+    details: () => [...queryKeys.newsletters.all, 'detail'] as const,
+    detail: (id: string) => [...queryKeys.newsletters.details(), id] as const,
+  },
+  trends: {
+    all: ['trends'] as const,
+    lists: () => [...queryKeys.trends.all, 'list'] as const,
+    list: (filters: Record<string, any>) =>
+      [...queryKeys.trends.lists(), { filters }] as const,
+    details: () => [...queryKeys.trends.all, 'detail'] as const,
+    detail: (id: string) => [...queryKeys.trends.details(), id] as const,
+  },
+  user: {
+    all: ['user'] as const,
+    profile: (id: string) => [...queryKeys.user.all, 'profile', id] as const,
+    subscription: (id: string) =>
+      [...queryKeys.user.all, 'subscription', id] as const,
+  },
+  auth: {
+    all: ['auth'] as const,
+    user: () => [...queryKeys.auth.all, 'user'] as const,
+    session: () => [...queryKeys.auth.all, 'session'] as const,
+  },
+} as const;
+
+// Cache invalidation helpers for React Query
+export function invalidateQueries(queryClient: QueryClient, pattern: string) {
+  queryClient.invalidateQueries({ queryKey: [pattern] });
+}
+
+export function invalidateUserQueries(
+  queryClient: QueryClient,
+  userId: string
+) {
+  queryClient.invalidateQueries({ queryKey: queryKeys.user.all });
+  queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
+}
+
+export function invalidateContentQueries(queryClient: QueryClient) {
+  queryClient.invalidateQueries({ queryKey: queryKeys.articles.all });
+  queryClient.invalidateQueries({ queryKey: queryKeys.newsletters.all });
+  queryClient.invalidateQueries({ queryKey: queryKeys.trends.all });
+}
+
+// Prefetch utilities
+export async function prefetchArticles(
+  queryClient: QueryClient,
+  filters: Record<string, any> = {}
+) {
+  await queryClient.prefetchQuery({
+    queryKey: queryKeys.articles.list(filters),
+    queryFn: () => fetch('/api/content/articles').then(res => res.json()),
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+export async function prefetchTrends(
+  queryClient: QueryClient,
+  filters: Record<string, any> = {}
+) {
+  await queryClient.prefetchQuery({
+    queryKey: queryKeys.trends.list(filters),
+    queryFn: () => fetch('/api/content/trends').then(res => res.json()),
+    staleTime: 5 * 60 * 1000,
+  });
 }
 
 // Cleanup expired items every 5 minutes
