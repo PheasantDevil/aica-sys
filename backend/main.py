@@ -14,6 +14,8 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 # Import performance middleware
 from middleware.performance_middleware import (PerformanceMiddleware,
                                                performance_monitor)
+# Import monitoring middleware
+from middleware.monitoring_middleware import MonitoringMiddleware
 # Import security middleware
 from security.security_headers import SecurityHeadersMiddleware
 
@@ -35,6 +37,9 @@ app = FastAPI(
 
 # Add performance monitoring middleware (first)
 app.add_middleware(PerformanceMiddleware, enable_logging=True)
+
+# Add monitoring middleware
+app.add_middleware(MonitoringMiddleware)
 
 # Add security headers middleware
 app.add_middleware(SecurityHeadersMiddleware)
@@ -89,8 +94,8 @@ async def detailed_health_check():
 # Import routers
 from routers import (ai_router, analysis_router, auth_router,
                      collection_router, content_management_router,
-                     content_router, reports_router, subscription_router,
-                     user_router)
+                     content_router, monitoring_router, reports_router, 
+                     subscription_router, user_router)
 
 # Include routers
 app.include_router(content_router)
@@ -102,6 +107,7 @@ app.include_router(subscription_router.router)
 app.include_router(reports_router.router)
 app.include_router(user_router.router)
 app.include_router(content_management_router.router)
+app.include_router(monitoring_router.router)
 
 if __name__ == "__main__":
     uvicorn.run(
