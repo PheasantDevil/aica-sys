@@ -1,14 +1,42 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "backend/main.py",
+      "use": "@vercel/python"
+    }
+  ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/backend/api/$1"
+    },
+    {
+      "src": "/health",
+      "dest": "/backend/health"
+    },
+    {
+      "src": "/metrics",
+      "dest": "/backend/metrics"
+    },
+    {
       "src": "/(.*)",
-      "dest": "frontend/$1"
+      "dest": "/frontend/$1"
     }
   ],
   "env": {
     "NEXTAUTH_URL": "https://aica-sys.vercel.app",
     "NEXT_PUBLIC_BASE_URL": "https://aica-sys.vercel.app",
-    "NEXT_PUBLIC_API_URL": "https://aica-sys-backend.vercel.app"
+    "NEXT_PUBLIC_API_URL": "https://aica-sys.vercel.app/api",
+    "ENVIRONMENT": "production"
+  },
+  "functions": {
+    "backend/main.py": {
+      "maxDuration": 30
+    }
   }
 }
