@@ -3,17 +3,19 @@ AICA-SyS Backend Main Application
 AI-driven Content Curation & Automated Sales System
 """
 
-import os
 import logging
+import os
 
 import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-
 # Import performance middleware
-from middleware.performance_middleware import PerformanceMiddleware, performance_monitor
+from middleware.performance_middleware import (PerformanceMiddleware,
+                                               performance_monitor)
+# Import security middleware
+from security.security_headers import SecurityHeadersMiddleware
 
 # Load environment variables
 load_dotenv()
@@ -33,6 +35,9 @@ app = FastAPI(
 
 # Add performance monitoring middleware (first)
 app.add_middleware(PerformanceMiddleware, enable_logging=True)
+
+# Add security headers middleware
+app.add_middleware(SecurityHeadersMiddleware)
 
 # CORS middleware
 app.add_middleware(
@@ -82,14 +87,15 @@ async def detailed_health_check():
     return health_status
 
 # Import routers
-from routers import (ai_router, analysis_router, collection_router,
-                     content_router)
+from routers import (ai_router, analysis_router, auth_router,
+                     collection_router, content_router)
 
 # Include routers
 app.include_router(content_router)
 app.include_router(collection_router)
 app.include_router(analysis_router)
 app.include_router(ai_router.router)
+app.include_router(auth_router.router)
 
 if __name__ == "__main__":
     uvicorn.run(

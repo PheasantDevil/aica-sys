@@ -8,7 +8,7 @@ const https = require('https');
 const http = require('http');
 
 // Configuration
-const API_URL = 'http://localhost:8000';
+const API_URL = 'http://127.0.0.1:8000';
 const PRODUCTION_URL =
   'https://aica-sys-konishib0engineer-gmailcoms-projects.vercel.app';
 
