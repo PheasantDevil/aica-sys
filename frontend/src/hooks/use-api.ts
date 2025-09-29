@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { apiClient, ApiResponse, ApiError } from '@/lib/api-client';
+import { apiClient, ApiError, ApiResponse } from '@/lib/api-client';
+import { useCallback, useState } from 'react';
 import { useErrorHandler } from './use-error-handler';
 
 interface UseApiState<T> {
@@ -22,73 +22,77 @@ export function useApi<T = any>(options: UseApiOptions = {}) {
   });
 
   const { handleError } = useErrorHandler({
-    onError: options.onError ? (error: Error) => {
-      if ('status' in error && 'timestamp' in error) {
-        options.onError!(error as ApiError);
-      }
-    } : undefined,
+    onError: options.onError
+      ? (error: Error) => {
+          if ('status' in error && 'timestamp' in error) {
+            options.onError!(error as ApiError);
+          }
+        }
+      : undefined,
   });
 
-  const execute = useCallback(async <R = T>(
-    apiCall: () => Promise<ApiResponse<R>>
-  ): Promise<R | null> => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
+  const execute = useCallback(
+    async <R = T>(
+      apiCall: () => Promise<ApiResponse<R>>
+    ): Promise<R | null> => {
+      setState(prev => ({ ...prev, loading: true, error: null }));
 
-    try {
-      const response = await apiCall();
+      try {
+        const response = await apiCall();
 
-      if (response.success && response.data !== undefined) {
-        setState({
-          data: response.data as T,
-          loading: false,
-          error: null,
-        });
+        if (!response.error && response.data !== undefined) {
+          setState({
+            data: response.data as T,
+            loading: false,
+            error: null,
+          });
 
-        if (options.onSuccess) {
-          options.onSuccess(response.data);
+          if (options.onSuccess) {
+            options.onSuccess(response.data);
+          }
+
+          return response.data;
+        } else if (response.error) {
+          const apiError = new ApiError(response.error, 400, response);
+          setState(prev => ({
+            ...prev,
+            loading: false,
+            error: apiError,
+          }));
+
+          if (options.onError) {
+            options.onError(apiError);
+          } else {
+            handleError(apiError.message);
+          }
+
+          return null;
         }
 
-        return response.data;
-      } else if (response.error) {
+        return null;
+      } catch (error) {
+        const apiError = new ApiError(
+          error instanceof Error ? error.message : 'Unknown error',
+          500
+        );
+
         setState(prev => ({
           ...prev,
           loading: false,
-          error: response.error!,
+          error: apiError,
         }));
 
         if (options.onError) {
-          options.onError(response.error);
+          options.onError(apiError);
         } else {
-          handleError(response.error.message);
+          handleError(apiError.message);
         }
 
         return null;
       }
-
-      return null;
-    } catch (error) {
-      const apiError: ApiError = {
-        message: error instanceof Error ? error.message : 'Unknown error',
-        code: 'INTERNAL_SERVER_ERROR',
-        status: 0,
-        timestamp: new Date().toISOString(),
-      };
-
-      setState(prev => ({
-        ...prev,
-        loading: false,
-        error: apiError,
-      }));
-
-      if (options.onError) {
-        options.onError(apiError);
-      } else {
-        handleError(apiError.message);
-      }
-
-      return null;
-    }
-  }, [options, handleError]);
+    },
+    [options, handleError]
+  );
 
   const reset = useCallback(() => {
     setState({
@@ -109,21 +113,47 @@ export function useApi<T = any>(options: UseApiOptions = {}) {
 export function useApiCall<T = any>(options: UseApiOptions = {}) {
   const api = useApi<T>(options);
 
-  const get = useCallback((endpoint: string) => {
-    return api.execute(() => apiClient.get<T>(endpoint));
-  }, [api]);
+  const get = useCallback(
+    (endpoint: string) => {
+      return api.execute(() => apiClient.request<T>(endpoint));
+    },
+    [api]
+  );
 
-  const post = useCallback((endpoint: string, data?: any) => {
-    return api.execute(() => apiClient.post<T>(endpoint, data));
-  }, [api]);
+  const post = useCallback(
+    (endpoint: string, data?: any) => {
+      return api.execute(() =>
+        apiClient.request<T>(endpoint, {
+          method: 'POST',
+          body: JSON.stringify(data),
+        })
+      );
+    },
+    [api]
+  );
 
-  const put = useCallback((endpoint: string, data?: any) => {
-    return api.execute(() => apiClient.put<T>(endpoint, data));
-  }, [api]);
+  const put = useCallback(
+    (endpoint: string, data?: any) => {
+      return api.execute(() =>
+        apiClient.request<T>(endpoint, {
+          method: 'PUT',
+          body: JSON.stringify(data),
+        })
+      );
+    },
+    [api]
+  );
 
-  const del = useCallback((endpoint: string) => {
-    return api.execute(() => apiClient.delete<T>(endpoint));
-  }, [api]);
+  const del = useCallback(
+    (endpoint: string) => {
+      return api.execute(() =>
+        apiClient.request<T>(endpoint, {
+          method: 'DELETE',
+        })
+      );
+    },
+    [api]
+  );
 
   return {
     ...api,

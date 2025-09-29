@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session?.user?.id) {
+    if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     }
 
     const checkoutSession = await createCheckoutSession(
-      session.user.id,
+      session.user.email!,
       priceId,
       `${process.env.NEXTAUTH_URL}/dashboard?success=true`,
       `${process.env.NEXTAUTH_URL}/pricing?canceled=true`

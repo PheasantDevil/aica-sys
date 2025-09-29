@@ -1,7 +1,7 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api-client';
+import { useQuery } from '@tanstack/react-query';
 
 interface Trend {
   id: string;
@@ -29,7 +29,7 @@ interface Filters {
 }
 
 export function useTrends(filters: Filters) {
-  return useQuery({
+  const query = useQuery({
     queryKey: ['trends', filters],
     queryFn: async (): Promise<Trend[]> => {
       const response = await apiClient.getTrends({
@@ -62,7 +62,7 @@ export function useTrends(filters: Filters) {
         metrics: {
           mentions: 1247,
           growth: 150,
-          sentiment: 'positive',
+          sentiment: 'positive' as const,
         },
       },
       {
@@ -81,7 +81,7 @@ export function useTrends(filters: Filters) {
         metrics: {
           mentions: 892,
           growth: 89,
-          sentiment: 'positive',
+          sentiment: 'positive' as const,
         },
       },
       {
@@ -100,7 +100,7 @@ export function useTrends(filters: Filters) {
         metrics: {
           mentions: 654,
           growth: 300,
-          sentiment: 'positive',
+          sentiment: 'positive' as const,
         },
       },
       {
@@ -119,7 +119,7 @@ export function useTrends(filters: Filters) {
         metrics: {
           mentions: 423,
           growth: 45,
-          sentiment: 'positive',
+          sentiment: 'positive' as const,
         },
       },
       {
@@ -143,7 +143,7 @@ export function useTrends(filters: Filters) {
         metrics: {
           mentions: 312,
           growth: 67,
-          sentiment: 'neutral',
+          sentiment: 'neutral' as const,
         },
       },
       {
@@ -162,9 +162,15 @@ export function useTrends(filters: Filters) {
         metrics: {
           mentions: 198,
           growth: 34,
-          sentiment: 'positive',
+          sentiment: 'positive' as const,
         },
       },
     ],
   });
+
+  return {
+    trends: query.data || [],
+    isLoading: query.isLoading,
+    error: query.error,
+  };
 }

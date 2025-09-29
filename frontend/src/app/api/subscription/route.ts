@@ -7,11 +7,11 @@ export async function GET() {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session?.user?.id) {
+    if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const subscription = await getUserSubscription(session.user.id);
+    const subscription = await getUserSubscription(session.user.email!);
 
     return NextResponse.json(subscription);
   } catch (error) {

@@ -8,6 +8,18 @@ export interface ApiResponse<T = any> {
   message?: string;
 }
 
+export class ApiError extends Error {
+  public status: number;
+  public response?: ApiResponse;
+
+  constructor(message: string, status: number, response?: ApiResponse) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.response = response;
+  }
+}
+
 export class ApiClient {
   private baseURL: string;
   private csrfToken: string | null = null;
@@ -23,7 +35,7 @@ export class ApiClient {
     return this.csrfToken;
   }
 
-  private async request<T>(
+  async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<ApiResponse<T>> {
@@ -35,11 +47,11 @@ export class ApiClient {
     }
 
     const url = `${this.baseURL}${endpoint}`;
-    
+
     // Get security headers
     const sessionId = SecurityUtils.getSessionId();
     const csrfToken = await this.getCSRFToken();
-    
+
     const defaultHeaders = {
       'Content-Type': 'application/json',
       'X-Session-ID': sessionId || '',
@@ -57,20 +69,20 @@ export class ApiClient {
 
     try {
       const response = await fetch(url, config);
-      
+
       // Handle different response types
       if (response.status === 429) {
         return {
           error: 'Rate limit exceeded. Please try again later.',
         };
       }
-      
+
       if (response.status === 403) {
         return {
           error: 'Access forbidden. Please check your permissions.',
         };
       }
-      
+
       if (response.status === 401) {
         // Clear session on unauthorized
         SecurityUtils.clearSession();
@@ -78,10 +90,12 @@ export class ApiClient {
           error: 'Authentication required. Please log in again.',
         };
       }
-      
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+        throw new Error(
+          errorData.detail || `HTTP error! status: ${response.status}`
+        );
       }
 
       const data = await response.json();
@@ -89,7 +103,8 @@ export class ApiClient {
     } catch (error) {
       console.error('API request failed:', error);
       return {
-        error: error instanceof Error ? error.message : 'Unknown error occurred',
+        error:
+          error instanceof Error ? error.message : 'Unknown error occurred',
       };
     }
   }
@@ -100,7 +115,9 @@ export class ApiClient {
   }
 
   // AI Analysis
-  async analyzeContent(prompt: string): Promise<ApiResponse<{ analysis: string }>> {
+  async analyzeContent(
+    prompt: string
+  ): Promise<ApiResponse<{ analysis: string }>> {
     return this.request('/ai/analyze', {
       method: 'POST',
       body: JSON.stringify({ prompt }),
@@ -108,7 +125,10 @@ export class ApiClient {
   }
 
   // Content Generation
-  async generateContent(type: string, topic: string): Promise<ApiResponse<{ content: string }>> {
+  async generateContent(
+    type: string,
+    topic: string
+  ): Promise<ApiResponse<{ content: string }>> {
     return this.request('/ai/generate', {
       method: 'POST',
       body: JSON.stringify({ type, topic }),
@@ -132,7 +152,7 @@ export class ApiClient {
 
     const queryString = searchParams.toString();
     const endpoint = queryString ? `/articles?${queryString}` : '/articles';
-    
+
     return this.request(endpoint);
   }
 
@@ -150,8 +170,10 @@ export class ApiClient {
     if (params?.limit) searchParams.append('limit', params.limit.toString());
 
     const queryString = searchParams.toString();
-    const endpoint = queryString ? `/newsletters?${queryString}` : '/newsletters';
-    
+    const endpoint = queryString
+      ? `/newsletters?${queryString}`
+      : '/newsletters';
+
     return this.request(endpoint);
   }
 
@@ -176,7 +198,7 @@ export class ApiClient {
 
     const queryString = searchParams.toString();
     const endpoint = queryString ? `/trends?${queryString}` : '/trends';
-    
+
     return this.request(endpoint);
   }
 
@@ -210,8 +232,10 @@ export class ApiClient {
     if (params?.limit) searchParams.append('limit', params.limit.toString());
 
     const queryString = searchParams.toString();
-    const endpoint = queryString ? `/analysis/results?${queryString}` : '/analysis/results';
-    
+    const endpoint = queryString
+      ? `/analysis/results?${queryString}`
+      : '/analysis/results';
+
     return this.request(endpoint);
   }
 

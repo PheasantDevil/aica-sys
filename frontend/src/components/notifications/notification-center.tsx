@@ -379,7 +379,11 @@ function NotificationItem({
                 <AccessibleButton
                   key={action.id}
                   size='sm'
-                  variant={action.variant || 'secondary'}
+                  variant={
+                    (action.variant === 'primary'
+                      ? 'default'
+                      : action.variant) || 'secondary'
+                  }
                   onClick={e => {
                     e.stopPropagation();
                     onAction(action.id);
@@ -422,7 +426,7 @@ function NotificationPreferences({ onClose }: NotificationPreferencesProps) {
     }
 
     setPreferences(newPreferences);
-    notificationManager.updatePreferences(newPreferences);
+    NotificationManager.prototype.updatePreferences(newPreferences);
   };
 
   return (

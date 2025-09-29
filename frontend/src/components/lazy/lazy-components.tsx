@@ -1,16 +1,16 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { ComponentType } from 'react';
 import { Loading } from '@/components/ui/loading';
+import dynamic from 'next/dynamic';
+import React, { ComponentType } from 'react';
 
 // Lazy loading wrapper with loading state
 export function createLazyComponent<T = {}>(
-  importFunc: () => Promise<{ default: ComponentType<T> }>,
+  importFunc: () => Promise<any>,
   fallback?: ComponentType
 ) {
   return dynamic(importFunc, {
-    loading: fallback ? () => <fallback /> : () => <Loading />,
+    loading: fallback ? () => React.createElement(fallback) : () => <Loading />,
     ssr: false,
   });
 }
@@ -52,17 +52,4 @@ export const LazySettings = createLazyComponent(
 );
 
 // Heavy components that should be lazy loaded
-export const LazyChart = createLazyComponent(
-  () => import('@/components/ui/chart'),
-  () => <div className="h-64 bg-muted animate-pulse rounded" />
-);
-
-export const LazyDataTable = createLazyComponent(
-  () => import('@/components/ui/data-table'),
-  () => <Loading />
-);
-
-export const LazyRichTextEditor = createLazyComponent(
-  () => import('@/components/ui/rich-text-editor'),
-  () => <div className="h-32 bg-muted animate-pulse rounded" />
-);
+// Note: These components will be implemented in future phases

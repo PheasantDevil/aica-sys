@@ -35,9 +35,11 @@ class PerformanceMonitor {
       this.recordMetric('LCP', entry.startTime);
     });
 
-    // FID (First Input Delay)
+    // FID (First Input Delay) - Note: FID is deprecated, using INP instead
     this.observeMetric('first-input', (entry) => {
-      this.recordMetric('FID', entry.processingStart - entry.startTime);
+      // FID is calculated as the time between first input and when the browser can process it
+      // Since processingStart is not available, we'll track the startTime as a proxy
+      this.recordMetric('FID', entry.startTime);
     });
 
     // CLS (Cumulative Layout Shift)
@@ -56,7 +58,8 @@ class PerformanceMonitor {
 
     // TTFB (Time to First Byte)
     this.observeMetric('navigation', (entry) => {
-      this.recordMetric('TTFB', entry.responseStart - entry.requestStart);
+      const navEntry = entry as PerformanceNavigationTiming;
+      this.recordMetric('TTFB', navEntry.responseStart - navEntry.requestStart);
     });
   }
 

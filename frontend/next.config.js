@@ -13,13 +13,13 @@ const nextConfig = {
       },
     },
   },
-  
+
   // Compiler optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
     styledComponents: true,
   },
-  
+
   // Bundle analyzer
   webpack: (config, { dev, isServer }) => {
     // Bundle analyzer
@@ -32,20 +32,20 @@ const nextConfig = {
         })
       );
     }
-    
+
     // Optimize imports
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': require('path').resolve(__dirname, 'src'),
     };
-    
+
     // Tree shaking optimization (disabled due to webpack conflict)
     // config.optimization = {
     //   ...config.optimization,
     //   usedExports: true,
     //   sideEffects: false,
     // };
-    
+
     return config;
   },
   async headers() {
@@ -75,7 +75,8 @@ const nextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co https://*.vercel.app; frame-src 'none';",
+            value:
+              "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co https://*.vercel.app; frame-src 'none';",
           },
         ],
       },
@@ -90,6 +91,30 @@ const nextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: '/api/content/:path*',
+        destination: 'http://localhost:8000/api/content/:path*',
+      },
+      {
+        source: '/api/analysis/:path*',
+        destination: 'http://localhost:8000/api/analysis/:path*',
+      },
+      {
+        source: '/api/collection/:path*',
+        destination: 'http://localhost:8000/api/collection/:path*',
+      },
+      {
+        source: '/api/ai/:path*',
+        destination: 'http://localhost:8000/api/ai/:path*',
+      },
+      {
+        source: '/health',
+        destination: 'http://localhost:8000/health',
+      },
+    ];
+  },
   // Image optimization
   images: {
     domains: ['images.unsplash.com', 'via.placeholder.com'],
@@ -98,7 +123,7 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  
+
   // Performance settings
   compress: true,
   poweredByHeader: false,
@@ -106,26 +131,13 @@ const nextConfig = {
   httpAgentOptions: {
     keepAlive: true,
   },
-  
+
   // Output optimization
   output: 'standalone',
   swcMinify: true,
-  
+
   // Experimental features for performance
-  experimental: {
-    ...nextConfig.experimental,
-    serverComponentsExternalPackages: ['@supabase/supabase-js'],
-    optimizeCss: true,
-    optimizePackageImports: ['@supabase/supabase-js', 'react-hot-toast'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
-  },
+  serverComponentsExternalPackages: ['@supabase/supabase-js'],
 };
 
 module.exports = nextConfig;

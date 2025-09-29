@@ -7,10 +7,10 @@ import { OrderSummary } from '@/components/payment/order-summary';
 import { useSubscription } from '@/hooks/use-subscription';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 
-export default function CheckoutPage() {
+function CheckoutContent() {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -82,5 +82,26 @@ export default function CheckoutPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="container py-20">
+          <div className="flex items-center justify-center">
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-6 w-6 animate-spin" />
+              <span>読み込み中...</span>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
   );
 }

@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+import { onCLS, onFCP, onLCP, onTTFB } from 'web-vitals';
 
 interface PerformanceMetrics {
   CLS: number | null;
-  FID: number | null;
   FCP: number | null;
   LCP: number | null;
   TTFB: number | null;
@@ -16,13 +15,12 @@ interface PerformanceMonitorProps {
   enabled?: boolean;
 }
 
-const PerformanceMonitor = ({ 
-  onMetricsUpdate, 
-  enabled = true 
+const PerformanceMonitor = ({
+  onMetricsUpdate,
+  enabled = true,
 }: PerformanceMonitorProps) => {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     CLS: null,
-    FID: null,
     FCP: null,
     LCP: null,
     TTFB: null,
@@ -37,50 +35,52 @@ const PerformanceMonitor = ({
           ...prev,
           [metric.name]: metric.value,
         };
-        
+
         if (onMetricsUpdate) {
           onMetricsUpdate(newMetrics);
         }
-        
+
         return newMetrics;
       });
     };
 
     // Collect Core Web Vitals
-    getCLS(updateMetrics);
-    getFID(updateMetrics);
-    getFCP(updateMetrics);
-    getLCP(updateMetrics);
-    getTTFB(updateMetrics);
+    onCLS(updateMetrics);
+    onFCP(updateMetrics);
+    onLCP(updateMetrics);
+    onTTFB(updateMetrics);
 
     // Collect additional performance metrics
     if (typeof window !== 'undefined') {
       // First Contentful Paint
-      const observer = new PerformanceObserver((list) => {
+      const observer = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           if (entry.entryType === 'paint') {
             updateMetrics({
-              name: entry.name === 'first-contentful-paint' ? 'FCP' : entry.name,
+              name:
+                entry.name === 'first-contentful-paint' ? 'FCP' : entry.name,
               value: entry.startTime,
             });
           }
         }
       });
-      
+
       observer.observe({ entryTypes: ['paint'] });
 
       // Resource timing
-      const resourceObserver = new PerformanceObserver((list) => {
+      const resourceObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           if (entry.entryType === 'resource') {
             const resource = entry as PerformanceResourceTiming;
             if (resource.transferSize > 0) {
-              console.log(`Resource loaded: ${resource.name} (${resource.transferSize} bytes)`);
+              console.log(
+                `Resource loaded: ${resource.name} (${resource.transferSize} bytes)`
+              );
             }
           }
         }
       });
-      
+
       resourceObserver.observe({ entryTypes: ['resource'] });
 
       return () => {

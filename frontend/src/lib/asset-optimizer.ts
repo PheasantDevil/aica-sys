@@ -41,10 +41,7 @@ export function optimizeImageUrl(
   height: number,
   options: Partial<OptimizedImageProps> = {}
 ): string {
-  const {
-    quality = CDN_CONFIG.quality,
-    format = 'auto',
-  } = options;
+  const { quality = CDN_CONFIG.quality, format = 'auto' } = options;
 
   // CDNが設定されている場合
   if (CDN_CONFIG.baseUrl) {
@@ -89,18 +86,18 @@ export function generateBlurDataURL(width: number, height: number): string {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
-  
+
   const ctx = canvas.getContext('2d');
   if (!ctx) return '';
-  
+
   // シンプルなグラデーション
   const gradient = ctx.createLinearGradient(0, 0, width, height);
   gradient.addColorStop(0, '#f3f4f6');
   gradient.addColorStop(1, '#e5e7eb');
-  
+
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
-  
+
   return canvas.toDataURL('image/jpeg', 0.1);
 }
 
@@ -109,16 +106,16 @@ export function generateBlurDataURL(width: number, height: number): string {
  */
 export function preloadAsset(href: string, as: string, type?: string): void {
   if (typeof window === 'undefined') return;
-  
+
   const link = document.createElement('link');
   link.rel = 'preload';
   link.href = href;
   link.as = as;
-  
+
   if (type) {
     link.type = type;
   }
-  
+
   document.head.appendChild(link);
 }
 
@@ -139,7 +136,10 @@ export function preloadImage(href: string): void {
 /**
  * スクリプトのプリロード
  */
-export function preloadScript(href: string, type: string = 'text/javascript'): void {
+export function preloadScript(
+  href: string,
+  type: string = 'text/javascript'
+): void {
   preloadAsset(href, 'script', type);
 }
 
@@ -158,18 +158,21 @@ export function lazyLoadAsset(
   callback: () => void,
   options: IntersectionObserverInit = {}
 ): IntersectionObserver {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        callback();
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    rootMargin: '50px',
-    threshold: 0.1,
-    ...options,
-  });
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          callback();
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      rootMargin: '50px',
+      threshold: 0.1,
+      ...options,
+    }
+  );
 
   observer.observe(element);
   return observer;
@@ -199,7 +202,9 @@ export class AssetCache {
   set(key: string, value: any): void {
     if (this.cache.size >= this.maxSize) {
       const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
+      if (firstKey) {
+        this.cache.delete(firstKey);
+      }
     }
     this.cache.set(key, value);
   }

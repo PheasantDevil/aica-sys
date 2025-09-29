@@ -1,8 +1,8 @@
 'use client';
 
+import { generateBlurDataURL, optimizeImageUrl } from '@/lib/asset-optimizer';
 import Image from 'next/image';
-import { useState, useRef, useEffect } from 'react';
-import { optimizeImageUrl, generateBlurDataURL, lazyLoadImage } from '@/lib/asset-optimizer';
+import { useEffect, useRef, useState } from 'react';
 
 interface LazyImageProps {
   src: string;
@@ -15,7 +15,7 @@ interface LazyImageProps {
   blurDataURL?: string;
   quality?: number;
   sizes?: string;
-  format?: 'webp' | 'avif' | 'jpeg' | 'png' | 'auto';
+  format?: 'webp' | 'avif' | 'jpeg' | 'png';
   enableCDN?: boolean;
 }
 
@@ -30,7 +30,7 @@ const LazyImage = ({
   blurDataURL,
   quality = 75,
   sizes,
-  format = 'auto',
+  format = 'webp',
   enableCDN = true,
 }: LazyImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -65,7 +65,7 @@ const LazyImage = ({
   };
 
   // 最適化された画像URLを生成
-  const optimizedSrc = enableCDN 
+  const optimizedSrc = enableCDN
     ? optimizeImageUrl(src, width, height, { quality, format })
     : src;
 
@@ -95,10 +95,10 @@ const LazyImage = ({
           }`}
         />
       )}
-      
+
       {!isLoaded && isInView && (
-        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+        <div className='absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center'>
+          <div className='w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin' />
         </div>
       )}
     </div>

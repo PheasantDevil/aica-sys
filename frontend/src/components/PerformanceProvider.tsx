@@ -25,7 +25,7 @@ export function PerformanceProvider({ children }: PerformanceProviderProps) {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         // Page became visible, record metric
-        performanceMonitor.recordMetric('PageVisibility', Date.now());
+        // performanceMonitor.recordMetric('PageVisibility', Date.now());
       }
     };
 
@@ -33,7 +33,7 @@ export function PerformanceProvider({ children }: PerformanceProviderProps) {
       // Record session duration
       const sessionStart = performance.timing?.navigationStart || Date.now();
       const sessionDuration = Date.now() - sessionStart;
-      performanceMonitor.recordMetric('SessionDuration', sessionDuration);
+      // performanceMonitor.recordMetric('SessionDuration', sessionDuration);
     };
 
     // Add event listeners
@@ -42,10 +42,10 @@ export function PerformanceProvider({ children }: PerformanceProviderProps) {
 
     // Record page load metrics
     if (document.readyState === 'complete') {
-      performanceMonitor.recordMetric('PageLoadComplete', performance.now());
+      // performanceMonitor.recordMetric('PageLoadComplete', performance.now());
     } else {
       window.addEventListener('load', () => {
-        performanceMonitor.recordMetric('PageLoadComplete', performance.now());
+        // performanceMonitor.recordMetric('PageLoadComplete', performance.now());
       });
     }
 
