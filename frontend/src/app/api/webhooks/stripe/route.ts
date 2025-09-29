@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -30,33 +30,43 @@ export async function POST(request: NextRequest) {
     // Handle the event
     switch (event.type) {
       case 'customer.subscription.created':
-        await handleSubscriptionCreated(event.data.object as Stripe.Subscription);
+        await handleSubscriptionCreated(
+          event.data.object as Stripe.Subscription
+        );
         break;
-      
+
       case 'customer.subscription.updated':
-        await handleSubscriptionUpdated(event.data.object as Stripe.Subscription);
+        await handleSubscriptionUpdated(
+          event.data.object as Stripe.Subscription
+        );
         break;
-      
+
       case 'customer.subscription.deleted':
-        await handleSubscriptionDeleted(event.data.object as Stripe.Subscription);
+        await handleSubscriptionDeleted(
+          event.data.object as Stripe.Subscription
+        );
         break;
-      
+
       case 'invoice.payment_succeeded':
         await handlePaymentSucceeded(event.data.object as Stripe.Invoice);
         break;
-      
+
       case 'invoice.payment_failed':
         await handlePaymentFailed(event.data.object as Stripe.Invoice);
         break;
-      
+
       case 'payment_intent.succeeded':
-        await handlePaymentIntentSucceeded(event.data.object as Stripe.PaymentIntent);
+        await handlePaymentIntentSucceeded(
+          event.data.object as Stripe.PaymentIntent
+        );
         break;
-      
+
       case 'checkout.session.completed':
-        await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
+        await handleCheckoutCompleted(
+          event.data.object as Stripe.Checkout.Session
+        );
         break;
-      
+
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }
@@ -73,23 +83,28 @@ export async function POST(request: NextRequest) {
 
 async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
   console.log('Subscription created:', subscription.id);
-  
+
   try {
     // Update user subscription status in database
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        stripe_subscription_id: subscription.id,
-        customer_id: subscription.customer as string,
-        status: subscription.status,
-        current_period_start: new Date(subscription.current_period_start * 1000),
-        current_period_end: new Date(subscription.current_period_end * 1000),
-        price_id: subscription.items.data[0]?.price.id,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          stripe_subscription_id: subscription.id,
+          customer_id: subscription.customer as string,
+          status: subscription.status,
+          current_period_start: new Date(
+            subscription.current_period_start * 1000
+          ),
+          current_period_end: new Date(subscription.current_period_end * 1000),
+          price_id: subscription.items.data[0]?.price.id,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to update subscription: ${response.statusText}`);
@@ -103,20 +118,25 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   console.log('Subscription updated:', subscription.id);
-  
+
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions/${subscription.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        status: subscription.status,
-        current_period_start: new Date(subscription.current_period_start * 1000),
-        current_period_end: new Date(subscription.current_period_end * 1000),
-        cancel_at_period_end: subscription.cancel_at_period_end,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions/${subscription.id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          status: subscription.status,
+          current_period_start: new Date(
+            subscription.current_period_start * 1000
+          ),
+          current_period_end: new Date(subscription.current_period_end * 1000),
+          cancel_at_period_end: subscription.cancel_at_period_end,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to update subscription: ${response.statusText}`);
@@ -130,11 +150,14 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   console.log('Subscription deleted:', subscription.id);
-  
+
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions/${subscription.id}`, {
-      method: 'DELETE',
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions/${subscription.id}`,
+      {
+        method: 'DELETE',
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to delete subscription: ${response.statusText}`);
@@ -148,23 +171,28 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 
 async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
   console.log('Payment succeeded for invoice:', invoice.id);
-  
+
   try {
     // Update subscription status to active
     if (invoice.subscription) {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions/${invoice.subscription}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          status: 'active',
-          last_payment_date: new Date(),
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions/${invoice.subscription}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            status: 'active',
+            last_payment_date: new Date(),
+          }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(`Failed to update subscription: ${response.statusText}`);
+        throw new Error(
+          `Failed to update subscription: ${response.statusText}`
+        );
       }
     }
 
@@ -176,23 +204,28 @@ async function handlePaymentSucceeded(invoice: Stripe.Invoice) {
 
 async function handlePaymentFailed(invoice: Stripe.Invoice) {
   console.log('Payment failed for invoice:', invoice.id);
-  
+
   try {
     // Update subscription status to past_due
     if (invoice.subscription) {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions/${invoice.subscription}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          status: 'past_due',
-          last_payment_failed_date: new Date(),
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/subscriptions/${invoice.subscription}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            status: 'past_due',
+            last_payment_failed_date: new Date(),
+          }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(`Failed to update subscription: ${response.statusText}`);
+        throw new Error(
+          `Failed to update subscription: ${response.statusText}`
+        );
       }
     }
 
@@ -202,24 +235,29 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
   }
 }
 
-async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {
+async function handlePaymentIntentSucceeded(
+  paymentIntent: Stripe.PaymentIntent
+) {
   console.log('Payment intent succeeded:', paymentIntent.id);
-  
+
   try {
     // Handle one-time payments (like premium reports)
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        stripe_payment_intent_id: paymentIntent.id,
-        amount: paymentIntent.amount,
-        currency: paymentIntent.currency,
-        status: 'succeeded',
-        metadata: paymentIntent.metadata,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/payments`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          stripe_payment_intent_id: paymentIntent.id,
+          amount: paymentIntent.amount,
+          currency: paymentIntent.currency,
+          status: 'succeeded',
+          metadata: paymentIntent.metadata,
+        }),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to record payment: ${response.statusText}`);
@@ -233,25 +271,30 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   console.log('Checkout session completed:', session.id);
-  
+
   try {
     // Handle successful checkout completion
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout/completed`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        session_id: session.id,
-        customer_id: session.customer,
-        subscription_id: session.subscription,
-        payment_intent_id: session.payment_intent,
-        metadata: session.metadata,
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/checkout/completed`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          session_id: session.id,
+          customer_id: session.customer,
+          subscription_id: session.subscription,
+          payment_intent_id: session.payment_intent,
+          metadata: session.metadata,
+        }),
+      }
+    );
 
     if (!response.ok) {
-      throw new Error(`Failed to handle checkout completion: ${response.statusText}`);
+      throw new Error(
+        `Failed to handle checkout completion: ${response.statusText}`
+      );
     }
 
     console.log('Checkout completion handled successfully');

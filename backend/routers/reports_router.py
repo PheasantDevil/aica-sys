@@ -3,22 +3,22 @@ Premium Reports Router
 Handles premium report generation and sales for revenue generation
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
-from sqlalchemy.orm import Session
-from typing import List, Optional
-from datetime import datetime, timedelta
-import stripe
-import os
 import json
+import os
+from datetime import datetime, timedelta
+from typing import List, Optional
 
+import stripe
 from database import get_db
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from models.content import Article, Newsletter, Trend
-from models.user import User
 from models.subscription import Subscription
+from models.user import User
 from security.auth_middleware import get_current_user
-from utils.logging import get_logger
 from services.ai_analyzer import AIAnalyzer
 from services.content_generator import ContentGenerator
+from sqlalchemy.orm import Session
+from utils.logging import get_logger
 
 router = APIRouter(prefix="/api/reports", tags=["reports"])
 logger = get_logger(__name__)

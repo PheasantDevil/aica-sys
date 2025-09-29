@@ -4,24 +4,26 @@ Supabase Production Database Setup Script
 This script helps set up the production database with proper RLS policies and initial data.
 """
 
+import asyncio
+import json
 import os
 import sys
-import asyncio
-import asyncpg
-from typing import Dict, Any
-import json
 from pathlib import Path
+from typing import Any, Dict
+
+import asyncpg
 
 # Add the backend directory to the Python path
 sys.path.append(str(Path(__file__).parent.parent / "backend"))
 
 from database import get_database_url
-from models.base import Base
-from models.user import User
-from models.subscription import Subscription
-from models.content import Article, Newsletter, Trend
-from models.collection import Collection
 from models.ai_models import AIModel
+from models.base import Base
+from models.collection import Collection
+from models.content import Article, Newsletter, Trend
+from models.subscription import Subscription
+from models.user import User
+
 
 class SupabaseProductionSetup:
     def __init__(self):
