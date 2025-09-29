@@ -4,19 +4,19 @@
 """
 
 import asyncio
+import json
 import logging
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
-from typing import Dict, List, Optional, Any
-from dataclasses import dataclass, field
-import json
+from typing import Any, Dict, List, Optional
 
-from sqlalchemy.orm import Session
 from database import get_db
 from models.content import Article, Newsletter, Trend
-from services.content_generator import ContentGenerator, ContentType
 from services.ai_analyzer import AIAnalyzer
+from services.content_generator import ContentGenerator, ContentType
 from services.data_collector import DataCollector
+from sqlalchemy.orm import Session
 from utils.logging import get_logger
 
 logger = get_logger(__name__)

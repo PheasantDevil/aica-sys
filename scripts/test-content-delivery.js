@@ -76,9 +76,10 @@ class ContentDeliveryTester {
         results[endpoint] = {
           status: response.status,
           data: response.data,
-          hasContent: response.data.articles?.length > 0 || 
-                     response.data.newsletters?.length > 0 ||
-                     response.data.trends?.length > 0,
+          hasContent:
+            response.data.articles?.length > 0 ||
+            response.data.newsletters?.length > 0 ||
+            response.data.trends?.length > 0,
         };
       } catch (error) {
         results[endpoint] = {
@@ -112,7 +113,8 @@ class ContentDeliveryTester {
       } catch (error) {
         results[endpoint] = {
           error: error.message,
-          requiresAuth: error.response?.status === 401 || error.response?.status === 403,
+          requiresAuth:
+            error.response?.status === 401 || error.response?.status === 403,
         };
       }
     }
@@ -125,7 +127,8 @@ class ContentDeliveryTester {
       // テスト用のコンテンツ作成リクエスト
       const testContent = {
         title: 'Test Article - TypeScript 5.0新機能',
-        content: 'これはテスト用の記事です。TypeScript 5.0の新機能について説明します。',
+        content:
+          'これはテスト用の記事です。TypeScript 5.0の新機能について説明します。',
         summary: 'TypeScript 5.0の新機能をテスト用に説明',
         tags: ['typescript', 'test', 'new-features'],
         content_type: 'article',
@@ -185,12 +188,7 @@ class ContentDeliveryTester {
   }
 
   async testFrontendContentPages() {
-    const pages = [
-      '/articles',
-      '/newsletters',
-      '/trends',
-      '/dashboard',
-    ];
+    const pages = ['/articles', '/newsletters', '/trends', '/dashboard'];
 
     const results = {};
 
@@ -202,10 +200,12 @@ class ContentDeliveryTester {
         });
         results[page] = {
           status: response.status,
-          title: response.data.match(/<title>(.*?)<\/title>/)?.[1] || 'No title',
-          hasContent: response.data.includes('article') || 
-                     response.data.includes('newsletter') ||
-                     response.data.includes('trend'),
+          title:
+            response.data.match(/<title>(.*?)<\/title>/)?.[1] || 'No title',
+          hasContent:
+            response.data.includes('article') ||
+            response.data.includes('newsletter') ||
+            response.data.includes('trend'),
         };
       } catch (error) {
         results[page] = {
@@ -220,10 +220,13 @@ class ContentDeliveryTester {
   async testContentAPIProxy() {
     try {
       // フロントエンドのAPIプロキシをテスト
-      const response = await axios.get(`${PRODUCTION_URL}/api/content/articles`, {
-        timeout: 15000,
-        validateStatus: status => status < 500,
-      });
+      const response = await axios.get(
+        `${PRODUCTION_URL}/api/content/articles`,
+        {
+          timeout: 15000,
+          validateStatus: status => status < 500,
+        }
+      );
 
       return {
         status: response.status,
@@ -249,7 +252,7 @@ class ContentDeliveryTester {
           key_topics: ['react', 'typescript', 'hooks'],
           summary: 'React 18の新機能について',
           recommendations: ['最新版にアップデート', '新機能を試す'],
-        }
+        },
       ];
 
       // 実際のAI生成は時間がかかるため、エンドポイントの存在確認のみ
@@ -290,7 +293,9 @@ class ContentDeliveryTester {
         contentLength: testContent.content.length > 50,
       };
 
-      const qualityScore = Object.values(qualityChecks).filter(Boolean).length / Object.keys(qualityChecks).length;
+      const qualityScore =
+        Object.values(qualityChecks).filter(Boolean).length /
+        Object.keys(qualityChecks).length;
 
       return {
         qualityChecks,
@@ -372,17 +377,31 @@ async function main() {
 
   try {
     // Core content tests
-    await tester.runTest('Content Endpoints', () => tester.testContentEndpoints());
-    await tester.runTest('Content Management Endpoints', () => tester.testContentManagementEndpoints());
-    await tester.runTest('Content Creation', () => tester.testContentCreation());
-    await tester.runTest('Schedule Management', () => tester.testScheduleManagement());
+    await tester.runTest('Content Endpoints', () =>
+      tester.testContentEndpoints()
+    );
+    await tester.runTest('Content Management Endpoints', () =>
+      tester.testContentManagementEndpoints()
+    );
+    await tester.runTest('Content Creation', () =>
+      tester.testContentCreation()
+    );
+    await tester.runTest('Schedule Management', () =>
+      tester.testScheduleManagement()
+    );
 
     // Frontend tests
-    await tester.runTest('Frontend Content Pages', () => tester.testFrontendContentPages());
-    await tester.runTest('Content API Proxy', () => tester.testContentAPIProxy());
+    await tester.runTest('Frontend Content Pages', () =>
+      tester.testFrontendContentPages()
+    );
+    await tester.runTest('Content API Proxy', () =>
+      tester.testContentAPIProxy()
+    );
 
     // AI and quality tests
-    await tester.runTest('Content Generation', () => tester.testContentGeneration());
+    await tester.runTest('Content Generation', () =>
+      tester.testContentGeneration()
+    );
     await tester.runTest('Content Quality', () => tester.testContentQuality());
 
     // Generate final report
@@ -390,7 +409,10 @@ async function main() {
 
     if (success) {
       log('\n🎉 Content delivery tests completed successfully!', 'green');
-      log('The content generation and delivery system is working properly.', 'green');
+      log(
+        'The content generation and delivery system is working properly.',
+        'green'
+      );
       return 0;
     } else {
       log('\n⚠️  Content delivery tests completed with issues.', 'yellow');
