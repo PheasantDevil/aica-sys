@@ -18,7 +18,9 @@ class MemoryCache {
     // Remove oldest items if cache is full
     if (this.cache.size >= this.maxSize) {
       const oldestKey = this.cache.keys().next().value;
-      this.cache.delete(oldestKey);
+      if (oldestKey) {
+        this.cache.delete(oldestKey);
+      }
     }
 
     this.cache.set(key, {
@@ -30,7 +32,7 @@ class MemoryCache {
 
   get<T>(key: string): T | null {
     const item = this.cache.get(key);
-    
+
     if (!item) {
       return null;
     }
@@ -47,12 +49,12 @@ class MemoryCache {
   has(key: string): boolean {
     const item = this.cache.get(key);
     if (!item) return false;
-    
+
     if (Date.now() - item.timestamp > item.ttl) {
       this.cache.delete(key);
       return false;
     }
-    
+
     return true;
   }
 
@@ -71,11 +73,15 @@ class MemoryCache {
   // Clean up expired items
   cleanup(): void {
     const now = Date.now();
-    for (const [key, item] of this.cache.entries()) {
+    const keysToDelete: string[] = [];
+
+    this.cache.forEach((item, key) => {
       if (now - item.timestamp > item.ttl) {
-        this.cache.delete(key);
+        keysToDelete.push(key);
       }
-    }
+    });
+
+    keysToDelete.forEach(key => this.cache.delete(key));
   }
 }
 
@@ -94,9 +100,9 @@ export const cacheKeys = {
 
 // Cache TTL constants (in milliseconds)
 export const CACHE_TTL = {
-  SHORT: 5 * 60 * 1000,      // 5 minutes
-  MEDIUM: 30 * 60 * 1000,    // 30 minutes
-  LONG: 2 * 60 * 60 * 1000,  // 2 hours
+  SHORT: 5 * 60 * 1000, // 5 minutes
+  MEDIUM: 30 * 60 * 1000, // 30 minutes
+  LONG: 2 * 60 * 60 * 1000, // 2 hours
   VERY_LONG: 24 * 60 * 60 * 1000, // 24 hours
 } as const;
 
@@ -116,7 +122,7 @@ export function withCache<T>(
 
     // Fetch data and cache it
     fetcher()
-      .then((data) => {
+      .then(data => {
         memoryCache.set(key, data, ttl);
         resolve(data);
       })
@@ -127,11 +133,15 @@ export function withCache<T>(
 // Cache invalidation utilities
 export function invalidateCache(pattern: string): void {
   const regex = new RegExp(pattern);
-  for (const key of memoryCache['cache'].keys()) {
+  const keysToDelete: string[] = [];
+
+  memoryCache['cache'].forEach((_, key) => {
     if (regex.test(key)) {
-      memoryCache.delete(key);
+      keysToDelete.push(key);
     }
-  }
+  });
+
+  keysToDelete.forEach(key => memoryCache.delete(key));
 }
 
 export function invalidateUserCache(userId: string): void {
@@ -147,7 +157,10 @@ export function invalidateContentCache(): void {
 
 // Cleanup expired items every 5 minutes
 if (typeof window !== 'undefined') {
-  setInterval(() => {
-    memoryCache.cleanup();
-  }, 5 * 60 * 1000);
+  setInterval(
+    () => {
+      memoryCache.cleanup();
+    },
+    5 * 60 * 1000
+  );
 }

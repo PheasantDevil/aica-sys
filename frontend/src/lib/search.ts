@@ -1,4 +1,4 @@
-import Fuse from 'fuse.js';
+import Fuse, { FuseResult, FuseResultMatch, FuseSortFunction } from 'fuse.js';
 
 export interface SearchableItem {
   id: string;
@@ -15,19 +15,19 @@ export interface SearchableItem {
 }
 
 export interface SearchOptions {
-  keys: string[];
+  keys: Array<{ name: string; weight: number }>;
   threshold: number;
   includeScore: boolean;
   includeMatches: boolean;
   minMatchCharLength: number;
   shouldSort: boolean;
-  sortFn?: (a: Fuse.FuseResult<SearchableItem>, b: Fuse.FuseResult<SearchableItem>) => number;
+  sortFn?: FuseSortFunction;
 }
 
 export interface SearchResult {
   item: SearchableItem;
   score?: number;
-  matches?: Fuse.FuseResultMatch[];
+  matches?: readonly FuseResultMatch[];
   refIndex: number;
 }
 
@@ -45,11 +45,12 @@ export interface SearchFilters {
 export class SearchEngine {
   private fuse: Fuse<SearchableItem>;
   private items: SearchableItem[] = [];
+  private options: SearchOptions;
 
   constructor(items: SearchableItem[] = [], options: Partial<SearchOptions> = {}) {
     this.items = items;
     
-    const defaultOptions: SearchOptions = {
+    this.options = {
       keys: [
         { name: 'title', weight: 0.3 },
         { name: 'content', weight: 0.2 },
@@ -66,19 +67,19 @@ export class SearchEngine {
       ...options,
     };
 
-    this.fuse = new Fuse(this.items, defaultOptions);
+    this.fuse = new Fuse(this.items, this.options);
   }
 
   // Add items to search index
   addItems(items: SearchableItem[]): void {
     this.items = [...this.items, ...items];
-    this.fuse = new Fuse(this.items, this.fuse.options);
+    this.fuse = new Fuse(this.items, this.options);
   }
 
   // Remove items from search index
   removeItems(ids: string[]): void {
     this.items = this.items.filter(item => !ids.includes(item.id));
-    this.fuse = new Fuse(this.items, this.fuse.options);
+    this.fuse = new Fuse(this.items, this.options);
   }
 
   // Update an item in the search index
@@ -86,7 +87,7 @@ export class SearchEngine {
     const index = this.items.findIndex(i => i.id === item.id);
     if (index !== -1) {
       this.items[index] = item;
-      this.fuse = new Fuse(this.items, this.fuse.options);
+      this.fuse = new Fuse(this.items, this.options);
     }
   }
 

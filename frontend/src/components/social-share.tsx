@@ -1,6 +1,6 @@
 'use client';
 
-import { analyticsEvents, trackEvent } from '@/lib/analytics';
+import { Analytics } from '@/lib/analytics';
 import { Check, Copy, Facebook, Linkedin, Share2, Twitter } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from './ui/button';
@@ -53,13 +53,19 @@ export function SocialShare({
         navigator.clipboard.writeText(url);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
-        trackEvent('copy_link', 'engagement', 'social_share');
+        Analytics.event('copy_link', {
+          category: 'engagement',
+          label: 'social_share',
+        });
         return;
     }
 
     if (shareUrl) {
       window.open(shareUrl, '_blank', 'width=600,height=400');
-      trackEvent('social_share', 'engagement', platform);
+      Analytics.event('social_share', {
+        category: 'engagement',
+        label: platform,
+      });
     }
   };
 
@@ -67,11 +73,10 @@ export function SocialShare({
     if (navigator.share) {
       try {
         await navigator.share(shareData);
-        trackEvent(
-          'native_share',
-          'engagement',
-          'web_share_api'
-        );
+        Analytics.event('native_share', {
+          category: 'engagement',
+          label: 'web_share_api',
+        });
       } catch (error) {
         console.log('Error sharing:', error);
       }

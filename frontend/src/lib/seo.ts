@@ -6,7 +6,7 @@ export interface SEOData {
   keywords?: string[];
   canonical?: string;
   ogImage?: string;
-  ogType?: 'website' | 'article' | 'product';
+  ogType?: 'website' | 'article';
   twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
   noindex?: boolean;
   nofollow?: boolean;

@@ -1,7 +1,7 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api-client';
+import { useQuery } from '@tanstack/react-query';
 
 interface Newsletter {
   id: string;
@@ -18,11 +18,11 @@ interface Newsletter {
 }
 
 export function useNewsletters() {
-  return useQuery({
+  const query = useQuery({
     queryKey: ['newsletters'],
     queryFn: async (): Promise<Newsletter[]> => {
       const response = await apiClient.getNewsletters();
-      
+
       if (response.error) {
         throw new Error(response.error);
       }
@@ -117,4 +117,10 @@ export function useNewsletters() {
       },
     ],
   });
+
+  return {
+    newsletters: query.data || [],
+    isLoading: query.isLoading,
+    error: query.error,
+  };
 }

@@ -75,7 +75,7 @@ export function LanguageSelector({
 
     if (isOpen && items.length > 0) {
       const newIndex = AccessibilityUtils.handleArrowKeys(
-        event,
+        event.nativeEvent,
         items,
         focusedIndex,
         'vertical'

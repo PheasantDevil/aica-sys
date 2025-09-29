@@ -94,14 +94,17 @@ class ErrorHandler {
 
         return response;
       } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        const errorStack = error instanceof Error ? error.stack : undefined;
+        
         self.handleError({
-          message: `Network request error: ${error.message}`,
-          stack: error.stack,
+          message: `Network request error: ${errorMessage}`,
+          stack: errorStack,
           severity: 'high',
           category: 'network',
           metadata: {
             url: args[0],
-            error: error.message,
+            error: errorMessage,
           },
         });
         throw error;

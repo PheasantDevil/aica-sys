@@ -3,6 +3,7 @@ AICA-SyS Backend Main Application
 AI-driven Content Curation & Automated Sales System
 """
 
+import logging
 import os
 
 import uvicorn
@@ -10,9 +11,18 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+# Import performance middleware
+from middleware.performance_middleware import (PerformanceMiddleware,
+                                               performance_monitor)
+# Import security middleware
+from security.security_headers import SecurityHeadersMiddleware
 
 # Load environment variables
 load_dotenv()
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Create FastAPI app
 app = FastAPI(
@@ -23,10 +33,20 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
+# Add performance monitoring middleware (first)
+app.add_middleware(PerformanceMiddleware, enable_logging=True)
+
+# Add security headers middleware
+app.add_middleware(SecurityHeadersMiddleware)
+
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://aica-sys.vercel.app"],
+    allow_origins=[
+        "http://localhost:3000", 
+        "https://aica-sys.vercel.app",
+        "https://aica-sys-konishib0engineer-gmailcoms-projects.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,7 +55,7 @@ app.add_middleware(
 # Trusted host middleware
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app"]
+    allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app", "*.supabase.co"]
 )
 
 @app.get("/")
@@ -55,15 +75,27 @@ async def health_check():
         "timestamp": "2024-01-01T00:00:00Z"
     }
 
+@app.get("/metrics")
+async def get_metrics():
+    """Performance metrics endpoint"""
+    return performance_monitor.get_metrics()
+
+@app.get("/health/detailed")
+async def detailed_health_check():
+    """Detailed health check with performance metrics"""
+    health_status = performance_monitor.get_health_status()
+    return health_status
+
 # Import routers
-from routers import (ai_router, analysis_router, collection_router,
-                     content_router)
+from routers import (ai_router, analysis_router, auth_router,
+                     collection_router, content_router)
 
 # Include routers
 app.include_router(content_router)
 app.include_router(collection_router)
 app.include_router(analysis_router)
 app.include_router(ai_router.router)
+app.include_router(auth_router.router)
 
 if __name__ == "__main__":
     uvicorn.run(

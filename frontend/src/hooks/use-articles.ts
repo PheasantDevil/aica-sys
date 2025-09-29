@@ -1,8 +1,8 @@
 'use client';
 
+import { apiClient } from '@/lib/api-client';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
-import { apiClient } from '@/lib/api-client';
 
 interface Article {
   id: string;
@@ -32,7 +32,7 @@ interface Filters {
 export function useArticles(filters: Filters) {
   const { data: session } = useSession();
 
-  return useQuery({
+  const query = useQuery({
     queryKey: ['articles', filters],
     queryFn: async (): Promise<Article[]> => {
       const response = await apiClient.getArticles({
@@ -165,4 +165,10 @@ export function useArticles(filters: Filters) {
       },
     ],
   });
+
+  return {
+    articles: query.data || [],
+    isLoading: query.isLoading,
+    error: query.error,
+  };
 }

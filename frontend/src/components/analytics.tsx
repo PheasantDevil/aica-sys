@@ -1,18 +1,13 @@
 'use client';
 
-import {
-  analyticsEvents,
-  loadGA,
-  trackEvent,
-  trackPageView,
-} from '@/lib/analytics';
+import { Analytics as AnalyticsService } from '@/lib/analytics';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect } from 'react';
 
 // Google Analytics プロバイダー
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    loadGA();
+    AnalyticsService.init();
   }, []);
 
   return <>{children}</>;
@@ -26,7 +21,7 @@ function PageViewTrackerInner() {
   useEffect(() => {
     const url =
       pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '');
-    trackPageView(url);
+    AnalyticsService.trackPageView(url);
   }, [pathname, searchParams]);
 
   return null;
@@ -62,7 +57,11 @@ export function ScrollDepthTracker() {
       const milestones = [25, 50, 75, 100];
       milestones.forEach(milestone => {
         if (scrollDepth >= milestone && !scrollDepthTracked) {
-          trackEvent('scroll_depth', 'engagement', `${milestone}%`, milestone);
+          AnalyticsService.event('scroll_depth', {
+            category: 'engagement',
+            label: `${milestone}%`,
+            value: milestone,
+          });
           if (milestone === 100) {
             scrollDepthTracked = true;
           }
@@ -91,7 +90,10 @@ export function ExternalLinkTracker() {
         // 外部リンクの場合
         if (url.hostname !== currentDomain) {
           const linkText = link.textContent?.trim() || 'Unknown';
-          analyticsEvents.clickExternalLink(link.href, linkText);
+          AnalyticsService.event('click_external_link', {
+            link_url: link.href,
+            link_text: linkText,
+          });
         }
       }
     };
@@ -113,12 +115,11 @@ export function PerformanceTracker() {
         const lcpObserver = new PerformanceObserver(list => {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
-          trackEvent(
-            'timing_complete',
-            'performance',
-            'LCP',
-            Math.round(lastEntry.startTime)
-          );
+          AnalyticsService.event('timing_complete', {
+            category: 'performance',
+            label: 'LCP',
+            value: Math.round(lastEntry.startTime),
+          });
         });
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
 
@@ -126,12 +127,11 @@ export function PerformanceTracker() {
         const fidObserver = new PerformanceObserver(list => {
           const entries = list.getEntries();
           entries.forEach((entry: any) => {
-            trackEvent(
-              'timing_complete',
-              'performance',
-              'FID',
-              Math.round(entry.processingStart - entry.startTime)
-            );
+            AnalyticsService.event('timing_complete', {
+              category: 'performance',
+              label: 'FID',
+              value: Math.round(entry.processingStart - entry.startTime),
+            });
           });
         });
         fidObserver.observe({ entryTypes: ['first-input'] });
@@ -145,12 +145,11 @@ export function PerformanceTracker() {
               clsValue += entry.value;
             }
           });
-          trackEvent(
-            'timing_complete',
-            'performance',
-            'CLS',
-            Math.round(clsValue * 1000)
-          );
+          AnalyticsService.event('timing_complete', {
+            category: 'performance',
+            label: 'CLS',
+            value: Math.round(clsValue * 1000),
+          });
         });
         clsObserver.observe({ entryTypes: ['layout-shift'] });
       }
@@ -159,12 +158,11 @@ export function PerformanceTracker() {
       window.addEventListener('load', () => {
         const loadTime =
           performance.timing.loadEventEnd - performance.timing.navigationStart;
-        trackEvent(
-          'timing_complete',
-          'performance',
-          'page_load_time',
-          loadTime
-        );
+        AnalyticsService.event('timing_complete', {
+          category: 'performance',
+          label: 'page_load_time',
+          value: loadTime,
+        });
       });
     };
 
@@ -178,11 +176,17 @@ export function PerformanceTracker() {
 export function ErrorTracker() {
   useEffect(() => {
     const handleError = (event: ErrorEvent) => {
-      analyticsEvents.trackError('javascript_error', event.message);
+      AnalyticsService.event('javascript_error', {
+        error_message: event.message,
+        error_type: 'javascript_error',
+      });
     };
 
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      analyticsEvents.trackError('unhandled_promise_rejection', event.reason);
+      AnalyticsService.event('unhandled_promise_rejection', {
+        error_reason: event.reason,
+        error_type: 'unhandled_promise_rejection',
+      });
     };
 
     window.addEventListener('error', handleError);

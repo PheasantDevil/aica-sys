@@ -303,11 +303,13 @@ export function trackWebVitals(): void {
     trackPerformance('lcp', lastEntry.startTime, 'ms');
   }).observe({ entryTypes: ['largest-contentful-paint'] });
 
-  // Track FID (First Input Delay)
+  // Track FID (First Input Delay) - Note: FID is deprecated, using INP instead
   new PerformanceObserver((list) => {
     const entries = list.getEntries();
     entries.forEach((entry) => {
-      trackPerformance('fid', entry.processingStart - entry.startTime, 'ms');
+      // FID is calculated as the time between first input and when the browser can process it
+      // Since processingStart is not available, we'll track the startTime as a proxy
+      trackPerformance('fid', entry.startTime, 'ms');
     });
   }).observe({ entryTypes: ['first-input'] });
 

@@ -17,6 +17,15 @@ export interface LogContext {
   requestId?: string;
   component?: string;
   action?: string;
+  method?: string;
+  url?: string;
+  statusCode?: number;
+  duration?: number;
+  metric?: string;
+  value?: number;
+  event?: string;
+  element?: string;
+  errorInfo?: any;
   metadata?: Record<string, any>;
 }
 
@@ -47,7 +56,7 @@ class Logger {
           format: winston.format.combine(
             winston.format.colorize(),
             winston.format.timestamp(),
-            winston.format.printf(({ timestamp, level, message, context, error }) => {
+            winston.format.printf(({ timestamp, level, message, context, error }: any) => {
               let logMessage = `${timestamp} [${level}]: ${message}`;
               
               if (context) {
@@ -55,7 +64,8 @@ class Logger {
               }
               
               if (error) {
-                logMessage += `\nError: ${error.stack}`;
+                const errorMessage = error instanceof Error ? error.stack : String(error);
+                logMessage += `\nError: ${errorMessage}`;
               }
               
               return logMessage;

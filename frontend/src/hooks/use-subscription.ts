@@ -13,6 +13,7 @@ interface Subscription {
   stripeCurrentPeriodEnd: Date | null;
   status: string;
   plan: string;
+  isPaid: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -27,9 +28,9 @@ export function useSubscription() {
     isLoading: isSubscriptionLoading,
     error: subscriptionError,
   } = useQuery({
-    queryKey: ['subscription', session?.user?.id],
+    queryKey: ['subscription', session?.user?.email],
     queryFn: async (): Promise<Subscription | null> => {
-      if (!session?.user?.id) return null;
+      if (!session?.user?.email) return null;
 
       const response = await fetch('/api/subscription');
       if (!response.ok) {
@@ -37,7 +38,7 @@ export function useSubscription() {
       }
       return response.json();
     },
-    enabled: !!session?.user?.id,
+    enabled: !!session?.user?.email,
   });
 
   const createCheckoutMutation = useMutation({
