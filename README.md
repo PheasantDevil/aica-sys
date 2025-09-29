@@ -196,6 +196,18 @@ graph TD
 
 詳細なセットアップ手順は各フェーズのドキュメントを参照してください。
 
+## 作業終了時の自動 PR 作成・マージ手順
+
+作業終了時には以下の手順を自動的に実施する：
+
+1. `git status` で変更内容を確認
+2. `git add .` で全変更をステージング
+3. `git commit -m "feat: [作業内容の詳細説明]"` でコミット
+4. `git push origin [ブランチ名]` でプッシュ
+5. `gh pr create --title "[タイトル]" --body "[詳細説明]" --base main` で PR 作成
+6. `gh pr merge [PR番号] --merge --delete-branch` で PR マージ
+7. `git checkout main && git pull origin main` で main ブランチに切り替え・更新
+
 ## ライセンス
 
 MIT License

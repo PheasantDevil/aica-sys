@@ -2,12 +2,13 @@
 データベース接続設定 - パフォーマンス最適化版
 """
 
+import logging
+import os
+
 from sqlalchemy import create_engine, event
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import QueuePool, StaticPool
-import os
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -101,3 +102,30 @@ def close_db_session(session):
     """セッションを明示的に閉じる"""
     if session:
         session.close()
+
+def init_db():
+    """データベースを初期化（テーブル作成）"""
+    try:
+        # すべてのモデルをインポートしてテーブルを作成
+        from models.audit import AuditEventDB
+        from models.content import Article, Newsletter, Trend
+        from models.subscription import Subscription
+        from models.user import User
+
+        # テーブルを作成
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database tables created successfully")
+        return True
+    except Exception as e:
+        logger.error(f"Error creating database tables: {e}")
+        return False
+
+def drop_db():
+    """データベースを削除（全テーブル削除）"""
+    try:
+        Base.metadata.drop_all(bind=engine)
+        logger.info("Database tables dropped successfully")
+        return True
+    except Exception as e:
+        logger.error(f"Error dropping database tables: {e}")
+        return False
