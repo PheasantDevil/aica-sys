@@ -88,7 +88,7 @@ async def detailed_health_check():
 
 # Import routers
 from routers import (ai_router, analysis_router, auth_router,
-                     collection_router, content_router)
+                     collection_router, content_router, subscription_router, reports_router)
 
 # Include routers
 app.include_router(content_router)
@@ -96,6 +96,8 @@ app.include_router(collection_router)
 app.include_router(analysis_router)
 app.include_router(ai_router.router)
 app.include_router(auth_router.router)
+app.include_router(subscription_router.router)
+app.include_router(reports_router.router)
 
 if __name__ == "__main__":
     uvicorn.run(
