@@ -9,8 +9,8 @@ const http = require('http');
 const { performance } = require('perf_hooks');
 
 // Configuration
-const API_URL = 'http://localhost:8000';
-const FRONTEND_URL = 'http://localhost:3000';
+const API_URL = 'http://127.0.0.1:8000';
+const FRONTEND_URL = 'http://127.0.0.1:3000';
 const CONCURRENT_USERS = 10;
 const TEST_DURATION = 30000; // 30 seconds
 const REQUEST_INTERVAL = 100; // 100ms

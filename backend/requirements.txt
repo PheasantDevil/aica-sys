@@ -2,9 +2,16 @@
 fastapi==0.104.0
 uvicorn[standard]==0.24.0
 pydantic==2.8.0
+pydantic[email]==2.8.0
 
 # Database
 sqlalchemy==2.0.36
+psycopg2==2.9.9
+
+# Authentication and Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.1.2
 
 # Web scraping and data collection
 requests==2.31.0
@@ -16,6 +23,7 @@ aiohttp==3.9.0
 # Utilities
 python-dotenv==1.0.0
 python-multipart==0.0.6
+psutil==5.9.6
 
 # Development and testing
 pytest==7.4.0
