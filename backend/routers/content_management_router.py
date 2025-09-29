@@ -5,19 +5,21 @@
 
 import os
 from datetime import datetime, timedelta
-from typing import List, Optional, Dict, Any
 from enum import Enum
-
-from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks, Query
-from sqlalchemy.orm import Session
-from pydantic import BaseModel, Field
+from typing import Any, Dict, List, Optional
 
 from database import get_db
+from fastapi import (APIRouter, BackgroundTasks, Depends, HTTPException, Query,
+                     status)
 from models.content import Article, Newsletter, Trend
 from models.user import User
+from pydantic import BaseModel, Field
 from security.auth_middleware import get_current_user
-from services.content_generator import ContentGenerator, ContentType, GeneratedContent
-from services.content_scheduler import scheduler, DeliverySchedule, ScheduleType
+from services.content_generator import (ContentGenerator, ContentType,
+                                        GeneratedContent)
+from services.content_scheduler import (DeliverySchedule, ScheduleType,
+                                        scheduler)
+from sqlalchemy.orm import Session
 from utils.logging import get_logger
 
 router = APIRouter(prefix="/api/content-management", tags=["content-management"])

@@ -88,8 +88,9 @@ async def detailed_health_check():
 
 # Import routers
 from routers import (ai_router, analysis_router, auth_router,
-                     collection_router, content_router, content_management_router,
-                     reports_router, subscription_router, user_router)
+                     collection_router, content_management_router,
+                     content_router, reports_router, subscription_router,
+                     user_router)
 
 # Include routers
 app.include_router(content_router)
