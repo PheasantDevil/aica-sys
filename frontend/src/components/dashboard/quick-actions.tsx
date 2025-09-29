@@ -1,67 +1,59 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  BarChart3,
+  BookOpen,
   CreditCard,
-  FileText,
-  HelpCircle,
   Mail,
   Settings,
   TrendingUp,
+  User,
 } from 'lucide-react';
-import Link from 'next/link';
 
 export function QuickActions() {
   const actions = [
     {
-      title: '新しい記事を作成',
-      description: 'AIを使って新しい記事を生成',
-      icon: FileText,
-      href: '/content/articles/new',
-      color: 'bg-blue-500',
+      title: '記事を読む',
+      description: '最新のTypeScript記事をチェック',
+      icon: BookOpen,
+      href: '/articles',
+      color: 'bg-blue-500 hover:bg-blue-600',
     },
     {
-      title: 'ニュースレター配信',
-      description: '購読者にニュースレターを送信',
+      title: 'ニュースレター',
+      description: '購読状況を確認',
       icon: Mail,
-      href: '/content/newsletters/new',
-      color: 'bg-green-500',
+      href: '/newsletters',
+      color: 'bg-green-500 hover:bg-green-600',
     },
     {
       title: 'トレンド分析',
-      description: '最新のトレンドを分析',
+      description: '最新のトレンドを確認',
       icon: TrendingUp,
-      href: '/trends/analyze',
-      color: 'bg-purple-500',
+      href: '/trends',
+      color: 'bg-purple-500 hover:bg-purple-600',
     },
     {
-      title: 'アナリティクス',
-      description: '詳細な分析データを確認',
-      icon: BarChart3,
-      href: '/analytics',
-      color: 'bg-orange-500',
+      title: 'プロフィール',
+      description: 'アカウント設定を更新',
+      icon: User,
+      href: '/dashboard/profile',
+      color: 'bg-gray-500 hover:bg-gray-600',
     },
     {
-      title: 'サブスクリプション管理',
-      description: 'プラン変更や支払い設定',
+      title: 'サブスクリプション',
+      description: 'プランを管理',
       icon: CreditCard,
-      href: '/settings/subscription',
-      color: 'bg-indigo-500',
+      href: '/dashboard/subscription',
+      color: 'bg-orange-500 hover:bg-orange-600',
     },
     {
       title: '設定',
-      description: 'アカウント設定を変更',
+      description: 'アプリケーション設定',
       icon: Settings,
-      href: '/settings',
-      color: 'bg-gray-500',
+      href: '/dashboard/settings',
+      color: 'bg-indigo-500 hover:bg-indigo-600',
     },
   ];
 
@@ -69,50 +61,36 @@ export function QuickActions() {
     <Card>
       <CardHeader>
         <CardTitle>クイックアクション</CardTitle>
-        <CardDescription>よく使用する機能にすばやくアクセス</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-          {actions.map((action, index) => {
+        <div className='grid grid-cols-1 gap-3'>
+          {actions.map(action => {
             const Icon = action.icon;
             return (
               <Button
-                key={index}
+                key={action.title}
                 variant='outline'
-                className='h-auto p-4 flex flex-col items-start gap-2 hover:bg-muted/50'
+                className='justify-start h-auto p-4'
                 asChild
               >
-                <Link href={action.href}>
-                  <div className='flex items-center gap-3 w-full'>
+                <a href={action.href}>
+                  <div className='flex items-center gap-3'>
                     <div
-                      className={`p-2 rounded-lg ${action.color} text-white`}
+                      className={`p-2 rounded-md text-white ${action.color}`}
                     >
                       <Icon className='h-4 w-4' />
                     </div>
                     <div className='text-left'>
-                      <div className='font-medium text-sm'>{action.title}</div>
-                      <div className='text-xs text-muted-foreground'>
+                      <div className='font-medium'>{action.title}</div>
+                      <div className='text-sm text-gray-500'>
                         {action.description}
                       </div>
                     </div>
                   </div>
-                </Link>
+                </a>
               </Button>
             );
           })}
-        </div>
-
-        <div className='mt-6 p-4 bg-muted/50 rounded-lg'>
-          <div className='flex items-center gap-2 mb-2'>
-            <HelpCircle className='h-4 w-4 text-muted-foreground' />
-            <span className='text-sm font-medium'>ヘルプが必要ですか？</span>
-          </div>
-          <p className='text-xs text-muted-foreground mb-3'>
-            よくある質問やサポート情報をご確認ください。
-          </p>
-          <Button variant='outline' size='sm' asChild>
-            <Link href='/help'>ヘルプセンター</Link>
-          </Button>
         </div>
       </CardContent>
     </Card>
