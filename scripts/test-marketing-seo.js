@@ -1,7 +1,9 @@
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env.production.example') });
+require('dotenv').config({
+  path: path.resolve(__dirname, '../.env.production.example'),
+});
 
 // Configuration
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
@@ -68,10 +70,7 @@ class MarketingSEOTester {
   }
 
   async testSEOEndpoints() {
-    const endpoints = [
-      '/sitemap.xml',
-      '/robots.txt',
-    ];
+    const endpoints = ['/sitemap.xml', '/robots.txt'];
 
     const results = {};
     for (const endpoint of endpoints) {
@@ -83,8 +82,12 @@ class MarketingSEOTester {
           status: response.status,
           contentType: response.headers['content-type'],
           hasContent: response.data && response.data.length > 0,
-          isXML: endpoint.includes('.xml') && response.headers['content-type']?.includes('xml'),
-          isText: endpoint.includes('.txt') && response.headers['content-type']?.includes('text'),
+          isXML:
+            endpoint.includes('.xml') &&
+            response.headers['content-type']?.includes('xml'),
+          isText:
+            endpoint.includes('.txt') &&
+            response.headers['content-type']?.includes('text'),
         };
       } catch (error) {
         results[endpoint] = {
@@ -117,12 +120,36 @@ class MarketingSEOTester {
         const html = response.data;
         const metaTags = {
           title: this.extractMetaTag(html, 'title'),
-          description: this.extractMetaTag(html, 'meta[name="description"]', 'content'),
-          keywords: this.extractMetaTag(html, 'meta[name="keywords"]', 'content'),
-          ogTitle: this.extractMetaTag(html, 'meta[property="og:title"]', 'content'),
-          ogDescription: this.extractMetaTag(html, 'meta[property="og:description"]', 'content'),
-          ogImage: this.extractMetaTag(html, 'meta[property="og:image"]', 'content'),
-          twitterCard: this.extractMetaTag(html, 'meta[name="twitter:card"]', 'content'),
+          description: this.extractMetaTag(
+            html,
+            'meta[name="description"]',
+            'content'
+          ),
+          keywords: this.extractMetaTag(
+            html,
+            'meta[name="keywords"]',
+            'content'
+          ),
+          ogTitle: this.extractMetaTag(
+            html,
+            'meta[property="og:title"]',
+            'content'
+          ),
+          ogDescription: this.extractMetaTag(
+            html,
+            'meta[property="og:description"]',
+            'content'
+          ),
+          ogImage: this.extractMetaTag(
+            html,
+            'meta[property="og:image"]',
+            'content'
+          ),
+          twitterCard: this.extractMetaTag(
+            html,
+            'meta[name="twitter:card"]',
+            'content'
+          ),
           canonical: this.extractMetaTag(html, 'link[rel="canonical"]', 'href'),
         };
 
@@ -146,11 +173,7 @@ class MarketingSEOTester {
   }
 
   async testStructuredData() {
-    const pages = [
-      '/',
-      '/articles',
-      '/pricing',
-    ];
+    const pages = ['/', '/articles', '/pricing'];
 
     const results = {};
     for (const page of pages) {
@@ -180,11 +203,7 @@ class MarketingSEOTester {
   }
 
   async testSocialSharing() {
-    const testPages = [
-      '/articles',
-      '/newsletters',
-      '/trends',
-    ];
+    const testPages = ['/articles', '/newsletters', '/trends'];
 
     const results = {};
     for (const page of testPages) {
@@ -196,11 +215,13 @@ class MarketingSEOTester {
 
         const html = response.data;
         const socialElements = {
-          hasShareButtons: html.includes('social-share') || html.includes('share'),
+          hasShareButtons:
+            html.includes('social-share') || html.includes('share'),
           hasTwitterShare: html.includes('twitter.com/intent/tweet'),
           hasFacebookShare: html.includes('facebook.com/sharer'),
           hasLinkedInShare: html.includes('linkedin.com/sharing'),
-          hasOpenGraph: html.includes('og:title') && html.includes('og:description'),
+          hasOpenGraph:
+            html.includes('og:title') && html.includes('og:description'),
           hasTwitterCard: html.includes('twitter:card'),
         };
 
@@ -220,11 +241,7 @@ class MarketingSEOTester {
   }
 
   async testAnalyticsIntegration() {
-    const pages = [
-      '/',
-      '/articles',
-      '/pricing',
-    ];
+    const pages = ['/', '/articles', '/pricing'];
 
     const results = {};
     for (const page of pages) {
@@ -236,10 +253,13 @@ class MarketingSEOTester {
 
         const html = response.data;
         const analyticsElements = {
-          hasGoogleAnalytics: html.includes('gtag') || html.includes('google-analytics'),
+          hasGoogleAnalytics:
+            html.includes('gtag') || html.includes('google-analytics'),
           hasGoogleTagManager: html.includes('googletagmanager'),
-          hasCustomAnalytics: html.includes('analytics') || html.includes('tracking'),
-          hasEventTracking: html.includes('trackEvent') || html.includes('data-track'),
+          hasCustomAnalytics:
+            html.includes('analytics') || html.includes('tracking'),
+          hasEventTracking:
+            html.includes('trackEvent') || html.includes('data-track'),
         };
 
         results[page] = {
@@ -267,8 +287,10 @@ class MarketingSEOTester {
       const html = response.data;
       const abTestingElements = {
         hasABTesting: html.includes('ab-testing') || html.includes('useABTest'),
-        hasConversionTracking: html.includes('conversion') || html.includes('trackConversion'),
-        hasAnalyticsEvents: html.includes('trackEvent') || html.includes('analytics'),
+        hasConversionTracking:
+          html.includes('conversion') || html.includes('trackConversion'),
+        hasAnalyticsEvents:
+          html.includes('trackEvent') || html.includes('analytics'),
       };
 
       return {
@@ -282,11 +304,7 @@ class MarketingSEOTester {
   }
 
   async testConversionOptimization() {
-    const conversionPages = [
-      '/pricing',
-      '/checkout',
-      '/signup',
-    ];
+    const conversionPages = ['/pricing', '/checkout', '/signup'];
 
     const results = {};
     for (const page of conversionPages) {
@@ -298,16 +316,20 @@ class MarketingSEOTester {
 
         const html = response.data;
         const conversionElements = {
-          hasCTAButtons: html.includes('cta') || html.includes('call-to-action'),
+          hasCTAButtons:
+            html.includes('cta') || html.includes('call-to-action'),
           hasForms: html.includes('<form') || html.includes('form'),
-          hasConversionTracking: html.includes('conversion') || html.includes('trackConversion'),
-          hasFunnelTracking: html.includes('funnel') || html.includes('trackFunnel'),
+          hasConversionTracking:
+            html.includes('conversion') || html.includes('trackConversion'),
+          hasFunnelTracking:
+            html.includes('funnel') || html.includes('trackFunnel'),
         };
 
         results[page] = {
           status: response.status,
           conversionElements,
-          hasConversionFeatures: Object.values(conversionElements).some(Boolean),
+          hasConversionFeatures:
+            Object.values(conversionElements).some(Boolean),
         };
       } catch (error) {
         results[page] = {
@@ -320,11 +342,7 @@ class MarketingSEOTester {
   }
 
   async testPerformanceMetrics() {
-    const pages = [
-      '/',
-      '/articles',
-      '/pricing',
-    ];
+    const pages = ['/', '/articles', '/pricing'];
 
     const results = {};
     for (const page of pages) {
@@ -338,16 +356,22 @@ class MarketingSEOTester {
 
         const html = response.data;
         const performanceElements = {
-          hasPerformanceTracking: html.includes('performance') || html.includes('web-vitals'),
-          hasCoreWebVitals: html.includes('LCP') || html.includes('FID') || html.includes('CLS'),
-          hasPageSpeedOptimization: html.includes('optimize') || html.includes('lazy'),
+          hasPerformanceTracking:
+            html.includes('performance') || html.includes('web-vitals'),
+          hasCoreWebVitals:
+            html.includes('LCP') ||
+            html.includes('FID') ||
+            html.includes('CLS'),
+          hasPageSpeedOptimization:
+            html.includes('optimize') || html.includes('lazy'),
         };
 
         results[page] = {
           status: response.status,
           loadTime,
           performanceElements,
-          hasPerformanceFeatures: Object.values(performanceElements).some(Boolean),
+          hasPerformanceFeatures:
+            Object.values(performanceElements).some(Boolean),
           isFastLoad: loadTime < 3000, // 3秒以内
         };
       } catch (error) {
@@ -361,11 +385,7 @@ class MarketingSEOTester {
   }
 
   async testContentSEO() {
-    const contentPages = [
-      '/articles',
-      '/newsletters',
-      '/trends',
-    ];
+    const contentPages = ['/articles', '/newsletters', '/trends'];
 
     const results = {};
     for (const page of contentPages) {
@@ -377,11 +397,18 @@ class MarketingSEOTester {
 
         const html = response.data;
         const contentSEOElements = {
-          hasHeadings: html.includes('<h1') || html.includes('<h2') || html.includes('<h3'),
+          hasHeadings:
+            html.includes('<h1') ||
+            html.includes('<h2') ||
+            html.includes('<h3'),
           hasImages: html.includes('<img'),
           hasAltText: html.includes('alt='),
-          hasInternalLinks: html.includes('href="/') || html.includes('href="/articles'),
-          hasKeywords: html.includes('typescript') || html.includes('javascript') || html.includes('react'),
+          hasInternalLinks:
+            html.includes('href="/') || html.includes('href="/articles'),
+          hasKeywords:
+            html.includes('typescript') ||
+            html.includes('javascript') ||
+            html.includes('react'),
           hasReadableContent: html.length > 1000, // 十分なコンテンツがあるか
         };
 
@@ -408,7 +435,8 @@ class MarketingSEOTester {
   }
 
   extractStructuredData(html) {
-    const structuredDataRegex = /<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gi;
+    const structuredDataRegex =
+      /<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gi;
     const structuredData = [];
     let match;
 
@@ -504,12 +532,20 @@ async function main() {
 
     // Marketing tests
     await tester.runTest('Social Sharing', () => tester.testSocialSharing());
-    await tester.runTest('Analytics Integration', () => tester.testAnalyticsIntegration());
-    await tester.runTest('A/B Testing Framework', () => tester.testABTestingFramework());
-    await tester.runTest('Conversion Optimization', () => tester.testConversionOptimization());
+    await tester.runTest('Analytics Integration', () =>
+      tester.testAnalyticsIntegration()
+    );
+    await tester.runTest('A/B Testing Framework', () =>
+      tester.testABTestingFramework()
+    );
+    await tester.runTest('Conversion Optimization', () =>
+      tester.testConversionOptimization()
+    );
 
     // Performance tests
-    await tester.runTest('Performance Metrics', () => tester.testPerformanceMetrics());
+    await tester.runTest('Performance Metrics', () =>
+      tester.testPerformanceMetrics()
+    );
 
     // Generate final report
     const success = tester.generateReport();

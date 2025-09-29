@@ -1,11 +1,13 @@
-import structlog
-import logging
 import json
+import logging
 import os
 from datetime import datetime
-from typing import Any, Dict, Optional
 from enum import Enum
 from pathlib import Path
+from typing import Any, Dict, Optional
+
+import structlog
+
 
 class LogLevel(Enum):
     DEBUG = "DEBUG"
@@ -230,3 +232,7 @@ def log_external_api_call(service: str, endpoint: str, status_code: int, duratio
 
 def log_error_with_exception(message: str, exception: Exception, **kwargs):
     logger.error_with_exception(message, exception, **kwargs)
+
+def get_logger(name: str = None):
+    """Get a logger instance"""
+    return logger

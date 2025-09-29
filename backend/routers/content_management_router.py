@@ -40,7 +40,7 @@ class ContentCreateRequest(BaseModel):
     content: str = Field(..., min_length=1)
     summary: Optional[str] = None
     tags: List[str] = []
-    content_type: str = Field(..., regex="^(article|newsletter|trend)$")
+    content_type: str = Field(..., pattern="^(article|newsletter|trend)$")
     target_audience: str = "developers"
     tone: str = "professional"
     auto_generate: bool = False
@@ -63,8 +63,8 @@ class ContentReviewRequest(BaseModel):
 class ScheduleCreateRequest(BaseModel):
     """スケジュール作成リクエスト"""
     name: str = Field(..., min_length=1, max_length=255)
-    schedule_type: str = Field(..., regex="^(daily|weekly|monthly|custom)$")
-    content_type: str = Field(..., regex="^(article|newsletter|technical_guide)$")
+    schedule_type: str = Field(..., pattern="^(daily|weekly|monthly|custom)$")
+    content_type: str = Field(..., pattern="^(article|newsletter|technical_guide)$")
     target_audience: str = "developers"
     tone: str = "professional"
     enabled: bool = True
