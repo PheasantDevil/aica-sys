@@ -115,6 +115,11 @@ jspm_packages/
 *.sqlite-shm
 *.sqlite-wal
 
+# Backups
+backups/
+*.backup.*
+restore_temp/
+
 # AI/ML models
 models/
 *.model

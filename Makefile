@@ -158,3 +158,17 @@ grafana-ui:
 alertmanager-ui:
 	@echo "Opening Alertmanager UI at http://localhost:9093"
 	open http://localhost:9093 || xdg-open http://localhost:9093
+
+# Backup and Recovery
+backup:
+	./scripts/backup.sh
+
+restore:
+	./scripts/restore.sh
+
+restore-from:
+	./scripts/restore.sh $(BACKUP_FILE)
+
+list-backups:
+	@echo "Available backups:"
+	@ls -lht backups/*.tar.gz 2>/dev/null | head -10 || echo "No backups found"
