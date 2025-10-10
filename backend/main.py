@@ -38,9 +38,6 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Add performance monitoring middleware (first)
-app.add_middleware(PerformanceMiddleware, enable_logging=True)
-
 # Add monitoring middleware
 app.add_middleware(MonitoringMiddleware)
 
