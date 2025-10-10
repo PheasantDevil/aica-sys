@@ -120,6 +120,10 @@ backups/
 *.backup.*
 restore_temp/
 
+# Security reports
+security-reports/
+*.sarif
+
 # AI/ML models
 models/
 *.model

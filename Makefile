@@ -172,3 +172,11 @@ restore-from:
 list-backups:
 	@echo "Available backups:"
 	@ls -lht backups/*.tar.gz 2>/dev/null | head -10 || echo "No backups found"
+
+# Security
+security-check:
+	./scripts/security-check.sh
+
+security-reports:
+	@echo "Security reports:"
+	@ls -lh security-reports/ 2>/dev/null || echo "No reports found"
