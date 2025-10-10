@@ -5,8 +5,12 @@
  * Phase 7-4: Frontend optimization
  */
 
+import {
+  getPerformanceReport,
+  observePerformance,
+  reportWebVitals,
+} from '@/lib/web-vitals';
 import { useEffect } from 'react';
-import { reportWebVitals, observePerformance, getPerformanceReport } from '@/lib/web-vitals';
 
 export function WebVitalsReporter() {
   useEffect(() => {

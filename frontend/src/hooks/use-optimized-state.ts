@@ -3,7 +3,7 @@
  * Phase 7-4: Frontend optimization
  */
 
-import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 /**
  * 遅延更新付きの状態管理フック
@@ -40,7 +40,7 @@ export function useThrottledCallback<T extends (...args: any[]) => any>(
   return useCallback(
     ((...args) => {
       const now = Date.now();
-      
+
       if (now - lastRun.current >= delay) {
         callback(...args);
         lastRun.current = now;
@@ -135,7 +135,7 @@ export function useLocalStorage<T>(
     (value: T) => {
       try {
         setStoredValue(value);
-        
+
         if (typeof window !== 'undefined') {
           window.localStorage.setItem(key, JSON.stringify(value));
         }
@@ -190,7 +190,7 @@ export function useMediaQuery(query: string): boolean {
 
   useEffect(() => {
     const media = window.matchMedia(query);
-    
+
     if (media.matches !== matches) {
       setMatches(media.matches);
     }

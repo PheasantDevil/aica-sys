@@ -24,10 +24,13 @@ const THRESHOLDS = {
 };
 
 // メトリクスの評価
-function getRating(name: string, value: number): 'good' | 'needs-improvement' | 'poor' {
+function getRating(
+  name: string,
+  value: number
+): 'good' | 'needs-improvement' | 'poor' {
   const threshold = THRESHOLDS[name as keyof typeof THRESHOLDS];
   if (!threshold) return 'good';
-  
+
   if (value <= threshold.good) return 'good';
   if (value <= threshold.poor) return 'needs-improvement';
   return 'poor';
@@ -76,7 +79,9 @@ async function sendToAnalytics(metric: WebVitalsMetric) {
 }
 
 // Web Vitals の収集
-export function reportWebVitals(onPerfEntry?: (metric: WebVitalsMetric) => void) {
+export function reportWebVitals(
+  onPerfEntry?: (metric: WebVitalsMetric) => void
+) {
   const handleMetric = (metric: Metric) => {
     const webVitalsMetric: WebVitalsMetric = {
       name: metric.name,
@@ -112,7 +117,11 @@ export function performanceMark(name: string) {
 }
 
 // パフォーマンス測定
-export function performanceMeasure(name: string, startMark: string, endMark: string) {
+export function performanceMeasure(
+  name: string,
+  startMark: string,
+  endMark: string
+) {
   if (typeof window !== 'undefined' && window.performance) {
     try {
       window.performance.measure(name, startMark, endMark);
@@ -127,7 +136,11 @@ export function performanceMeasure(name: string, startMark: string, endMark: str
 }
 
 // カスタムメトリクスの記録
-export function recordCustomMetric(name: string, value: number, unit: string = 'ms') {
+export function recordCustomMetric(
+  name: string,
+  value: number,
+  unit: string = 'ms'
+) {
   try {
     if (process.env.NODE_ENV === 'development') {
       console.log(`📊 Custom Metric: ${name} = ${value}${unit}`);
@@ -153,33 +166,49 @@ export function getPerformanceReport() {
     return null;
   }
 
-  const navigation = window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+  const navigation = window.performance.getEntriesByType(
+    'navigation'
+  )[0] as PerformanceNavigationTiming;
   const paint = window.performance.getEntriesByType('paint');
-  
+
   return {
     // ナビゲーションタイミング
-    dns: navigation ? navigation.domainLookupEnd - navigation.domainLookupStart : 0,
+    dns: navigation
+      ? navigation.domainLookupEnd - navigation.domainLookupStart
+      : 0,
     tcp: navigation ? navigation.connectEnd - navigation.connectStart : 0,
-    request: navigation ? navigation.responseStart - navigation.requestStart : 0,
-    response: navigation ? navigation.responseEnd - navigation.responseStart : 0,
-    domProcessing: navigation ? navigation.domComplete - navigation.domLoading : 0,
-    domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart : 0,
+    request: navigation
+      ? navigation.responseStart - navigation.requestStart
+      : 0,
+    response: navigation
+      ? navigation.responseEnd - navigation.responseStart
+      : 0,
+    domProcessing: navigation
+      ? navigation.domComplete - navigation.domLoading
+      : 0,
+    domContentLoaded: navigation
+      ? navigation.domContentLoadedEventEnd -
+        navigation.domContentLoadedEventStart
+      : 0,
     domComplete: navigation ? navigation.domComplete : 0,
     loadComplete: navigation ? navigation.loadEventEnd : 0,
-    
+
     // ペイントタイミング
     firstPaint: paint.find(p => p.name === 'first-paint')?.startTime || 0,
-    firstContentfulPaint: paint.find(p => p.name === 'first-contentful-paint')?.startTime || 0,
-    
+    firstContentfulPaint:
+      paint.find(p => p.name === 'first-contentful-paint')?.startTime || 0,
+
     // リソース統計
     resources: window.performance.getEntriesByType('resource').length,
-    
+
     // メモリ使用量（Chrome のみ）
-    memory: (window.performance as any).memory ? {
-      usedJSHeapSize: (window.performance as any).memory.usedJSHeapSize,
-      totalJSHeapSize: (window.performance as any).memory.totalJSHeapSize,
-      jsHeapSizeLimit: (window.performance as any).memory.jsHeapSizeLimit,
-    } : null,
+    memory: (window.performance as any).memory
+      ? {
+          usedJSHeapSize: (window.performance as any).memory.usedJSHeapSize,
+          totalJSHeapSize: (window.performance as any).memory.totalJSHeapSize,
+          jsHeapSizeLimit: (window.performance as any).memory.jsHeapSizeLimit,
+        }
+      : null,
   };
 }
 
@@ -191,10 +220,12 @@ export function observePerformance() {
 
   try {
     // Long Tasksの監視
-    const longTaskObserver = new PerformanceObserver((list) => {
+    const longTaskObserver = new PerformanceObserver(list => {
       for (const entry of list.getEntries()) {
         if (entry.duration > 50) {
-          console.warn(`⚠️ Long Task detected: ${Math.round(entry.duration)}ms`);
+          console.warn(
+            `⚠️ Long Task detected: ${Math.round(entry.duration)}ms`
+          );
           recordCustomMetric('long_task', entry.duration);
         }
       }
@@ -202,7 +233,7 @@ export function observePerformance() {
     longTaskObserver.observe({ entryTypes: ['longtask'] });
 
     // Layout Shiftsの監視
-    const layoutShiftObserver = new PerformanceObserver((list) => {
+    const layoutShiftObserver = new PerformanceObserver(list => {
       for (const entry of list.getEntries() as any[]) {
         if (entry.hadRecentInput) continue;
         console.log(`📐 Layout Shift: ${entry.value.toFixed(4)}`);
