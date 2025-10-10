@@ -26,7 +26,7 @@ asyncpg==0.29.0
 
 # Utilities
 python-dotenv==1.0.0
-python-multipart==0.0.6
+python-multipart==0.0.20
 
 # Development and testing
 pytest==7.4.0
