@@ -135,3 +135,26 @@ deploy-staging:
 
 deploy-production:
 	./scripts/deploy.sh production
+
+# Monitoring
+monitoring-up:
+	docker-compose -f docker-compose.monitoring.yml up -d
+
+monitoring-down:
+	docker-compose -f docker-compose.monitoring.yml down
+
+monitoring-logs:
+	docker-compose -f docker-compose.monitoring.yml logs -f
+
+prometheus-ui:
+	@echo "Opening Prometheus UI at http://localhost:9090"
+	open http://localhost:9090 || xdg-open http://localhost:9090
+
+grafana-ui:
+	@echo "Opening Grafana UI at http://localhost:3001"
+	@echo "Default credentials: admin / admin123"
+	open http://localhost:3001 || xdg-open http://localhost:3001
+
+alertmanager-ui:
+	@echo "Opening Alertmanager UI at http://localhost:9093"
+	open http://localhost:9093 || xdg-open http://localhost:9093
