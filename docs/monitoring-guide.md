@@ -4,11 +4,11 @@ Phase 8-3: 監視とアラート体制
 
 ## 概要
 
-Prometheus、Grafana、Alertmanagerを使用した包括的な監視システムのセットアップと運用方法。
+Prometheus、Grafana、Alertmanager を使用した包括的な監視システムのセットアップと運用方法。
 
 ## クイックスタート
 
-### Docker Composeで監視スタックを起動
+### Docker Compose で監視スタックを起動
 
 ```bash
 # 監視スタックを起動
@@ -20,7 +20,7 @@ docker-compose -f docker-compose.monitoring.yml up -d
 # Alertmanager: http://localhost:9093
 ```
 
-### Kubernetesで監視スタックをデプロイ
+### Kubernetes で監視スタックをデプロイ
 
 ```bash
 # デプロイ
@@ -53,25 +53,27 @@ open http://localhost:9090
 ### 主要メトリクス
 
 #### アプリケーションメトリクス
-- `http_requests_total` - HTTPリクエスト総数
+
+- `http_requests_total` - HTTP リクエスト総数
 - `http_request_duration_seconds` - リクエスト処理時間
 - `http_requests_in_flight` - 処理中のリクエスト数
 - `cache_hits_total` - キャッシュヒット数
 - `cache_misses_total` - キャッシュミス数
-- `database_query_duration_seconds` - DBクエリ時間
+- `database_query_duration_seconds` - DB クエリ時間
 
 #### システムメトリクス
-- `process_cpu_seconds_total` - CPU使用時間
+
+- `process_cpu_seconds_total` - CPU 使用時間
 - `process_resident_memory_bytes` - メモリ使用量
 - `process_open_fds` - オープンファイルディスクリプタ数
-- `node_cpu_seconds_total` - ノードCPU時間
+- `node_cpu_seconds_total` - ノード CPU 時間
 - `node_memory_MemTotal_bytes` - 総メモリ量
 
 ## Grafana
 
 ### ダッシュボードのインポート
 
-1. Grafanaにログイン（http://localhost:3001）
+1. Grafana にログイン（http://localhost:3001）
 2. Configuration > Data Sources > Add data source
 3. Prometheus を選択
 4. URL: `http://prometheus:9090`
@@ -80,20 +82,23 @@ open http://localhost:9090
 ### 推奨ダッシュボード
 
 #### システム概要ダッシュボード
-- CPU使用率（全コンテナ）
+
+- CPU 使用率（全コンテナ）
 - メモリ使用率（全コンテナ）
-- ネットワークI/O
-- ディスクI/O
+- ネットワーク I/O
+- ディスク I/O
 
 #### アプリケーションダッシュボード
+
 - リクエスト数（エンドポイント別）
 - レスポンス時間（P50、P95、P99）
 - エラー率
 - アクティブ接続数
 
 #### ビジネスダッシュボード
+
 - アクティブユーザー数
-- API使用率
+- API 使用率
 - コンテンツ生成数
 - サブスクリプション数
 
@@ -101,7 +106,7 @@ open http://localhost:9090
 
 ### アラート設定
 
-#### Slack通知の設定
+#### Slack 通知の設定
 
 ```yaml
 # monitoring/alertmanager.yml
@@ -132,11 +137,11 @@ receivers:
 #### 定義済みアラート
 
 1. **HighErrorRate** - エラー率 > 5%
-2. **SlowResponseTime** - P95レスポンス > 1秒
-3. **HighCPUUsage** - CPU使用率 > 80%
+2. **SlowResponseTime** - P95 レスポンス > 1 秒
+3. **HighCPUUsage** - CPU 使用率 > 80%
 4. **HighMemoryUsage** - メモリ使用率 > 80%
-5. **PodDown** - Pod停止
-6. **DatabaseConnectionError** - DB接続エラー
+5. **PodDown** - Pod 停止
+6. **DatabaseConnectionError** - DB 接続エラー
 7. **LowCacheHitRate** - キャッシュヒット率 < 50%
 8. **HighDiskUsage** - ディスク空き < 20%
 
@@ -144,14 +149,14 @@ receivers:
 
 ### メトリクス収集
 
-1. **適切な間隔**: 15秒（デフォルト）
-2. **保持期間**: 30日
+1. **適切な間隔**: 15 秒（デフォルト）
+2. **保持期間**: 30 日
 3. **ラベル付け**: 環境、サービス、バージョン
 
 ### アラート設定
 
 1. **適切な閾値**: 本番データに基づいて調整
-2. **遅延設定**: 一時的な問題を無視（5-10分）
+2. **遅延設定**: 一時的な問題を無視（5-10 分）
 3. **重複排除**: 同じアラートの繰り返しを防ぐ
 
 ### ダッシュボード設計
@@ -162,7 +167,7 @@ receivers:
 
 ## トラブルシューティング
 
-### Prometheusがメトリクスを収集できない
+### Prometheus がメトリクスを収集できない
 
 ```bash
 # ターゲットの状態確認
@@ -172,7 +177,7 @@ curl http://localhost:9090/api/v1/targets
 docker logs aica-sys-prometheus
 ```
 
-### Grafanaでグラフが表示されない
+### Grafana でグラフが表示されない
 
 ```bash
 # データソース接続確認

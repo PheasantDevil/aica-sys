@@ -66,32 +66,32 @@ spec:
         app: alertmanager
     spec:
       containers:
-      - name: alertmanager
-        image: prom/alertmanager:latest
-        args:
-          - '--config.file=/etc/alertmanager/alertmanager.yml'
-          - '--storage.path=/alertmanager'
-        ports:
-        - containerPort: 9093
-          name: http
-        volumeMounts:
-        - name: alertmanager-config
-          mountPath: /etc/alertmanager
-        - name: alertmanager-data
-          mountPath: /alertmanager
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
+        - name: alertmanager
+          image: prom/alertmanager:latest
+          args:
+            - "--config.file=/etc/alertmanager/alertmanager.yml"
+            - "--storage.path=/alertmanager"
+          ports:
+            - containerPort: 9093
+              name: http
+          volumeMounts:
+            - name: alertmanager-config
+              mountPath: /etc/alertmanager
+            - name: alertmanager-data
+              mountPath: /alertmanager
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
       volumes:
-      - name: alertmanager-config
-        configMap:
-          name: alertmanager-config
-      - name: alertmanager-data
-        emptyDir: {}
+        - name: alertmanager-config
+          configMap:
+            name: alertmanager-config
+        - name: alertmanager-data
+          emptyDir: {}
 
 ---
 apiVersion: v1
@@ -104,6 +104,6 @@ spec:
   selector:
     app: alertmanager
   ports:
-  - port: 9093
-    targetPort: 9093
-    name: http
+    - port: 9093
+      targetPort: 9093
+      name: http
