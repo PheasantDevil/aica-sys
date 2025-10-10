@@ -98,6 +98,7 @@ from routers import (ai_router, analysis_router, audit_router, auth_router,
                      content_router, monitoring_router, reports_router,
                      subscription_router, user_router)
 from routers.optimized_content_router import router as optimized_content_router
+from routers.content_quality_router import router as content_quality_router
 
 # Include routers
 app.include_router(content_router)
@@ -112,6 +113,7 @@ app.include_router(content_management_router.router)
 app.include_router(monitoring_router.router)
 app.include_router(audit_router.router)
 app.include_router(optimized_content_router)
+app.include_router(content_quality_router)
 
 if __name__ == "__main__":
     uvicorn.run(
