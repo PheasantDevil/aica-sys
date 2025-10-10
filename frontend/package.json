@@ -47,7 +47,7 @@
     "date-fns": "^4.1.0",
     "fuse.js": "^7.1.0",
     "gtag": "^1.0.1",
-    "lucide-react": "0.290.0",
+    "lucide-react": "0.545.0",
     "next": "^14.2.32",
     "next-auth": "^4.24.11",
     "next-intl": "^4.3.7",
