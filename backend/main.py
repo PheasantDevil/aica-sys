@@ -17,7 +17,7 @@ from middleware.audit_middleware import AuditMiddleware
 from middleware.monitoring_middleware import MonitoringMiddleware
 # Import performance middleware
 from middleware.performance_middleware import (PerformanceMiddleware,
-                                               performance_monitor,
+                                               performance_metrics,
                                                setup_performance_middleware)
 # Import security middleware
 from security.security_headers import SecurityHeadersMiddleware
@@ -92,12 +92,12 @@ async def health_check():
 @app.get("/metrics")
 async def get_metrics():
     """Performance metrics endpoint"""
-    return performance_monitor.get_metrics()
+    return performance_metrics.get_stats()
 
 @app.get("/health/detailed")
 async def detailed_health_check():
     """Detailed health check with performance metrics"""
-    health_status = performance_monitor.get_health_status()
+    health_status = performance_metrics.get_stats()
     return health_status
 
 # Import routers
