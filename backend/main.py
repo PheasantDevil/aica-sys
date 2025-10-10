@@ -101,6 +101,7 @@ from routers.optimized_content_router import router as optimized_content_router
 from routers.content_quality_router import router as content_quality_router
 from routers.engagement_router import router as engagement_router
 from routers.subscription_enhanced_router import router as subscription_enhanced_router
+from routers.affiliate_router import router as affiliate_router
 
 # Include routers
 app.include_router(content_router)
@@ -118,6 +119,7 @@ app.include_router(optimized_content_router)
 app.include_router(content_quality_router)
 app.include_router(engagement_router)
 app.include_router(subscription_enhanced_router)
+app.include_router(affiliate_router)
 
 if __name__ == "__main__":
     uvicorn.run(
