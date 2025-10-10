@@ -3,33 +3,33 @@ global:
 
 # ルート設定
 route:
-  group_by: ['alertname', 'cluster', 'service']
+  group_by: ["alertname", "cluster", "service"]
   group_wait: 10s
   group_interval: 10s
   repeat_interval: 12h
-  receiver: 'default'
-  
+  receiver: "default"
+
   routes:
     # Critical アラート
     - match:
         severity: critical
-      receiver: 'critical'
+      receiver: "critical"
       continue: true
-    
+
     # Warning アラート
     - match:
         severity: warning
-      receiver: 'warning'
+      receiver: "warning"
       continue: true
 
 # レシーバー設定
 receivers:
-  - name: 'default'
+  - name: "default"
     webhook_configs:
-      - url: 'http://localhost:8080/webhook'
+      - url: "http://localhost:8080/webhook"
         send_resolved: true
 
-  - name: 'critical'
+  - name: "critical"
     # Slack通知（Critical）
     # slack_configs:
     #   - api_url: 'SLACK_WEBHOOK_URL'
@@ -37,7 +37,7 @@ receivers:
     #     title: '🚨 CRITICAL ALERT - AICA-SyS'
     #     text: '{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}'
     #     send_resolved: true
-    
+
     # メール通知（Critical）
     # email_configs:
     #   - to: 'ops@aica-sys.com'
@@ -48,7 +48,7 @@ receivers:
     #     headers:
     #       Subject: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
 
-  - name: 'warning'
+  - name: "warning"
     # Slack通知（Warning）
     # slack_configs:
     #   - api_url: 'SLACK_WEBHOOK_URL'
@@ -61,7 +61,7 @@ receivers:
 inhibit_rules:
   # 同じアラートが繰り返し発生するのを抑制
   - source_match:
-      severity: 'critical'
+      severity: "critical"
     target_match:
-      severity: 'warning'
-    equal: ['alertname', 'instance']
+      severity: "warning"
+    equal: ["alertname", "instance"]
