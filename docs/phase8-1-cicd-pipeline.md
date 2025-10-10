@@ -1,10 +1,10 @@
-# Phase 8-1: CI/CDパイプライン構築
+# Phase 8-1: CI/CD パイプライン構築
 
 ## 目的
 
-GitHub Actionsを使用した自動テスト・自動デプロイパイプラインを構築し、開発効率とコード品質を向上させる。
+GitHub Actions を使用した自動テスト・自動デプロイパイプラインを構築し、開発効率とコード品質を向上させる。
 
-## CI/CDパイプライン設計
+## CI/CD パイプライン設計
 
 ### 1. CI（継続的インテグレーション）
 
@@ -60,7 +60,7 @@ GitHub Actionsを使用した自動テスト・自動デプロイパイプライ
 
 ## GitHub Actions ワークフローファイル
 
-### 1. バックエンドCI/CD
+### 1. バックエンド CI/CD
 
 ```yaml
 # .github/workflows/backend-ci-cd.yml
@@ -79,62 +79,62 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.13'
           cache: 'pip'
-      
+
       - name: Install dependencies
         run: |
           cd backend
           pip install -r requirements.txt
-      
+
       - name: Run linters
         run: |
           cd backend
           black --check .
           isort --check .
           flake8 .
-      
+
       - name: Type checking
         run: |
           cd backend
           mypy .
-      
+
       - name: Run tests
         run: |
           cd backend
           pytest --cov=. --cov-report=xml
-      
+
       - name: Security scan
         run: |
           cd backend
           safety check
           bandit -r .
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
           file: ./backend/coverage.xml
-  
+
   deploy-staging:
     needs: test
     if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Deploy to Staging
         run: |
           # Staging環境へのデプロイ
           echo "Deploying to staging..."
-  
+
   deploy-production:
     needs: test
     if: github.ref == 'refs/heads/main'
@@ -142,26 +142,26 @@ jobs:
     environment:
       name: production
       url: https://api.aica-sys.com
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Build Docker image
         run: |
           docker build -t aica-sys-backend:${{ github.sha }} backend/
-      
+
       - name: Push to registry
         run: |
           # Container registryへのプッシュ
           echo "Pushing to registry..."
-      
+
       - name: Deploy to Production
         run: |
           # 本番環境へのデプロイ
           echo "Deploying to production..."
 ```
 
-### 2. フロントエンドCI/CD
+### 2. フロントエンド CI/CD
 
 ```yaml
 # .github/workflows/frontend-ci-cd.yml
@@ -180,55 +180,55 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
-      
+
       - name: Install dependencies
         run: |
           cd frontend
           npm ci
-      
+
       - name: Run linters
         run: |
           cd frontend
           npm run lint
-      
+
       - name: Type checking
         run: |
           cd frontend
           npm run type-check
-      
+
       - name: Run tests
         run: |
           cd frontend
           npm run test
-      
+
       - name: Build
         run: |
           cd frontend
           npm run build
-      
+
       - name: Security audit
         run: |
           cd frontend
           npm audit --production
-  
+
   deploy-vercel:
     needs: test
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
@@ -253,7 +253,7 @@ on:
 jobs:
   integration-test:
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:15
@@ -264,7 +264,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-      
+
       redis:
         image: redis:7
         options: >-
@@ -272,28 +272,28 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup environment
         run: |
           # 環境変数設定
           cp .env.example .env
-      
+
       - name: Run backend
         run: |
           cd backend
           python -m uvicorn main:app &
           sleep 10
-      
+
       - name: Run frontend
         run: |
           cd frontend
           npm run build
           npm start &
           sleep 10
-      
+
       - name: Run integration tests
         run: |
           node scripts/test-api-optimization.js
@@ -303,7 +303,7 @@ jobs:
 
 ## 環境変数管理
 
-### GitHub Secrets設定
+### GitHub Secrets 設定
 
 ```bash
 # 必要なシークレット
@@ -338,7 +338,7 @@ feature/*  → プレビュー環境 (Preview)
 ### 3. デプロイメントチェックリスト
 
 - [ ] 全てのテストが成功
-- [ ] コードカバレッジ80%以上
+- [ ] コードカバレッジ 80%以上
 - [ ] セキュリティスキャン合格
 - [ ] パフォーマンステスト合格
 - [ ] レビュー承認済み
@@ -349,19 +349,22 @@ feature/*  → プレビュー環境 (Preview)
 ## 自動化タスク
 
 ### 1. コード品質チェック
-- **ESLint**: JavaScriptコードの品質
-- **Black**: Pythonコードのフォーマット
-- **isort**: Pythonインポートの整理
+
+- **ESLint**: JavaScript コードの品質
+- **Black**: Python コードのフォーマット
+- **isort**: Python インポートの整理
 - **TypeScript**: 型チェック
-- **mypy**: Python型チェック
+- **mypy**: Python 型チェック
 
 ### 2. セキュリティチェック
-- **npm audit**: Node.js依存関係の脆弱性
-- **safety**: Python依存関係の脆弱性
-- **bandit**: Pythonコードのセキュリティ
-- **OWASP依存関係チェック**
+
+- **npm audit**: Node.js 依存関係の脆弱性
+- **safety**: Python 依存関係の脆弱性
+- **bandit**: Python コードのセキュリティ
+- **OWASP 依存関係チェック**
 
 ### 3. パフォーマンステスト
+
 - **Lighthouse CI**: フロントエンドパフォーマンス
 - **API レスポンステスト**: バックエンドパフォーマンス
 - **負荷テスト**: スケーラビリティ確認
@@ -375,18 +378,18 @@ feature/*  → プレビュー環境 (Preview)
   run: |
     # ヘルスチェック
     curl -f https://api.aica-sys.com/health || exit 1
-    
+
     # スモークテスト
     npm run test:smoke
-    
+
     # パフォーマンスチェック
     npm run test:performance
 ```
 
 ### アラート設定
 
-- **デプロイ失敗**: Slack通知
-- **テスト失敗**: GitHub通知 + Slack
+- **デプロイ失敗**: Slack 通知
+- **テスト失敗**: GitHub 通知 + Slack
 - **セキュリティ問題**: 即座の通知
 
 ## ロールバック手順
@@ -417,7 +420,7 @@ docker-compose up -d --scale backend=3 --force-recreate
 
 ## 実装手順
 
-1. **GitHub Actionsワークフローファイルの作成**
+1. **GitHub Actions ワークフローファイルの作成**
 2. **環境変数とシークレットの設定**
 3. **テストスクリプトの整備**
 4. **デプロイスクリプトの作成**
@@ -427,12 +430,12 @@ docker-compose up -d --scale backend=3 --force-recreate
 
 ## 期待される効果
 
-- **デプロイ時間**: 手動30分 → 自動10分
-- **デプロイ頻度**: 週1回 → 日次
+- **デプロイ時間**: 手動 30 分 → 自動 10 分
+- **デプロイ頻度**: 週 1 回 → 日次
 - **エラー検出**: デプロイ後 → デプロイ前
 - **コード品質**: 向上（自動チェック）
 - **開発速度**: 30%向上
 
 ## 次のステップ
 
-Phase 8-1の実装を開始します。
+Phase 8-1 の実装を開始します。
