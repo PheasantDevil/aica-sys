@@ -17,10 +17,10 @@ import openai
 import requests
 from PIL import Image
 
-from ..utils.cache_decorators import (cache_article_data,
-                                      cache_newsletter_data, cache_result)
-from .ai_analyzer import AnalysisResult
-from .data_collector import ContentItem
+from utils.cache_decorators import (cache_article_data,
+                                    cache_newsletter_data, cache_result)
+from services.ai_analyzer import AnalysisResult
+from services.data_collector import ContentItem
 
 logger = logging.getLogger(__name__)
 
