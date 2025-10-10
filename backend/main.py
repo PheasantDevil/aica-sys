@@ -16,9 +16,7 @@ from middleware.audit_middleware import AuditMiddleware
 # Import monitoring middleware
 from middleware.monitoring_middleware import MonitoringMiddleware
 # Import performance middleware
-from middleware.performance_middleware import (PerformanceMiddleware,
-                                               performance_metrics,
-                                               setup_performance_middleware)
+from middleware.performance_middleware import performance_metrics
 # Import security middleware
 from security.security_headers import SecurityHeadersMiddleware
 
@@ -65,9 +63,6 @@ app.add_middleware(
     TrustedHostMiddleware,
     allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app", "*.supabase.co"]
 )
-
-# Setup performance middleware
-app = setup_performance_middleware(app)
 
 @app.get("/")
 async def root():
