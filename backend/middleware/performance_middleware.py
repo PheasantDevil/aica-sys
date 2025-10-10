@@ -1,314 +1,303 @@
 """
-Performance Monitoring Middleware
-API パフォーマンスの監視とログ記録
+Performance Middleware for AICA-SyS
+Phase 7-3: API response optimization
 """
 
-import time
-import logging
-from typing import Callable, Dict, Any
-from fastapi import Request, Response
-from starlette.middleware.base import BaseHTTPMiddleware
-from collections import defaultdict, deque
 import asyncio
-import psutil
+import logging
 import os
+import time
+from collections import defaultdict, deque
+from typing import Any, Callable, Dict
+
+import psutil
+from fastapi import Request, Response
+from fastapi.responses import JSONResponse
 
 logger = logging.getLogger(__name__)
 
 class PerformanceMetrics:
-    """パフォーマンスメトリクス管理クラス"""
+    """パフォーマンスメトリクスを管理するクラス"""
     
     def __init__(self, max_history: int = 1000):
         self.max_history = max_history
-        self.request_times = deque(maxlen=max_history)
-        self.response_sizes = deque(maxlen=max_history)
-        self.status_codes = defaultdict(int)
+        self.response_times = deque(maxlen=max_history)
+        self.request_counts = defaultdict(int)
+        self.error_counts = defaultdict(int)
         self.endpoint_times = defaultdict(list)
-        self.error_count = 0
-        self.total_requests = 0
-        self.start_time = time.time()
-    
-    def record_request(self, 
-                      endpoint: str, 
-                      method: str, 
-                      response_time: float, 
-                      status_code: int, 
-                      response_size: int):
-        """リクエスト情報を記録"""
-        self.total_requests += 1
-        self.request_times.append(response_time)
-        self.response_sizes.append(response_size)
-        self.status_codes[status_code] += 1
-        self.endpoint_times[f"{method} {endpoint}"].append(response_time)
+        self.memory_usage = deque(maxlen=max_history)
+        self.cpu_usage = deque(maxlen=max_history)
         
-        if status_code >= 400:
-            self.error_count += 1
+    def record_response_time(self, endpoint: str, response_time: float):
+        """レスポンス時間を記録"""
+        self.response_times.append(response_time)
+        self.endpoint_times[endpoint].append(response_time)
+        if len(self.endpoint_times[endpoint]) > self.max_history:
+            self.endpoint_times[endpoint] = self.endpoint_times[endpoint][-self.max_history:]
+    
+    def record_request(self, endpoint: str):
+        """リクエスト数を記録"""
+        self.request_counts[endpoint] += 1
+    
+    def record_error(self, endpoint: str, status_code: int):
+        """エラー数を記録"""
+        self.error_counts[f"{endpoint}:{status_code}"] += 1
+    
+    def record_system_metrics(self):
+        """システムメトリクスを記録"""
+        process = psutil.Process(os.getpid())
+        self.memory_usage.append(process.memory_info().rss / 1024 / 1024)  # MB
+        self.cpu_usage.append(process.cpu_percent())
     
     def get_stats(self) -> Dict[str, Any]:
         """統計情報を取得"""
-        if not self.request_times:
-            return {}
+        if not self.response_times:
+            return {
+                "total_requests": 0,
+                "average_response_time": 0,
+                "min_response_time": 0,
+                "max_response_time": 0,
+                "p95_response_time": 0,
+                "error_rate": 0,
+                "memory_usage_mb": 0,
+                "cpu_usage_percent": 0,
+            }
         
-        request_times_list = list(self.request_times)
-        response_sizes_list = list(self.response_sizes)
-        
-        # 平均レスポンス時間
-        avg_response_time = sum(request_times_list) / len(request_times_list)
-        
-        # 95パーセンタイル
-        sorted_times = sorted(request_times_list)
-        p95_index = int(len(sorted_times) * 0.95)
-        p95_response_time = sorted_times[p95_index] if p95_index < len(sorted_times) else sorted_times[-1]
-        
-        # 平均レスポンスサイズ
-        avg_response_size = sum(response_sizes_list) / len(response_sizes_list)
-        
-        # エラー率
-        error_rate = (self.error_count / self.total_requests * 100) if self.total_requests > 0 else 0
-        
-        # システムリソース
-        cpu_percent = psutil.cpu_percent()
-        memory = psutil.virtual_memory()
-        disk = psutil.disk_usage('/')
+        response_times = list(self.response_times)
+        total_requests = sum(self.request_counts.values())
+        total_errors = sum(self.error_counts.values())
         
         return {
-            "total_requests": self.total_requests,
-            "avg_response_time": round(avg_response_time, 3),
-            "p95_response_time": round(p95_response_time, 3),
-            "avg_response_size": round(avg_response_size, 0),
-            "error_rate": round(error_rate, 2),
-            "status_codes": dict(self.status_codes),
-            "uptime": round(time.time() - self.start_time, 2),
-            "system": {
-                "cpu_percent": cpu_percent,
-                "memory_percent": memory.percent,
-                "memory_used_gb": round(memory.used / (1024**3), 2),
-                "memory_total_gb": round(memory.total / (1024**3), 2),
-                "disk_percent": disk.percent,
-                "disk_used_gb": round(disk.used / (1024**3), 2),
-                "disk_total_gb": round(disk.total / (1024**3), 2),
-            },
-            "endpoints": {
-                endpoint: {
-                    "count": len(times),
-                    "avg_time": round(sum(times) / len(times), 3),
-                    "max_time": round(max(times), 3),
-                    "min_time": round(min(times), 3),
-                }
-                for endpoint, times in self.endpoint_times.items()
-            }
+            "total_requests": total_requests,
+            "average_response_time": sum(response_times) / len(response_times),
+            "min_response_time": min(response_times),
+            "max_response_time": max(response_times),
+            "p95_response_time": self._calculate_percentile(response_times, 95),
+            "error_rate": (total_errors / total_requests * 100) if total_requests > 0 else 0,
+            "memory_usage_mb": list(self.memory_usage)[-1] if self.memory_usage else 0,
+            "cpu_usage_percent": list(self.cpu_usage)[-1] if self.cpu_usage else 0,
+            "endpoint_stats": self._get_endpoint_stats(),
         }
+    
+    def _calculate_percentile(self, data: list, percentile: int) -> float:
+        """パーセンタイルを計算"""
+        if not data:
+            return 0
+        sorted_data = sorted(data)
+        index = int(len(sorted_data) * percentile / 100)
+        return sorted_data[min(index, len(sorted_data) - 1)]
+    
+    def _get_endpoint_stats(self) -> Dict[str, Dict[str, Any]]:
+        """エンドポイント別の統計を取得"""
+        stats = {}
+        for endpoint, times in self.endpoint_times.items():
+            if times:
+                stats[endpoint] = {
+                    "count": self.request_counts.get(endpoint, 0),
+                    "average_time": sum(times) / len(times),
+                    "min_time": min(times),
+                    "max_time": max(times),
+                    "p95_time": self._calculate_percentile(times, 95),
+                }
+        return stats
 
 # グローバルメトリクスインスタンス
-metrics = PerformanceMetrics()
+performance_metrics = PerformanceMetrics()
 
-class PerformanceMiddleware(BaseHTTPMiddleware):
-    """パフォーマンス監視ミドルウェア"""
+class PerformanceMiddleware:
+    """パフォーマンス測定ミドルウェア"""
     
-    def __init__(self, app, enable_logging: bool = True):
-        super().__init__(app)
-        self.enable_logging = enable_logging
-        self.slow_request_threshold = float(os.getenv("SLOW_REQUEST_THRESHOLD", "1.0"))
+    def __init__(self, app, max_request_size: int = 10 * 1024 * 1024):  # 10MB
+        self.app = app
+        self.max_request_size = max_request_size
     
-    async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        """リクエスト処理とパフォーマンス測定"""
+    async def __call__(self, scope: Dict[str, Any], receive: Callable, send: Callable):
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+        
+        request = Request(scope, receive)
         start_time = time.time()
         
-        # リクエスト情報の取得
-        method = request.method
-        url = request.url
-        endpoint = url.path
-        client_ip = request.client.host if request.client else "unknown"
+        # リクエストサイズチェック
+        content_length = request.headers.get("content-length")
+        if content_length and int(content_length) > self.max_request_size:
+            response = JSONResponse(
+                status_code=413,
+                content={"error": "Request too large", "max_size": self.max_request_size}
+            )
+            await response(scope, receive, send)
+            return
         
-        # リクエストサイズの取得
-        request_size = 0
-        if hasattr(request, "_body"):
-            request_size = len(request._body)
+        # エンドポイント名を取得
+        endpoint = f"{request.method} {request.url.path}"
+        
+        # リクエスト数を記録
+        performance_metrics.record_request(endpoint)
+        
+        # レスポンスを処理
+        response_sent = False
+        response_status = 200
+        
+        async def send_wrapper(message):
+            nonlocal response_sent, response_status
+            
+            if message["type"] == "http.response.start":
+                response_status = message["status"]
+                
+                # レスポンス時間を計算
+                response_time = time.time() - start_time
+                performance_metrics.record_response_time(endpoint, response_time)
+                
+                # エラーを記録
+                if response_status >= 400:
+                    performance_metrics.record_error(endpoint, response_status)
+                
+                # システムメトリクスを記録
+                performance_metrics.record_system_metrics()
+                
+                # パフォーマンスヘッダーを追加
+                message["headers"].append([b"x-response-time", str(response_time).encode()])
+                message["headers"].append([b"x-request-id", str(int(start_time * 1000)).encode()])
+                
+                response_sent = True
+            
+            await send(message)
         
         try:
-            # リクエスト処理
-            response = await call_next(request)
-            
-            # 処理時間の計算
-            process_time = time.time() - start_time
-            
-            # レスポンスサイズの取得
-            response_size = 0
-            if hasattr(response, "body"):
-                response_size = len(response.body)
-            
-            # メトリクスの記録
-            metrics.record_request(
-                endpoint=endpoint,
-                method=method,
-                response_time=process_time,
-                status_code=response.status_code,
-                response_size=response_size
-            )
-            
-            # レスポンスヘッダーにパフォーマンス情報を追加
-            response.headers["X-Process-Time"] = str(round(process_time, 3))
-            response.headers["X-Request-ID"] = f"{int(time.time() * 1000)}-{hash(endpoint) % 10000}"
-            
-            # ログ記録
-            if self.enable_logging:
-                self._log_request(
-                    method=method,
-                    endpoint=endpoint,
-                    status_code=response.status_code,
-                    process_time=process_time,
-                    request_size=request_size,
-                    response_size=response_size,
-                    client_ip=client_ip
-                )
-            
-            # スローレスポンスの警告
-            if process_time > self.slow_request_threshold:
-                logger.warning(
-                    f"Slow request detected: {method} {endpoint} "
-                    f"took {process_time:.3f}s (threshold: {self.slow_request_threshold}s)"
-                )
-            
-            return response
-            
+            await self.app(scope, receive, send_wrapper)
         except Exception as e:
-            # エラー処理
-            process_time = time.time() - start_time
-            error_status = 500
-            
-            # エラーメトリクスの記録
-            metrics.record_request(
-                endpoint=endpoint,
-                method=method,
-                response_time=process_time,
-                status_code=error_status,
-                response_size=0
-            )
-            
-            # エラーログ
-            logger.error(
-                f"Request error: {method} {endpoint} "
-                f"failed after {process_time:.3f}s - {str(e)}"
-            )
-            
+            if not response_sent:
+                performance_metrics.record_error(endpoint, 500)
+                logger.error(f"Error in endpoint {endpoint}: {e}")
             raise
-    
-    def _log_request(self, 
-                    method: str, 
-                    endpoint: str, 
-                    status_code: int, 
-                    process_time: float,
-                    request_size: int,
-                    response_size: int,
-                    client_ip: str):
-        """リクエストログの出力"""
-        log_level = "INFO"
-        if status_code >= 400:
-            log_level = "ERROR"
-        elif status_code >= 300:
-            log_level = "WARNING"
-        
-        log_message = (
-            f"{method} {endpoint} {status_code} "
-            f"{process_time:.3f}s "
-            f"req:{request_size}B res:{response_size}B "
-            f"ip:{client_ip}"
-        )
-        
-        if log_level == "ERROR":
-            logger.error(log_message)
-        elif log_level == "WARNING":
-            logger.warning(log_message)
-        else:
-            logger.info(log_message)
 
-class PerformanceMonitor:
-    """パフォーマンス監視クラス"""
+class RequestSizeMiddleware:
+    """リクエストサイズ制限ミドルウェア"""
+    
+    def __init__(self, max_size: int = 10 * 1024 * 1024):  # 10MB
+        self.max_size = max_size
+    
+    async def __call__(self, request: Request, call_next):
+        content_length = request.headers.get("content-length")
+        
+        if content_length and int(content_length) > self.max_size:
+            return JSONResponse(
+                status_code=413,
+                content={
+                    "error": "Request too large",
+                    "max_size": self.max_size,
+                    "received_size": int(content_length)
+                }
+            )
+        
+        return await call_next(request)
+
+class CompressionMiddleware:
+    """圧縮ミドルウェア"""
+    
+    def __init__(self, min_size: int = 1024):  # 1KB
+        self.min_size = min_size
+    
+    async def __call__(self, request: Request, call_next):
+        response = await call_next(request)
+        
+        # レスポンスサイズをチェック
+        if hasattr(response, 'body') and len(response.body) > self.min_size:
+            # gzip圧縮を適用
+            import gzip
+            compressed_body = gzip.compress(response.body)
+            response.body = compressed_body
+            response.headers["content-encoding"] = "gzip"
+            response.headers["content-length"] = str(len(compressed_body))
+        
+        return response
+
+class CacheHeadersMiddleware:
+    """キャッシュヘッダーミドルウェア"""
     
     def __init__(self):
-        self.metrics = metrics
-        self.alerts = []
-        self.alert_thresholds = {
-            "response_time": 2.0,  # 2秒
-            "error_rate": 5.0,     # 5%
-            "cpu_percent": 80.0,   # 80%
-            "memory_percent": 85.0, # 85%
+        self.cache_rules = {
+            "/api/static/": {"cache_control": "public, max-age=31536000, immutable"},
+            "/api/articles": {"cache_control": "public, max-age=300, s-maxage=600"},
+            "/api/trends": {"cache_control": "public, max-age=600, s-maxage=1200"},
+            "/api/newsletters": {"cache_control": "public, max-age=1800, s-maxage=3600"},
+            "/api/health": {"cache_control": "no-cache, no-store, must-revalidate"},
         }
     
-    def get_metrics(self) -> Dict[str, Any]:
-        """現在のメトリクスを取得"""
-        return self.metrics.get_stats()
-    
-    def check_alerts(self) -> list:
-        """アラートの確認"""
-        stats = self.get_metrics()
-        current_alerts = []
+    async def __call__(self, request: Request, call_next):
+        response = await call_next(request)
         
-        # レスポンス時間のアラート
-        if stats.get("avg_response_time", 0) > self.alert_thresholds["response_time"]:
-            current_alerts.append({
-                "type": "high_response_time",
-                "message": f"Average response time is {stats['avg_response_time']:.2f}s",
-                "value": stats["avg_response_time"],
-                "threshold": self.alert_thresholds["response_time"]
-            })
+        # パスに基づいてキャッシュヘッダーを設定
+        for path_pattern, headers in self.cache_rules.items():
+            if request.url.path.startswith(path_pattern):
+                for header_name, header_value in headers.items():
+                    response.headers[header_name.replace("_", "-")] = header_value
+                break
         
-        # エラー率のアラート
-        if stats.get("error_rate", 0) > self.alert_thresholds["error_rate"]:
-            current_alerts.append({
-                "type": "high_error_rate",
-                "message": f"Error rate is {stats['error_rate']:.2f}%",
-                "value": stats["error_rate"],
-                "threshold": self.alert_thresholds["error_rate"]
-            })
-        
-        # CPU使用率のアラート
-        system_stats = stats.get("system", {})
-        if system_stats.get("cpu_percent", 0) > self.alert_thresholds["cpu_percent"]:
-            current_alerts.append({
-                "type": "high_cpu_usage",
-                "message": f"CPU usage is {system_stats['cpu_percent']:.1f}%",
-                "value": system_stats["cpu_percent"],
-                "threshold": self.alert_thresholds["cpu_percent"]
-            })
-        
-        # メモリ使用率のアラート
-        if system_stats.get("memory_percent", 0) > self.alert_thresholds["memory_percent"]:
-            current_alerts.append({
-                "type": "high_memory_usage",
-                "message": f"Memory usage is {system_stats['memory_percent']:.1f}%",
-                "value": system_stats["memory_percent"],
-                "threshold": self.alert_thresholds["memory_percent"]
-            })
-        
-        self.alerts = current_alerts
-        return current_alerts
-    
-    def get_health_status(self) -> Dict[str, Any]:
-        """ヘルスステータスの取得"""
-        stats = self.get_metrics()
-        alerts = self.check_alerts()
-        
-        # ヘルススコアの計算
-        health_score = 100
-        for alert in alerts:
-            if alert["type"] == "high_response_time":
-                health_score -= 20
-            elif alert["type"] == "high_error_rate":
-                health_score -= 30
-            elif alert["type"] == "high_cpu_usage":
-                health_score -= 15
-            elif alert["type"] == "high_memory_usage":
-                health_score -= 15
-        
-        health_score = max(0, health_score)
-        
-        return {
-            "status": "healthy" if health_score >= 80 else "warning" if health_score >= 60 else "critical",
-            "score": health_score,
-            "alerts": alerts,
-            "metrics": stats
-        }
+        return response
 
-# グローバル監視インスタンス
-performance_monitor = PerformanceMonitor()
+class RateLimitMiddleware:
+    """レート制限ミドルウェア"""
+    
+    def __init__(self, max_requests: int = 100, window_seconds: int = 60):
+        self.max_requests = max_requests
+        self.window_seconds = window_seconds
+        self.requests = defaultdict(list)
+    
+    async def __call__(self, request: Request, call_next):
+        client_ip = request.client.host
+        current_time = time.time()
+        
+        # 古いリクエストを削除
+        self.requests[client_ip] = [
+            req_time for req_time in self.requests[client_ip]
+            if current_time - req_time < self.window_seconds
+        ]
+        
+        # リクエスト数をチェック
+        if len(self.requests[client_ip]) >= self.max_requests:
+            return JSONResponse(
+                status_code=429,
+                content={
+                    "error": "Too many requests",
+                    "retry_after": self.window_seconds
+                }
+            )
+        
+        # リクエストを記録
+        self.requests[client_ip].append(current_time)
+        
+        return await call_next(request)
+
+# ミドルウェアの設定関数
+def setup_performance_middleware(app):
+    """パフォーマンスミドルウェアを設定"""
+    
+    # レート制限ミドルウェア
+    app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
+    
+    # リクエストサイズ制限ミドルウェア
+    app.add_middleware(RequestSizeMiddleware, max_size=10 * 1024 * 1024)
+    
+    # キャッシュヘッダーミドルウェア
+    app.add_middleware(CacheHeadersMiddleware)
+    
+    # 圧縮ミドルウェア
+    app.add_middleware(CompressionMiddleware, min_size=1024)
+    
+    # パフォーマンス測定ミドルウェア
+    app.add_middleware(PerformanceMiddleware, max_request_size=10 * 1024 * 1024)
+    
+    return app
+
+# パフォーマンス統計取得エンドポイント
+def get_performance_stats():
+    """パフォーマンス統計を取得"""
+    return performance_metrics.get_stats()
+
+# パフォーマンス統計リセット
+def reset_performance_stats():
+    """パフォーマンス統計をリセット"""
+    global performance_metrics
+    performance_metrics = PerformanceMetrics()
