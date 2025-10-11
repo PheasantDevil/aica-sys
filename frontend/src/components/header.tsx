@@ -73,7 +73,9 @@ export function Header() {
               >
                 ログイン
               </Button>
-              <Button size='sm'>無料で始める</Button>
+              <Link href='/auth/signup'>
+                <Button size='sm'>無料で始める</Button>
+              </Link>
             </div>
           )}
         </div>
