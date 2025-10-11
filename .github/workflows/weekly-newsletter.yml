@@ -1,0 +1,46 @@
+name: Weekly Newsletter Generation
+
+on:
+  schedule:
+    # 毎週月曜日午前8時（JST = UTC 23:00 日曜）
+    - cron: "0 23 * * 0"
+  workflow_dispatch: # 手動実行
+
+jobs:
+  generate-newsletter:
+    name: Generate Weekly Newsletter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Run newsletter generation
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python3 scripts/generate_newsletter.py
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '❌ Weekly Newsletter Generation Failed',
+              body: `Weekly newsletter generation failed on ${new Date().toISOString()}\n\nCheck the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.`,
+              labels: ['automation', 'bug']
+            })
+
