@@ -1,0 +1,55 @@
+name: Daily Trend Analysis
+
+on:
+  schedule:
+    # 毎日午前10時（JST = UTC 1:00）
+    - cron: "0 1 * * *"
+  workflow_dispatch: # 手動実行
+
+jobs:
+  analyze-trends:
+    name: Analyze Daily Trends
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Run trend analysis
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python3 scripts/analyze_trends.py
+
+      - name: Commit trend data
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/trends-latest.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: Update daily trend data [skip ci]"
+          git push
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '❌ Daily Trend Analysis Failed',
+              body: `Daily trend analysis failed on ${new Date().toISOString()}\n\nCheck the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.`,
+              labels: ['automation', 'bug']
+            })
+
