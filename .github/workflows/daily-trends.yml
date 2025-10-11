@@ -5,6 +5,14 @@ on:
     # 毎日午前10時（JST = UTC 1:00）
     - cron: "0 1 * * *"
   workflow_dispatch: # 手動実行
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/services/trend_analysis_service.py'
+      - 'backend/models/automated_content.py'
+      - 'scripts/analyze_trends.py'
+      - '.github/workflows/daily-trends.yml'
 
 jobs:
   analyze-trends:
@@ -20,10 +28,37 @@ jobs:
         with:
           python-version: "3.13"
 
+      - name: Check Python version
+        run: |
+          python3 --version
+          pip --version
+
       - name: Install dependencies
         run: |
           cd backend
           pip install -r requirements.txt
+
+      - name: Verify dependencies installed
+        run: |
+          cd backend
+          pip list | grep -E "(requests|sqlalchemy)" || exit 1
+
+      - name: Check database connection
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('backend'))); from database import SessionLocal; db = SessionLocal(); db.close(); print('✅ Database connection OK')"
+
+      - name: Verify scripts exist
+        run: |
+          test -f scripts/analyze_trends.py || exit 1
+          test -x scripts/analyze_trends.py || exit 1
+          echo "✅ Script exists and is executable"
+
+      - name: Ensure public directory exists
+        run: |
+          mkdir -p public
+          echo "✅ Public directory ready"
 
       - name: Run trend analysis
         env:
