@@ -6,7 +6,7 @@
 
 ## ファイル構成と役割
 
-```
+```plaintext
 Phase 10-1 関連ファイル:
 ├── .github/workflows/daily-articles.yml          # GitHub Actions ワークフロー定義
 ├── backend/services/source_aggregator_service.py # 情報収集サービス
@@ -112,7 +112,7 @@ if quality_score < 80:
 {技術的な仕組み}
 
 ### 実装例
-```code
+```python
 {実際のコード例}
 ```
 

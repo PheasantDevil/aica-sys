@@ -7,6 +7,7 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List
 
+import feedparser
 import requests
 from sqlalchemy.orm import Session
 
@@ -203,8 +204,6 @@ class SourceAggregatorService:
     def _collect_tech_crunch(self) -> List[Dict[str, Any]]:
         """Tech Crunch RSS から収集"""
         try:
-            import feedparser
-
             feed = feedparser.parse('https://techcrunch.com/feed/')
             entries = feed.entries[:10]  # 最新10件
 

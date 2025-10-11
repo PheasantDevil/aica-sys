@@ -132,7 +132,7 @@ Geminiなどの検索AIに採用される価値の高いコンテンツを目指
 
 ## ファイル構成
 
-```
+```plaintext
 .github/workflows/
 ├── daily-articles.yml           # Phase 10-1: 記事生成
 ├── daily-trends.yml             # Phase 10-2: トレンド分析

@@ -4,6 +4,7 @@ Daily Article Generation Script
 Phase 10-1: Execute daily article generation workflow
 """
 
+import asyncio
 import os
 import sys
 from pathlib import Path
@@ -16,8 +17,8 @@ from services.content_automation_service import ContentAutomationService
 from services.source_aggregator_service import SourceAggregatorService
 
 
-def main():
-    """メイン処理"""
+async def main_async():
+    """メイン処理（非同期）"""
     print("🚀 Starting daily article generation...")
 
     db = SessionLocal()
@@ -25,22 +26,21 @@ def main():
         # Step 1: 情報収集
         print("📡 Collecting data from sources...")
         aggregator = SourceAggregatorService(db)
-        import asyncio
-        source_data = asyncio.run(aggregator.collect_all_sources())
+        source_data = await aggregator.collect_all_sources()
         print(f"✅ Collected {len(source_data)} items")
 
         # Step 2: トレンド分析
         print("📊 Analyzing trends...")
         openai_api_key = os.getenv("OPENAI_API_KEY", "")
         automation = ContentAutomationService(db, openai_api_key)
-        trends = asyncio.run(automation.analyze_trends(source_data))
+        trends = await automation.analyze_trends(source_data)
         print(f"✅ Found {len(trends)} trends")
 
         # Step 3: 記事生成
         print("✍️  Generating articles...")
         for i, trend in enumerate(trends[:3], 1):  # トップ3記事生成
             print(f"  Generating article {i}/3: {trend['keyword']}")
-            article = asyncio.run(automation.generate_article(trend))
+            article = await automation.generate_article(trend)
             if article and article.get('quality_score', 0) >= 80:
                 print(f"  ✅ Generated: {article['title']} (Score: {article['quality_score']})")
             else:
@@ -53,6 +53,11 @@ def main():
         sys.exit(1)
     finally:
         db.close()
+
+
+def main():
+    """エントリーポイント"""
+    asyncio.run(main_async())
 
 
 if __name__ == "__main__":
