@@ -1,0 +1,48 @@
+name: Daily Article Generation
+
+on:
+  schedule:
+    # 平日午前9時（JST = UTC 0:00）
+    - cron: '0 0 * * 1-5'
+  workflow_dispatch:  # 手動実行
+
+jobs:
+  generate-articles:
+    name: Generate Daily Articles
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          pip install feedparser  # For RSS parsing
+      
+      - name: Run article generation
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python3 scripts/generate_daily_article.py
+      
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '❌ Daily Article Generation Failed',
+              body: `Daily article generation failed on ${new Date().toISOString()}\n\nCheck the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.`,
+              labels: ['automation', 'bug']
+            })
+
