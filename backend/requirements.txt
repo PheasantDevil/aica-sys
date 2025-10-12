@@ -22,7 +22,7 @@ aiohttp==3.9.0
 
 # Monitoring and metrics
 psutil==5.9.6
-asyncpg==0.29.0
+# asyncpg==0.29.0  # Disabled: Not compatible with Python 3.13, not needed for SQLite
 
 # Utilities
 python-dotenv==1.0.0
