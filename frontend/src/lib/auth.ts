@@ -1,7 +1,7 @@
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { NextAuthOptions } from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import { prisma } from './prisma';
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { NextAuthOptions } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import { prisma } from "./prisma";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -11,10 +11,10 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope: 'openid email profile',
-          prompt: 'consent',
-          access_type: 'offline',
-          response_type: 'code',
+          scope: "openid email profile",
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
         },
       },
     }),
@@ -22,7 +22,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user, account, profile }) {
       // 本番環境でのサインイン制御
-      if (process.env.NODE_ENV === 'production') {
+      if (process.env.NODE_ENV === "production") {
         // 必要に応じてドメイン制限を追加
         // if (user.email && !user.email.endsWith('@allowed-domain.com')) {
         //   return false;
@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token, user }) {
       if (session?.user && token?.sub) {
         (session.user as any).id = token.sub;
-        (session.user as any).role = token.role || 'user';
+        (session.user as any).role = token.role || "user";
         (session.user as any).subscription = token.subscription || null;
       }
       return session;
@@ -41,7 +41,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account, profile }) {
       if (user) {
         token.uid = user.id;
-        token.role = 'user'; // デフォルトロール
+        token.role = "user"; // デフォルトロール
       }
 
       // Google OAuth情報の保存
@@ -57,13 +57,13 @@ export const authOptions: NextAuthOptions = {
     },
     async redirect({ url, baseUrl }) {
       // 本番環境でのリダイレクト制御
-      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
       if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30日
     updateAge: 24 * 60 * 60, // 24時間
   },
@@ -71,21 +71,21 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30日
   },
   pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
-    signOut: '/auth/signout',
+    signIn: "/auth/signin",
+    error: "/auth/error",
+    signOut: "/auth/signout",
   },
   events: {
     async signIn({ user, account, profile, isNewUser }) {
-      console.log('User signed in:', { user: user.email, isNewUser });
+      console.log("User signed in:", { user: user.email, isNewUser });
     },
     async signOut({ session, token }) {
-      console.log('User signed out:', { user: session?.user?.email });
+      console.log("User signed out:", { user: session?.user?.email });
     },
     async createUser({ user }) {
-      console.log('New user created:', { user: user.email });
+      console.log("New user created:", { user: user.email });
     },
   },
-  debug: process.env.NODE_ENV === 'development',
+  debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET,
 };

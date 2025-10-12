@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
 export interface SEOConfig {
   title: string;
@@ -6,8 +6,8 @@ export interface SEOConfig {
   keywords?: string[];
   canonical?: string;
   ogImage?: string;
-  ogType?: 'website' | 'article' | 'profile';
-  twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
+  ogType?: "website" | "article" | "profile";
+  twitterCard?: "summary" | "summary_large_image" | "app" | "player";
   noindex?: boolean;
   nofollow?: boolean;
   structuredData?: Record<string, any>;
@@ -41,10 +41,10 @@ export interface OrganizationSEOData {
 
 export class AdvancedSEO {
   private static readonly DEFAULT_CONFIG = {
-    siteName: 'AICA-SyS',
-    siteUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://aica-sys.vercel.app',
-    defaultImage: '/og-default.png',
-    twitterHandle: '@aica_sys',
+    siteName: "AICA-SyS",
+    siteUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://aica-sys.vercel.app",
+    defaultImage: "/og-default.png",
+    twitterHandle: "@aica_sys",
   };
 
   /**
@@ -57,28 +57,26 @@ export class AdvancedSEO {
       keywords = [],
       canonical,
       ogImage,
-      ogType = 'website',
-      twitterCard = 'summary_large_image',
+      ogType = "website",
+      twitterCard = "summary_large_image",
       noindex = false,
       nofollow = false,
     } = config;
 
-    const fullTitle = title.includes(this.DEFAULT_CONFIG.siteName) 
-      ? title 
+    const fullTitle = title.includes(this.DEFAULT_CONFIG.siteName)
+      ? title
       : `${title} | ${this.DEFAULT_CONFIG.siteName}`;
 
-    const imageUrl = ogImage 
+    const imageUrl = ogImage
       ? `${this.DEFAULT_CONFIG.siteUrl}${ogImage}`
       : `${this.DEFAULT_CONFIG.siteUrl}${this.DEFAULT_CONFIG.defaultImage}`;
 
-    const canonicalUrl = canonical 
-      ? `${this.DEFAULT_CONFIG.siteUrl}${canonical}`
-      : undefined;
+    const canonicalUrl = canonical ? `${this.DEFAULT_CONFIG.siteUrl}${canonical}` : undefined;
 
     return {
       title: fullTitle,
       description,
-      keywords: keywords.join(', '),
+      keywords: keywords.join(", "),
       alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
       robots: {
         index: !noindex,
@@ -86,9 +84,9 @@ export class AdvancedSEO {
         googleBot: {
           index: !noindex,
           follow: !nofollow,
-          'max-video-preview': -1,
-          'max-image-preview': 'large',
-          'max-snippet': -1,
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": -1,
         },
       },
       openGraph: {
@@ -124,10 +122,10 @@ export class AdvancedSEO {
       title: article.title,
       description: article.description,
       keywords: article.tags,
-      canonical: `/articles/${article.title.toLowerCase().replace(/\s+/g, '-')}`,
+      canonical: `/articles/${article.title.toLowerCase().replace(/\s+/g, "-")}`,
       ogImage: article.image,
-      ogType: 'article',
-      twitterCard: 'summary_large_image',
+      ogType: "article",
+      twitterCard: "summary_large_image",
       structuredData: this.generateArticleStructuredData(article),
     };
 
@@ -139,32 +137,34 @@ export class AdvancedSEO {
    */
   static generateArticleStructuredData(article: ArticleSEOData): Record<string, any> {
     return {
-      '@context': 'https://schema.org',
-      '@type': 'Article',
+      "@context": "https://schema.org",
+      "@type": "Article",
       headline: article.title,
       description: article.description,
       image: article.image ? `${this.DEFAULT_CONFIG.siteUrl}${article.image}` : undefined,
       author: {
-        '@type': 'Person',
+        "@type": "Person",
         name: article.author,
       },
       publisher: {
-        '@type': 'Organization',
+        "@type": "Organization",
         name: this.DEFAULT_CONFIG.siteName,
         logo: {
-          '@type': 'ImageObject',
+          "@type": "ImageObject",
           url: `${this.DEFAULT_CONFIG.siteUrl}/logo.png`,
         },
       },
       datePublished: article.publishedAt,
       dateModified: article.modifiedAt || article.publishedAt,
       mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': `${this.DEFAULT_CONFIG.siteUrl}/articles/${article.title.toLowerCase().replace(/\s+/g, '-')}`,
+        "@type": "WebPage",
+        "@id": `${this.DEFAULT_CONFIG.siteUrl}/articles/${article.title
+          .toLowerCase()
+          .replace(/\s+/g, "-")}`,
       },
-      keywords: article.tags?.join(', '),
+      keywords: article.tags?.join(", "),
       articleSection: article.category,
-      wordCount: article.content.split(' ').length,
+      wordCount: article.content.split(" ").length,
       timeRequired: article.readingTime ? `PT${article.readingTime}M` : undefined,
     };
   }
@@ -173,25 +173,27 @@ export class AdvancedSEO {
    * 組織の構造化データを生成
    */
   static generateOrganizationStructuredData(org: OrganizationSEOData): Record<string, any> {
-    const socialProfiles = org.socialProfiles ? Object.entries(org.socialProfiles)
-      .filter(([_, url]) => url)
-      .map(([platform, url]) => ({
-        '@type': 'ProfilePage',
-        name: platform,
-        url: url,
-      })) : [];
+    const socialProfiles = org.socialProfiles
+      ? Object.entries(org.socialProfiles)
+          .filter(([_, url]) => url)
+          .map(([platform, url]) => ({
+            "@type": "ProfilePage",
+            name: platform,
+            url: url,
+          }))
+      : [];
 
     return {
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
+      "@context": "https://schema.org",
+      "@type": "Organization",
       name: org.name,
       description: org.description,
       url: org.url,
       logo: org.logo ? `${this.DEFAULT_CONFIG.siteUrl}${org.logo}` : undefined,
-      sameAs: socialProfiles.map(profile => profile.url),
+      sameAs: socialProfiles.map((profile) => profile.url),
       contactPoint: {
-        '@type': 'ContactPoint',
-        contactType: 'customer service',
+        "@type": "ContactPoint",
+        contactType: "customer service",
         url: `${org.url}/contact`,
       },
     };
@@ -202,18 +204,18 @@ export class AdvancedSEO {
    */
   static generateWebsiteStructuredData(): Record<string, any> {
     return {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
+      "@context": "https://schema.org",
+      "@type": "WebSite",
       name: this.DEFAULT_CONFIG.siteName,
       url: this.DEFAULT_CONFIG.siteUrl,
-      description: 'AI-driven Content Curation & Automated Sales System for TypeScript ecosystem',
+      description: "AI-driven Content Curation & Automated Sales System for TypeScript ecosystem",
       potentialAction: {
-        '@type': 'SearchAction',
+        "@type": "SearchAction",
         target: {
-          '@type': 'EntryPoint',
+          "@type": "EntryPoint",
           urlTemplate: `${this.DEFAULT_CONFIG.siteUrl}/search?q={search_term_string}`,
         },
-        'query-input': 'required name=search_term_string',
+        "query-input": "required name=search_term_string",
       },
     };
   }
@@ -221,12 +223,14 @@ export class AdvancedSEO {
   /**
    * パンくずリストの構造化データを生成
    */
-  static generateBreadcrumbStructuredData(breadcrumbs: Array<{name: string, url: string}>): Record<string, any> {
+  static generateBreadcrumbStructuredData(
+    breadcrumbs: Array<{ name: string; url: string }>,
+  ): Record<string, any> {
     return {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
       itemListElement: breadcrumbs.map((crumb, index) => ({
-        '@type': 'ListItem',
+        "@type": "ListItem",
         position: index + 1,
         name: crumb.name,
         item: `${this.DEFAULT_CONFIG.siteUrl}${crumb.url}`,
@@ -237,15 +241,17 @@ export class AdvancedSEO {
   /**
    * FAQの構造化データを生成
    */
-  static generateFAQStructuredData(faqs: Array<{question: string, answer: string}>): Record<string, any> {
+  static generateFAQStructuredData(
+    faqs: Array<{ question: string; answer: string }>,
+  ): Record<string, any> {
     return {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: faqs.map(faq => ({
-        '@type': 'Question',
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
         name: faq.question,
         acceptedAnswer: {
-          '@type': 'Answer',
+          "@type": "Answer",
           text: faq.answer,
         },
       })),
@@ -260,29 +266,31 @@ export class AdvancedSEO {
     description: string;
     price: number;
     currency: string;
-    availability: 'InStock' | 'OutOfStock' | 'PreOrder';
+    availability: "InStock" | "OutOfStock" | "PreOrder";
     image?: string;
     brand?: string;
     category?: string;
   }): Record<string, any> {
     return {
-      '@context': 'https://schema.org',
-      '@type': 'Product',
+      "@context": "https://schema.org",
+      "@type": "Product",
       name: product.name,
       description: product.description,
       image: product.image ? `${this.DEFAULT_CONFIG.siteUrl}${product.image}` : undefined,
-      brand: product.brand ? {
-        '@type': 'Brand',
-        name: product.brand,
-      } : undefined,
+      brand: product.brand
+        ? {
+            "@type": "Brand",
+            name: product.brand,
+          }
+        : undefined,
       category: product.category,
       offers: {
-        '@type': 'Offer',
+        "@type": "Offer",
         price: product.price,
         priceCurrency: product.currency,
         availability: `https://schema.org/${product.availability}`,
         seller: {
-          '@type': 'Organization',
+          "@type": "Organization",
           name: this.DEFAULT_CONFIG.siteName,
         },
       },
@@ -294,7 +302,7 @@ export class AdvancedSEO {
    */
   static calculateKeywordDensity(content: string, keyword: string): number {
     const words = content.toLowerCase().split(/\s+/);
-    const keywordCount = words.filter(word => word.includes(keyword.toLowerCase())).length;
+    const keywordCount = words.filter((word) => word.includes(keyword.toLowerCase())).length;
     return (keywordCount / words.length) * 100;
   }
 
@@ -302,15 +310,15 @@ export class AdvancedSEO {
    * 読みやすさスコアを計算（簡易版）
    */
   static calculateReadabilityScore(content: string): number {
-    const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0);
-    const words = content.split(/\s+/).filter(w => w.length > 0);
+    const sentences = content.split(/[.!?]+/).filter((s) => s.trim().length > 0);
+    const words = content.split(/\s+/).filter((w) => w.length > 0);
     const syllables = words.reduce((total, word) => total + this.countSyllables(word), 0);
 
     const avgWordsPerSentence = words.length / sentences.length;
     const avgSyllablesPerWord = syllables / words.length;
 
     // 簡易Flesch Reading Ease式
-    const score = 206.835 - (1.015 * avgWordsPerSentence) - (84.6 * avgSyllablesPerWord);
+    const score = 206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord;
     return Math.max(0, Math.min(100, score));
   }
 
@@ -318,7 +326,7 @@ export class AdvancedSEO {
    * 音節数を計算（簡易版）
    */
   private static countSyllables(word: string): number {
-    const vowels = 'aeiouy';
+    const vowels = "aeiouy";
     let count = 0;
     let previousWasVowel = false;
 
@@ -331,7 +339,7 @@ export class AdvancedSEO {
     }
 
     // 最後が'e'で終わる場合は音節を減らす
-    if (word.endsWith('e') && count > 1) {
+    if (word.endsWith("e") && count > 1) {
       count--;
     }
 
@@ -346,23 +354,23 @@ export class AdvancedSEO {
 
     // タイトル長チェック
     if (config.title.length < 30) {
-      suggestions.push('タイトルが短すぎます。30-60文字を推奨します。');
+      suggestions.push("タイトルが短すぎます。30-60文字を推奨します。");
     } else if (config.title.length > 60) {
-      suggestions.push('タイトルが長すぎます。60文字以下を推奨します。');
+      suggestions.push("タイトルが長すぎます。60文字以下を推奨します。");
     }
 
     // 説明文長チェック
     if (config.description.length < 120) {
-      suggestions.push('メタディスクリプションが短すぎます。120-160文字を推奨します。');
+      suggestions.push("メタディスクリプションが短すぎます。120-160文字を推奨します。");
     } else if (config.description.length > 160) {
-      suggestions.push('メタディスクリプションが長すぎます。160文字以下を推奨します。');
+      suggestions.push("メタディスクリプションが長すぎます。160文字以下を推奨します。");
     }
 
     // キーワードチェック
     if (!config.keywords || config.keywords.length === 0) {
-      suggestions.push('キーワードが設定されていません。');
+      suggestions.push("キーワードが設定されていません。");
     } else if (config.keywords.length > 10) {
-      suggestions.push('キーワードが多すぎます。5-10個を推奨します。');
+      suggestions.push("キーワードが多すぎます。5-10個を推奨します。");
     }
 
     return suggestions;
@@ -383,17 +391,17 @@ export function useSEO() {
 
   const generateStructuredData = (type: string, data: any) => {
     switch (type) {
-      case 'article':
+      case "article":
         return AdvancedSEO.generateArticleStructuredData(data);
-      case 'organization':
+      case "organization":
         return AdvancedSEO.generateOrganizationStructuredData(data);
-      case 'website':
+      case "website":
         return AdvancedSEO.generateWebsiteStructuredData();
-      case 'breadcrumb':
+      case "breadcrumb":
         return AdvancedSEO.generateBreadcrumbStructuredData(data);
-      case 'faq':
+      case "faq":
         return AdvancedSEO.generateFAQStructuredData(data);
-      case 'product':
+      case "product":
         return AdvancedSEO.generateProductStructuredData(data);
       default:
         return null;

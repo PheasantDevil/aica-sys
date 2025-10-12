@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Share2, 
-  Twitter, 
-  Facebook, 
-  Linkedin, 
-  Github, 
-  Link as LinkIcon,
-  Copy,
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useAnalytics } from "@/lib/analytics";
+import {
   Check,
-  ExternalLink
-} from 'lucide-react';
-import { useAnalytics } from '@/lib/analytics';
+  Copy,
+  ExternalLink,
+  Facebook,
+  Github,
+  Linkedin,
+  Link as LinkIcon,
+  Share2,
+  Twitter,
+} from "lucide-react";
+import { useState } from "react";
 
 interface SocialShareProps {
   url?: string;
@@ -48,11 +48,11 @@ interface ShareCounts {
 export function SocialShareEnhanced({
   url,
   title,
-  description = '',
-  image = '',
+  description = "",
+  image = "",
   hashtags = [],
-  via = 'aica_sys',
-  className = '',
+  via = "aica_sys",
+  className = "",
   showCounts = false,
   showAllPlatforms = false,
 }: SocialShareProps) {
@@ -61,9 +61,10 @@ export function SocialShareEnhanced({
   const [isLoading, setIsLoading] = useState(false);
   const analytics = useAnalytics();
 
-  const currentUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
-  const currentTitle = title || (typeof window !== 'undefined' ? document.title : '');
-  const currentImage = image || (typeof window !== 'undefined' ? `${window.location.origin}/og-default.png` : '');
+  const currentUrl = url || (typeof window !== "undefined" ? window.location.href : "");
+  const currentTitle = title || (typeof window !== "undefined" ? document.title : "");
+  const currentImage =
+    image || (typeof window !== "undefined" ? `${window.location.origin}/og-default.png` : "");
 
   const shareData: ShareData = {
     url: currentUrl,
@@ -76,24 +77,24 @@ export function SocialShareEnhanced({
 
   const handleShare = async (platform: string, shareUrl: string) => {
     setIsLoading(true);
-    
+
     try {
       // アナリティクスに記録
-      analytics.trackEvent('Social Share', {
+      analytics.trackEvent("Social Share", {
         platform,
         url: currentUrl,
         title: currentTitle,
       });
 
       // シェアを実行
-      if (platform === 'native' && navigator.share) {
+      if (platform === "native" && navigator.share) {
         await navigator.share({
           title: currentTitle,
           text: description,
           url: currentUrl,
         });
       } else {
-        window.open(shareUrl, '_blank', 'width=600,height=400');
+        window.open(shareUrl, "_blank", "width=600,height=400");
       }
 
       // シェア数を更新
@@ -111,15 +112,15 @@ export function SocialShareEnhanced({
     try {
       await navigator.clipboard.writeText(currentUrl);
       setCopied(true);
-      
-      analytics.trackEvent('Copy Link', {
+
+      analytics.trackEvent("Copy Link", {
         url: currentUrl,
         title: currentTitle,
       });
 
       setTimeout(() => setCopied(false), 2000);
     } catch (error) {
-      console.error('Error copying to clipboard:', error);
+      console.error("Error copying to clipboard:", error);
     }
   };
 
@@ -132,11 +133,11 @@ export function SocialShareEnhanced({
         facebook: Math.floor(Math.random() * 50),
         linkedin: Math.floor(Math.random() * 30),
       };
-      
+
       counts.total = (counts.twitter || 0) + (counts.facebook || 0) + (counts.linkedin || 0);
       setShareCounts(counts);
     } catch (error) {
-      console.error('Error updating share counts:', error);
+      console.error("Error updating share counts:", error);
     }
   };
 
@@ -144,7 +145,7 @@ export function SocialShareEnhanced({
     const encodedUrl = encodeURIComponent(currentUrl);
     const encodedTitle = encodeURIComponent(currentTitle);
     const encodedDescription = encodeURIComponent(description);
-    const encodedHashtags = hashtags.map(tag => `%23${tag}`).join('');
+    const encodedHashtags = hashtags.map((tag) => `%23${tag}`).join("");
 
     return {
       twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}&via=${via}&hashtags=${encodedHashtags}`,
@@ -158,35 +159,35 @@ export function SocialShareEnhanced({
 
   const platforms = [
     {
-      id: 'twitter',
-      name: 'Twitter',
+      id: "twitter",
+      name: "Twitter",
       icon: Twitter,
       url: shareUrls.twitter,
-      color: 'bg-blue-400 hover:bg-blue-500',
+      color: "bg-blue-400 hover:bg-blue-500",
       count: shareCounts.twitter,
     },
     {
-      id: 'facebook',
-      name: 'Facebook',
+      id: "facebook",
+      name: "Facebook",
       icon: Facebook,
       url: shareUrls.facebook,
-      color: 'bg-blue-600 hover:bg-blue-700',
+      color: "bg-blue-600 hover:bg-blue-700",
       count: shareCounts.facebook,
     },
     {
-      id: 'linkedin',
-      name: 'LinkedIn',
+      id: "linkedin",
+      name: "LinkedIn",
       icon: Linkedin,
       url: shareUrls.linkedin,
-      color: 'bg-blue-700 hover:bg-blue-800',
+      color: "bg-blue-700 hover:bg-blue-800",
       count: shareCounts.linkedin,
     },
     {
-      id: 'github',
-      name: 'GitHub',
+      id: "github",
+      name: "GitHub",
       icon: Github,
       url: shareUrls.github,
-      color: 'bg-gray-800 hover:bg-gray-900',
+      color: "bg-gray-800 hover:bg-gray-900",
       count: undefined,
     },
   ];
@@ -200,9 +201,7 @@ export function SocialShareEnhanced({
           <Share2 className="h-5 w-5" />
           シェア
         </CardTitle>
-        <CardDescription>
-          このコンテンツをソーシャルメディアでシェア
-        </CardDescription>
+        <CardDescription>このコンテンツをソーシャルメディアでシェア</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* プラットフォームボタン */}
@@ -227,11 +226,11 @@ export function SocialShareEnhanced({
           ))}
 
           {/* ネイティブシェア（モバイル） */}
-          {typeof window !== 'undefined' && 'share' in navigator && (
+          {typeof window !== "undefined" && "share" in navigator && (
             <Button
               variant="outline"
               size="sm"
-              onClick={() => handleShare('native', '')}
+              onClick={() => handleShare("native", "")}
               disabled={isLoading}
             >
               <Share2 className="h-4 w-4 mr-2" />
@@ -275,12 +274,8 @@ export function SocialShareEnhanced({
 
         {/* プレビュー */}
         <div className="border rounded-lg p-3 bg-gray-50">
-          <div className="text-sm font-medium text-gray-900 mb-1">
-            {currentTitle}
-          </div>
-          <div className="text-sm text-gray-600 mb-2">
-            {description || '説明がありません'}
-          </div>
+          <div className="text-sm font-medium text-gray-900 mb-1">{currentTitle}</div>
+          <div className="text-sm text-gray-600 mb-2">{description || "説明がありません"}</div>
           <div className="flex items-center gap-2 text-xs text-gray-500">
             <LinkIcon className="h-3 w-3" />
             <span className="truncate">{currentUrl}</span>
@@ -298,30 +293,30 @@ export function SocialShareEnhanced({
 export function InlineSocialShare({
   url,
   title,
-  description = '',
+  description = "",
   hashtags = [],
-  via = 'aica_sys',
-  className = '',
-}: Omit<SocialShareProps, 'showCounts' | 'showAllPlatforms'>) {
+  via = "aica_sys",
+  className = "",
+}: Omit<SocialShareProps, "showCounts" | "showAllPlatforms">) {
   const analytics = useAnalytics();
 
-  const currentUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
-  const currentTitle = title || (typeof window !== 'undefined' ? document.title : '');
+  const currentUrl = url || (typeof window !== "undefined" ? window.location.href : "");
+  const currentTitle = title || (typeof window !== "undefined" ? document.title : "");
 
   const handleShare = (platform: string, shareUrl: string) => {
-    analytics.trackEvent('Social Share', {
+    analytics.trackEvent("Social Share", {
       platform,
       url: currentUrl,
       title: currentTitle,
     });
 
-    window.open(shareUrl, '_blank', 'width=600,height=400');
+    window.open(shareUrl, "_blank", "width=600,height=400");
   };
 
   const getShareUrls = () => {
     const encodedUrl = encodeURIComponent(currentUrl);
     const encodedTitle = encodeURIComponent(currentTitle);
-    const encodedHashtags = hashtags.map(tag => `%23${tag}`).join('');
+    const encodedHashtags = hashtags.map((tag) => `%23${tag}`).join("");
 
     return {
       twitter: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}&via=${via}&hashtags=${encodedHashtags}`,
@@ -338,7 +333,7 @@ export function InlineSocialShare({
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => handleShare('twitter', shareUrls.twitter)}
+        onClick={() => handleShare("twitter", shareUrls.twitter)}
         className="p-1 h-8 w-8"
       >
         <Twitter className="h-4 w-4 text-blue-400" />
@@ -346,7 +341,7 @@ export function InlineSocialShare({
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => handleShare('facebook', shareUrls.facebook)}
+        onClick={() => handleShare("facebook", shareUrls.facebook)}
         className="p-1 h-8 w-8"
       >
         <Facebook className="h-4 w-4 text-blue-600" />
@@ -354,7 +349,7 @@ export function InlineSocialShare({
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => handleShare('linkedin', shareUrls.linkedin)}
+        onClick={() => handleShare("linkedin", shareUrls.linkedin)}
         className="p-1 h-8 w-8"
       >
         <Linkedin className="h-4 w-4 text-blue-700" />
