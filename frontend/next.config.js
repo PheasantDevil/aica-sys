@@ -135,9 +135,6 @@ const nextConfig = {
   // Output optimization
   output: 'standalone',
   swcMinify: true,
-
-  // Experimental features for performance
-  serverComponentsExternalPackages: ['@supabase/supabase-js'],
 };
 
 module.exports = nextConfig;
