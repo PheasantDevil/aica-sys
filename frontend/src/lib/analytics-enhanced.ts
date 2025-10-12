@@ -117,11 +117,7 @@ class EnhancedAnalyticsService {
     }
 
     // カスタムアナリティクスに送信
-    this.analytics.trackPageView(pageData.pagePath, {
-      title: pageData.pageTitle,
-      url: pageData.pageUrl,
-      referrer: pageData.referrer,
-    });
+    this.analytics.trackPageView(pageData.pagePath, pageData.pageTitle);
   }
 
   /**

@@ -69,7 +69,7 @@ export default async function DashboardPage() {
   );
 }
 
-async function RecentArticles() {
+function RecentArticles() {
   // This would fetch recent articles from the API
   const articles = [
     {
