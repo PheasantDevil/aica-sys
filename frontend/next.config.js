@@ -3,12 +3,12 @@ const nextConfig = {
   // Performance optimizations
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['@supabase/supabase-js', 'react-hot-toast'],
+    optimizePackageImports: ["@supabase/supabase-js", "react-hot-toast"],
     turbo: {
       rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js",
         },
       },
     },
@@ -16,27 +16,27 @@ const nextConfig = {
 
   // Compiler optimizations
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: process.env.NODE_ENV === "production",
     styledComponents: true,
   },
 
   // Bundle analyzer
   webpack: (config, { dev, isServer }) => {
     // Bundle analyzer
-    if (process.env.ANALYZE === 'true') {
-      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+    if (process.env.ANALYZE === "true") {
+      const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
       config.plugins.push(
         new BundleAnalyzerPlugin({
-          analyzerMode: 'static',
+          analyzerMode: "static",
           openAnalyzer: false,
-        })
+        }),
       );
     }
 
     // Optimize imports
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': require('path').resolve(__dirname, 'src'),
+      "@": require("path").resolve(__dirname, "src"),
     };
 
     // Tree shaking optimization (disabled due to webpack conflict)
@@ -51,30 +51,30 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
           },
           {
-            key: 'Content-Security-Policy',
+            key: "Content-Security-Policy",
             value:
               "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.supabase.co https://*.vercel.app; frame-src 'none';",
           },
@@ -85,8 +85,8 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/admin',
-        destination: '/dashboard',
+        source: "/admin",
+        destination: "/dashboard",
         permanent: true,
       },
     ];
@@ -94,31 +94,31 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/content/:path*',
-        destination: 'http://localhost:8000/api/content/:path*',
+        source: "/api/content/:path*",
+        destination: "http://localhost:8000/api/content/:path*",
       },
       {
-        source: '/api/analysis/:path*',
-        destination: 'http://localhost:8000/api/analysis/:path*',
+        source: "/api/analysis/:path*",
+        destination: "http://localhost:8000/api/analysis/:path*",
       },
       {
-        source: '/api/collection/:path*',
-        destination: 'http://localhost:8000/api/collection/:path*',
+        source: "/api/collection/:path*",
+        destination: "http://localhost:8000/api/collection/:path*",
       },
       {
-        source: '/api/ai/:path*',
-        destination: 'http://localhost:8000/api/ai/:path*',
+        source: "/api/ai/:path*",
+        destination: "http://localhost:8000/api/ai/:path*",
       },
       {
-        source: '/health',
-        destination: 'http://localhost:8000/health',
+        source: "/health",
+        destination: "http://localhost:8000/health",
       },
     ];
   },
   // Image optimization
   images: {
-    domains: ['images.unsplash.com', 'via.placeholder.com'],
-    formats: ['image/webp', 'image/avif'],
+    domains: ["images.unsplash.com", "via.placeholder.com"],
+    formats: ["image/webp", "image/avif"],
     minimumCacheTTL: 60,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -133,7 +133,7 @@ const nextConfig = {
   },
 
   // Output optimization
-  output: 'standalone',
+  output: "standalone",
   swcMinify: true,
 };
 
