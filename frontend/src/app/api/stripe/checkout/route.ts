@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     }
 
     const checkoutSession = await createCheckoutSession(
-      session.user.email!,
+      session.user.email,
       priceId,
       `${process.env.NEXTAUTH_URL}/dashboard?success=true`,
       `${process.env.NEXTAUTH_URL}/pricing?canceled=true`

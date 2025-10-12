@@ -11,7 +11,7 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const subscription = await getUserSubscription(session.user.email!);
+    const subscription = await getUserSubscription(session.user.email);
 
     return NextResponse.json(subscription);
   } catch (error) {
