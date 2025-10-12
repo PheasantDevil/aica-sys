@@ -23,6 +23,7 @@ export default function PrivacyPage() {
               <li>利用履歴（閲覧記事、お気に入り）</li>
               <li>サブスクリプション情報</li>
               <li>技術的情報（IPアドレス、ブラウザ情報）</li>
+              <li>パフォーマンスメトリクス（Vercel Speed Insights経由、匿名化）</li>
             </ul>
           </section>
 
@@ -36,6 +37,7 @@ export default function PrivacyPage() {
               <li>パーソナライズド推薦</li>
               <li>カスタマーサポート</li>
               <li>セキュリティ・不正利用防止</li>
+              <li>パフォーマンス測定・最適化（Core Web Vitals）</li>
             </ul>
           </section>
 
