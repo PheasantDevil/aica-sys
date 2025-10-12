@@ -180,3 +180,11 @@ security-check:
 security-reports:
 	@echo "Security reports:"
 	@ls -lh security-reports/ 2>/dev/null || echo "No reports found"
+
+# Database
+check-db:
+	./scripts/check-database.sh
+
+db-status:
+	@echo "Database status:"
+	@cd backend && python3 -c "import os; url = os.getenv('DATABASE_URL', 'sqlite:///./aica_sys.db'); print(f'Type: {\"SQLite\" if \"sqlite\" in url else \"PostgreSQL\" if \"postgres\" in url else \"Unknown\"}'); print(f'URL: {url[:50]}...' if len(url) > 50 else f'URL: {url}')"
