@@ -79,7 +79,7 @@ export class AdvancedSEO {
       title: fullTitle,
       description,
       keywords: keywords.join(', '),
-      canonical: canonicalUrl,
+      alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
       robots: {
         index: !noindex,
         follow: !nofollow,
@@ -112,9 +112,6 @@ export class AdvancedSEO {
         description,
         images: [imageUrl],
         creator: this.DEFAULT_CONFIG.twitterHandle,
-      },
-      alternates: {
-        canonical: canonicalUrl,
       },
     };
   }

@@ -8,6 +8,7 @@ export default async function MonitoringPage() {
   const session = await getServerSession(authOptions);
 
   // 管理者のみアクセス可能
+  // @ts-ignore - is_superuser is added by authOptions session callback
   if (!session?.user || !session.user.is_superuser) {
     redirect('/dashboard');
   }

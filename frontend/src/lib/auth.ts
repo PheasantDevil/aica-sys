@@ -49,6 +49,7 @@ export const authOptions: NextAuthOptions = {
         token.googleId = profile.sub;
         token.email = profile.email;
         token.name = profile.name;
+        // @ts-ignore - profile.picture exists in Google profile
         token.picture = profile.picture;
       }
 

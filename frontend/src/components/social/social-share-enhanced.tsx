@@ -79,7 +79,7 @@ export function SocialShareEnhanced({
     
     try {
       // アナリティクスに記録
-      analytics.track('Social Share', {
+      analytics.trackEvent('Social Share', {
         platform,
         url: currentUrl,
         title: currentTitle,
@@ -112,7 +112,7 @@ export function SocialShareEnhanced({
       await navigator.clipboard.writeText(currentUrl);
       setCopied(true);
       
-      analytics.track('Copy Link', {
+      analytics.trackEvent('Copy Link', {
         url: currentUrl,
         title: currentTitle,
       });
@@ -227,7 +227,7 @@ export function SocialShareEnhanced({
           ))}
 
           {/* ネイティブシェア（モバイル） */}
-          {typeof window !== 'undefined' && navigator.share && (
+          {typeof window !== 'undefined' && 'share' in navigator && (
             <Button
               variant="outline"
               size="sm"
@@ -309,7 +309,7 @@ export function InlineSocialShare({
   const currentTitle = title || (typeof window !== 'undefined' ? document.title : '');
 
   const handleShare = (platform: string, shareUrl: string) => {
-    analytics.track('Social Share', {
+    analytics.trackEvent('Social Share', {
       platform,
       url: currentUrl,
       title: currentTitle,

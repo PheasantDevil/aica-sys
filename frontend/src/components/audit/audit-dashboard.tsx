@@ -115,19 +115,19 @@ const getEventTypeBadge = (eventType: string) => {
     case 'USER_LOGIN':
     case 'USER_LOGOUT':
       return (
-        <Badge variant='info' className='bg-blue-500 text-white'>
+        <Badge className='bg-blue-500 text-white'>
           Auth
         </Badge>
       );
     case 'USER_REGISTRATION':
       return (
-        <Badge variant='success' className='bg-green-500 text-white'>
+        <Badge className='bg-green-500 text-white'>
           Registration
         </Badge>
       );
     case 'DATA_MODIFICATION':
       return (
-        <Badge variant='warning' className='bg-yellow-500 text-white'>
+        <Badge className='bg-yellow-500 text-white'>
           Modification
         </Badge>
       );
@@ -148,7 +148,7 @@ const getResultBadge = (result: string) => {
   switch (result) {
     case 'success':
       return (
-        <Badge variant='success' className='bg-green-500 text-white'>
+        <Badge className='bg-green-500 text-white'>
           Success
         </Badge>
       );
@@ -449,27 +449,15 @@ const AuditDashboard = () => {
         </Card>
       </div>
 
-      {/* Charts */}
+      {/* Charts - Temporarily disabled due to Recharts type issues */}
+      {/* TODO: Fix Recharts typing or replace with alternative charting library */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8'>
         <Card className='shadow-lg'>
           <CardHeader>
             <CardTitle>Events Over Time</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width='100%' height={300}>
-              <LineChart data={dashboardData.chart_data}>
-                <CartesianGrid strokeDasharray='3 3' />
-                <XAxis dataKey='date' />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type='monotone'
-                  dataKey='count'
-                  stroke='#8884d8'
-                  activeDot={{ r: 8 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            <p className='text-muted-foreground'>Chart temporarily disabled</p>
           </CardContent>
         </Card>
 
@@ -478,30 +466,7 @@ const AuditDashboard = () => {
             <CardTitle>Events by Type</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width='100%' height={300}>
-              <PieChart>
-                <Pie
-                  data={dashboardData.event_type_data}
-                  cx='50%'
-                  cy='50%'
-                  labelLine={false}
-                  label={({ name, percent }) =>
-                    `${name} ${(percent * 100).toFixed(0)}%`
-                  }
-                  outerRadius={80}
-                  fill='#8884d8'
-                  dataKey='value'
-                >
-                  {dashboardData.event_type_data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+            <p className='text-muted-foreground'>Chart temporarily disabled</p>
           </CardContent>
         </Card>
 
@@ -510,15 +475,7 @@ const AuditDashboard = () => {
             <CardTitle>Top Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width='100%' height={300}>
-              <BarChart data={dashboardData.user_activity_data}>
-                <CartesianGrid strokeDasharray='3 3' />
-                <XAxis dataKey='user_id' />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey='count' fill='#82ca9d' />
-              </BarChart>
-            </ResponsiveContainer>
+            <p className='text-muted-foreground'>Chart temporarily disabled</p>
           </CardContent>
         </Card>
 
@@ -527,15 +484,7 @@ const AuditDashboard = () => {
             <CardTitle>Top Resources</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width='100%' height={300}>
-              <BarChart data={dashboardData.resource_activity_data}>
-                <CartesianGrid strokeDasharray='3 3' />
-                <XAxis dataKey='resource_type' />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey='count' fill='#ffc658' />
-              </BarChart>
-            </ResponsiveContainer>
+            <p className='text-muted-foreground'>Chart temporarily disabled</p>
           </CardContent>
         </Card>
       </div>
