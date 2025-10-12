@@ -1,5 +1,5 @@
-import { Footer } from '@/components/footer';
-import { Header } from '@/components/header';
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
 
 export default function DocsPage() {
   return (
@@ -7,7 +7,7 @@ export default function DocsPage() {
       <Header />
       <main className="container mx-auto px-4 py-16">
         <h1 className="text-4xl font-bold mb-8">ドキュメント</h1>
-        
+
         <div className="grid gap-8 lg:grid-cols-4">
           <aside className="lg:col-span-1">
             <nav className="space-y-2">
@@ -90,4 +90,3 @@ export default function DocsPage() {
     </div>
   );
 }
-

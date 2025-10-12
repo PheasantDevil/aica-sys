@@ -3,6 +3,7 @@ import { ErrorProvider } from '@/components/ErrorProvider';
 import PerformanceMonitor from '@/components/PerformanceMonitor';
 import { PerformanceProvider } from '@/components/PerformanceProvider';
 import { Providers } from '@/components/providers';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -101,6 +102,7 @@ export default function RootLayout({
             </PerformanceProvider>
           </ErrorProvider>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );
