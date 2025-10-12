@@ -1,41 +1,47 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis
-  namespace: aica-sys
+  name: aica-sys-redis
+  namespace: default
   labels:
-    app: redis
+    app: aica-sys
+    component: redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: aica-sys
+      component: redis
   template:
     metadata:
       labels:
-        app: redis
+        app: aica-sys
+        component: redis
     spec:
       containers:
       - name: redis
         image: redis:7-alpine
         ports:
         - containerPort: 6379
+          name: redis
         command:
-        - redis-server
-        - /etc/redis/redis.conf
-        volumeMounts:
-        - name: redis-storage
-          mountPath: /data
-        - name: redis-config
-          mountPath: /etc/redis/redis.conf
-          subPath: redis.conf
+          - redis-server
+          - --appendonly
+          - "yes"
+          - --maxmemory
+          - "512mb"
+          - --maxmemory-policy
+          - allkeys-lru
         resources:
           requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
             memory: "256Mi"
-            cpu: "200m"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
         livenessProbe:
           exec:
             command:
@@ -51,33 +57,36 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
       volumes:
-      - name: redis-storage
+      - name: redis-data
         persistentVolumeClaim:
-          claimName: redis-pvc
-      - name: redis-config
-        configMap:
-          name: redis-config
+          claimName: redis-data-pvc
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis-service
-  namespace: aica-sys
+  name: aica-sys-redis-service
+  namespace: default
+  labels:
+    app: aica-sys
+    component: redis
 spec:
+  type: ClusterIP
   selector:
-    app: redis
+    app: aica-sys
+    component: redis
   ports:
   - port: 6379
     targetPort: 6379
-  type: ClusterIP
+    protocol: TCP
+    name: redis
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: redis-pvc
-  namespace: aica-sys
+  name: redis-data-pvc
+  namespace: default
 spec:
   accessModes:
     - ReadWriteOnce
@@ -85,38 +94,3 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: standard
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: redis-config
-  namespace: aica-sys
-data:
-  redis.conf: |
-    # Redis configuration for production
-    bind 0.0.0.0
-    port 6379
-    timeout 300
-    keepalive 60
-    tcp-keepalive 60
-    
-    # Memory management
-    maxmemory 200mb
-    maxmemory-policy allkeys-lru
-    
-    # Persistence
-    save 900 1
-    save 300 10
-    save 60 10000
-    
-    # Logging
-    loglevel notice
-    logfile ""
-    
-    # Security
-    protected-mode no
-    
-    # Performance
-    tcp-backlog 511
-    databases 16

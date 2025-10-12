@@ -108,8 +108,21 @@ jspm_packages/
 
 # Database
 *.db
+*.db-shm
+*.db-wal
 *.sqlite
 *.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+
+# Backups
+backups/
+*.backup.*
+restore_temp/
+
+# Security reports
+security-reports/
+*.sarif
 
 # AI/ML models
 models/

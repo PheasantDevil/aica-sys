@@ -192,9 +192,51 @@ graph TD
     M --> I
 ```
 
+## デプロイ構成
+
+### フロントエンド
+
+- **プラットフォーム**: Vercel
+- **プラン**: Hobby（無料）
+- **URL**: https://aica-sys.vercel.app
+- **機能**: Speed Insights、自動最適化
+
+### バックエンド
+
+- **プラットフォーム**: Render
+- **プラン**: Free（無料、スリープあり）
+- **URL**: https://aica-sys-backend.onrender.com
+- **デプロイガイド**: [docs/render-deployment-guide.md](docs/render-deployment-guide.md)
+
+### データベース
+
+- **開発**: SQLite（ローカル）
+- **本番**: Render PostgreSQL または Neon PostgreSQL
+- **移行ガイド**: [docs/database-migration-options.md](docs/database-migration-options.md)
+
 ## セットアップ
 
 詳細なセットアップ手順は各フェーズのドキュメントを参照してください。
+
+### クイックスタート
+
+```bash
+# フロントエンド
+cd frontend
+npm install
+npm run dev
+
+# バックエンド
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python3 -m uvicorn main:app --reload
+
+# データベース確認
+make check-db
+make db-status
+```
 
 ## 作業終了時の自動 PR 作成・マージ手順
 

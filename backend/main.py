@@ -16,9 +16,7 @@ from middleware.audit_middleware import AuditMiddleware
 # Import monitoring middleware
 from middleware.monitoring_middleware import MonitoringMiddleware
 # Import performance middleware
-from middleware.performance_middleware import (PerformanceMiddleware,
-                                               performance_metrics,
-                                               setup_performance_middleware)
+from middleware.performance_middleware import performance_metrics
 # Import security middleware
 from security.security_headers import SecurityHeadersMiddleware
 
@@ -66,9 +64,6 @@ app.add_middleware(
     allowed_hosts=["localhost", "127.0.0.1", "*.vercel.app", "*.supabase.co"]
 )
 
-# Setup performance middleware
-app = setup_performance_middleware(app)
-
 @app.get("/")
 async def root():
     """Root endpoint"""
@@ -103,6 +98,11 @@ from routers import (ai_router, analysis_router, audit_router, auth_router,
                      content_router, monitoring_router, reports_router,
                      subscription_router, user_router)
 from routers.optimized_content_router import router as optimized_content_router
+from routers.content_quality_router import router as content_quality_router
+from routers.engagement_router import router as engagement_router
+from routers.subscription_enhanced_router import router as subscription_enhanced_router
+from routers.affiliate_router import router as affiliate_router
+from routers.analytics_router import router as analytics_router
 
 # Include routers
 app.include_router(content_router)
@@ -117,6 +117,11 @@ app.include_router(content_management_router.router)
 app.include_router(monitoring_router.router)
 app.include_router(audit_router.router)
 app.include_router(optimized_content_router)
+app.include_router(content_quality_router)
+app.include_router(engagement_router)
+app.include_router(subscription_enhanced_router)
+app.include_router(affiliate_router)
+app.include_router(analytics_router)
 
 if __name__ == "__main__":
     uvicorn.run(

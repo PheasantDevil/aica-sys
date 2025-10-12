@@ -1,0 +1,89 @@
+name: Daily Trend Analysis
+
+on:
+  schedule:
+    # 毎日午前10時（JST = UTC 1:00）
+    - cron: "0 1 * * *"
+  workflow_dispatch: # 手動実行
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/services/trend_analysis_service.py'
+      - 'backend/models/automated_content.py'
+      - 'scripts/analyze_trends.py'
+      - '.github/workflows/daily-trends.yml'
+
+jobs:
+  analyze-trends:
+    name: Analyze Daily Trends
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Check Python version
+        run: |
+          python3 --version
+          pip --version
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Verify dependencies installed
+        run: |
+          cd backend
+          pip list | grep -E "(requests|sqlalchemy)" || exit 1
+
+      - name: Check database connection
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('backend'))); from database import SessionLocal; db = SessionLocal(); db.close(); print('✅ Database connection OK')"
+
+      - name: Verify scripts exist
+        run: |
+          test -f scripts/analyze_trends.py || exit 1
+          test -x scripts/analyze_trends.py || exit 1
+          echo "✅ Script exists and is executable"
+
+      - name: Ensure public directory exists
+        run: |
+          mkdir -p public
+          echo "✅ Public directory ready"
+
+      - name: Run trend analysis
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python3 scripts/analyze_trends.py
+
+      - name: Commit trend data
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/trends-latest.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: Update daily trend data [skip ci]"
+          git push
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '❌ Daily Trend Analysis Failed',
+              body: `Daily trend analysis failed on ${new Date().toISOString()}\n\nCheck the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.`,
+              labels: ['automation', 'bug']
+            })

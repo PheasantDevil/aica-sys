@@ -1,0 +1,58 @@
+groups:
+  - name: application_alerts
+    interval: 30s
+    rules:
+      # 高いエラー率
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          team: backend
+        annotations:
+          summary: "高いエラー率を検出: {{ $labels.instance }}"
+          description: "エラー率が5%を超えています (現在: {{ $value | humanizePercentage }})"
+
+      # 遅いレスポンス
+      - alert: SlowResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "レスポンス時間が遅い: {{ $labels.instance }}"
+          description: "P95レスポンス時間が1秒を超えています (現在: {{ $value }}s)"
+
+      # API利用不可
+      - alert: APIDown
+        expr: up{job="backend"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          team: backend
+        annotations:
+          summary: "API がダウンしています"
+          description: "{{ $labels.instance }} がダウンしています"
+
+      # キャッシュヒット率が低い
+      - alert: LowCacheHitRate
+        expr: rate(cache_hits_total[10m]) / (rate(cache_hits_total[10m]) + rate(cache_misses_total[10m])) < 0.5
+        for: 10m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "キャッシュヒット率が低い"
+          description: "キャッシュヒット率が50%未満です (現在: {{ $value | humanizePercentage }})"
+
+      # データベース接続プール枯渇
+      - alert: DatabasePoolExhausted
+        expr: database_connections_active / database_connections_max > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "データベース接続プールが枯渇"
+          description: "DB接続が90%以上使用されています (現在: {{ $value | humanizePercentage }})"

@@ -1,0 +1,94 @@
+name: Weekly Newsletter Generation
+
+on:
+  schedule:
+    # 毎週月曜日午前8時（JST = UTC 23:00 日曜）
+    - cron: "0 23 * * 0"
+  workflow_dispatch: # 手動実行
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/models/automated_content.py'
+      - 'scripts/generate_newsletter.py'
+      - '.github/workflows/weekly-newsletter.yml'
+
+jobs:
+  generate-newsletter:
+    name: Generate Weekly Newsletter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Check Python version
+        run: |
+          python3 --version
+          pip --version
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+
+      - name: Verify dependencies installed
+        run: |
+          cd backend
+          pip list | grep -E "(sqlalchemy|pydantic)" || exit 1
+
+      - name: Check database connection
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('backend'))); from database import SessionLocal; db = SessionLocal(); db.close(); print('✅ Database connection OK')"
+
+      - name: Verify scripts exist
+        run: |
+          test -f scripts/generate_newsletter.py || exit 1
+          test -x scripts/generate_newsletter.py || exit 1
+          echo "✅ Script exists and is executable"
+
+      - name: Check data availability
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python3 -c "
+          from pathlib import Path
+          import sys
+          from datetime import datetime, timedelta
+          sys.path.insert(0, str(Path('backend')))
+          from database import SessionLocal
+          from models.automated_content import TrendDataDB, AutomatedContentDB
+          db = SessionLocal()
+          week_ago = datetime.utcnow() - timedelta(days=7)
+          trends_count = db.query(TrendDataDB).filter(TrendDataDB.detected_at >= week_ago).count()
+          articles_count = db.query(AutomatedContentDB).filter(AutomatedContentDB.created_at >= week_ago).count()
+          db.close()
+          print(f'✅ Data available: {trends_count} trends, {articles_count} articles')
+          "
+
+      - name: Run newsletter generation
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          python3 scripts/generate_newsletter.py
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '❌ Weekly Newsletter Generation Failed',
+              body: `Weekly newsletter generation failed on ${new Date().toISOString()}\n\nCheck the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.`,
+              labels: ['automation', 'bug']
+            })
+

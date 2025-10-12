@@ -1,0 +1,69 @@
+groups:
+  - name: infrastructure_alerts
+    interval: 30s
+    rules:
+      # CPU使用率が高い
+      - alert: HighCPUUsage
+        expr: rate(process_cpu_seconds_total[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          team: infrastructure
+        annotations:
+          summary: "CPU使用率が高い: {{ $labels.instance }}"
+          description: "CPU使用率が80%を超えています (現在: {{ $value }}%)"
+
+      # メモリ使用率が高い
+      - alert: HighMemoryUsage
+        expr: (process_resident_memory_bytes / node_memory_MemTotal_bytes) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          team: infrastructure
+        annotations:
+          summary: "メモリ使用率が高い: {{ $labels.instance }}"
+          description: "メモリ使用率が80%を超えています (現在: {{ $value }}%)"
+
+      # ディスク使用率が高い
+      - alert: HighDiskUsage
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 < 20
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+        annotations:
+          summary: "ディスク使用率が高い: {{ $labels.instance }}"
+          description: "ディスク空き容量が20%未満です (残り: {{ $value }}%)"
+
+      # ノードがダウン
+      - alert: NodeDown
+        expr: up{job="node"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          team: infrastructure
+        annotations:
+          summary: "ノードがダウン: {{ $labels.instance }}"
+          description: "ノード {{ $labels.instance }} が応答していません"
+
+      # コンテナの再起動が多い
+      - alert: FrequentContainerRestarts
+        expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+          team: infrastructure
+        annotations:
+          summary: "コンテナが頻繁に再起動: {{ $labels.pod }}"
+          description: "{{ $labels.container }} が頻繁に再起動しています"
+
+      # ネットワーク帯域幅が高い
+      - alert: HighNetworkTraffic
+        expr: rate(node_network_receive_bytes_total[5m]) > 100000000 # 100MB/s
+        for: 10m
+        labels:
+          severity: info
+          team: infrastructure
+        annotations:
+          summary: "ネットワークトラフィックが高い"
+          description: "受信トラフィックが100MB/sを超えています"
