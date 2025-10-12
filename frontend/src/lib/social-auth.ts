@@ -75,7 +75,7 @@ class SocialAuthService {
    */
   async signInWithProvider(providerId: string, redirectTo?: string): Promise<void> {
     try {
-      this.analytics.track('Social Sign In Attempt', {
+      this.analytics.trackEvent('Social Sign In Attempt', {
         provider: providerId,
         redirectTo,
       });
@@ -89,11 +89,11 @@ class SocialAuthService {
         throw new Error(result.error);
       }
 
-      this.analytics.track('Social Sign In Success', {
+      this.analytics.trackEvent('Social Sign In Success', {
         provider: providerId,
       });
     } catch (error) {
-      this.analytics.track('Social Sign In Error', {
+      this.analytics.trackEvent('Social Sign In Error', {
         provider: providerId,
         error: error instanceof Error ? error.message : 'Unknown error',
       });
@@ -106,14 +106,14 @@ class SocialAuthService {
    */
   async signOut(): Promise<void> {
     try {
-      this.analytics.track('Sign Out', {});
+      this.analytics.trackEvent('Sign Out', {});
 
       await signOut({
         redirect: false,
         callbackUrl: '/',
       });
     } catch (error) {
-      this.analytics.track('Sign Out Error', {
+      this.analytics.trackEvent('Sign Out Error', {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
       throw error;
@@ -146,7 +146,7 @@ class SocialAuthService {
           id: session.user.email,
           email: session.user.email,
           name: session.user.name || '',
-          image: session.user.image,
+          image: session.user.image || undefined,
           verified: true,
           connectedAt: new Date(),
         });
@@ -164,7 +164,7 @@ class SocialAuthService {
    */
   async disconnectProvider(providerId: string): Promise<void> {
     try {
-      this.analytics.track('Social Disconnect', {
+      this.analytics.trackEvent('Social Disconnect', {
         provider: providerId,
       });
 
@@ -172,7 +172,7 @@ class SocialAuthService {
       // ここでは簡易的な実装
       console.log(`Disconnecting ${providerId} provider`);
     } catch (error) {
-      this.analytics.track('Social Disconnect Error', {
+      this.analytics.trackEvent('Social Disconnect Error', {
         provider: providerId,
         error: error instanceof Error ? error.message : 'Unknown error',
       });
@@ -185,7 +185,7 @@ class SocialAuthService {
    */
   async schedulePost(post: Omit<SocialPost, 'id' | 'status'>): Promise<SocialPost> {
     try {
-      this.analytics.track('Social Post Schedule', {
+      this.analytics.trackEvent('Social Post Schedule', {
         provider: post.provider,
         scheduledAt: post.scheduledAt?.toISOString(),
       });
@@ -199,7 +199,7 @@ class SocialAuthService {
 
       return scheduledPost;
     } catch (error) {
-      this.analytics.track('Social Post Schedule Error', {
+      this.analytics.trackEvent('Social Post Schedule Error', {
         provider: post.provider,
         error: error instanceof Error ? error.message : 'Unknown error',
       });
@@ -225,14 +225,14 @@ class SocialAuthService {
    */
   async deletePost(postId: string): Promise<void> {
     try {
-      this.analytics.track('Social Post Delete', {
+      this.analytics.trackEvent('Social Post Delete', {
         postId,
       });
 
       // 実際の実装では、バックエンドAPIを呼び出して投稿を削除
       console.log(`Deleting post ${postId}`);
     } catch (error) {
-      this.analytics.track('Social Post Delete Error', {
+      this.analytics.trackEvent('Social Post Delete Error', {
         postId,
         error: error instanceof Error ? error.message : 'Unknown error',
       });

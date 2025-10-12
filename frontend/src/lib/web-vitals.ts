@@ -3,7 +3,7 @@
  * Phase 7-4: Frontend optimization
  */
 
-import { getCLS, getFCP, getFID, getLCP, getTTFB, Metric } from 'web-vitals';
+import { onCLS, onFCP, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
 
 export interface WebVitalsMetric {
   name: string;
@@ -17,7 +17,8 @@ export interface WebVitalsMetric {
 // Web Vitals閾値
 const THRESHOLDS = {
   LCP: { good: 2500, poor: 4000 },
-  FID: { good: 100, poor: 300 },
+  INP: { good: 200, poor: 500 }, // INP replaces FID in web-vitals v3+
+  FID: { good: 100, poor: 300 }, // Legacy support
   CLS: { good: 0.1, poor: 0.25 },
   FCP: { good: 1800, poor: 3000 },
   TTFB: { good: 600, poor: 1200 },
@@ -102,11 +103,11 @@ export function reportWebVitals(
   };
 
   // 各メトリクスの収集
-  getCLS(handleMetric);
-  getFCP(handleMetric);
-  getFID(handleMetric);
-  getLCP(handleMetric);
-  getTTFB(handleMetric);
+  onCLS(handleMetric);
+  onFCP(handleMetric);
+  onINP(handleMetric); // INP (Interaction to Next Paint) replaces FID in web-vitals v3+
+  onLCP(handleMetric);
+  onTTFB(handleMetric);
 }
 
 // パフォーマンスマーク
@@ -184,7 +185,7 @@ export function getPerformanceReport() {
       ? navigation.responseEnd - navigation.responseStart
       : 0,
     domProcessing: navigation
-      ? navigation.domComplete - navigation.domLoading
+      ? navigation.domComplete - navigation.fetchStart
       : 0,
     domContentLoaded: navigation
       ? navigation.domContentLoadedEventEnd -
