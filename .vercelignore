@@ -1,0 +1,61 @@
+# Vercel Ignore - フロントエンドのみデプロイ
+
+# Backend files
+backend/
+*.db
+*.sqlite
+*.sqlite3
+
+# Scripts
+scripts/
+
+# Monitoring
+monitoring/
+
+# Kubernetes
+k8s/
+
+# Docker
+docker-compose*.yml
+Dockerfile
+.dockerignore
+
+# CI/CD
+.github/
+
+# Documentation (optional)
+docs/
+
+# Environment files
+.env*
+!.env.example
+
+# Node modules (will be installed by Vercel)
+node_modules/
+
+# Build artifacts
+*.pyc
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Security
+security-reports/
+
+# Backups
+backups/
+
