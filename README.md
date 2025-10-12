@@ -195,18 +195,21 @@ graph TD
 ## デプロイ構成
 
 ### フロントエンド
+
 - **プラットフォーム**: Vercel
 - **プラン**: Hobby（無料）
 - **URL**: https://aica-sys.vercel.app
 - **機能**: Speed Insights、自動最適化
 
 ### バックエンド
+
 - **プラットフォーム**: Render
 - **プラン**: Free（無料、スリープあり）
 - **URL**: https://aica-sys-backend.onrender.com
 - **デプロイガイド**: [docs/render-deployment-guide.md](docs/render-deployment-guide.md)
 
 ### データベース
+
 - **開発**: SQLite（ローカル）
 - **本番**: Render PostgreSQL または Neon PostgreSQL
 - **移行ガイド**: [docs/database-migration-options.md](docs/database-migration-options.md)

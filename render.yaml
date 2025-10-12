@@ -2,10 +2,9 @@ services:
   # FastAPI Backend
   - type: web
     name: aica-sys-backend
-    runtime: python
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.0
@@ -16,7 +15,7 @@ services:
       - key: CORS_ORIGINS
         value: https://aica-sys.vercel.app,https://aica-sys-konishib0engineer-gmailcoms-projects.vercel.app
       - key: OPENAI_API_KEY
-        sync: false  # Renderダッシュボードで手動設定
+        sync: false # Renderダッシュボードで手動設定
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_PUBLISHABLE_KEY
@@ -30,4 +29,3 @@ services:
     healthCheckPath: /health
     autoDeploy: true
     plan: free
-

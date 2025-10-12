@@ -1,12 +1,9 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/.next",
-  "framework": "nextjs",
   "env": {
     "NEXTAUTH_URL": "https://aica-sys.vercel.app",
     "NEXT_PUBLIC_BASE_URL": "https://aica-sys.vercel.app",
-    "NEXT_PUBLIC_API_URL": "https://api.aica-sys.com",
+    "NEXT_PUBLIC_API_URL": "https://aica-sys-backend.onrender.com",
     "ENVIRONMENT": "production"
   }
 }
