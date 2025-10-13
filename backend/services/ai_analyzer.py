@@ -5,10 +5,10 @@ AI分析エンジン
 
 import asyncio
 import logging
+import os
 from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional, Tuple
-import openai
-import google.generativeai as genai
+from groq import Groq
 # from sentence_transformers import SentenceTransformer
 # import numpy as np
 import json
@@ -37,10 +37,15 @@ class AnalysisResult:
 class AIAnalyzer:
     """AI分析エンジンのメインクラス"""
     
-    def __init__(self, openai_api_key: str, google_ai_api_key: str):
+    def __init__(self, groq_api_key: str = None):
         # API設定
-        openai.api_key = openai_api_key
-        genai.configure(api_key=google_ai_api_key)
+        self.groq_api_key = groq_api_key or os.getenv("GROQ_API_KEY")
+        
+        # Groq client初期化
+        if self.groq_api_key:
+            self.groq_client = Groq(api_key=self.groq_api_key)
+        else:
+            self.groq_client = None
         
         # モデル初期化（簡略化）
         # self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')

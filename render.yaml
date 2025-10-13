@@ -14,8 +14,8 @@ services:
         value: production
       - key: CORS_ORIGINS
         value: https://aica-sys.vercel.app,https://aica-sys-konishib0engineer-gmailcoms-projects.vercel.app
-      - key: OPENAI_API_KEY
-        sync: false # Renderダッシュボードで手動設定
+      - key: GROQ_API_KEY
+        sync: false # Renderダッシュボードで手動設定済み
       - key: STRIPE_SECRET_KEY
         sync: false
       - key: STRIPE_PUBLISHABLE_KEY
