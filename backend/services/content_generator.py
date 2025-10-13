@@ -12,9 +12,9 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-import google.generativeai as genai
-import openai
+import os
 import requests
+from groq import Groq
 from PIL import Image
 from services.ai_analyzer import AnalysisResult
 from services.data_collector import ContentItem
@@ -49,14 +49,16 @@ class GeneratedContent:
 class ContentGenerator:
     """コンテンツ生成サービスのメインクラス"""
     
-    def __init__(self, openai_api_key: str, google_ai_api_key: str, stable_diffusion_api_key: str = None):
+    def __init__(self, groq_api_key: str = None, stable_diffusion_api_key: str = None):
         # API設定
-        openai.api_key = openai_api_key
-        genai.configure(api_key=google_ai_api_key)
+        self.groq_api_key = groq_api_key or os.getenv("GROQ_API_KEY")
         self.stable_diffusion_api_key = stable_diffusion_api_key
         
-        # モデル初期化
-        self.gemini_model = genai.GenerativeModel('gemini-1.5-pro')
+        # Groq client初期化
+        if self.groq_api_key:
+            self.groq_client = Groq(api_key=self.groq_api_key)
+        else:
+            self.groq_client = None
         
         # コンテンツテンプレート
         self.templates = {
@@ -201,29 +203,30 @@ Tags: [タグ1, タグ2, ...]
         return prompt
 
     async def _generate_with_ai(self, prompt: str, content_type: ContentType) -> str:
-        """AIを使用してコンテンツを生成"""
+        """AIを使用してコンテンツを生成（Groq Llama 3.1）"""
         try:
-            # Gemini Proを使用
-            response = await self.gemini_model.generate_content_async(prompt)
-            return response.text
-        except Exception as e:
-            logger.error(f"Gemini Pro生成エラー: {e}")
+            if not self.groq_client:
+                raise ValueError("Groq API key not configured")
             
-            # フォールバック: OpenAI
-            try:
-                response = await openai.ChatCompletion.acreate(
-                    model="gpt-4",
+            # Groq (Llama 3.1 70B) を使用
+            def _call_groq():
+                response = self.groq_client.chat.completions.create(
+                    model="llama-3.3-70b-versatile",
                     messages=[
-                        {"role": "system", "content": "あなたは技術コンテンツの専門ライターです。"},
+                        {"role": "system", "content": "あなたは技術コンテンツの専門ライターです。TypeScriptエコシステムに関する高品質な記事を生成します。"},
                         {"role": "user", "content": prompt}
                     ],
-                    max_tokens=2000,
+                    max_tokens=4096,
                     temperature=0.7
                 )
                 return response.choices[0].message.content
-            except Exception as e2:
-                logger.error(f"OpenAI生成エラー: {e2}")
-                raise Exception("AI生成に失敗しました")
+            
+            response_text = await asyncio.to_thread(_call_groq)
+            return response_text
+            
+        except Exception as e:
+            logger.error(f"Groq生成エラー: {e}")
+            raise Exception(f"AI生成に失敗しました: {e}")
 
     def _parse_generated_content(self, text: str, content_type: ContentType) -> Dict[str, Any]:
         """生成されたコンテンツを解析・構造化"""
