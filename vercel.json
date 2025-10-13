@@ -1,5 +1,9 @@
 {
   "version": 2,
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/.next",
+  "installCommand": "cd frontend && npm install",
+  "framework": "nextjs",
   "env": {
     "NEXTAUTH_URL": "https://aica-sys.vercel.app",
     "NEXT_PUBLIC_BASE_URL": "https://aica-sys.vercel.app",
