@@ -50,7 +50,7 @@
     "fuse.js": "^7.1.0",
     "gtag": "^1.0.1",
     "lucide-react": "0.290.0",
-    "next": "^14.2.32",
+    "next": "^14.2.33",
     "next-auth": "^4.24.11",
     "next-intl": "^4.3.7",
     "next-optimized-images": "^2.6.2",
