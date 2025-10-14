@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 export default function SignUpPage() {
@@ -22,11 +22,14 @@ export default function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleGoogleSignUp = async () => {
     setIsLoading(true);
     try {
-      await signIn('google', { callbackUrl: '/dashboard' });
+      // URLパラメータからcallbackUrlを取得（デフォルトは/dashboard）
+      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+      await signIn('google', { callbackUrl });
     } catch (error) {
       console.error('Google sign up error:', error);
     } finally {
@@ -54,7 +57,12 @@ export default function SignUpPage() {
       });
 
       if (response.ok) {
-        router.push('/auth/signin?message=Account created successfully');
+        // アカウント作成成功後、callbackUrlを引き継いでサインインページへ
+        const callbackUrl = searchParams.get('callbackUrl');
+        const signinUrl = callbackUrl 
+          ? `/auth/signin?message=Account created successfully&callbackUrl=${encodeURIComponent(callbackUrl)}`
+          : '/auth/signin?message=Account created successfully';
+        router.push(signinUrl);
       } else {
         const error = await response.json();
         console.error('Sign up failed:', error.message);
@@ -76,7 +84,10 @@ export default function SignUpPage() {
           <p className='mt-2 text-sm text-muted-foreground'>
             すでにアカウントをお持ちの場合は{' '}
             <Link
-              href='/auth/signin'
+              href={searchParams.get('callbackUrl') 
+                ? `/auth/signin?callbackUrl=${searchParams.get('callbackUrl')}`
+                : '/auth/signin'
+              }
               className='font-medium text-primary hover:text-primary/80'
             >
               ログイン

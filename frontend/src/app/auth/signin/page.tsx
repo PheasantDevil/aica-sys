@@ -9,26 +9,30 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getSession, signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     // 既にログインしている場合はダッシュボードにリダイレクト
     getSession().then(session => {
       if (session) {
-        router.push('/dashboard');
+        const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+        router.push(callbackUrl);
       }
     });
-  }, [router]);
+  }, [router, searchParams]);
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
-      await signIn('google', { callbackUrl: '/dashboard' });
+      // URLパラメータからcallbackUrlを取得（デフォルトは/dashboard）
+      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+      await signIn('google', { callbackUrl });
     } catch (error) {
       console.error('Sign in error:', error);
     } finally {
@@ -65,6 +69,19 @@ export default function SignInPage() {
               プライバシーポリシー
             </a>
             に同意したものとみなされます。
+          </div>
+
+          <div className='text-center text-sm text-muted-foreground mt-4'>
+            アカウントをお持ちでない場合は{' '}
+            <a 
+              href={searchParams.get('callbackUrl') 
+                ? `/auth/signup?callbackUrl=${searchParams.get('callbackUrl')}`
+                : '/auth/signup'
+              }
+              className='font-medium text-primary hover:text-primary/80 underline'
+            >
+              新規登録
+            </a>
           </div>
         </CardContent>
       </Card>

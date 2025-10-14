@@ -5,16 +5,39 @@ import { Header } from '@/components/header';
 import { SubscriptionCard } from '@/components/subscription/subscription-card';
 import { useSubscription } from '@/hooks/use-subscription';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function PricingPage() {
   const { data: session } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { subscription, handleUpgrade, handleContact, isUpgrading } = useSubscription();
+
+  // サインイン後、選択されていたプランがあれば自動的に決済に進む
+  useEffect(() => {
+    const selectedPlan = searchParams.get('plan');
+    
+    if (session && selectedPlan && !isUpgrading) {
+      // プランパラメータをクリア
+      router.replace('/pricing');
+      
+      // 選択されたプランに応じて処理
+      if (selectedPlan === 'PREMIUM' && process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID) {
+        handleUpgrade(process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID);
+      } else if (selectedPlan === 'ENTERPRISE') {
+        handleContact();
+      } else if (selectedPlan === 'FREE') {
+        router.push('/dashboard');
+      }
+    }
+  }, [session, searchParams, handleUpgrade, handleContact, isUpgrading, router]);
 
   const handleSelectPlan = (plan: 'FREE' | 'PREMIUM' | 'ENTERPRISE') => {
     if (!session) {
-      router.push('/auth/signin');
+      // 選択したプランをクエリパラメータに含めてサインインページへ
+      const returnUrl = `/pricing?plan=${plan}`;
+      router.push(`/auth/signin?callbackUrl=${encodeURIComponent(returnUrl)}`);
       return;
     }
 
