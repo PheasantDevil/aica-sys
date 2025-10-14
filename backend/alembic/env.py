@@ -21,6 +21,8 @@ from models.collection import AnalysisResult, CollectionJob
 from models.content import Article, Newsletter, Trend
 from models.subscription import Subscription
 from models.user import User
+from models.automated_content import (AutomatedContentDB, TrendDataDB,
+                                      SourceDataDB, ContentGenerationLogDB)
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

@@ -31,8 +31,8 @@ async def main_async():
 
         # Step 2: トレンド分析
         print("📊 Analyzing trends...")
-        openai_api_key = os.getenv("OPENAI_API_KEY", "")
-        automation = ContentAutomationService(db, openai_api_key)
+        groq_api_key = os.getenv("GROQ_API_KEY", "")
+        automation = ContentAutomationService(db, groq_api_key)
         trends = await automation.analyze_trends(source_data)
         print(f"✅ Found {len(trends)} trends")
 

@@ -59,7 +59,7 @@ jobs:
 
       - name: Run article generation
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           python3 scripts/generate_daily_article.py
