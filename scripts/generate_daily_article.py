@@ -12,11 +12,17 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "backend"))
 
-from datetime import datetime
+# Load environment variables
+from dotenv import load_dotenv
+
+backend_dir = Path(__file__).parent.parent / "backend"
+load_dotenv(backend_dir / ".env.local")
+
+from datetime import datetime, timezone
 
 from database import SessionLocal
-from models.automated_content import (AutomatedContentDB, ContentStatus,
-                                      ContentType, TrendDataDB, ContentGenerationLogDB)
+from models.automated_content import (AutomatedContentDB, ContentGenerationLogDB, ContentStatus,
+                                      ContentType, TrendDataDB)
 from services.content_automation_service import ContentAutomationService
 from services.source_aggregator_service import SourceAggregatorService
 
@@ -50,7 +56,7 @@ async def main_async():
                 keywords=[trend['keyword']],
                 related_topics=[item.get('title', '') for item in trend.get('related_items', [])[:3]],
                 data_snapshot=trend,
-                detected_at=datetime.utcnow()
+                detected_at=datetime.now(timezone.utc)
             )
             db.add(trend_db)
         db.commit()
@@ -64,7 +70,7 @@ async def main_async():
         for i, trend in enumerate(trends[:3], 1):  # トップ3記事生成
             print(f"  Generating article {i}/3: {trend['keyword']}")
             
-            start_time = datetime.utcnow()
+            start_time = datetime.now(timezone.utc)
             article = await automation.generate_article(trend)
             
             # 生成ログ保存
@@ -95,7 +101,7 @@ async def main_async():
                     seo_data=article.get('seo_data', {}),
                     quality_score=article['quality_score'],
                     status=ContentStatus.PUBLISHED,
-                    published_at=datetime.utcnow()
+                    published_at=datetime.now(timezone.utc)
                 )
                 db.add(article_db)
                 db.commit()

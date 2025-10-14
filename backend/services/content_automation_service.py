@@ -35,10 +35,10 @@ class ContentAutomationService:
         keyword_freq = Counter(keywords)
         # 一般的な単語を除外
         stopwords = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for'}
-        keyword_freq = {k: v for k, v in keyword_freq.items() if k not in stopwords and len(k) > 3}
+        keyword_freq_filtered = {k: v for k, v in keyword_freq.items() if k not in stopwords and len(k) > 3}
 
-        # トップトレンド抽出
-        top_keywords = keyword_freq.most_common(20)
+        # トップトレンド抽出（頻度順にソート）
+        top_keywords = sorted(keyword_freq_filtered.items(), key=lambda x: x[1], reverse=True)[:20]
 
         # トレンドグルーピング
         trends = []
