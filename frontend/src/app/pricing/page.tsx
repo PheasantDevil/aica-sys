@@ -6,9 +6,9 @@ import { SubscriptionCard } from '@/components/subscription/subscription-card';
 import { useSubscription } from '@/hooks/use-subscription';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
-export default function PricingPage() {
+function PricingContent() {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -101,5 +101,28 @@ export default function PricingPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function PricingPage() {
+  return (
+    <Suspense fallback={
+      <div className='min-h-screen bg-background'>
+        <Header />
+        <main className='container py-20'>
+          <div className='mx-auto max-w-2xl text-center mb-16'>
+            <h1 className='text-4xl font-bold tracking-tight sm:text-6xl mb-6'>
+              料金プラン
+            </h1>
+            <p className='text-lg text-muted-foreground sm:text-xl'>
+              読み込み中...
+            </p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    }>
+      <PricingContent />
+    </Suspense>
   );
 }

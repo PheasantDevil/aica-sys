@@ -14,9 +14,9 @@ import { Separator } from '@/components/ui/separator';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
-export default function SignUpPage() {
+function SignUpContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -201,5 +201,24 @@ export default function SignUpPage() {
         </Card>
       </div>
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <Suspense fallback={
+      <div className='min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8'>
+        <div className='max-w-md w-full'>
+          <Card>
+            <CardHeader>
+              <CardTitle>アカウントを作成</CardTitle>
+              <CardDescription>読み込み中...</CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+      </div>
+    }>
+      <SignUpContent />
+    </Suspense>
   );
 }

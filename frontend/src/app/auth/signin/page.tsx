@@ -10,9 +10,9 @@ import {
 } from '@/components/ui/card';
 import { getSession, signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
-export default function SignInPage() {
+function SignInContent() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -86,5 +86,22 @@ export default function SignInPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={
+      <div className='min-h-screen flex items-center justify-center bg-background'>
+        <Card className='w-full max-w-md'>
+          <CardHeader className='text-center'>
+            <CardTitle className='text-2xl'>ログイン</CardTitle>
+            <CardDescription>読み込み中...</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    }>
+      <SignInContent />
+    </Suspense>
   );
 }
