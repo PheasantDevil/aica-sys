@@ -1,18 +1,19 @@
 """
 Content Automation Service for AICA-SyS
-Phase 10-1: Automated article generation
+Phase 10-1: Automated article generation with Groq API
 """
 
 import logging
 import time
 from collections import Counter
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from sqlalchemy.orm import Session
 
 from models.automated_content import (AutomatedContentDB, ContentStatus,
                                       ContentType, TrendDataDB)
+from utils.ai_client import AIClient, ContentGenerationRequest
 
 logger = logging.getLogger(__name__)
 
@@ -20,9 +21,9 @@ logger = logging.getLogger(__name__)
 class ContentAutomationService:
     """コンテンツ自動生成サービス"""
 
-    def __init__(self, db: Session, openai_api_key: str):
+    def __init__(self, db: Session, groq_api_key: Optional[str] = None):
         self.db = db
-        self.openai_api_key = openai_api_key
+        self.ai_client = AIClient(groq_api_key=groq_api_key)
 
     async def analyze_trends(self, source_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """トレンド分析"""
@@ -57,88 +58,128 @@ class ContentAutomationService:
         trends.sort(key=lambda x: x['score'], reverse=True)
         return trends[:5]
 
-    async def generate_article(self, trend: Dict[str, Any]) -> Dict[str, Any]:
-        """記事生成"""
+    async def generate_article(self, trend: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """記事生成（Groq API使用）"""
         start_time = time.time()
 
         try:
-            # OpenAI API呼び出し（実装は環境に応じて）
-            prompt = self._build_prompt(trend)
-            article_content = f"""# {trend['keyword'].title()}が注目を集めている理由
-
-## 一言で言うと
-{trend['keyword']}は、最近{trend['source_count']}以上の技術コミュニティで注目されている技術トレンドです。
-
-## なぜ今重要なのか
-複数の情報源で同時に取り上げられていることから、開発者コミュニティで急速に関心が高まっています。
-
-## 主要な特徴
-- 実践的な活用事例が増加
-- コミュニティの支持が拡大
-- 技術的な成熟度が向上
-
-## 詳細解説
-{self._generate_detailed_content(trend)}
-
-## 実装例
-```python
-# Example implementation
-print("Hello, {trend['keyword']}!")
-```
-
-## FAQ
-
-**Q: {trend['keyword']}とは何ですか？**
-A: {trend['keyword']}は、最新の技術トレンドの一つで、開発者コミュニティで注目されています。
-
-## 参考リソース
-{self._generate_resources(trend)}
-"""
-
-            quality_score = self._evaluate_quality(article_content)
+            # トレンド情報から詳細なトピックを構築
+            topic = self._build_topic_description(trend)
+            
+            # Groq APIで記事生成
+            generation_request = ContentGenerationRequest(
+                topic=topic,
+                content_type="blog_post",
+                target_audience="intermediate",
+                length="long",
+                style="technical"
+            )
+            
+            response = await self.ai_client.generate_content(generation_request)
+            
+            # 参考リソースを追加
+            resources_section = self._generate_resources(trend)
+            full_content = f"{response.content}\n\n## 参考リソース\n{resources_section}"
+            
+            quality_score = self._evaluate_quality(full_content, response)
             generation_time = time.time() - start_time
 
+            # SEOメタデータ生成
+            seo_data = {
+                'keywords': response.tags,
+                'description': response.summary,
+                'og_title': response.title,
+                'og_description': response.summary
+            }
+
             return {
-                'title': f"{trend['keyword'].title()}が注目を集めている理由",
-                'content': article_content,
+                'title': response.title,
+                'content': full_content,
+                'summary': response.summary,
+                'tags': response.tags,
                 'quality_score': quality_score,
                 'generation_time': generation_time,
+                'read_time': response.estimated_read_time,
+                'seo_data': seo_data,
                 'metadata': {
                     'keyword': trend['keyword'],
                     'source_count': trend['source_count'],
-                    'trend_score': trend['score']
+                    'trend_score': trend['score'],
+                    'ai_model': 'groq-llama-3.3-70b'
                 }
             }
 
         except Exception as e:
-            logger.error(f"Failed to generate article: {e}")
+            logger.error(f"Failed to generate article for {trend.get('keyword')}: {e}")
             return None
 
-    def _build_prompt(self, trend: Dict[str, Any]) -> str:
-        """プロンプト構築"""
-        return f"Write a comprehensive article about {trend['keyword']}"
-
-    def _generate_detailed_content(self, trend: Dict[str, Any]) -> str:
-        """詳細コンテンツ生成"""
-        return f"詳細な技術解説と実装ガイド（{trend['keyword']}について）"
+    def _build_topic_description(self, trend: Dict[str, Any]) -> str:
+        """トレンド情報から詳細なトピック説明を構築"""
+        keyword = trend['keyword']
+        source_count = trend['source_count']
+        related_items = trend.get('related_items', [])
+        
+        # 関連記事のタイトルから文脈を抽出
+        context_titles = [item.get('title', '') for item in related_items[:3]]
+        context = ' | '.join(context_titles) if context_titles else ''
+        
+        topic = f"{keyword}（TypeScript開発トレンド）"
+        if context:
+            topic += f" - 文脈: {context}"
+        
+        topic += f" - {source_count}以上のソースで言及された注目技術"
+        return topic
 
     def _generate_resources(self, trend: Dict[str, Any]) -> str:
         """リソースリンク生成"""
         resources = []
-        for item in trend.get('related_items', [])[:3]:
-            resources.append(f"- [{item.get('title')}]({item.get('source_url')})")
+        for item in trend.get('related_items', [])[:5]:
+            title = item.get('title', 'リソース')
+            url = item.get('source_url', '#')
+            source_type = item.get('source_type', 'unknown')
+            resources.append(f"- [{title}]({url}) ({source_type})")
+        
+        if not resources:
+            resources.append("- 関連リソースは随時更新されます")
+        
         return '\n'.join(resources)
 
-    def _evaluate_quality(self, content: str) -> float:
-        """品質評価"""
-        score = 70.0
-        if len(content) > 1000:
+    def _evaluate_quality(self, content: str, ai_response: Any = None) -> float:
+        """品質評価（改善版）"""
+        score = 60.0
+        
+        # コンテンツ長
+        word_count = len(content.split())
+        if word_count > 800:
+            score += 15
+        elif word_count > 500:
             score += 10
+        elif word_count > 300:
+            score += 5
+        
+        # コード例の有無
         if '```' in content:
             score += 10
-        if '##' in content:
+        
+        # 構造化（見出し）
+        heading_count = content.count('##')
+        if heading_count >= 5:
+            score += 10
+        elif heading_count >= 3:
             score += 5
-        if 'FAQ' in content:
+        
+        # FAQ形式
+        if 'FAQ' in content or 'Q:' in content:
             score += 5
+        
+        # リスト形式
+        if content.count('-') >= 5 or content.count('*') >= 5:
+            score += 5
+        
+        # AI応答タグの豊富さ
+        if ai_response and hasattr(ai_response, 'tags'):
+            if len(ai_response.tags) >= 5:
+                score += 5
+        
         return min(score, 100.0)
 
