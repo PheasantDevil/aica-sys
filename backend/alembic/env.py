@@ -6,7 +6,8 @@ from pathlib import Path
 # Load environment variables from .env.local
 from dotenv import load_dotenv
 
-env_path = Path(__file__).parent.parent.parent / '.env.local'
+# backend/.env.localを読み込む（backend/alembic/env.pyから見て../）
+env_path = Path(__file__).parent.parent / '.env.local'
 load_dotenv(env_path)
 
 from alembic import context

@@ -46,7 +46,7 @@ class AutomatedContentDB(Base):
     slug = Column(String(300), unique=True, index=True)
     summary = Column(Text)
     content = Column(Text)
-    metadata = Column(JSON)
+    content_metadata = Column(JSON)  # 'metadata'は予約語のため'content_metadata'に変更
     seo_data = Column(JSON)
     quality_score = Column(Float, default=0.0)
     status = Column(String, default=ContentStatus.DRAFT)
@@ -79,7 +79,7 @@ class SourceDataDB(Base):
     title = Column(String(500))
     content = Column(Text, nullable=True)
     score = Column(Float, nullable=True)
-    metadata = Column(JSON)
+    source_metadata = Column(JSON)  # 'metadata'は予約語のため'source_metadata'に変更
     collected_at = Column(DateTime, default=datetime.utcnow, index=True)
 
 
@@ -107,7 +107,7 @@ class AutomatedContent(BaseModel):
     slug: str
     summary: str
     content: str
-    metadata: Optional[dict] = None
+    content_metadata: Optional[dict] = None
     seo_data: Optional[dict] = None
     quality_score: float
     status: str
@@ -142,7 +142,7 @@ class SourceData(BaseModel):
     title: str
     content: Optional[str] = None
     score: Optional[float] = None
-    metadata: dict
+    source_metadata: dict
     collected_at: datetime
 
     class Config:

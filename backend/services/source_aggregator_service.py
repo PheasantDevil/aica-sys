@@ -239,7 +239,7 @@ class SourceAggregatorService:
                     title=data.get('title', ''),
                     content=data.get('content'),
                     score=data.get('score'),
-                    metadata=data.get('metadata', {})
+                    source_metadata=data.get('metadata', {})
                 )
                 self.db.add(source_db)
 

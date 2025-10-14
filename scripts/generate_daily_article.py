@@ -87,7 +87,7 @@ async def main_async():
                     slug=slug,
                     summary=article.get('summary', '')[:500],
                     content=article['content'],
-                    metadata={
+                    content_metadata={
                         'tags': article.get('tags', []),
                         'read_time': article.get('read_time', 5),
                         **article.get('metadata', {})
