@@ -49,7 +49,7 @@ jobs:
           npm audit || true
       
       - name: Upload vulnerability reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: vulnerability-reports
           path: security-reports/
@@ -78,7 +78,7 @@ jobs:
           bandit -r . -ll || true
       
       - name: Upload Bandit report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bandit-report
           path: security-reports/bandit-report.json
@@ -162,7 +162,7 @@ jobs:
           echo "- Secret Scan: ${{ needs.secret-scan.result }}" >> security-summary.md
       
       - name: Upload security summary
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: security-summary
           path: security-summary.md

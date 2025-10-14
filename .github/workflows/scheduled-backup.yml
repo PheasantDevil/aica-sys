@@ -30,7 +30,7 @@ jobs:
           ./scripts/backup.sh
       
       - name: Upload backup to storage
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: daily-backup-${{ github.run_number }}
           path: backups/*.tar.gz
