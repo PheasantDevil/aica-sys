@@ -217,11 +217,15 @@ if daily_requests > 11520:  # 14400 * 0.8
 1. データベースマイグレーション実行
    ```bash
    cd backend
+   source venv/bin/activate
+   alembic revision --autogenerate -m "Add automated content tables"
    alembic upgrade head
    ```
 
 2. 記事生成テスト
    ```bash
+   cd /Users/Work/aica-sys
+   source backend/venv/bin/activate
    python3 scripts/generate_daily_article.py
    ```
 

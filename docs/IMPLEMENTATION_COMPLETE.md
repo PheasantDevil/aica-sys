@@ -153,11 +153,12 @@ AICA-SyS プロジェクトの収益化と認知度向上を達成するため�
 
 ```bash
 # マイグレーション作成
-cd /Users/Work/aica-sys
-./scripts/create-migration.sh
+cd /Users/Work/aica-sys/backend
+source venv/bin/activate
+alembic revision --autogenerate -m "Add automated content tables"
 
 # マイグレーション実行
-./scripts/run-migration.sh
+alembic upgrade head
 ```
 
 ### 2. Groq API キー取得・設定
@@ -183,6 +184,7 @@ gh secret set GROQ_API_KEY
 ```bash
 # ローカルテスト
 cd /Users/Work/aica-sys
+source backend/venv/bin/activate
 python3 scripts/generate_daily_article.py
 
 # GitHub Actions手動トリガー
