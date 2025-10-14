@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Remove old artifacts
-        uses: actions/github-script@v6
+        uses: actions/github-script@v8
         with:
           script: |
             const days = 7;
