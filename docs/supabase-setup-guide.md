@@ -2,14 +2,15 @@
 
 ## 概要
 
-AICA-SySをSupabaseと連携させるための完全ガイド。Row Level Security (RLS)の設定、Supabase CLIの活用、環境変数設定をカバーします。
+AICA-SyS を Supabase と連携させるための完全ガイド。Row Level Security (RLS)の設定、Supabase CLI の活用、環境変数設定をカバーします。
 
 ## 1. Supabase CLI インストールと連携
 
-### Supabase CLIとは
+### Supabase CLI とは
 
-Supabase CLIを使用すると、以下が可能になります：
-- ローカルでSupabaseを実行
+Supabase CLI を使用すると、以下が可能になります：
+
+- ローカルで Supabase を実行
 - マイグレーションの管理
 - データベーススキーマの同期
 - シードデータの投入
@@ -18,16 +19,18 @@ Supabase CLIを使用すると、以下が可能になります：
 ### インストール
 
 #### macOS (Homebrew)
+
 ```bash
 brew install supabase/tap/supabase
 ```
 
 #### npm (クロスプラットフォーム)
+
 ```bash
 npm install -g supabase
 ```
 
-### Supabaseプロジェクトにリンク
+### Supabase プロジェクトにリンク
 
 ```bash
 # プロジェクトディレクトリで実行
@@ -43,19 +46,19 @@ supabase link --project-ref <your-project-ref>
 supabase link
 ```
 
-### プロジェクトREF確認方法
+### プロジェクト REF 確認方法
 
 1. [Supabase Dashboard](https://app.supabase.com/)にログイン
 2. プロジェクトを選択
-3. Settings → General → Reference IDをコピー
+3. Settings → General → Reference ID をコピー
 
 ## 2. Row Level Security (RLS) 有効化
 
-### RLSとは
+### RLS とは
 
-Row Level Security (RLS)は、テーブルの各行へのアクセスをユーザーごとに制御するPostgreSQLの機能です。Supabaseではセキュリティのため、すべての公開テーブルでRLSの有効化が推奨されます。
+Row Level Security (RLS)は、テーブルの各行へのアクセスをユーザーごとに制御する PostgreSQL の機能です。Supabase ではセキュリティのため、すべての公開テーブルで RLS の有効化が推奨されます。
 
-### 方法1: Supabase CLIで適用（推奨）
+### 方法 1: Supabase CLI で適用（推奨）
 
 ```bash
 # SQLファイルを実行
@@ -65,14 +68,14 @@ supabase db execute --file backend/security/enable_rls.sql
 supabase db push
 ```
 
-### 方法2: Supabase Dashboardで手動適用
+### 方法 2: Supabase Dashboard で手動適用
 
 1. [Supabase Dashboard](https://app.supabase.com/)でプロジェクトを開く
 2. SQL Editor を開く
 3. `backend/security/enable_rls.sql` の内容をコピー＆ペースト
 4. 「Run」をクリック
 
-### 方法3: psqlで直接適用
+### 方法 3: psql で直接適用
 
 ```bash
 # Supabaseデータベースに接続
@@ -85,11 +88,12 @@ psql "postgresql://postgres:[PASSWORD]@[PROJECT_REF].supabase.co:5432/postgres"
 cat backend/security/enable_rls.sql | psql "postgresql://..."
 ```
 
-## 3. RLSポリシーの説明
+## 3. RLS ポリシーの説明
 
 ### テーブルごとのポリシー
 
 #### 公開コンテンツ（articles, trends, automated_contents）
+
 ```sql
 -- 誰でも読める
 CREATE POLICY "Allow public to read published articles"
@@ -105,6 +109,7 @@ USING (true);
 ```
 
 #### ユーザーデータ（users, subscriptions）
+
 ```sql
 -- ユーザーは自分のデータのみ読める
 CREATE POLICY "Users can read own data"
@@ -120,6 +125,7 @@ USING (auth.uid()::text = id);
 ```
 
 #### 管理データ（collection_jobs, source_data）
+
 ```sql
 -- 認証済みユーザーのみ読める
 CREATE POLICY "Allow authenticated users to read"
@@ -193,14 +199,15 @@ supabase secrets unset KEY
 
 ## 5. 環境変数設定
 
-### Supabase接続情報取得
+### Supabase 接続情報取得
 
 ```bash
 # プロジェクト設定を表示
 supabase projects api-keys --project-ref <ref>
 ```
 
-または、Dashboardから：
+または、Dashboard から：
+
 1. Settings → API
 2. 以下をコピー：
    - Project URL
@@ -220,7 +227,7 @@ SUPABASE_SERVICE_KEY=eyJhbGc...（service_role key）
 GROQ_API_KEY=gsk_...
 ```
 
-### Vercel環境変数
+### Vercel 環境変数
 
 ```bash
 # Vercel Dashboard → Settings → Environment Variables
@@ -230,7 +237,7 @@ SUPABASE_SERVICE_KEY=eyJhbGc...
 DATABASE_URL=postgresql://postgres.[PROJECT_REF]:[PASSWORD]@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres
 ```
 
-### Render環境変数
+### Render 環境変数
 
 ```bash
 # Render Dashboard → Environment
@@ -264,7 +271,7 @@ supabase migration new add_new_tables
 supabase db push
 ```
 
-### Supabase直接マイグレーション
+### Supabase 直接マイグレーション
 
 ```bash
 # 新しいマイグレーション作成
@@ -277,14 +284,14 @@ supabase migration new enable_rls
 supabase db push
 ```
 
-## 7. RLS確認とテスト
+## 7. RLS 確認とテスト
 
-### RLS状態確認
+### RLS 状態確認
 
 ```bash
 # Supabase CLIで確認
 supabase db execute --query "
-SELECT 
+SELECT
     schemaname,
     tablename,
     rowsecurity
@@ -298,7 +305,7 @@ ORDER BY tablename;
 
 ```bash
 supabase db execute --query "
-SELECT 
+SELECT
     schemaname,
     tablename,
     policyname,
@@ -310,7 +317,7 @@ ORDER BY tablename, policyname;
 "
 ```
 
-### RLSテスト
+### RLS テスト
 
 ```bash
 # 匿名ユーザーとしてテスト
@@ -328,7 +335,7 @@ SELECT * FROM subscriptions LIMIT 1;
 
 ## 8. ローカル開発環境
 
-### Supabaseローカル環境起動
+### Supabase ローカル環境起動
 
 ```bash
 # Supabaseローカル環境を初期化
@@ -355,9 +362,9 @@ SUPABASE_ANON_KEY=<local_anon_key>
 SUPABASE_SERVICE_KEY=<local_service_key>
 ```
 
-## 9. GitHub Actions連携
+## 9. GitHub Actions 連携
 
-### Supabase CLIをGitHub Actionsで使用
+### Supabase CLI を GitHub Actions で使用
 
 `.github/workflows/supabase-deploy.yml`:
 
@@ -369,36 +376,36 @@ on:
     branches:
       - main
     paths:
-      - 'backend/security/**'
-      - 'supabase/migrations/**'
+      - "backend/security/**"
+      - "supabase/migrations/**"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: supabase/setup-cli@v1
         with:
           version: latest
-      
+
       - name: Link to Supabase project
         run: supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      
+
       - name: Push migrations
         run: supabase db push
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      
+
       - name: Execute RLS script
         run: supabase db execute --file backend/security/enable_rls.sql
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
 ```
 
-### GitHub Secrets設定
+### GitHub Secrets 設定
 
 ```bash
 # GitHub Secrets に追加
@@ -410,18 +417,20 @@ SUPABASE_PROJECT_REF=xxxxxxxxxxxxx
 
 ### エラー: "RLS Disabled in Public"
 
-**原因**: Row Level Securityが有効化されていない
+**原因**: Row Level Security が有効化されていない
 
 **解決**:
+
 ```bash
 supabase db execute --file backend/security/enable_rls.sql
 ```
 
 ### エラー: "Permission denied"
 
-**原因**: RLSポリシーでアクセスが拒否された
+**原因**: RLS ポリシーでアクセスが拒否された
 
 **解決**:
+
 1. 正しいロール（anon/authenticated/service_role）を使用
 2. ポリシー条件を確認
 3. `auth.uid()`が正しく機能しているか確認
@@ -431,6 +440,7 @@ supabase db execute --file backend/security/enable_rls.sql
 **原因**: 接続文字列が間違っている
 
 **解決**:
+
 ```bash
 # Pooler URLを使用（推奨）
 postgresql://postgres.[PROJECT_REF]:[PASSWORD]@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres
@@ -451,7 +461,7 @@ postgresql://postgres.[PROJECT_REF]:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432
 # サーバーサイド処理でのみ使用
 ```
 
-### 2. RLSポリシーの原則
+### 2. RLS ポリシーの原則
 
 ```sql
 -- ✅ 最小権限の原則
@@ -467,11 +477,11 @@ USING (true);  -- これは避ける
 
 ### 3. 環境ごとの分離
 
-- 開発: ローカルSupabase（`supabase start`）
+- 開発: ローカル Supabase（`supabase start`）
 - ステージング: Supabase Staging Project
 - 本番: Supabase Production Project
 
-## 12. 便利なSupabase CLIコマンド
+## 12. 便利な Supabase CLI コマンド
 
 ### プロジェクト情報
 
@@ -511,14 +521,14 @@ supabase gen types typescript --linked > frontend/src/types/supabase.ts
 
 ## 13. 実行手順
 
-### ステップ1: Supabase CLI インストール
+### ステップ 1: Supabase CLI インストール
 
 ```bash
 brew install supabase/tap/supabase
 supabase --version
 ```
 
-### ステップ2: プロジェクトにリンク
+### ステップ 2: プロジェクトにリンク
 
 ```bash
 cd /Users/Work/aica-sys
@@ -526,7 +536,7 @@ supabase login
 supabase link --project-ref <your-project-ref>
 ```
 
-### ステップ3: RLS有効化
+### ステップ 3: RLS 有効化
 
 ```bash
 # SQLスクリプト実行
@@ -534,14 +544,14 @@ supabase db execute --file backend/security/enable_rls.sql
 
 # 確認
 supabase db execute --query "
-SELECT tablename, rowsecurity 
-FROM pg_tables 
-WHERE schemaname='public' 
+SELECT tablename, rowsecurity
+FROM pg_tables
+WHERE schemaname='public'
 ORDER BY tablename;
 "
 ```
 
-### ステップ4: マイグレーション同期
+### ステップ 4: マイグレーション同期
 
 ```bash
 # リモートの変更をローカルに取得
@@ -551,7 +561,7 @@ supabase db pull
 supabase db push
 ```
 
-### ステップ5: 環境変数設定
+### ステップ 5: 環境変数設定
 
 ```bash
 # プロジェクト情報確認
@@ -560,7 +570,7 @@ supabase projects api-keys --project-ref <ref>
 # 環境変数に設定（Vercel/Render）
 ```
 
-## 14. GitHub Actions統合例
+## 14. GitHub Actions 統合例
 
 完全な自動化ワークフロー：
 
@@ -571,34 +581,34 @@ on:
   push:
     branches: [main]
     paths:
-      - 'backend/models/**'
-      - 'backend/security/**'
-      - 'supabase/**'
+      - "backend/models/**"
+      - "backend/security/**"
+      - "supabase/**"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: supabase/setup-cli@v1
-      
+
       - name: Link to Supabase
         run: |
           supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      
+
       - name: Apply migrations
         run: supabase db push
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      
+
       - name: Apply RLS policies
         run: supabase db execute --file backend/security/enable_rls.sql
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      
+
       - name: Verify RLS
         run: |
           supabase db execute --query "
@@ -614,25 +624,25 @@ jobs:
 
 ### セットアップ完了確認
 
-- [ ] Supabase CLIインストール完了
+- [ ] Supabase CLI インストール完了
 - [ ] プロジェクトリンク完了
-- [ ] RLS有効化完了（すべてのテーブル）
-- [ ] RLSポリシー作成完了
+- [ ] RLS 有効化完了（すべてのテーブル）
+- [ ] RLS ポリシー作成完了
 - [ ] 環境変数設定完了（Vercel/Render）
 - [ ] マイグレーション同期完了
 - [ ] アクセステスト完了
 
 ### セキュリティ確認
 
-- [ ] service_role keyがサーバーサイドのみで使用
-- [ ] anon keyがフロントエンドで使用
-- [ ] すべての公開テーブルでRLS有効
-- [ ] ユーザーデータがauth.uid()で保護
-- [ ] パスワードなど機密情報がGitにコミットされていない
+- [ ] service_role key がサーバーサイドのみで使用
+- [ ] anon key がフロントエンドで使用
+- [ ] すべての公開テーブルで RLS 有効
+- [ ] ユーザーデータが auth.uid()で保護
+- [ ] パスワードなど機密情報が Git にコミットされていない
 
 ## 16. 参考リソース
 
-- [Supabase公式ドキュメント](https://supabase.com/docs)
+- [Supabase 公式ドキュメント](https://supabase.com/docs)
 - [Supabase CLI リファレンス](https://supabase.com/docs/reference/cli)
 - [Row Level Security ガイド](https://supabase.com/docs/guides/auth/row-level-security)
 - [Database Linter](https://supabase.com/docs/guides/database/database-linter)
@@ -641,7 +651,7 @@ jobs:
 ## 17. サポート
 
 問題が発生した場合：
+
 - [Supabase Discord](https://discord.supabase.com/)
 - [GitHub Discussions](https://github.com/supabase/supabase/discussions)
 - [Supabase Support](https://supabase.com/support)
-

@@ -110,57 +110,6 @@ ON public.alembic_version FOR ALL
 TO service_role
 USING (true);
 
--- 9. automated_contents テーブル
-ALTER TABLE public.automated_contents ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Allow public to read published automated_contents"
-ON public.automated_contents FOR SELECT
-TO anon, authenticated
-USING (status = 'published');
-
-CREATE POLICY "Allow service role full access to automated_contents"
-ON public.automated_contents FOR ALL
-TO service_role
-USING (true);
-
--- 10. trend_data テーブル
-ALTER TABLE public.trend_data ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Allow public to read trend_data"
-ON public.trend_data FOR SELECT
-TO anon, authenticated
-USING (true);
-
-CREATE POLICY "Allow service role full access to trend_data"
-ON public.trend_data FOR ALL
-TO service_role
-USING (true);
-
--- 11. source_data テーブル
-ALTER TABLE public.source_data ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Allow authenticated users to read source_data"
-ON public.source_data FOR SELECT
-TO authenticated
-USING (true);
-
-CREATE POLICY "Allow service role full access to source_data"
-ON public.source_data FOR ALL
-TO service_role
-USING (true);
-
--- 12. content_generation_logs テーブル
-ALTER TABLE public.content_generation_logs ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Allow authenticated users to read content_generation_logs"
-ON public.content_generation_logs FOR SELECT
-TO authenticated
-USING (true);
-
-CREATE POLICY "Allow service role full access to content_generation_logs"
-ON public.content_generation_logs FOR ALL
-TO service_role
-USING (true);
 
 -- 確認: すべてのテーブルでRLSが有効化されたことを確認
 SELECT 
