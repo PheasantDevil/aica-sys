@@ -6,12 +6,12 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 3 * * 0' # 毎週日曜日の3:00 AM (JST 12:00 PM)
+    - cron: "0 3 * * 0" # 毎週日曜日の3:00 AM (JST 12:00 PM)
 
 jobs:
   lighthouse:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,8 +19,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
@@ -46,18 +46,20 @@ jobs:
         run: |
           npm start &
           sleep 30
+          # Health check
+          timeout 10 bash -c 'until curl -f http://localhost:3000 > /dev/null 2>&1; do sleep 1; done' || echo "⚠️ Application may not be fully started"
 
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v10
         with:
-          configPath: './frontend/.lighthouserc.json'
+          configPath: "./frontend/.lighthouserc.json"
           uploadArtifacts: true
           temporaryPublicStorage: true
 
   load-test:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -65,7 +67,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "18"
 
       - name: Install k6
         run: |
@@ -97,5 +99,5 @@ jobs:
             sleep(1);
           }
           EOF
-          
+
           k6 run load-test.js

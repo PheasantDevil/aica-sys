@@ -4,43 +4,43 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'frontend/**'
-      - '.github/workflows/frontend-ci-cd.yml'
+      - "frontend/**"
+      - ".github/workflows/frontend-ci-cd.yml"
   pull_request:
     branches: [main]
     paths:
-      - 'frontend/**'
-      - '.github/workflows/frontend-ci-cd.yml'
+      - "frontend/**"
+      - ".github/workflows/frontend-ci-cd.yml"
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: "18"
 
 jobs:
   lint-and-format:
     name: Lint and Format Check
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
-      
+
       - name: Install dependencies
         run: |
           cd frontend
           npm ci
-      
+
       - name: Run ESLint
         run: |
           cd frontend
           npm run lint
-      
+
       - name: Check formatting (Prettier)
         run: |
           cd frontend
@@ -49,23 +49,23 @@ jobs:
   type-check:
     name: Type Check
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
-      
+
       - name: Install dependencies
         run: |
           cd frontend
           npm ci
-      
+
       - name: Run TypeScript check
         run: |
           cd frontend
@@ -74,28 +74,28 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
-      
+
       - name: Install dependencies
         run: |
           cd frontend
           npm ci
-      
+
       - name: Run tests
         run: |
           cd frontend
           npm run test -- --coverage || true
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
@@ -107,32 +107,32 @@ jobs:
     name: Build Application
     runs-on: ubuntu-latest
     needs: [lint-and-format, type-check, test]
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
-      
+
       - name: Install dependencies
         run: |
           cd frontend
           npm ci
-      
+
       - name: Build application
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'http://localhost:8000' }}
         run: |
           cd frontend
           npm run build
-      
+
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: frontend-build
           path: frontend/.next
@@ -141,31 +141,31 @@ jobs:
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
-      
+
       - name: Install dependencies
         run: |
           cd frontend
           npm ci
-      
+
       - name: Run npm audit
         run: |
           cd frontend
           npm audit --production --audit-level=moderate || true
-      
+
       - name: Run Snyk security scan
-        uses: snyk/actions/node@master
         continue-on-error: true
+        uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
@@ -175,16 +175,16 @@ jobs:
     name: Lighthouse Performance Audit
     runs-on: ubuntu-latest
     needs: build
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      
+
       - name: Run Lighthouse CI
         run: |
           npm install -g @lhci/cli
@@ -196,11 +196,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     if: github.event_name == 'pull_request'
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Deploy to Vercel (Preview)
         uses: amondnet/vercel-action@v25
         with:
@@ -217,20 +217,20 @@ jobs:
     environment:
       name: production
       url: https://aica-sys.vercel.app
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Deploy to Vercel (Production)
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+          vercel-args: "--prod"
           working-directory: frontend
-      
+
       - name: Notify deployment success
         run: |
           echo "✅ Production deployment completed successfully"

@@ -9,9 +9,9 @@ on:
     branches:
       - main
     paths:
-      - 'backend/models/automated_content.py'
-      - 'scripts/generate_newsletter.py'
-      - '.github/workflows/weekly-newsletter.yml'
+      - "backend/models/automated_content.py"
+      - "scripts/generate_newsletter.py"
+      - ".github/workflows/weekly-newsletter.yml"
 
 jobs:
   generate-newsletter:
@@ -25,7 +25,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.11"
 
       - name: Check Python version
         run: |
@@ -51,8 +51,8 @@ jobs:
       - name: Verify scripts exist
         run: |
           test -f scripts/generate_newsletter.py || exit 1
-          test -x scripts/generate_newsletter.py || exit 1
-          echo "✅ Script exists and is executable"
+          chmod +x scripts/generate_newsletter.py || true
+          echo "✅ Script exists"
 
       - name: Check data availability
         env:
@@ -91,4 +91,3 @@ jobs:
               body: `Weekly newsletter generation failed on ${new Date().toISOString()}\n\nCheck the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.`,
               labels: ['automation', 'bug']
             })
-

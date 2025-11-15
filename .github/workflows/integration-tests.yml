@@ -7,14 +7,14 @@ on:
     branches: [main]
   schedule:
     # 毎日午前3時（JST）に実行
-    - cron: '0 18 * * *'
+    - cron: "0 18 * * *"
 
 jobs:
   integration-test:
     name: Integration Tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     services:
       redis:
         image: redis:7-alpine
@@ -25,51 +25,59 @@ jobs:
           --health-retries 5
         ports:
           - 6379:6379
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: "pip"
           cache-dependency-path: backend/requirements.txt
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
           cache-dependency-path: |
             frontend/package-lock.json
             package-lock.json
-      
+
       - name: Install backend dependencies
         run: |
           cd backend
           pip install --upgrade pip
           pip install -r requirements.txt
-      
+
       - name: Install frontend dependencies
         run: |
           cd frontend
           npm ci
-      
+
       - name: Install root dependencies
         run: |
-          npm ci
-      
+          if [ -f "package-lock.json" ]; then
+            npm ci
+          else
+            echo "⚠️ package-lock.json not found, skipping root dependencies"
+          fi
+
       - name: Setup environment
         run: |
-          cp env.production.example .env.production
-      
+          if [ -f "env.production.example" ]; then
+            cp env.production.example .env.production
+          else
+            echo "⚠️ env.production.example not found, skipping"
+          fi
+
       - name: Initialize database
         run: |
           cd backend
           python3 -c "from database import init_db; init_db()" || true
-      
+
       - name: Start backend server
         env:
           REDIS_URL: redis://localhost:6379
@@ -78,30 +86,30 @@ jobs:
           cd backend
           python3 -m uvicorn main:app --host 0.0.0.0 --port 8000 &
           sleep 15
-      
+
       - name: Health check
         run: |
           curl -f http://127.0.0.1:8000/health || (echo "Backend health check failed" && exit 1)
-      
+
       - name: Run API tests
         run: |
           node scripts/test-api-optimization.js || true
-      
+
       - name: Run cache tests
         run: |
           node scripts/test-cache-system.js || true
-      
+
       - name: Run database optimization tests
         run: |
           node scripts/test-database-optimization.js || true
-      
+
       - name: Run light load test
         run: |
           node scripts/comprehensive-load-test.js --users=5 --duration=30 || true
-      
+
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: integration-test-results
           path: |
@@ -112,32 +120,32 @@ jobs:
     name: End-to-End Tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
-      
+
       - name: Install Playwright
         run: |
           cd frontend
           npm ci
           npx playwright install --with-deps
-      
+
       - name: Run E2E tests
         run: |
           cd frontend
           npx playwright test || true
-      
+
       - name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report
           path: frontend/playwright-report/

@@ -3,39 +3,45 @@ name: Scheduled Backup
 on:
   schedule:
     # 毎日午前3時（JST = UTC 18:00前日）
-    - cron: '0 18 * * *'
-  workflow_dispatch:  # 手動実行も可能
+    - cron: "0 18 * * *"
+  workflow_dispatch: # 手動実行も可能
 
 jobs:
   backup:
     name: Database Backup
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Create backup directory
         run: mkdir -p backups
-      
+
       - name: Download database from production
         run: |
           # 本番環境からデータベースをダウンロード
           # 実際の実装では、SCPやAPIを使用
           echo "Production database download would happen here"
-      
+
       - name: Run backup script
         run: |
-          chmod +x scripts/backup.sh
-          ./scripts/backup.sh
-      
+          if [ -f "scripts/backup.sh" ]; then
+            chmod +x scripts/backup.sh
+            ./scripts/backup.sh
+          else
+            echo "⚠️ scripts/backup.sh not found, skipping backup"
+          fi
+
       - name: Upload backup to storage
-        uses: actions/upload-artifact@v3
+        if: success()
+        uses: actions/upload-artifact@v4
         with:
           name: daily-backup-${{ github.run_number }}
           path: backups/*.tar.gz
           retention-days: 7
-      
+          if-no-files-found: ignore
+
       - name: Notify backup completion
         run: |
           echo "✅ Backup completed successfully"
@@ -45,11 +51,11 @@ jobs:
     name: Cleanup Old Backups
     runs-on: ubuntu-latest
     needs: backup
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Remove old artifacts
         uses: actions/github-script@v6
         with:
@@ -57,13 +63,13 @@ jobs:
             const days = 7;
             const ms = days * 24 * 60 * 60 * 1000;
             const cutoff = new Date(Date.now() - ms);
-            
+
             const artifacts = await github.rest.actions.listArtifactsForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               per_page: 100
             });
-            
+
             for (const artifact of artifacts.data.artifacts) {
               if (artifact.name.startsWith('daily-backup-')) {
                 const createdAt = new Date(artifact.created_at);

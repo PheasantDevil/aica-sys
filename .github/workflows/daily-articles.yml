@@ -9,11 +9,11 @@ on:
     branches:
       - main
     paths:
-      - 'backend/services/source_aggregator_service.py'
-      - 'backend/services/content_automation_service.py'
-      - 'backend/models/automated_content.py'
-      - 'scripts/generate_daily_article.py'
-      - '.github/workflows/daily-articles.yml'
+      - "backend/services/source_aggregator_service.py"
+      - "backend/services/content_automation_service.py"
+      - "backend/models/automated_content.py"
+      - "scripts/generate_daily_article.py"
+      - ".github/workflows/daily-articles.yml"
 
 jobs:
   generate-articles:
@@ -27,7 +27,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.11"
 
       - name: Check Python version
         run: |
@@ -54,8 +54,8 @@ jobs:
       - name: Verify scripts exist
         run: |
           test -f scripts/generate_daily_article.py || exit 1
-          test -x scripts/generate_daily_article.py || exit 1
-          echo "✅ Script exists and is executable"
+          chmod +x scripts/generate_daily_article.py || true
+          echo "✅ Script exists"
 
       - name: Run article generation
         env:
