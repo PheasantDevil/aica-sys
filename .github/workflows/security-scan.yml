@@ -3,8 +3,8 @@ name: Security Scan
 on:
   schedule:
     # 毎週月曜日午前9時（JST = UTC 0:00）
-    - cron: '0 0 * * 1'
-  workflow_dispatch:  # 手動実行
+    - cron: "0 0 * * 1"
+  workflow_dispatch: # 手動実行
   push:
     branches: [main]
 
@@ -12,44 +12,54 @@ jobs:
   dependency-scan:
     name: Dependency Vulnerability Scan
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
-      
+          python-version: "3.11"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-      
+          node-version: "18"
+
       - name: Install Safety (Python)
         run: pip install safety
-      
+
       - name: Scan Python dependencies
         run: |
+          mkdir -p security-reports
           cd backend
+          pip install --upgrade pip
           pip install -r requirements.txt
           safety check --json > ../security-reports/python-vulnerabilities.json || true
           safety check || true
-      
+
       - name: Scan npm dependencies (Frontend)
         run: |
+          mkdir -p security-reports
           cd frontend
+          npm ci || npm install
           npm audit --json > ../security-reports/npm-frontend-vulnerabilities.json || true
           npm audit || true
-      
+
       - name: Scan npm dependencies (Root)
         run: |
-          npm audit --json > security-reports/npm-root-vulnerabilities.json || true
-          npm audit || true
-      
+          mkdir -p security-reports
+          if [ -f "package-lock.json" ]; then
+            npm ci || npm install
+            npm audit --json > security-reports/npm-root-vulnerabilities.json || true
+            npm audit || true
+          else
+            echo "⚠️ package-lock.json not found, skipping root npm audit"
+          fi
+
       - name: Upload vulnerability reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: vulnerability-reports
           path: security-reports/
@@ -58,27 +68,29 @@ jobs:
   code-security-scan:
     name: Code Security Scan
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
-      
+          python-version: "3.11"
+
       - name: Install Bandit
         run: pip install bandit
-      
+
       - name: Run Bandit (Python security)
         run: |
+          mkdir -p security-reports
           cd backend
+          pip install bandit
           bandit -r . -f json -o ../security-reports/bandit-report.json || true
           bandit -r . -ll || true
-      
+
       - name: Upload Bandit report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: bandit-report
           path: security-reports/bandit-report.json
@@ -87,46 +99,46 @@ jobs:
   docker-image-scan:
     name: Docker Image Security Scan
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Build backend image
         run: docker build -t aica-sys-backend:scan backend/
-      
+
       - name: Build frontend image
         run: docker build -t aica-sys-frontend:scan frontend/
-      
+
       - name: Run Trivy scan (Backend)
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'aica-sys-backend:scan'
-          format: 'sarif'
-          output: 'trivy-backend-results.sarif'
-      
+          image-ref: "aica-sys-backend:scan"
+          format: "sarif"
+          output: "trivy-backend-results.sarif"
+
       - name: Run Trivy scan (Frontend)
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'aica-sys-frontend:scan'
-          format: 'sarif'
-          output: 'trivy-frontend-results.sarif'
-      
+          image-ref: "aica-sys-frontend:scan"
+          format: "sarif"
+          output: "trivy-frontend-results.sarif"
+
       - name: Upload Trivy results
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: 'trivy-backend-results.sarif'
+          sarif_file: "trivy-backend-results.sarif"
 
   secret-scan:
     name: Secret Scan
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
       - name: Run TruffleHog
         uses: trufflesecurity/trufflehog@main
         with:
@@ -139,16 +151,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: [dependency-scan, code-security-scan, docker-image-scan, secret-scan]
     if: always()
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Download all reports
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: security-reports/
-      
+
       - name: Generate security summary
         run: |
           echo "# Security Scan Summary" > security-summary.md
@@ -160,14 +172,14 @@ jobs:
           echo "- Code Security Scan: ${{ needs.code-security-scan.result }}" >> security-summary.md
           echo "- Docker Image Scan: ${{ needs.docker-image-scan.result }}" >> security-summary.md
           echo "- Secret Scan: ${{ needs.secret-scan.result }}" >> security-summary.md
-      
+
       - name: Upload security summary
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: security-summary
           path: security-summary.md
           retention-days: 90
-      
+
       - name: Comment on PR (if applicable)
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
