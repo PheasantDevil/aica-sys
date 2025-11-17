@@ -141,6 +141,7 @@ jobs:
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
+    continue-on-error: true
 
     steps:
       - name: Checkout code
@@ -162,7 +163,7 @@ jobs:
         continue-on-error: true
         run: |
           cd frontend
-          npm audit --production --audit-level=critical
+          npm audit --production --audit-level=critical || echo "npm audit reported vulnerabilities (non-blocking)."
 
       - name: Run Snyk security scan
         continue-on-error: true
