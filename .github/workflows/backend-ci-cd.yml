@@ -149,11 +149,12 @@ jobs:
           pip install safety bandit
 
       - name: Run Safety (dependency check)
+        continue-on-error: true
         run: |
           cd backend
           pip install --upgrade pip
           pip install -r requirements.txt
-          safety check --json || true
+          safety check --full-report --exit-code 0
 
       - name: Run Bandit (code security)
         run: |

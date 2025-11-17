@@ -159,9 +159,10 @@ jobs:
           npm ci
 
       - name: Run npm audit
+        continue-on-error: true
         run: |
           cd frontend
-          npm audit --production --audit-level=moderate || true
+          npm audit --production --audit-level=critical
 
       - name: Run Snyk security scan
         continue-on-error: true

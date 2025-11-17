@@ -1,14 +1,16 @@
-import os
 import logging
+import os
 from datetime import datetime, timedelta
-from typing import Optional, Dict, Any
-from jose import JWTError, jwt
+from typing import Any, Dict, Optional
+
+import jwt
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from jwt import PyJWTError
+from models.user import User
 from passlib.context import CryptContext
-from fastapi import HTTPException, status, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from utils.database import get_db
-from models.user import User
 
 logger = logging.getLogger(__name__)
 
@@ -107,7 +109,7 @@ class JWTAuth:
                 )
             
             return payload
-        except JWTError as e:
+        except PyJWTError as e:
             logger.warning(f"JWT verification error: {e}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

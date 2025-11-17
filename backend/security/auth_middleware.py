@@ -15,6 +15,7 @@ import jwt
 from database import get_db
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from jwt import PyJWTError
 from models.user import User
 from sqlalchemy.orm import Session
 
@@ -97,7 +98,7 @@ def verify_token(token: str) -> Dict[str, Any]:
         return payload
     except jwt.ExpiredSignatureError:
         raise AuthenticationError("Token has expired")
-    except jwt.JWTError:
+    except PyJWTError:
         raise AuthenticationError("Invalid token")
 
 def get_current_user(
