@@ -400,7 +400,7 @@ TypeScript エコシステム特化型の AI 自動コンテンツ生成・販�
 **プラットフォーム**: Vercel
 
 - プラン: Hobby（無料）
-- URL: https://aica-sys.vercel.app
+- URL: <https://aica-sys.vercel.app>
 - 機能: Speed Insights、自動最適化、Edge Network CDN
 - 設定ファイル: `vercel.json`
 
@@ -409,7 +409,7 @@ TypeScript エコシステム特化型の AI 自動コンテンツ生成・販�
 **プラットフォーム**: Render
 
 - プラン: Free（無料、スリープあり）
-- URL: https://aica-sys-backend.onrender.com
+- URL: <https://aica-sys-backend.onrender.com>
 - 設定ファイル: `render.yaml`
 
 **代替オプション準備済み**
@@ -610,7 +610,7 @@ TypeScript エコシステム特化型の AI 自動コンテンツ生成・販�
 
 **1.1 Groq API 設定** ⏱️ 0.5 日
 
-- [ ] Groq Console で API キー取得（https://console.groq.com/keys）
+- [ ] Groq Console で API キー取得（<https://console.groq.com/keys>）
 - [ ] ローカル環境変数設定（`backend/.env.local`）
 - [ ] GitHub Secrets 設定（`GROQ_API_KEY`）
 - [ ] Render 環境変数設定
@@ -721,7 +721,7 @@ TypeScript エコシステム特化型の AI 自動コンテンツ生成・販�
 
 **実装ファイル構成**:
 
-```
+```plaintext
 backend/services/
 ├── social_media_service.py       # SNS投稿サービス
 └── twitter_client.py             # Twitter API クライアント
@@ -958,7 +958,7 @@ scripts/
 
 ### 実装完了率
 
-```
+```text
 全体: ■■■■■■■■■■■■■■■■■■■□□ 90%
 ```
 
@@ -1107,7 +1107,7 @@ pip freeze > requirements.txt
 
 **ハッシュタグ戦略**:
 
-```
+```text
 #TypeScript #JavaScript #プログラミング
 #エンジニア #開発者 #技術記事 #AI自動生成
 ```
