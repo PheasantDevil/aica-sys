@@ -9,7 +9,17 @@ from typing import Optional
 
 from database import Base
 from pydantic import BaseModel
-from sqlalchemy import JSON, Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
 
 
 class PlanType(str, Enum):
