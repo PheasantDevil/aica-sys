@@ -21,7 +21,7 @@ load_dotenv(backend_dir / ".env.local")
 
 from datetime import datetime, timezone
 
-from database import SessionLocal
+from database import DATABASE_URL, Base, SessionLocal, engine
 from models.automated_content import (
     AutomatedContentDB,
     ContentGenerationLogDB,
@@ -31,6 +31,8 @@ from models.automated_content import (
 )
 from services.content_automation_service import ContentAutomationService
 from services.source_aggregator_service import SourceAggregatorService
+
+IS_SQLITE = DATABASE_URL.startswith("sqlite")
 
 SAMPLE_SOURCE_DATA = [
     {
@@ -114,6 +116,9 @@ async def main_async(args: argparse.Namespace):
     """メイン処理（非同期）"""
     print("🚀 Starting daily article generation...")
 
+    if IS_SQLITE:
+        Base.metadata.create_all(bind=engine)
+
     db = SessionLocal()
     try:
         use_mock = args.mock_data
@@ -165,7 +170,7 @@ async def main_async(args: argparse.Namespace):
         skipped_count = 0
         
         for i, trend in enumerate(trends[:max_articles], 1):
-            print(f"  Generating article {i}/3: {trend['keyword']}")
+            print(f"  Generating article {i}/{max_articles}: {trend['keyword']}")
             
             start_time = datetime.now(timezone.utc)
             if use_mock:

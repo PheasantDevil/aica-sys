@@ -4,6 +4,7 @@
 
 import logging
 import os
+from pathlib import Path
 
 from sqlalchemy import create_engine, event
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,8 +13,10 @@ from sqlalchemy.pool import QueuePool, StaticPool
 
 logger = logging.getLogger(__name__)
 
-# データベースURL（環境変数から取得、デフォルトはSQLite）
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./aica_sys.db")
+# データベースURL（環境変数から取得、デフォルトはbackend配下のSQLite）
+BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_SQLITE_URL = f"sqlite:///{(BASE_DIR / 'aica_sys.db').as_posix()}"
+DATABASE_URL = os.getenv("DATABASE_URL", DEFAULT_SQLITE_URL)
 
 # データベースタイプの判定
 is_sqlite = "sqlite" in DATABASE_URL

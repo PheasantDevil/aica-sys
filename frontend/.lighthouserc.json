@@ -2,7 +2,7 @@
   "ci": {
     "collect": {
       "url": ["http://localhost:3000"],
-      "startServerCommand": "npm start",
+      "startServerCommand": "npm start --prefix frontend",
       "startServerReadyPattern": "ready - started server on",
       "startServerReadyTimeout": 30000
     },
