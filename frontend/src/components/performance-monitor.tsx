@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface PerformanceMetrics {
   fcp: number; // First Contentful Paint
@@ -15,42 +15,54 @@ export function PerformanceMonitor() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     // Performance Observer の設定
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
-      
+
       entries.forEach((entry) => {
-        if (entry.entryType === 'paint') {
-          if (entry.name === 'first-contentful-paint') {
-            setMetrics(prev => ({
-              ...prev,
-              fcp: entry.startTime,
-            } as PerformanceMetrics));
+        if (entry.entryType === "paint") {
+          if (entry.name === "first-contentful-paint") {
+            setMetrics(
+              (prev) =>
+                ({
+                  ...prev,
+                  fcp: entry.startTime,
+                }) as PerformanceMetrics,
+            );
           }
         }
-        
-        if (entry.entryType === 'largest-contentful-paint') {
-          setMetrics(prev => ({
-            ...prev,
-            lcp: entry.startTime,
-          } as PerformanceMetrics));
+
+        if (entry.entryType === "largest-contentful-paint") {
+          setMetrics(
+            (prev) =>
+              ({
+                ...prev,
+                lcp: entry.startTime,
+              }) as PerformanceMetrics,
+          );
         }
-        
-        if (entry.entryType === 'first-input') {
-          setMetrics(prev => ({
-            ...prev,
-            fid: (entry as any).processingStart - entry.startTime,
-          } as PerformanceMetrics));
+
+        if (entry.entryType === "first-input") {
+          setMetrics(
+            (prev) =>
+              ({
+                ...prev,
+                fid: (entry as any).processingStart - entry.startTime,
+              }) as PerformanceMetrics,
+          );
         }
-        
-        if (entry.entryType === 'layout-shift') {
+
+        if (entry.entryType === "layout-shift") {
           if (!(entry as any).hadRecentInput) {
-            setMetrics(prev => ({
-              ...prev,
-              cls: (prev?.cls || 0) + (entry as any).value,
-            } as PerformanceMetrics));
+            setMetrics(
+              (prev) =>
+                ({
+                  ...prev,
+                  cls: (prev?.cls || 0) + (entry as any).value,
+                }) as PerformanceMetrics,
+            );
           }
         }
       });
@@ -58,18 +70,23 @@ export function PerformanceMonitor() {
 
     // 監視対象の登録
     try {
-      observer.observe({ entryTypes: ['paint', 'largest-contentful-paint', 'first-input', 'layout-shift'] });
+      observer.observe({
+        entryTypes: ["paint", "largest-contentful-paint", "first-input", "layout-shift"],
+      });
     } catch (e) {
-      console.warn('Performance Observer not supported');
+      console.warn("Performance Observer not supported");
     }
 
     // TTFB の取得
-    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+    const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
     if (navigation) {
-      setMetrics(prev => ({
-        ...prev,
-        ttfb: navigation.responseStart - navigation.requestStart,
-      } as PerformanceMetrics));
+      setMetrics(
+        (prev) =>
+          ({
+            ...prev,
+            ttfb: navigation.responseStart - navigation.requestStart,
+          }) as PerformanceMetrics,
+      );
     }
 
     return () => {
@@ -78,22 +95,26 @@ export function PerformanceMonitor() {
   }, []);
 
   // 開発環境でのみ表示
-  if (process.env.NODE_ENV !== 'development') {
+  if (process.env.NODE_ENV !== "development") {
     return null;
   }
 
   const getScore = (value: number, thresholds: { good: number; poor: number }) => {
-    if (value <= thresholds.good) return 'good';
-    if (value <= thresholds.poor) return 'needs-improvement';
-    return 'poor';
+    if (value <= thresholds.good) return "good";
+    if (value <= thresholds.poor) return "needs-improvement";
+    return "poor";
   };
 
   const getScoreColor = (score: string) => {
     switch (score) {
-      case 'good': return 'text-green-600';
-      case 'needs-improvement': return 'text-yellow-600';
-      case 'poor': return 'text-red-600';
-      default: return 'text-gray-600';
+      case "good":
+        return "text-green-600";
+      case "needs-improvement":
+        return "text-yellow-600";
+      case "poor":
+        return "text-red-600";
+      default:
+        return "text-gray-600";
     }
   };
 
@@ -107,10 +128,10 @@ export function PerformanceMonitor() {
           onClick={() => setIsVisible(!isVisible)}
           className="text-gray-500 hover:text-gray-700"
         >
-          {isVisible ? '−' : '+'}
+          {isVisible ? "−" : "+"}
         </button>
       </div>
-      
+
       {isVisible && (
         <div className="space-y-2 text-xs">
           <div className="flex justify-between">

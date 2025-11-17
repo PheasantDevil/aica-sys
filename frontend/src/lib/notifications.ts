@@ -1,6 +1,6 @@
 export interface Notification {
   id: string;
-  type: 'info' | 'success' | 'warning' | 'error';
+  type: "info" | "success" | "warning" | "error";
   title: string;
   message: string;
   timestamp: Date;
@@ -14,7 +14,7 @@ export interface NotificationAction {
   id: string;
   label: string;
   action: () => void;
-  variant?: 'primary' | 'secondary' | 'destructive';
+  variant?: "primary" | "secondary" | "destructive";
 }
 
 export interface NotificationPreferences {
@@ -29,7 +29,7 @@ export interface NotificationPreferences {
     system: boolean;
     marketing: boolean;
   };
-  frequency: 'immediate' | 'daily' | 'weekly' | 'never';
+  frequency: "immediate" | "daily" | "weekly" | "never";
   quietHours: {
     enabled: boolean;
     start: string; // HH:MM format
@@ -56,11 +56,11 @@ export class NotificationManager {
 
   // Notify listeners
   private notify(): void {
-    this.listeners.forEach(listener => listener([...this.notifications]));
+    this.listeners.forEach((listener) => listener([...this.notifications]));
   }
 
   // Add a new notification
-  add(notification: Omit<Notification, 'id' | 'timestamp' | 'read'>): string {
+  add(notification: Omit<Notification, "id" | "timestamp" | "read">): string {
     const id = this.generateId();
     const newNotification: Notification = {
       ...notification,
@@ -85,14 +85,14 @@ export class NotificationManager {
 
   // Remove a notification
   remove(id: string): void {
-    this.notifications = this.notifications.filter(n => n.id !== id);
+    this.notifications = this.notifications.filter((n) => n.id !== id);
     this.saveNotifications();
     this.notify();
   }
 
   // Mark notification as read
   markAsRead(id: string): void {
-    const notification = this.notifications.find(n => n.id === id);
+    const notification = this.notifications.find((n) => n.id === id);
     if (notification) {
       notification.read = true;
       this.saveNotifications();
@@ -102,7 +102,7 @@ export class NotificationManager {
 
   // Mark all notifications as read
   markAllAsRead(): void {
-    this.notifications.forEach(n => n.read = true);
+    this.notifications.forEach((n) => (n.read = true));
     this.saveNotifications();
     this.notify();
   }
@@ -116,17 +116,17 @@ export class NotificationManager {
 
   // Get unread count
   getUnreadCount(): number {
-    return this.notifications.filter(n => !n.read).length;
+    return this.notifications.filter((n) => !n.read).length;
   }
 
   // Get notifications by type
-  getByType(type: Notification['type']): Notification[] {
-    return this.notifications.filter(n => n.type === type);
+  getByType(type: Notification["type"]): Notification[] {
+    return this.notifications.filter((n) => n.type === type);
   }
 
   // Get unread notifications
   getUnread(): Notification[] {
-    return this.notifications.filter(n => !n.read);
+    return this.notifications.filter((n) => !n.read);
   }
 
   // Get all notifications
@@ -146,21 +146,21 @@ export class NotificationManager {
   }
 
   // Check if notifications should be sent based on preferences
-  shouldSendNotification(category: keyof NotificationPreferences['categories']): boolean {
+  shouldSendNotification(category: keyof NotificationPreferences["categories"]): boolean {
     if (!this.preferences.inApp) return false;
     if (!this.preferences.categories[category]) return false;
-    
+
     // Check quiet hours
     if (this.preferences.quietHours.enabled) {
       const now = new Date();
-      const currentTime = now.toLocaleTimeString('en-US', { 
-        hour12: false, 
-        timeZone: this.preferences.quietHours.timezone 
+      const currentTime = now.toLocaleTimeString("en-US", {
+        hour12: false,
+        timeZone: this.preferences.quietHours.timezone,
       });
-      
+
       const start = this.preferences.quietHours.start;
       const end = this.preferences.quietHours.end;
-      
+
       if (this.isTimeInRange(currentTime, start, end)) {
         return false;
       }
@@ -184,7 +184,7 @@ export class NotificationManager {
   }
 
   private timeToMinutes(time: string): number {
-    const [hours, minutes] = time.split(':').map(Number);
+    const [hours, minutes] = time.split(":").map(Number);
     return hours * 60 + minutes;
   }
 
@@ -207,11 +207,11 @@ export class NotificationManager {
         system: true,
         marketing: false,
       },
-      frequency: 'immediate',
+      frequency: "immediate",
       quietHours: {
         enabled: false,
-        start: '22:00',
-        end: '08:00',
+        start: "22:00",
+        end: "08:00",
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       },
     };
@@ -220,7 +220,7 @@ export class NotificationManager {
   // Load notifications from localStorage
   private loadNotifications(): void {
     try {
-      const stored = localStorage.getItem('notifications');
+      const stored = localStorage.getItem("notifications");
       if (stored) {
         const parsed = JSON.parse(stored);
         this.notifications = parsed.map((n: any) => ({
@@ -229,37 +229,37 @@ export class NotificationManager {
         }));
       }
     } catch (error) {
-      console.error('Failed to load notifications:', error);
+      console.error("Failed to load notifications:", error);
     }
   }
 
   // Save notifications to localStorage
   private saveNotifications(): void {
     try {
-      localStorage.setItem('notifications', JSON.stringify(this.notifications));
+      localStorage.setItem("notifications", JSON.stringify(this.notifications));
     } catch (error) {
-      console.error('Failed to save notifications:', error);
+      console.error("Failed to save notifications:", error);
     }
   }
 
   // Load preferences from localStorage
   private loadPreferences(): void {
     try {
-      const stored = localStorage.getItem('notification_preferences');
+      const stored = localStorage.getItem("notification_preferences");
       if (stored) {
         this.preferences = { ...this.preferences, ...JSON.parse(stored) };
       }
     } catch (error) {
-      console.error('Failed to load notification preferences:', error);
+      console.error("Failed to load notification preferences:", error);
     }
   }
 
   // Save preferences to localStorage
   private savePreferences(): void {
     try {
-      localStorage.setItem('notification_preferences', JSON.stringify(this.preferences));
+      localStorage.setItem("notification_preferences", JSON.stringify(this.preferences));
     } catch (error) {
-      console.error('Failed to save notification preferences:', error);
+      console.error("Failed to save notification preferences:", error);
     }
   }
 }
@@ -271,79 +271,79 @@ export const notificationManager = new NotificationManager();
 export const NotificationTypes = {
   // Article notifications
   ARTICLE_PUBLISHED: (title: string) => ({
-    type: 'info' as const,
-    title: 'New Article Published',
+    type: "info" as const,
+    title: "New Article Published",
     message: `"${title}" has been published`,
     persistent: false,
-    metadata: { category: 'articles' },
+    metadata: { category: "articles" },
   }),
 
   ARTICLE_LIKED: (title: string, author: string) => ({
-    type: 'success' as const,
-    title: 'Article Liked',
+    type: "success" as const,
+    title: "Article Liked",
     message: `${author} liked your article "${title}"`,
     persistent: false,
-    metadata: { category: 'likes' },
+    metadata: { category: "likes" },
   }),
 
   // Comment notifications
   COMMENT_ADDED: (articleTitle: string, author: string) => ({
-    type: 'info' as const,
-    title: 'New Comment',
+    type: "info" as const,
+    title: "New Comment",
     message: `${author} commented on "${articleTitle}"`,
     persistent: true,
-    metadata: { category: 'comments' },
+    metadata: { category: "comments" },
   }),
 
   COMMENT_LIKED: (author: string) => ({
-    type: 'success' as const,
-    title: 'Comment Liked',
+    type: "success" as const,
+    title: "Comment Liked",
     message: `${author} liked your comment`,
     persistent: false,
-    metadata: { category: 'likes' },
+    metadata: { category: "likes" },
   }),
 
   // System notifications
   SYSTEM_UPDATE: (message: string) => ({
-    type: 'info' as const,
-    title: 'System Update',
+    type: "info" as const,
+    title: "System Update",
     message,
     persistent: true,
-    metadata: { category: 'system' },
+    metadata: { category: "system" },
   }),
 
   SYSTEM_ERROR: (message: string) => ({
-    type: 'error' as const,
-    title: 'System Error',
+    type: "error" as const,
+    title: "System Error",
     message,
     persistent: true,
-    metadata: { category: 'system' },
+    metadata: { category: "system" },
   }),
 
   // Marketing notifications
   NEWSLETTER_SENT: (title: string) => ({
-    type: 'info' as const,
-    title: 'Newsletter Sent',
+    type: "info" as const,
+    title: "Newsletter Sent",
     message: `"${title}" has been sent to subscribers`,
     persistent: false,
-    metadata: { category: 'marketing' },
+    metadata: { category: "marketing" },
   }),
 
   // Subscription notifications
   SUBSCRIPTION_EXPIRING: (daysLeft: number) => ({
-    type: 'warning' as const,
-    title: 'Subscription Expiring',
+    type: "warning" as const,
+    title: "Subscription Expiring",
     message: `Your subscription expires in ${daysLeft} days`,
     persistent: true,
-    metadata: { category: 'system' },
+    metadata: { category: "system" },
   }),
 
   SUBSCRIPTION_RENEWED: () => ({
-    type: 'success' as const,
-    title: 'Subscription Renewed',
-    message: 'Your subscription has been successfully renewed',
+    type: "success" as const,
+    title: "Subscription Renewed",
+    message: "Your subscription has been successfully renewed",
     persistent: false,
-    metadata: { category: 'system' },
+    metadata: { category: "system" },
   }),
 };
 
@@ -377,4 +377,4 @@ export function useNotifications() {
 }
 
 // Import React for the hook
-import React from 'react';
+import React from "react";

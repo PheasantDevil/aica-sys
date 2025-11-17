@@ -3,14 +3,14 @@
  * Phase 7-4: Frontend optimization
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * 遅延更新付きの状態管理フック
  */
 export function useDebouncedState<T>(
   initialValue: T,
-  delay: number = 300
+  delay: number = 300,
 ): [T, T, (value: T) => void] {
   const [value, setValue] = useState<T>(initialValue);
   const [debouncedValue, setDebouncedValue] = useState<T>(initialValue);
@@ -33,7 +33,7 @@ export function useDebouncedState<T>(
  */
 export function useThrottledCallback<T extends (...args: any[]) => any>(
   callback: T,
-  delay: number = 300
+  delay: number = 300,
 ): T {
   const lastRun = useRef(Date.now());
 
@@ -46,7 +46,7 @@ export function useThrottledCallback<T extends (...args: any[]) => any>(
         lastRun.current = now;
       }
     }) as T,
-    [callback, delay]
+    [callback, delay],
   );
 }
 
@@ -82,9 +82,7 @@ export function useIsMounted(): () => boolean {
 /**
  * 安全な非同期状態更新フック
  */
-export function useSafeState<T>(
-  initialValue: T
-): [T, (value: T | ((prevState: T) => T)) => void] {
+export function useSafeState<T>(initialValue: T): [T, (value: T | ((prevState: T) => T)) => void] {
   const [state, setState] = useState<T>(initialValue);
   const isMounted = useIsMounted();
 
@@ -94,7 +92,7 @@ export function useSafeState<T>(
         setState(value);
       }
     },
-    [isMounted]
+    [isMounted],
   );
 
   return [state, setSafeState];
@@ -103,22 +101,16 @@ export function useSafeState<T>(
 /**
  * メモ化された計算結果を返すフック
  */
-export function useComputedValue<T>(
-  compute: () => T,
-  deps: React.DependencyList
-): T {
+export function useComputedValue<T>(compute: () => T, deps: React.DependencyList): T {
   return useMemo(compute, deps);
 }
 
 /**
  * ローカルストレージと同期する状態フック
  */
-export function useLocalStorage<T>(
-  key: string,
-  initialValue: T
-): [T, (value: T) => void] {
+export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return initialValue;
     }
 
@@ -126,7 +118,7 @@ export function useLocalStorage<T>(
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
-      console.error('Error reading from localStorage:', error);
+      console.error("Error reading from localStorage:", error);
       return initialValue;
     }
   });
@@ -136,14 +128,14 @@ export function useLocalStorage<T>(
       try {
         setStoredValue(value);
 
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           window.localStorage.setItem(key, JSON.stringify(value));
         }
       } catch (error) {
-        console.error('Error writing to localStorage:', error);
+        console.error("Error writing to localStorage:", error);
       }
     },
-    [key]
+    [key],
   );
 
   return [storedValue, setValue];
@@ -154,7 +146,7 @@ export function useLocalStorage<T>(
  */
 export function useIntersectionObserver(
   elementRef: React.RefObject<Element>,
-  options: IntersectionObserverInit = {}
+  options: IntersectionObserverInit = {},
 ): boolean {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -169,7 +161,7 @@ export function useIntersectionObserver(
       {
         threshold: 0.1,
         ...options,
-      }
+      },
     );
 
     observer.observe(element);
@@ -196,9 +188,9 @@ export function useMediaQuery(query: string): boolean {
     }
 
     const listener = () => setMatches(media.matches);
-    media.addEventListener('change', listener);
+    media.addEventListener("change", listener);
 
-    return () => media.removeEventListener('change', listener);
+    return () => media.removeEventListener("change", listener);
   }, [matches, query]);
 
   return matches;
@@ -209,8 +201,8 @@ export function useMediaQuery(query: string): boolean {
  */
 export function useWindowSize() {
   const [windowSize, setWindowSize] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 0,
-    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+    width: typeof window !== "undefined" ? window.innerWidth : 0,
+    height: typeof window !== "undefined" ? window.innerHeight : 0,
   });
 
   useEffect(() => {
@@ -221,10 +213,10 @@ export function useWindowSize() {
       });
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize();
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return windowSize;
@@ -247,10 +239,10 @@ export function useScrollPosition() {
       });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return scrollPosition;
@@ -260,20 +252,18 @@ export function useScrollPosition() {
  * オンライン/オフライン状態を追跡するフック
  */
 export function useOnlineStatus(): boolean {
-  const [isOnline, setIsOnline] = useState(
-    typeof window !== 'undefined' ? navigator.onLine : true
-  );
+  const [isOnline, setIsOnline] = useState(typeof window !== "undefined" ? navigator.onLine : true);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 

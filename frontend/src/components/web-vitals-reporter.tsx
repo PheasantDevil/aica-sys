@@ -1,16 +1,12 @@
-'use client';
+"use client";
 
 /**
  * Web Vitals Reporter Component
  * Phase 7-4: Frontend optimization
  */
 
-import {
-  getPerformanceReport,
-  observePerformance,
-  reportWebVitals,
-} from '@/lib/web-vitals';
-import { useEffect } from 'react';
+import { getPerformanceReport, observePerformance, reportWebVitals } from "@/lib/web-vitals";
+import { useEffect } from "react";
 
 export function WebVitalsReporter() {
   useEffect(() => {
@@ -21,12 +17,12 @@ export function WebVitalsReporter() {
     observePerformance();
 
     // ページロード完了後にレポートを生成
-    if (typeof window !== 'undefined') {
-      window.addEventListener('load', () => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("load", () => {
         setTimeout(() => {
           const report = getPerformanceReport();
-          if (report && process.env.NODE_ENV === 'development') {
-            console.log('📊 Performance Report:', report);
+          if (report && process.env.NODE_ENV === "development") {
+            console.log("📊 Performance Report:", report);
           }
         }, 0);
       });

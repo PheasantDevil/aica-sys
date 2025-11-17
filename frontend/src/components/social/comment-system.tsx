@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { cn } from '@/lib/utils';
-import { AccessibilityUtils } from '@/lib/accessibility';
-import { useTranslations } from 'next-intl';
-import { AccessibleButton } from '@/components/ui/accessible-button';
-import { AccessibleTextarea } from '@/components/ui/accessible-form';
+import React, { useState, useRef, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { AccessibilityUtils } from "@/lib/accessibility";
+import { useTranslations } from "next-intl";
+import { AccessibleButton } from "@/components/ui/accessible-button";
+import { AccessibleTextarea } from "@/components/ui/accessible-form";
 
 interface Comment {
   id: string;
@@ -30,12 +30,17 @@ interface Comment {
 interface CommentSystemProps {
   articleId: string;
   comments: Comment[];
-  onCommentAdd?: (comment: Omit<Comment, 'id' | 'createdAt' | 'likes' | 'dislikes' | 'replies'>) => void;
+  onCommentAdd?: (
+    comment: Omit<Comment, "id" | "createdAt" | "likes" | "dislikes" | "replies">,
+  ) => void;
   onCommentUpdate?: (commentId: string, content: string) => void;
   onCommentDelete?: (commentId: string) => void;
   onCommentLike?: (commentId: string) => void;
   onCommentDislike?: (commentId: string) => void;
-  onReplyAdd?: (commentId: string, reply: Omit<Comment, 'id' | 'createdAt' | 'likes' | 'dislikes' | 'replies'>) => void;
+  onReplyAdd?: (
+    commentId: string,
+    reply: Omit<Comment, "id" | "createdAt" | "likes" | "dislikes" | "replies">,
+  ) => void;
   className?: string;
   maxDepth?: number;
   showReplies?: boolean;
@@ -62,15 +67,15 @@ export function CommentSystem({
   allowDeleting = true,
   requireAuth = true,
 }: CommentSystemProps) {
-  const t = useTranslations('common');
-  const [newComment, setNewComment] = useState('');
+  const t = useTranslations("common");
+  const [newComment, setNewComment] = useState("");
   const [editingComment, setEditingComment] = useState<string | null>(null);
-  const [editingContent, setEditingContent] = useState('');
+  const [editingContent, setEditingContent] = useState("");
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
-  const [replyContent, setReplyContent] = useState('');
+  const [replyContent, setReplyContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'popular'>('newest');
-  
+  const [sortBy, setSortBy] = useState<"newest" | "oldest" | "popular">("newest");
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const replyTextareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -78,12 +83,12 @@ export function CommentSystem({
   const sortedComments = React.useMemo(() => {
     const sorted = [...comments].sort((a, b) => {
       switch (sortBy) {
-        case 'newest':
+        case "newest":
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-        case 'oldest':
+        case "oldest":
           return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-        case 'popular':
-          return (b.likes - b.dislikes) - (a.likes - a.dislikes);
+        case "popular":
+          return b.likes - b.dislikes - (a.likes - a.dislikes);
         default:
           return 0;
       }
@@ -102,16 +107,16 @@ export function CommentSystem({
       await onCommentAdd?.({
         content: newComment.trim(),
         author: {
-          id: 'current-user', // This would come from auth context
-          name: 'Current User',
-          avatar: '/avatars/default.jpg',
+          id: "current-user", // This would come from auth context
+          name: "Current User",
+          avatar: "/avatars/default.jpg",
         },
       });
-      setNewComment('');
-      AccessibilityUtils.announceToScreenReader('Comment added successfully', 'polite');
+      setNewComment("");
+      AccessibilityUtils.announceToScreenReader("Comment added successfully", "polite");
     } catch (error) {
-      console.error('Failed to add comment:', error);
-      AccessibilityUtils.announceToScreenReader('Failed to add comment', 'assertive');
+      console.error("Failed to add comment:", error);
+      AccessibilityUtils.announceToScreenReader("Failed to add comment", "assertive");
     } finally {
       setIsSubmitting(false);
     }
@@ -125,7 +130,7 @@ export function CommentSystem({
 
   const handleCancelEdit = () => {
     setEditingComment(null);
-    setEditingContent('');
+    setEditingContent("");
   };
 
   const handleSaveEdit = async () => {
@@ -134,36 +139,36 @@ export function CommentSystem({
     try {
       await onCommentUpdate?.(editingComment, editingContent.trim());
       setEditingComment(null);
-      setEditingContent('');
-      AccessibilityUtils.announceToScreenReader('Comment updated successfully', 'polite');
+      setEditingContent("");
+      AccessibilityUtils.announceToScreenReader("Comment updated successfully", "polite");
     } catch (error) {
-      console.error('Failed to update comment:', error);
-      AccessibilityUtils.announceToScreenReader('Failed to update comment', 'assertive');
+      console.error("Failed to update comment:", error);
+      AccessibilityUtils.announceToScreenReader("Failed to update comment", "assertive");
     }
   };
 
   // Handle comment deletion
   const handleDeleteComment = async (commentId: string) => {
-    if (!confirm(t('confirmDelete'))) return;
+    if (!confirm(t("confirmDelete"))) return;
 
     try {
       await onCommentDelete?.(commentId);
-      AccessibilityUtils.announceToScreenReader('Comment deleted successfully', 'polite');
+      AccessibilityUtils.announceToScreenReader("Comment deleted successfully", "polite");
     } catch (error) {
-      console.error('Failed to delete comment:', error);
-      AccessibilityUtils.announceToScreenReader('Failed to delete comment', 'assertive');
+      console.error("Failed to delete comment:", error);
+      AccessibilityUtils.announceToScreenReader("Failed to delete comment", "assertive");
     }
   };
 
   // Handle reply
   const handleStartReply = (commentId: string) => {
     setReplyingTo(commentId);
-    setReplyContent('');
+    setReplyContent("");
   };
 
   const handleCancelReply = () => {
     setReplyingTo(null);
-    setReplyContent('');
+    setReplyContent("");
   };
 
   const handleSubmitReply = async (e: React.FormEvent) => {
@@ -174,17 +179,17 @@ export function CommentSystem({
       await onReplyAdd?.(replyingTo, {
         content: replyContent.trim(),
         author: {
-          id: 'current-user',
-          name: 'Current User',
-          avatar: '/avatars/default.jpg',
+          id: "current-user",
+          name: "Current User",
+          avatar: "/avatars/default.jpg",
         },
       });
       setReplyingTo(null);
-      setReplyContent('');
-      AccessibilityUtils.announceToScreenReader('Reply added successfully', 'polite');
+      setReplyContent("");
+      AccessibilityUtils.announceToScreenReader("Reply added successfully", "polite");
     } catch (error) {
-      console.error('Failed to add reply:', error);
-      AccessibilityUtils.announceToScreenReader('Failed to add reply', 'assertive');
+      console.error("Failed to add reply:", error);
+      AccessibilityUtils.announceToScreenReader("Failed to add reply", "assertive");
     }
   };
 
@@ -193,7 +198,7 @@ export function CommentSystem({
     try {
       await onCommentLike?.(commentId);
     } catch (error) {
-      console.error('Failed to like comment:', error);
+      console.error("Failed to like comment:", error);
     }
   };
 
@@ -201,7 +206,7 @@ export function CommentSystem({
     try {
       await onCommentDislike?.(commentId);
     } catch (error) {
-      console.error('Failed to dislike comment:', error);
+      console.error("Failed to dislike comment:", error);
     }
   };
 
@@ -219,26 +224,26 @@ export function CommentSystem({
   }, [replyingTo]);
 
   return (
-    <div className={cn('space-y-6', className)}>
+    <div className={cn("space-y-6", className)}>
       {/* Comment Form */}
       <form onSubmit={handleSubmitComment} className="space-y-4">
         <AccessibleTextarea
-          label={t('addComment')}
+          label={t("addComment")}
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
-          placeholder={t('writeComment')}
+          placeholder={t("writeComment")}
           required
           className="min-h-[100px]"
         />
-        
+
         <div className="flex justify-end">
           <AccessibleButton
             type="submit"
             disabled={!newComment.trim() || isSubmitting}
             loading={isSubmitting}
-            loadingText={t('posting')}
+            loadingText={t("posting")}
           >
-            {t('postComment')}
+            {t("postComment")}
           </AccessibleButton>
         </div>
       </form>
@@ -246,17 +251,17 @@ export function CommentSystem({
       {/* Comments Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">
-          {t('comments')} ({comments.length})
+          {t("comments")} ({comments.length})
         </h3>
-        
+
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as any)}
           className="px-3 py-1 text-sm border border-input rounded-md bg-background"
         >
-          <option value="newest">{t('newest')}</option>
-          <option value="oldest">{t('oldest')}</option>
-          <option value="popular">{t('mostPopular')}</option>
+          <option value="newest">{t("newest")}</option>
+          <option value="oldest">{t("oldest")}</option>
+          <option value="popular">{t("mostPopular")}</option>
         </select>
       </div>
 
@@ -295,8 +300,8 @@ export function CommentSystem({
 
       {comments.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
-          <p>{t('noComments')}</p>
-          <p className="text-sm">{t('beFirstToComment')}</p>
+          <p>{t("noComments")}</p>
+          <p className="text-sm">{t("beFirstToComment")}</p>
         </div>
       )}
     </div>
@@ -357,18 +362,18 @@ function CommentItem({
   textareaRef,
   replyTextareaRef,
 }: CommentItemProps) {
-  const t = useTranslations('common');
+  const t = useTranslations("common");
 
   if (comment.isDeleted) {
     return (
-      <div className={cn('p-4 border border-border rounded-lg bg-muted/50', depth > 0 && 'ml-8')}>
-        <p className="text-muted-foreground italic">{t('commentDeleted')}</p>
+      <div className={cn("p-4 border border-border rounded-lg bg-muted/50", depth > 0 && "ml-8")}>
+        <p className="text-muted-foreground italic">{t("commentDeleted")}</p>
       </div>
     );
   }
 
   return (
-    <div className={cn('space-y-4', depth > 0 && 'ml-8')}>
+    <div className={cn("space-y-4", depth > 0 && "ml-8")}>
       <div className="p-4 border border-border rounded-lg bg-background">
         {/* Comment Header */}
         <div className="flex items-start justify-between mb-3">
@@ -399,9 +404,7 @@ function CommentItem({
                 <time dateTime={comment.createdAt}>
                   {new Date(comment.createdAt).toLocaleDateString()}
                 </time>
-                {comment.isEdited && (
-                  <span className="text-xs">({t('edited')})</span>
-                )}
+                {comment.isEdited && <span className="text-xs">({t("edited")})</span>}
               </div>
             </div>
           </div>
@@ -412,18 +415,18 @@ function CommentItem({
               <button
                 onClick={() => onEdit(comment)}
                 className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                aria-label={t('editComment')}
+                aria-label={t("editComment")}
               >
-                {t('edit')}
+                {t("edit")}
               </button>
             )}
             {allowDeleting && (
               <button
                 onClick={() => onDelete(comment.id)}
                 className="text-xs text-muted-foreground hover:text-destructive transition-colors"
-                aria-label={t('deleteComment')}
+                aria-label={t("deleteComment")}
               >
-                {t('delete')}
+                {t("delete")}
               </button>
             )}
           </div>
@@ -440,19 +443,11 @@ function CommentItem({
               rows={3}
             />
             <div className="flex justify-end gap-2">
-              <AccessibleButton
-                variant="outline"
-                size="sm"
-                onClick={onCancelEdit}
-              >
-                {t('cancel')}
+              <AccessibleButton variant="outline" size="sm" onClick={onCancelEdit}>
+                {t("cancel")}
               </AccessibleButton>
-              <AccessibleButton
-                size="sm"
-                onClick={onSaveEdit}
-                disabled={!editingContent.trim()}
-              >
-                {t('save')}
+              <AccessibleButton size="sm" onClick={onSaveEdit} disabled={!editingContent.trim()}>
+                {t("save")}
               </AccessibleButton>
             </div>
           </div>
@@ -469,31 +464,37 @@ function CommentItem({
               <button
                 onClick={() => onLike(comment.id)}
                 className={cn(
-                  'flex items-center gap-1 text-sm transition-colors',
-                  comment.isLiked
-                    ? 'text-primary'
-                    : 'text-muted-foreground hover:text-foreground'
+                  "flex items-center gap-1 text-sm transition-colors",
+                  comment.isLiked ? "text-primary" : "text-muted-foreground hover:text-foreground",
                 )}
-                aria-label={t('likeComment')}
+                aria-label={t("likeComment")}
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 {comment.likes}
               </button>
-              
+
               <button
                 onClick={() => onDislike(comment.id)}
                 className={cn(
-                  'flex items-center gap-1 text-sm transition-colors',
+                  "flex items-center gap-1 text-sm transition-colors",
                   comment.isDisliked
-                    ? 'text-destructive'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? "text-destructive"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
-                aria-label={t('dislikeComment')}
+                aria-label={t("dislikeComment")}
               >
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M3.172 14.828a4 4 0 015.656 0L10 13.657l1.172 1.171a4 4 0 105.656-5.656L10 2.343l-6.828 6.829a4 4 0 000 5.656z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M3.172 14.828a4 4 0 015.656 0L10 13.657l1.172 1.171a4 4 0 105.656-5.656L10 2.343l-6.828 6.829a4 4 0 000 5.656z"
+                    clipRule="evenodd"
+                  />
                 </svg>
                 {comment.dislikes}
               </button>
@@ -504,7 +505,7 @@ function CommentItem({
                 onClick={() => onReply(comment.id)}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                {t('reply')}
+                {t("reply")}
               </button>
             )}
           </div>
@@ -517,24 +518,16 @@ function CommentItem({
               ref={replyTextareaRef}
               value={replyContent}
               onChange={(e) => onReplyContentChange(e.target.value)}
-              placeholder={t('writeReply')}
+              placeholder={t("writeReply")}
               className="w-full p-3 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
               rows={3}
             />
             <div className="flex justify-end gap-2">
-              <AccessibleButton
-                variant="outline"
-                size="sm"
-                onClick={onCancelReply}
-              >
-                {t('cancel')}
+              <AccessibleButton variant="outline" size="sm" onClick={onCancelReply}>
+                {t("cancel")}
               </AccessibleButton>
-              <AccessibleButton
-                size="sm"
-                type="submit"
-                disabled={!replyContent.trim()}
-              >
-                {t('postReply')}
+              <AccessibleButton size="sm" type="submit" disabled={!replyContent.trim()}>
+                {t("postReply")}
               </AccessibleButton>
             </div>
           </form>

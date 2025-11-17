@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -14,7 +14,7 @@ export function Footer() {
               TypeScriptエコシステム特化型のAI自動コンテンツ生成・販売システム
             </p>
           </div>
-          
+
           <div>
             <h3 className="font-semibold">プロダクト</h3>
             <ul className="mt-4 space-y-2 text-sm">
@@ -40,7 +40,7 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="font-semibold">サポート</h3>
             <ul className="mt-4 space-y-2 text-sm">
@@ -61,7 +61,7 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="font-semibold">会社</h3>
             <ul className="mt-4 space-y-2 text-sm">
@@ -83,11 +83,11 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        
+
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
           <p>&copy; 2024 AICA-SyS. All rights reserved.</p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

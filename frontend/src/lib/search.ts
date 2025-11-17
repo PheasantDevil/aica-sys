@@ -1,4 +1,4 @@
-import Fuse, { FuseResult, FuseResultMatch, FuseSortFunction } from 'fuse.js';
+import Fuse, { FuseResult, FuseResultMatch, FuseSortFunction } from "fuse.js";
 
 export interface SearchableItem {
   id: string;
@@ -8,7 +8,7 @@ export interface SearchableItem {
   category: string;
   author: string;
   publishedAt: string;
-  type: 'article' | 'newsletter' | 'trend';
+  type: "article" | "newsletter" | "trend";
   slug: string;
   excerpt?: string;
   metadata?: Record<string, any>;
@@ -49,15 +49,15 @@ export class SearchEngine {
 
   constructor(items: SearchableItem[] = [], options: Partial<SearchOptions> = {}) {
     this.items = items;
-    
+
     this.options = {
       keys: [
-        { name: 'title', weight: 0.3 },
-        { name: 'content', weight: 0.2 },
-        { name: 'excerpt', weight: 0.2 },
-        { name: 'tags', weight: 0.15 },
-        { name: 'category', weight: 0.1 },
-        { name: 'author', weight: 0.05 },
+        { name: "title", weight: 0.3 },
+        { name: "content", weight: 0.2 },
+        { name: "excerpt", weight: 0.2 },
+        { name: "tags", weight: 0.15 },
+        { name: "category", weight: 0.1 },
+        { name: "author", weight: 0.05 },
       ],
       threshold: 0.3,
       includeScore: true,
@@ -78,13 +78,13 @@ export class SearchEngine {
 
   // Remove items from search index
   removeItems(ids: string[]): void {
-    this.items = this.items.filter(item => !ids.includes(item.id));
+    this.items = this.items.filter((item) => !ids.includes(item.id));
     this.fuse = new Fuse(this.items, this.options);
   }
 
   // Update an item in the search index
   updateItem(item: SearchableItem): void {
-    const index = this.items.findIndex(i => i.id === item.id);
+    const index = this.items.findIndex((i) => i.id === item.id);
     if (index !== -1) {
       this.items[index] = item;
       this.fuse = new Fuse(this.items, this.options);
@@ -92,48 +92,40 @@ export class SearchEngine {
   }
 
   // Search with query and filters
-  search(
-    query: string,
-    filters: SearchFilters = {},
-    limit: number = 20
-  ): SearchResult[] {
+  search(query: string, filters: SearchFilters = {}, limit: number = 20): SearchResult[] {
     if (!query.trim()) {
       return this.getFilteredItems(filters, limit);
     }
 
     const results = this.fuse.search(query);
-    let filteredResults = results.map(result => result);
+    let filteredResults = results.map((result) => result);
 
     // Apply filters
     if (filters.category) {
       filteredResults = filteredResults.filter(
-        result => result.item.category === filters.category
+        (result) => result.item.category === filters.category,
       );
     }
 
     if (filters.type) {
-      filteredResults = filteredResults.filter(
-        result => result.item.type === filters.type
-      );
+      filteredResults = filteredResults.filter((result) => result.item.type === filters.type);
     }
 
     if (filters.author) {
-      filteredResults = filteredResults.filter(
-        result => result.item.author === filters.author
-      );
+      filteredResults = filteredResults.filter((result) => result.item.author === filters.author);
     }
 
     if (filters.dateRange) {
       const { start, end } = filters.dateRange;
-      filteredResults = filteredResults.filter(result => {
+      filteredResults = filteredResults.filter((result) => {
         const itemDate = new Date(result.item.publishedAt);
         return itemDate >= start && itemDate <= end;
       });
     }
 
     if (filters.tags && filters.tags.length > 0) {
-      filteredResults = filteredResults.filter(result =>
-        filters.tags!.some(tag => result.item.tags.includes(tag))
+      filteredResults = filteredResults.filter((result) =>
+        filters.tags!.some((tag) => result.item.tags.includes(tag)),
       );
     }
 
@@ -145,28 +137,28 @@ export class SearchEngine {
     let filteredItems = this.items;
 
     if (filters.category) {
-      filteredItems = filteredItems.filter(item => item.category === filters.category);
+      filteredItems = filteredItems.filter((item) => item.category === filters.category);
     }
 
     if (filters.type) {
-      filteredItems = filteredItems.filter(item => item.type === filters.type);
+      filteredItems = filteredItems.filter((item) => item.type === filters.type);
     }
 
     if (filters.author) {
-      filteredItems = filteredItems.filter(item => item.author === filters.author);
+      filteredItems = filteredItems.filter((item) => item.author === filters.author);
     }
 
     if (filters.dateRange) {
       const { start, end } = filters.dateRange;
-      filteredItems = filteredItems.filter(item => {
+      filteredItems = filteredItems.filter((item) => {
         const itemDate = new Date(item.publishedAt);
         return itemDate >= start && itemDate <= end;
       });
     }
 
     if (filters.tags && filters.tags.length > 0) {
-      filteredItems = filteredItems.filter(item =>
-        filters.tags!.some(tag => item.tags.includes(tag))
+      filteredItems = filteredItems.filter((item) =>
+        filters.tags!.some((tag) => item.tags.includes(tag)),
       );
     }
 
@@ -183,9 +175,9 @@ export class SearchEngine {
     const results = this.fuse.search(query);
     const suggestions = new Set<string>();
 
-    results.forEach(result => {
+    results.forEach((result) => {
       if (result.matches) {
-        result.matches.forEach(match => {
+        result.matches.forEach((match) => {
           if (match.value) {
             suggestions.add(match.value);
           }
@@ -201,15 +193,15 @@ export class SearchEngine {
     // This would typically come from analytics data
     // For now, return common terms from the content
     const termCounts = new Map<string, number>();
-    
-    this.items.forEach(item => {
+
+    this.items.forEach((item) => {
       const words = [
         ...item.title.toLowerCase().split(/\s+/),
         ...item.content.toLowerCase().split(/\s+/),
-        ...item.tags.map(tag => tag.toLowerCase()),
+        ...item.tags.map((tag) => tag.toLowerCase()),
       ];
 
-      words.forEach(word => {
+      words.forEach((word) => {
         if (word.length > 2) {
           termCounts.set(word, (termCounts.get(word) || 0) + 1);
         }
@@ -233,7 +225,7 @@ export class SearchEngine {
     const types: Record<string, number> = {};
     const authors: Record<string, number> = {};
 
-    this.items.forEach(item => {
+    this.items.forEach((item) => {
       categories[item.category] = (categories[item.category] || 0) + 1;
       types[item.type] = (types[item.type] || 0) + 1;
       authors[item.author] = (authors[item.author] || 0) + 1;
@@ -250,16 +242,16 @@ export class SearchEngine {
 
 // Search history management
 export class SearchHistory {
-  private static readonly STORAGE_KEY = 'search_history';
+  private static readonly STORAGE_KEY = "search_history";
   private static readonly MAX_HISTORY = 20;
 
   static addSearch(query: string): void {
     if (!query.trim()) return;
 
     const history = this.getHistory();
-    const filteredHistory = history.filter(item => item !== query);
+    const filteredHistory = history.filter((item) => item !== query);
     const newHistory = [query, ...filteredHistory].slice(0, this.MAX_HISTORY);
-    
+
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(newHistory));
   }
 
@@ -278,7 +270,7 @@ export class SearchHistory {
 
   static removeSearch(query: string): void {
     const history = this.getHistory();
-    const filteredHistory = history.filter(item => item !== query);
+    const filteredHistory = history.filter((item) => item !== query);
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(filteredHistory));
   }
 }
@@ -288,20 +280,20 @@ export class SearchFilters {
   static createFromURL(searchParams: URLSearchParams): SearchFilters {
     const filters: SearchFilters = {};
 
-    const category = searchParams.get('category');
+    const category = searchParams.get("category");
     if (category) filters.category = category;
 
-    const type = searchParams.get('type');
+    const type = searchParams.get("type");
     if (type) filters.type = type;
 
-    const author = searchParams.get('author');
+    const author = searchParams.get("author");
     if (author) filters.author = author;
 
-    const tags = searchParams.get('tags');
-    if (tags) filters.tags = tags.split(',');
+    const tags = searchParams.get("tags");
+    if (tags) filters.tags = tags.split(",");
 
-    const startDate = searchParams.get('startDate');
-    const endDate = searchParams.get('endDate');
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
     if (startDate && endDate) {
       filters.dateRange = {
         start: new Date(startDate),
@@ -315,13 +307,13 @@ export class SearchFilters {
   static toURL(filters: SearchFilters): URLSearchParams {
     const params = new URLSearchParams();
 
-    if (filters.category) params.set('category', filters.category);
-    if (filters.type) params.set('type', filters.type);
-    if (filters.author) params.set('author', filters.author);
-    if (filters.tags) params.set('tags', filters.tags.join(','));
+    if (filters.category) params.set("category", filters.category);
+    if (filters.type) params.set("type", filters.type);
+    if (filters.author) params.set("author", filters.author);
+    if (filters.tags) params.set("tags", filters.tags.join(","));
     if (filters.dateRange) {
-      params.set('startDate', filters.dateRange.start.toISOString());
-      params.set('endDate', filters.dateRange.end.toISOString());
+      params.set("startDate", filters.dateRange.start.toISOString());
+      params.set("endDate", filters.dateRange.end.toISOString());
     }
 
     return params;
@@ -346,38 +338,44 @@ export class SearchRanking {
       preferredCategories?: string[];
       preferredAuthors?: string[];
       recentSearches?: string[];
-    } = {}
+    } = {},
   ): SearchResult[] {
-    return results.map(result => {
-      let boost = 0;
+    return results
+      .map((result) => {
+        let boost = 0;
 
-      // Category preference boost
-      if (userPreferences.preferredCategories?.includes(result.item.category)) {
-        boost += 0.1;
-      }
+        // Category preference boost
+        if (userPreferences.preferredCategories?.includes(result.item.category)) {
+          boost += 0.1;
+        }
 
-      // Author preference boost
-      if (userPreferences.preferredAuthors?.includes(result.item.author)) {
-        boost += 0.05;
-      }
+        // Author preference boost
+        if (userPreferences.preferredAuthors?.includes(result.item.author)) {
+          boost += 0.05;
+        }
 
-      // Recent search boost
-      if (userPreferences.recentSearches?.some(search => 
-        result.item.title.toLowerCase().includes(search.toLowerCase()) ||
-        result.item.content.toLowerCase().includes(search.toLowerCase())
-      )) {
-        boost += 0.05;
-      }
+        // Recent search boost
+        if (
+          userPreferences.recentSearches?.some(
+            (search) =>
+              result.item.title.toLowerCase().includes(search.toLowerCase()) ||
+              result.item.content.toLowerCase().includes(search.toLowerCase()),
+          )
+        ) {
+          boost += 0.05;
+        }
 
-      // Recency boost (newer content gets slight boost)
-      const daysSincePublished = (Date.now() - new Date(result.item.publishedAt).getTime()) / (1000 * 60 * 60 * 24);
-      if (daysSincePublished < 7) boost += 0.02;
-      else if (daysSincePublished < 30) boost += 0.01;
+        // Recency boost (newer content gets slight boost)
+        const daysSincePublished =
+          (Date.now() - new Date(result.item.publishedAt).getTime()) / (1000 * 60 * 60 * 24);
+        if (daysSincePublished < 7) boost += 0.02;
+        else if (daysSincePublished < 30) boost += 0.01;
 
-      return {
-        ...result,
-        score: (result.score || 0) + boost,
-      };
-    }).sort((a, b) => (b.score || 0) - (a.score || 0));
+        return {
+          ...result,
+          score: (result.score || 0) + boost,
+        };
+      })
+      .sort((a, b) => (b.score || 0) - (a.score || 0));
   }
 }

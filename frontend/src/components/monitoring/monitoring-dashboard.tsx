@@ -1,11 +1,19 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertTriangle, CheckCircle, Clock, Server, Users, Activity, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Server,
+  Users,
+  Activity,
+  AlertCircle,
+} from "lucide-react";
 
 interface HealthCheck {
   status: string;
@@ -60,9 +68,9 @@ export function MonitoringDashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/monitoring/dashboard', {
+      const response = await fetch("/api/monitoring/dashboard", {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
@@ -75,7 +83,7 @@ export function MonitoringDashboard() {
       setLastUpdated(new Date());
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch dashboard data');
+      setError(err instanceof Error ? err.message : "Failed to fetch dashboard data");
     } finally {
       setLoading(false);
     }
@@ -83,7 +91,7 @@ export function MonitoringDashboard() {
 
   useEffect(() => {
     fetchDashboardData();
-    
+
     // 30秒ごとにデータを更新
     const interval = setInterval(fetchDashboardData, 30000);
     return () => clearInterval(interval);
@@ -91,24 +99,24 @@ export function MonitoringDashboard() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'healthy':
-        return 'bg-green-500';
-      case 'warning':
-        return 'bg-yellow-500';
-      case 'critical':
-        return 'bg-red-500';
+      case "healthy":
+        return "bg-green-500";
+      case "warning":
+        return "bg-yellow-500";
+      case "critical":
+        return "bg-red-500";
       default:
-        return 'bg-gray-500';
+        return "bg-gray-500";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'healthy':
+      case "healthy":
         return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case 'warning':
+      case "warning":
         return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
-      case 'critical':
+      case "critical":
         return <AlertCircle className="h-5 w-5 text-red-500" />;
       default:
         return <Clock className="h-5 w-5 text-gray-500" />;
@@ -117,14 +125,14 @@ export function MonitoringDashboard() {
 
   const getAlertLevelColor = (level: string) => {
     switch (level) {
-      case 'critical':
-        return 'bg-red-100 text-red-800 border-red-200';
-      case 'warning':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'info':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+      case "critical":
+        return "bg-red-100 text-red-800 border-red-200";
+      case "warning":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "info":
+        return "bg-blue-100 text-blue-800 border-blue-200";
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
@@ -133,14 +141,14 @@ export function MonitoringDashboard() {
   };
 
   const formatValue = (value: number | string, name: string) => {
-    if (typeof value === 'number') {
-      if (name.includes('percent') || name.includes('rate')) {
+    if (typeof value === "number") {
+      if (name.includes("percent") || name.includes("rate")) {
         return `${value.toFixed(1)}%`;
       }
-      if (name.includes('time') || name.includes('duration')) {
+      if (name.includes("time") || name.includes("duration")) {
         return `${value.toFixed(3)}s`;
       }
-      if (name.includes('count') || name.includes('bytes')) {
+      if (name.includes("count") || name.includes("bytes")) {
         return value.toLocaleString();
       }
       return value.toFixed(2);
@@ -188,14 +196,10 @@ export function MonitoringDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Monitoring Dashboard</h1>
-          <p className="text-gray-600">
-            System health and performance monitoring
-          </p>
+          <p className="text-gray-600">System health and performance monitoring</p>
         </div>
         <div className="text-right">
-          <p className="text-sm text-gray-500">
-            Last updated: {lastUpdated?.toLocaleString()}
-          </p>
+          <p className="text-sm text-gray-500">Last updated: {lastUpdated?.toLocaleString()}</p>
           <Button onClick={fetchDashboardData} variant="outline" size="sm">
             Refresh
           </Button>
@@ -217,9 +221,7 @@ export function MonitoringDashboard() {
               <h3 className="text-lg font-semibold capitalize">
                 {dashboardData.health_status.status}
               </h3>
-              <p className="text-sm text-gray-600">
-                Overall system health status
-              </p>
+              <p className="text-sm text-gray-600">Overall system health status</p>
             </div>
           </div>
         </CardContent>
@@ -229,19 +231,15 @@ export function MonitoringDashboard() {
       <Card>
         <CardHeader>
           <CardTitle>Health Checks</CardTitle>
-          <CardDescription>
-            Status of individual system components
-          </CardDescription>
+          <CardDescription>Status of individual system components</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Object.entries(dashboardData.health_status.checks).map(([service, check]) => (
               <div key={service} className="border rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
-                  <h4 className="font-medium capitalize">{service.replace('_', ' ')}</h4>
-                  <Badge className={getStatusColor(check.status)}>
-                    {check.status}
-                  </Badge>
+                  <h4 className="font-medium capitalize">{service.replace("_", " ")}</h4>
+                  <Badge className={getStatusColor(check.status)}>{check.status}</Badge>
                 </div>
                 <p className="text-sm text-gray-600 mb-2">{check.message}</p>
                 <div className="text-xs text-gray-500">
@@ -251,7 +249,7 @@ export function MonitoringDashboard() {
                   <div className="mt-2 text-xs">
                     {Object.entries(check.details).map(([key, value]) => (
                       <div key={key}>
-                        {key}: {typeof value === 'number' ? value.toFixed(1) : value}
+                        {key}: {typeof value === "number" ? value.toFixed(1) : value}
                       </div>
                     ))}
                   </div>
@@ -274,23 +272,19 @@ export function MonitoringDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>System Metrics</CardTitle>
-              <CardDescription>
-                CPU, Memory, Disk, and Network usage
-              </CardDescription>
+              <CardDescription>CPU, Memory, Disk, and Network usage</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {dashboardData.metrics.system.slice(0, 8).map((metric) => (
                   <div key={metric.name} className="border rounded-lg p-4">
                     <h4 className="font-medium text-sm mb-2">
-                      {metric.name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      {metric.name.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
                     </h4>
                     <div className="text-2xl font-bold">
                       {formatValue(metric.value, metric.name)}
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {formatTimestamp(metric.timestamp)}
-                    </div>
+                    <div className="text-xs text-gray-500">{formatTimestamp(metric.timestamp)}</div>
                   </div>
                 ))}
               </div>
@@ -301,23 +295,19 @@ export function MonitoringDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Application Metrics</CardTitle>
-              <CardDescription>
-                API performance and user activity
-              </CardDescription>
+              <CardDescription>API performance and user activity</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {dashboardData.metrics.application.slice(0, 8).map((metric) => (
                   <div key={metric.name} className="border rounded-lg p-4">
                     <h4 className="font-medium text-sm mb-2">
-                      {metric.name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      {metric.name.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
                     </h4>
                     <div className="text-2xl font-bold">
                       {formatValue(metric.value, metric.name)}
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {formatTimestamp(metric.timestamp)}
-                    </div>
+                    <div className="text-xs text-gray-500">{formatTimestamp(metric.timestamp)}</div>
                   </div>
                 ))}
               </div>
@@ -328,23 +318,19 @@ export function MonitoringDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Business Metrics</CardTitle>
-              <CardDescription>
-                User growth and engagement
-              </CardDescription>
+              <CardDescription>User growth and engagement</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {dashboardData.metrics.business.slice(0, 8).map((metric) => (
                   <div key={metric.name} className="border rounded-lg p-4">
                     <h4 className="font-medium text-sm mb-2">
-                      {metric.name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                      {metric.name.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
                     </h4>
                     <div className="text-2xl font-bold">
                       {formatValue(metric.value, metric.name)}
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {formatTimestamp(metric.timestamp)}
-                    </div>
+                    <div className="text-xs text-gray-500">{formatTimestamp(metric.timestamp)}</div>
                   </div>
                 ))}
               </div>
@@ -359,9 +345,7 @@ export function MonitoringDashboard() {
                 <AlertTriangle className="h-5 w-5" />
                 Active Alerts ({dashboardData.alerts.total_active})
               </CardTitle>
-              <CardDescription>
-                Current system alerts requiring attention
-              </CardDescription>
+              <CardDescription>Current system alerts requiring attention</CardDescription>
             </CardHeader>
             <CardContent>
               {dashboardData.alerts.active.length === 0 ? (
@@ -386,9 +370,7 @@ export function MonitoringDashboard() {
                         </span>
                       </div>
                       <p className="text-sm text-gray-600 mb-2">{alert.message}</p>
-                      <div className="text-xs text-gray-500">
-                        Service: {alert.service}
-                      </div>
+                      <div className="text-xs text-gray-500">Service: {alert.service}</div>
                     </div>
                   ))}
                 </div>

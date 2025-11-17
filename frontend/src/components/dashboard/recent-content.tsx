@@ -1,59 +1,59 @@
-'use client';
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { FileText, Mail, TrendingUp, ExternalLink } from 'lucide-react';
-import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { FileText, Mail, TrendingUp, ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 export function RecentContent() {
   // モックデータ - 実際の実装ではAPIから取得
   const recentContent = [
     {
-      id: '1',
-      type: 'article',
-      title: 'TypeScript 5.0の新機能とベストプラクティス',
-      description: '最新のTypeScript 5.0で追加された新機能について詳しく解説します。',
-      publishedAt: '2024-01-15',
+      id: "1",
+      type: "article",
+      title: "TypeScript 5.0の新機能とベストプラクティス",
+      description: "最新のTypeScript 5.0で追加された新機能について詳しく解説します。",
+      publishedAt: "2024-01-15",
       views: 1234,
       likes: 89,
       icon: FileText,
-      href: '/articles/typescript-5-0-features',
+      href: "/articles/typescript-5-0-features",
     },
     {
-      id: '2',
-      type: 'newsletter',
-      title: '週刊TypeScriptニュース #42',
-      description: '今週のTypeScriptエコシステムの重要なアップデートをお届けします。',
-      publishedAt: '2024-01-14',
+      id: "2",
+      type: "newsletter",
+      title: "週刊TypeScriptニュース #42",
+      description: "今週のTypeScriptエコシステムの重要なアップデートをお届けします。",
+      publishedAt: "2024-01-14",
       subscribers: 2341,
       openRate: 78,
       icon: Mail,
-      href: '/newsletters/weekly-42',
+      href: "/newsletters/weekly-42",
     },
     {
-      id: '3',
-      type: 'trend',
-      title: '2024年TypeScriptトレンド分析',
-      description: '2024年のTypeScriptエコシステムの主要トレンドを分析しました。',
-      publishedAt: '2024-01-13',
+      id: "3",
+      type: "trend",
+      title: "2024年TypeScriptトレンド分析",
+      description: "2024年のTypeScriptエコシステムの主要トレンドを分析しました。",
+      publishedAt: "2024-01-13",
       engagement: 92,
       shares: 156,
       icon: TrendingUp,
-      href: '/trends/2024-analysis',
+      href: "/trends/2024-analysis",
     },
   ];
 
   const getTypeInfo = (type: string) => {
     switch (type) {
-      case 'article':
-        return { label: '記事', color: 'bg-blue-500' };
-      case 'newsletter':
-        return { label: 'ニュースレター', color: 'bg-green-500' };
-      case 'trend':
-        return { label: 'トレンド', color: 'bg-purple-500' };
+      case "article":
+        return { label: "記事", color: "bg-blue-500" };
+      case "newsletter":
+        return { label: "ニュースレター", color: "bg-green-500" };
+      case "trend":
+        return { label: "トレンド", color: "bg-purple-500" };
       default:
-        return { label: 'コンテンツ', color: 'bg-gray-500' };
+        return { label: "コンテンツ", color: "bg-gray-500" };
     }
   };
 
@@ -61,16 +61,14 @@ export function RecentContent() {
     <Card>
       <CardHeader>
         <CardTitle>最近のコンテンツ</CardTitle>
-        <CardDescription>
-          最近作成・公開されたコンテンツ
-        </CardDescription>
+        <CardDescription>最近作成・公開されたコンテンツ</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           {recentContent.map((content) => {
             const typeInfo = getTypeInfo(content.type);
             const Icon = content.icon;
-            
+
             return (
               <div
                 key={content.id}
@@ -86,7 +84,7 @@ export function RecentContent() {
                         {typeInfo.label}
                       </Badge>
                       <span className="text-xs text-muted-foreground">
-                        {new Date(content.publishedAt).toLocaleDateString('ja-JP')}
+                        {new Date(content.publishedAt).toLocaleDateString("ja-JP")}
                       </span>
                     </div>
                     <h3 className="font-medium text-sm mb-1">{content.title}</h3>
@@ -110,12 +108,10 @@ export function RecentContent() {
             );
           })}
         </div>
-        
+
         <div className="mt-4 pt-4 border-t">
           <Button variant="outline" className="w-full" asChild>
-            <Link href="/content">
-              すべてのコンテンツを見る
-            </Link>
+            <Link href="/content">すべてのコンテンツを見る</Link>
           </Button>
         </div>
       </CardContent>

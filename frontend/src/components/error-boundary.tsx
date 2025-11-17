@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import React, { Component, ErrorInfo, ReactNode } from "react";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
 interface Props {
   children: ReactNode;
@@ -42,7 +42,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     // エラーログの送信
     this.logErrorToService(error, errorInfo);
-    
+
     // カスタムエラーハンドラー
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
@@ -51,11 +51,11 @@ export class ErrorBoundary extends Component<Props, State> {
 
   private logErrorToService = (error: Error, errorInfo: ErrorInfo) => {
     // 本番環境では外部サービス（Sentry等）に送信
-    if (process.env.NODE_ENV === 'production') {
-      console.error('Error caught by boundary:', error, errorInfo);
+    if (process.env.NODE_ENV === "production") {
+      console.error("Error caught by boundary:", error, errorInfo);
       // TODO: 実際のエラー監視サービスに送信
     } else {
-      console.error('Error caught by boundary:', error, errorInfo);
+      console.error("Error caught by boundary:", error, errorInfo);
     }
   };
 
@@ -89,12 +89,10 @@ export class ErrorBoundary extends Component<Props, State> {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {process.env.NODE_ENV === "development" && this.state.error && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                   <h4 className="font-medium text-red-800 mb-2">エラー詳細:</h4>
-                  <p className="text-sm text-red-700 font-mono">
-                    {this.state.error.message}
-                  </p>
+                  <p className="text-sm text-red-700 font-mono">{this.state.error.message}</p>
                   {this.state.errorInfo && (
                     <details className="mt-2">
                       <summary className="text-sm text-red-600 cursor-pointer">
@@ -107,7 +105,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   )}
                 </div>
               )}
-              
+
               <div className="flex gap-2">
                 <Button onClick={this.handleRetry} variant="outline" className="flex-1">
                   再試行
@@ -116,11 +114,11 @@ export class ErrorBoundary extends Component<Props, State> {
                   ページを再読み込み
                 </Button>
               </div>
-              
+
               <div className="text-center">
                 <Button
                   variant="link"
-                  onClick={() => window.location.href = '/'}
+                  onClick={() => (window.location.href = "/")}
                   className="text-sm"
                 >
                   ホームに戻る

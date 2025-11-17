@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 interface Subscription {
   id: string;
@@ -28,13 +28,13 @@ export function useSubscription() {
     isLoading: isSubscriptionLoading,
     error: subscriptionError,
   } = useQuery({
-    queryKey: ['subscription', session?.user?.email],
+    queryKey: ["subscription", session?.user?.email],
     queryFn: async (): Promise<Subscription | null> => {
       if (!session?.user?.email) return null;
 
-      const response = await fetch('/api/subscription');
+      const response = await fetch("/api/subscription");
       if (!response.ok) {
-        throw new Error('Failed to fetch subscription');
+        throw new Error("Failed to fetch subscription");
       }
       return response.json();
     },
@@ -43,22 +43,22 @@ export function useSubscription() {
 
   const createCheckoutMutation = useMutation({
     mutationFn: async (priceId: string) => {
-      const response = await fetch('/api/stripe/checkout', {
-        method: 'POST',
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ priceId }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create checkout session');
+        throw new Error("Failed to create checkout session");
       }
 
       const { url } = await response.json();
       return url;
     },
-    onSuccess: url => {
+    onSuccess: (url) => {
       window.location.href = url;
     },
   });
@@ -74,10 +74,7 @@ export function useSubscription() {
 
   const handleContact = () => {
     // エンタープライズプランのお問い合わせ処理
-    window.open(
-      'mailto:sales@aica-sys.com?subject=エンタープライズプランについて',
-      '_blank'
-    );
+    window.open("mailto:sales@aica-sys.com?subject=エンタープライズプランについて", "_blank");
   };
 
   return {

@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import { useState } from 'react';
+import Image from "next/image";
+import { useState } from "react";
 
 interface OptimizedImageProps {
   src: string;
@@ -9,7 +9,7 @@ interface OptimizedImageProps {
   className?: string;
   priority?: boolean;
   quality?: number;
-  placeholder?: 'blur' | 'empty';
+  placeholder?: "blur" | "empty";
   blurDataURL?: string;
 }
 
@@ -18,10 +18,10 @@ export function OptimizedImage({
   alt,
   width = 800,
   height = 600,
-  className = '',
+  className = "",
   priority = false,
   quality = 75,
-  placeholder = 'empty',
+  placeholder = "empty",
   blurDataURL,
 }: OptimizedImageProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -68,9 +68,7 @@ export function OptimizedImage({
         blurDataURL={blurDataURL}
         onLoad={handleLoad}
         onError={handleError}
-        className={`transition-opacity duration-300 ${
-          isLoading ? 'opacity-0' : 'opacity-100'
-        }`}
+        className={`transition-opacity duration-300 ${isLoading ? "opacity-0" : "opacity-100"}`}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
       />
     </div>

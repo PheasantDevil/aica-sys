@@ -3,21 +3,18 @@ import {
   getPasswordResetEmailTemplate,
   getSubscriptionConfirmationEmailTemplate,
   getWelcomeEmailTemplate,
-} from '@/lib/email-templates';
-import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
+} from "@/lib/email-templates";
+import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key');
+const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_key");
 
 export async function POST(request: NextRequest) {
   try {
     const { type, data } = await request.json();
 
     if (!type || !data) {
-      return NextResponse.json(
-        { error: 'Type and data are required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Type and data are required" }, { status: 400 });
     }
 
     let emailTemplate;
@@ -25,39 +22,33 @@ export async function POST(request: NextRequest) {
     let recipientName;
 
     switch (type) {
-      case 'welcome':
+      case "welcome":
         recipientEmail = data.email;
         recipientName = data.name;
         emailTemplate = getWelcomeEmailTemplate(recipientName);
         break;
 
-      case 'newsletter':
+      case "newsletter":
         recipientEmail = data.email;
         emailTemplate = getNewsletterEmailTemplate(data.newsletter);
         break;
 
-      case 'subscription_confirmation':
+      case "subscription_confirmation":
         recipientEmail = data.email;
-        emailTemplate = getSubscriptionConfirmationEmailTemplate(
-          data.plan,
-          data.amount
-        );
+        emailTemplate = getSubscriptionConfirmationEmailTemplate(data.plan, data.amount);
         break;
 
-      case 'password_reset':
+      case "password_reset":
         recipientEmail = data.email;
         emailTemplate = getPasswordResetEmailTemplate(data.resetLink);
         break;
 
       default:
-        return NextResponse.json(
-          { error: 'Invalid email type' },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: "Invalid email type" }, { status: 400 });
     }
 
     const result = await resend.emails.send({
-      from: 'AICA-SyS <noreply@aica-sys.com>',
+      from: "AICA-SyS <noreply@aica-sys.com>",
       to: [recipientEmail],
       subject: emailTemplate.subject,
       html: emailTemplate.html,
@@ -69,10 +60,7 @@ export async function POST(request: NextRequest) {
       messageId: result.data?.id,
     });
   } catch (error) {
-    console.error('Email sending error:', error);
-    return NextResponse.json(
-      { error: 'Failed to send email' },
-      { status: 500 }
-    );
+    console.error("Email sending error:", error);
+    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
   }
 }

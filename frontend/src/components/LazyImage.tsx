@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { generateBlurDataURL, optimizeImageUrl } from '@/lib/asset-optimizer';
-import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { generateBlurDataURL, optimizeImageUrl } from "@/lib/asset-optimizer";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 interface LazyImageProps {
   src: string;
@@ -11,11 +11,11 @@ interface LazyImageProps {
   height: number;
   className?: string;
   priority?: boolean;
-  placeholder?: 'blur' | 'empty';
+  placeholder?: "blur" | "empty";
   blurDataURL?: string;
   quality?: number;
   sizes?: string;
-  format?: 'webp' | 'avif' | 'jpeg' | 'png';
+  format?: "webp" | "avif" | "jpeg" | "png";
   enableCDN?: boolean;
 }
 
@@ -24,13 +24,13 @@ const LazyImage = ({
   alt,
   width,
   height,
-  className = '',
+  className = "",
   priority = false,
-  placeholder = 'blur',
+  placeholder = "blur",
   blurDataURL,
   quality = 75,
   sizes,
-  format = 'webp',
+  format = "webp",
   enableCDN = true,
 }: LazyImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -49,8 +49,8 @@ const LazyImage = ({
       },
       {
         threshold: 0.1,
-        rootMargin: '50px',
-      }
+        rootMargin: "50px",
+      },
     );
 
     if (imgRef.current) {
@@ -65,19 +65,13 @@ const LazyImage = ({
   };
 
   // 最適化された画像URLを生成
-  const optimizedSrc = enableCDN
-    ? optimizeImageUrl(src, width, height, { quality, format })
-    : src;
+  const optimizedSrc = enableCDN ? optimizeImageUrl(src, width, height, { quality, format }) : src;
 
   // プレースホルダーの生成
   const defaultBlurDataURL = blurDataURL || generateBlurDataURL(width, height);
 
   return (
-    <div
-      ref={imgRef}
-      className={`relative overflow-hidden ${className}`}
-      style={{ width, height }}
-    >
+    <div ref={imgRef} className={`relative overflow-hidden ${className}`} style={{ width, height }}>
       {isInView && (
         <Image
           src={optimizedSrc}
@@ -90,15 +84,13 @@ const LazyImage = ({
           quality={quality}
           sizes={sizes}
           onLoad={handleLoad}
-          className={`transition-opacity duration-300 ${
-            isLoaded ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`transition-opacity duration-300 ${isLoaded ? "opacity-100" : "opacity-0"}`}
         />
       )}
 
       {!isLoaded && isInView && (
-        <div className='absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center'>
-          <div className='w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin' />
+        <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
         </div>
       )}
     </div>

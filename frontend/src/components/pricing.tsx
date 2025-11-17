@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button'
-import { Check } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 
 export function Pricing() {
   const plans = [
@@ -49,28 +49,24 @@ export function Pricing() {
       cta: "お問い合わせ",
       popular: false,
     },
-  ]
+  ];
 
   return (
     <section className="py-20">
       <div className="container">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-            料金プラン
-          </h2>
+          <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">料金プラン</h2>
           <p className="text-lg text-muted-foreground">
             あなたのニーズに合わせたプランを選択してください
           </p>
         </div>
-        
+
         <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-3">
           {plans.map((plan) => (
             <div
               key={plan.name}
               className={`relative rounded-lg border p-8 ${
-                plan.popular
-                  ? 'border-primary bg-primary/5'
-                  : 'border-border'
+                plan.popular ? "border-primary bg-primary/5" : "border-border"
               }`}
             >
               {plan.popular && (
@@ -80,20 +76,16 @@ export function Pricing() {
                   </span>
                 </div>
               )}
-              
+
               <div className="text-center">
                 <h3 className="text-xl font-semibold">{plan.name}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {plan.description}
-                </p>
+                <p className="mt-2 text-sm text-muted-foreground">{plan.description}</p>
                 <div className="mt-4">
                   <span className="text-4xl font-bold">{plan.price}</span>
-                  {plan.period && (
-                    <span className="text-muted-foreground">/{plan.period}</span>
-                  )}
+                  {plan.period && <span className="text-muted-foreground">/{plan.period}</span>}
                 </div>
               </div>
-              
+
               <ul className="mt-8 space-y-4">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start">
@@ -102,12 +94,9 @@ export function Pricing() {
                   </li>
                 ))}
               </ul>
-              
+
               <div className="mt-8">
-                <Button
-                  className="w-full"
-                  variant={plan.popular ? "default" : "outline"}
-                >
+                <Button className="w-full" variant={plan.popular ? "default" : "outline"}>
                   {plan.cta}
                 </Button>
               </div>
@@ -116,5 +105,5 @@ export function Pricing() {
         </div>
       </div>
     </section>
-  )
+  );
 }

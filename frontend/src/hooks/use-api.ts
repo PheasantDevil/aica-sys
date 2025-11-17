@@ -1,6 +1,6 @@
-import { apiClient, ApiError, ApiResponse } from '@/lib/api-client';
-import { useCallback, useState } from 'react';
-import { useErrorHandler } from './use-error-handler';
+import { apiClient, ApiError, ApiResponse } from "@/lib/api-client";
+import { useCallback, useState } from "react";
+import { useErrorHandler } from "./use-error-handler";
 
 interface UseApiState<T> {
   data: T | null;
@@ -24,7 +24,7 @@ export function useApi<T = any>(options: UseApiOptions = {}) {
   const { handleError } = useErrorHandler({
     onError: options.onError
       ? (error: Error) => {
-          if ('status' in error && 'timestamp' in error) {
+          if ("status" in error && "timestamp" in error) {
             options.onError!(error as ApiError);
           }
         }
@@ -32,10 +32,8 @@ export function useApi<T = any>(options: UseApiOptions = {}) {
   });
 
   const execute = useCallback(
-    async <R = T>(
-      apiCall: () => Promise<ApiResponse<R>>
-    ): Promise<R | null> => {
-      setState(prev => ({ ...prev, loading: true, error: null }));
+    async <R = T>(apiCall: () => Promise<ApiResponse<R>>): Promise<R | null> => {
+      setState((prev) => ({ ...prev, loading: true, error: null }));
 
       try {
         const response = await apiCall();
@@ -54,7 +52,7 @@ export function useApi<T = any>(options: UseApiOptions = {}) {
           return response.data;
         } else if (response.error) {
           const apiError = new ApiError(response.error, 400, response);
-          setState(prev => ({
+          setState((prev) => ({
             ...prev,
             loading: false,
             error: apiError,
@@ -72,11 +70,11 @@ export function useApi<T = any>(options: UseApiOptions = {}) {
         return null;
       } catch (error) {
         const apiError = new ApiError(
-          error instanceof Error ? error.message : 'Unknown error',
-          500
+          error instanceof Error ? error.message : "Unknown error",
+          500,
         );
 
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           loading: false,
           error: apiError,
@@ -91,7 +89,7 @@ export function useApi<T = any>(options: UseApiOptions = {}) {
         return null;
       }
     },
-    [options, handleError]
+    [options, handleError],
   );
 
   const reset = useCallback(() => {
@@ -117,42 +115,42 @@ export function useApiCall<T = any>(options: UseApiOptions = {}) {
     (endpoint: string) => {
       return api.execute(() => apiClient.request<T>(endpoint));
     },
-    [api]
+    [api],
   );
 
   const post = useCallback(
     (endpoint: string, data?: any) => {
       return api.execute(() =>
         apiClient.request<T>(endpoint, {
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify(data),
-        })
+        }),
       );
     },
-    [api]
+    [api],
   );
 
   const put = useCallback(
     (endpoint: string, data?: any) => {
       return api.execute(() =>
         apiClient.request<T>(endpoint, {
-          method: 'PUT',
+          method: "PUT",
           body: JSON.stringify(data),
-        })
+        }),
       );
     },
-    [api]
+    [api],
   );
 
   const del = useCallback(
     (endpoint: string) => {
       return api.execute(() =>
         apiClient.request<T>(endpoint, {
-          method: 'DELETE',
-        })
+          method: "DELETE",
+        }),
       );
     },
-    [api]
+    [api],
   );
 
   return {

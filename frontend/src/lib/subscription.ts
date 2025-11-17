@@ -1,42 +1,42 @@
-import { prisma } from './prisma';
-import { stripe } from './stripe-server';
-import Stripe from 'stripe';
+import { prisma } from "./prisma";
+import { stripe } from "./stripe-server";
+import Stripe from "stripe";
 
 export const PLANS = {
   FREE: {
-    name: 'フリー',
+    name: "フリー",
     price: 0,
     features: [
-      '週1回のトレンドレポート',
-      '基本記事の閲覧',
-      'コミュニティアクセス',
-      'メールサポート',
+      "週1回のトレンドレポート",
+      "基本記事の閲覧",
+      "コミュニティアクセス",
+      "メールサポート",
     ],
     stripePriceId: null,
   },
   PREMIUM: {
-    name: 'プレミアム',
+    name: "プレミアム",
     price: 1980,
     features: [
-      '日次トレンドレポート',
-      '全記事の閲覧',
-      'プレミアムコンテンツ',
-      '優先サポート',
-      'API アクセス',
-      'カスタム分析',
+      "日次トレンドレポート",
+      "全記事の閲覧",
+      "プレミアムコンテンツ",
+      "優先サポート",
+      "API アクセス",
+      "カスタム分析",
     ],
     stripePriceId: process.env.STRIPE_PREMIUM_PRICE_ID!,
   },
   ENTERPRISE: {
-    name: 'エンタープライズ',
+    name: "エンタープライズ",
     price: 0, // カスタム価格
     features: [
-      '無制限アクセス',
-      'チーム管理機能',
-      'カスタムブランディング',
-      '専任サポート',
-      'オンプレミス対応',
-      'SLA保証',
+      "無制限アクセス",
+      "チーム管理機能",
+      "カスタムブランディング",
+      "専任サポート",
+      "オンプレミス対応",
+      "SLA保証",
     ],
     stripePriceId: null,
   },
@@ -63,8 +63,8 @@ export async function createStripeCustomer(userId: string, email: string) {
     create: {
       userId,
       stripeCustomerId: customer.id,
-      status: 'inactive',
-      plan: 'free',
+      status: "inactive",
+      plan: "free",
     },
   });
 
@@ -75,24 +75,24 @@ export async function createCheckoutSession(
   userId: string,
   priceId: string,
   successUrl: string,
-  cancelUrl: string
+  cancelUrl: string,
 ) {
   const subscription = await getUserSubscription(userId);
 
   if (!subscription?.stripeCustomerId) {
-    throw new Error('Stripe customer not found');
+    throw new Error("Stripe customer not found");
   }
 
   const session = await stripe.checkout.sessions.create({
     customer: subscription.stripeCustomerId,
-    payment_method_types: ['card'],
+    payment_method_types: ["card"],
     line_items: [
       {
         price: priceId,
         quantity: 1,
       },
     ],
-    mode: 'subscription',
+    mode: "subscription",
     success_url: successUrl,
     cancel_url: cancelUrl,
     metadata: { userId },
@@ -103,7 +103,7 @@ export async function createCheckoutSession(
 
 export async function handleWebhook(event: Stripe.Event) {
   switch (event.type) {
-    case 'checkout.session.completed': {
+    case "checkout.session.completed": {
       const session = event.data.object as Stripe.Checkout.Session;
       const userId = session.metadata?.userId;
 
@@ -112,15 +112,15 @@ export async function handleWebhook(event: Stripe.Event) {
           where: { userId },
           data: {
             stripeSubscriptionId: session.subscription as string,
-            status: 'active',
-            plan: 'premium',
+            status: "active",
+            plan: "premium",
           },
         });
       }
       break;
     }
 
-    case 'customer.subscription.updated': {
+    case "customer.subscription.updated": {
       const subscription = event.data.object as Stripe.Subscription;
       const customerId = subscription.customer as string;
 
@@ -133,16 +133,14 @@ export async function handleWebhook(event: Stripe.Event) {
           where: { id: dbSubscription.id },
           data: {
             status: subscription.status,
-            stripeCurrentPeriodEnd: new Date(
-              subscription.current_period_end * 1000
-            ),
+            stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
           },
         });
       }
       break;
     }
 
-    case 'customer.subscription.deleted': {
+    case "customer.subscription.deleted": {
       const subscription = event.data.object as Stripe.Subscription;
       const customerId = subscription.customer as string;
 
@@ -154,8 +152,8 @@ export async function handleWebhook(event: Stripe.Event) {
         await prisma.subscription.update({
           where: { id: dbSubscription.id },
           data: {
-            status: 'canceled',
-            plan: 'free',
+            status: "canceled",
+            plan: "free",
           },
         });
       }

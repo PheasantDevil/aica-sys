@@ -1,5 +1,5 @@
-import { Footer } from '@/components/footer';
-import { Header } from '@/components/header';
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
 
 export default function AboutPage() {
   return (
@@ -7,12 +7,13 @@ export default function AboutPage() {
       <Header />
       <main className="container mx-auto px-4 py-16 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">会社概要</h1>
-        
+
         <div className="space-y-8">
           <section>
             <h2 className="text-2xl font-semibold mb-4">AICA-SySについて</h2>
             <p className="text-muted-foreground leading-relaxed">
-              AICA-SyS（AI Content Automation System）は、AI駆動型のコンテンツ自動生成・配信プラットフォームです。
+              AICA-SyS（AI Content Automation
+              System）は、AI駆動型のコンテンツ自動生成・配信プラットフォームです。
               最新の技術トレンドを自動で分析し、高品質な記事、ニュースレター、トレンド分析レポートを提供します。
             </p>
           </section>
@@ -40,4 +41,3 @@ export default function AboutPage() {
     </div>
   );
 }
-

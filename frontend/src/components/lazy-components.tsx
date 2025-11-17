@@ -1,19 +1,21 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense } from "react";
 
 // ダッシュボードコンポーネントの遅延読み込み
-export const LazyDashboard = lazy(() => import('./dashboard-nav').then(module => ({ default: module.DashboardNav })));
+export const LazyDashboard = lazy(() =>
+  import("./dashboard-nav").then((module) => ({ default: module.DashboardNav })),
+);
 
 // 重いコンポーネントの遅延読み込み
-export const LazyPricing = lazy(() => import('../app/pricing/page'));
-export const LazyArticles = lazy(() => import('../app/articles/page'));
-export const LazyNewsletters = lazy(() => import('../app/newsletters/page'));
+export const LazyPricing = lazy(() => import("../app/pricing/page"));
+export const LazyArticles = lazy(() => import("../app/articles/page"));
+export const LazyNewsletters = lazy(() => import("../app/newsletters/page"));
 
 // ローディングコンポーネント
-export function LoadingSpinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+export function LoadingSpinner({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   const sizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-8 h-8',
-    lg: 'w-12 h-12',
+    sm: "w-4 h-4",
+    md: "w-8 h-8",
+    lg: "w-12 h-12",
   };
 
   return (
@@ -33,9 +35,5 @@ export function LazyWrapper({
   children: React.ReactNode;
   fallback?: React.ReactNode;
 }) {
-  return (
-    <Suspense fallback={fallback || <LoadingSpinner />}>
-      {children}
-    </Suspense>
-  );
+  return <Suspense fallback={fallback || <LoadingSpinner />}>{children}</Suspense>;
 }

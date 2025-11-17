@@ -11,8 +11,8 @@ export interface ErrorLog {
   url: string;
   userAgent: string;
   userId?: string;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  category: 'javascript' | 'network' | 'api' | 'validation' | 'unknown';
+  severity: "low" | "medium" | "high" | "critical";
+  category: "javascript" | "network" | "api" | "validation" | "unknown";
   metadata?: Record<string, any>;
 }
 
@@ -29,7 +29,7 @@ class ErrorHandler {
     enabled: true,
     threshold: 5,
     timeWindow: 300000, // 5 minutes
-    endpoints: ['/api/alerts/error'],
+    endpoints: ["/api/alerts/error"],
   };
 
   constructor() {
@@ -37,15 +37,15 @@ class ErrorHandler {
   }
 
   private initializeErrorHandling() {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     // Global error handler
-    window.addEventListener('error', event => {
+    window.addEventListener("error", (event) => {
       this.handleError({
         message: event.message,
         stack: event.error?.stack,
-        severity: 'high',
-        category: 'javascript',
+        severity: "high",
+        category: "javascript",
         metadata: {
           filename: event.filename,
           lineno: event.lineno,
@@ -55,12 +55,12 @@ class ErrorHandler {
     });
 
     // Unhandled promise rejection handler
-    window.addEventListener('unhandledrejection', event => {
+    window.addEventListener("unhandledrejection", (event) => {
       this.handleError({
-        message: event.reason?.message || 'Unhandled Promise Rejection',
+        message: event.reason?.message || "Unhandled Promise Rejection",
         stack: event.reason?.stack,
-        severity: 'high',
-        category: 'javascript',
+        severity: "high",
+        category: "javascript",
         metadata: {
           reason: event.reason,
         },
@@ -82,8 +82,8 @@ class ErrorHandler {
         if (!response.ok) {
           self.handleError({
             message: `Network request failed: ${response.status} ${response.statusText}`,
-            severity: response.status >= 500 ? 'high' : 'medium',
-            category: 'network',
+            severity: response.status >= 500 ? "high" : "medium",
+            category: "network",
             metadata: {
               url: args[0],
               status: response.status,
@@ -96,12 +96,12 @@ class ErrorHandler {
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
         const errorStack = error instanceof Error ? error.stack : undefined;
-        
+
         self.handleError({
           message: `Network request error: ${errorMessage}`,
           stack: errorStack,
-          severity: 'high',
-          category: 'network',
+          severity: "high",
+          category: "network",
           metadata: {
             url: args[0],
             error: errorMessage,
@@ -115,22 +115,22 @@ class ErrorHandler {
   public handleError(errorData: Partial<ErrorLog>): void {
     const error: ErrorLog = {
       id: this.generateId(),
-      message: errorData.message || 'Unknown error',
+      message: errorData.message || "Unknown error",
       stack: errorData.stack,
       timestamp: Date.now(),
       url: window.location.href,
       userAgent: navigator.userAgent,
       userId: this.getCurrentUserId(),
-      severity: errorData.severity || 'medium',
-      category: errorData.category || 'unknown',
+      severity: errorData.severity || "medium",
+      category: errorData.category || "unknown",
       metadata: errorData.metadata,
     };
 
     this.errors.push(error);
 
     // Log to console in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('🚨 Error logged:', error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("🚨 Error logged:", error);
     }
 
     // Send to analytics
@@ -149,8 +149,8 @@ class ErrorHandler {
 
   private getCurrentUserId(): string | undefined {
     // Get user ID from authentication context
-    if (typeof window !== 'undefined') {
-      const userData = localStorage.getItem('user');
+    if (typeof window !== "undefined") {
+      const userData = localStorage.getItem("user");
       if (userData) {
         try {
           const user = JSON.parse(userData);
@@ -166,10 +166,10 @@ class ErrorHandler {
   private async sendToAnalytics(error: ErrorLog) {
     try {
       // Send to Google Analytics 4
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'exception', {
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag("event", "exception", {
           description: error.message,
-          fatal: error.severity === 'critical',
+          fatal: error.severity === "critical",
           custom_map: {
             error_category: error.category,
             error_severity: error.severity,
@@ -179,15 +179,15 @@ class ErrorHandler {
       }
 
       // Send to custom analytics endpoint
-      await fetch('/api/analytics/error', {
-        method: 'POST',
+      await fetch("/api/analytics/error", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(error),
       });
     } catch (analyticsError) {
-      console.warn('Failed to send error to analytics:', analyticsError);
+      console.warn("Failed to send error to analytics:", analyticsError);
     }
   }
 
@@ -199,9 +199,7 @@ class ErrorHandler {
     const threshold = this.alertConfig.threshold;
 
     // Count errors in the time window
-    const recentErrors = this.errors.filter(
-      error => now - error.timestamp < timeWindow
-    );
+    const recentErrors = this.errors.filter((error) => now - error.timestamp < timeWindow);
 
     if (recentErrors.length >= threshold) {
       this.sendAlert(recentErrors);
@@ -219,21 +217,21 @@ class ErrorHandler {
     try {
       for (const endpoint of this.alertConfig.endpoints) {
         await fetch(endpoint, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(alert),
         });
       }
     } catch (error) {
-      console.error('Failed to send alert:', error);
+      console.error("Failed to send alert:", error);
     }
   }
 
   private getHighestSeverity(errors: ErrorLog[]): string {
-    const severities = ['low', 'medium', 'high', 'critical'];
-    let highest = 'low';
+    const severities = ["low", "medium", "high", "critical"];
+    let highest = "low";
 
     for (const error of errors) {
       const currentIndex = severities.indexOf(error.severity);
@@ -247,13 +245,13 @@ class ErrorHandler {
   }
 
   private persistErrors() {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     try {
       const recentErrors = this.errors.slice(-50); // Keep last 50 errors
-      localStorage.setItem('error_logs', JSON.stringify(recentErrors));
+      localStorage.setItem("error_logs", JSON.stringify(recentErrors));
     } catch (error) {
-      console.warn('Failed to persist errors:', error);
+      console.warn("Failed to persist errors:", error);
     }
   }
 
@@ -262,18 +260,18 @@ class ErrorHandler {
     return [...this.errors];
   }
 
-  public getErrorsBySeverity(severity: ErrorLog['severity']): ErrorLog[] {
-    return this.errors.filter(error => error.severity === severity);
+  public getErrorsBySeverity(severity: ErrorLog["severity"]): ErrorLog[] {
+    return this.errors.filter((error) => error.severity === severity);
   }
 
-  public getErrorsByCategory(category: ErrorLog['category']): ErrorLog[] {
-    return this.errors.filter(error => error.category === category);
+  public getErrorsByCategory(category: ErrorLog["category"]): ErrorLog[] {
+    return this.errors.filter((error) => error.category === category);
   }
 
   public clearErrors() {
     this.errors = [];
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('error_logs');
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("error_logs");
     }
   }
 
@@ -286,27 +284,25 @@ class ErrorHandler {
     const last24h = now - 24 * 60 * 60 * 1000;
     const last1h = now - 60 * 60 * 1000;
 
-    const last24hErrors = this.errors.filter(
-      error => error.timestamp > last24h
-    );
-    const last1hErrors = this.errors.filter(error => error.timestamp > last1h);
+    const last24hErrors = this.errors.filter((error) => error.timestamp > last24h);
+    const last1hErrors = this.errors.filter((error) => error.timestamp > last1h);
 
     return {
       total: this.errors.length,
       last24h: last24hErrors.length,
       last1h: last1hErrors.length,
       bySeverity: {
-        low: this.getErrorsBySeverity('low').length,
-        medium: this.getErrorsBySeverity('medium').length,
-        high: this.getErrorsBySeverity('high').length,
-        critical: this.getErrorsBySeverity('critical').length,
+        low: this.getErrorsBySeverity("low").length,
+        medium: this.getErrorsBySeverity("medium").length,
+        high: this.getErrorsBySeverity("high").length,
+        critical: this.getErrorsBySeverity("critical").length,
       },
       byCategory: {
-        javascript: this.getErrorsByCategory('javascript').length,
-        network: this.getErrorsByCategory('network').length,
-        api: this.getErrorsByCategory('api').length,
-        validation: this.getErrorsByCategory('validation').length,
-        unknown: this.getErrorsByCategory('unknown').length,
+        javascript: this.getErrorsByCategory("javascript").length,
+        network: this.getErrorsByCategory("network").length,
+        api: this.getErrorsByCategory("api").length,
+        validation: this.getErrorsByCategory("validation").length,
+        unknown: this.getErrorsByCategory("unknown").length,
       },
     };
   }

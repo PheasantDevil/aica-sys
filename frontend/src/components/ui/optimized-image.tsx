@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
+import Image from "next/image";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface OptimizedImageProps {
   src: string;
@@ -12,7 +12,7 @@ interface OptimizedImageProps {
   className?: string;
   priority?: boolean;
   quality?: number;
-  placeholder?: 'blur' | 'empty';
+  placeholder?: "blur" | "empty";
   blurDataURL?: string;
   sizes?: string;
   fill?: boolean;
@@ -29,7 +29,7 @@ export function OptimizedImage({
   className,
   priority = false,
   quality = 75,
-  placeholder = 'blur',
+  placeholder = "blur",
   blurDataURL,
   sizes,
   fill = false,
@@ -52,15 +52,14 @@ export function OptimizedImage({
   };
 
   // Generate blur placeholder if not provided
-  const defaultBlurDataURL = blurDataURL || 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=';
+  const defaultBlurDataURL =
+    blurDataURL ||
+    "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=";
 
   if (hasError) {
     return (
       <div
-        className={cn(
-          'flex items-center justify-center bg-muted text-muted-foreground',
-          className
-        )}
+        className={cn("flex items-center justify-center bg-muted text-muted-foreground", className)}
         style={style}
       >
         <span className="text-sm">画像を読み込めませんでした</span>
@@ -69,13 +68,8 @@ export function OptimizedImage({
   }
 
   return (
-    <div className={cn('relative overflow-hidden', className)}>
-      {isLoading && (
-        <div
-          className="absolute inset-0 bg-muted animate-pulse"
-          style={style}
-        />
-      )}
+    <div className={cn("relative overflow-hidden", className)}>
+      {isLoading && <div className="absolute inset-0 bg-muted animate-pulse" style={style} />}
       <Image
         src={src}
         alt={alt}
@@ -85,12 +79,9 @@ export function OptimizedImage({
         priority={priority}
         quality={quality}
         placeholder={placeholder}
-        blurDataURL={placeholder === 'blur' ? defaultBlurDataURL : undefined}
+        blurDataURL={placeholder === "blur" ? defaultBlurDataURL : undefined}
         sizes={sizes}
-        className={cn(
-          'transition-opacity duration-300',
-          isLoading ? 'opacity-0' : 'opacity-100'
-        )}
+        className={cn("transition-opacity duration-300", isLoading ? "opacity-0" : "opacity-100")}
         style={style}
         onLoad={handleLoad}
         onError={handleError}
@@ -117,7 +108,7 @@ export function AvatarImage({
       alt={alt}
       width={size}
       height={size}
-      className={cn('rounded-full', className)}
+      className={cn("rounded-full", className)}
       quality={80}
       sizes="(max-width: 768px) 40px, 40px"
     />
@@ -141,7 +132,7 @@ export function ArticleImage({
       alt={alt}
       width={800}
       height={400}
-      className={cn('rounded-lg object-cover', className)}
+      className={cn("rounded-lg object-cover", className)}
       priority={priority}
       quality={85}
       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -163,7 +154,7 @@ export function HeroImage({
       src={src}
       alt={alt}
       fill
-      className={cn('object-cover', className)}
+      className={cn("object-cover", className)}
       priority
       quality={90}
       sizes="100vw"

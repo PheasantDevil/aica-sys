@@ -1,14 +1,14 @@
-import winston from 'winston';
-import DailyRotateFile from 'winston-daily-rotate-file';
+import winston from "winston";
+import DailyRotateFile from "winston-daily-rotate-file";
 
 export enum LogLevel {
-  ERROR = 'error',
-  WARN = 'warn',
-  INFO = 'info',
-  HTTP = 'http',
-  VERBOSE = 'verbose',
-  DEBUG = 'debug',
-  SILLY = 'silly',
+  ERROR = "error",
+  WARN = "warn",
+  INFO = "info",
+  HTTP = "http",
+  VERBOSE = "verbose",
+  DEBUG = "debug",
+  SILLY = "silly",
 }
 
 export interface LogContext {
@@ -42,7 +42,7 @@ class Logger {
   private isDevelopment: boolean;
 
   constructor() {
-    this.isDevelopment = process.env.NODE_ENV === 'development';
+    this.isDevelopment = process.env.NODE_ENV === "development";
     this.winston = this.createWinstonLogger();
   }
 
@@ -58,20 +58,20 @@ class Logger {
             winston.format.timestamp(),
             winston.format.printf(({ timestamp, level, message, context, error }: any) => {
               let logMessage = `${timestamp} [${level}]: ${message}`;
-              
+
               if (context) {
                 logMessage += `\nContext: ${JSON.stringify(context, null, 2)}`;
               }
-              
+
               if (error) {
                 const errorMessage = error instanceof Error ? error.stack : String(error);
                 logMessage += `\nError: ${errorMessage}`;
               }
-              
+
               return logMessage;
-            })
+            }),
           ),
-        })
+        }),
       );
     }
 
@@ -80,55 +80,46 @@ class Logger {
       // Error logs
       transports.push(
         new DailyRotateFile({
-          filename: 'logs/error-%DATE%.log',
-          datePattern: 'YYYY-MM-DD',
-          level: 'error',
-          maxSize: '20m',
-          maxFiles: '14d',
-          format: winston.format.combine(
-            winston.format.timestamp(),
-            winston.format.json()
-          ),
-        })
+          filename: "logs/error-%DATE%.log",
+          datePattern: "YYYY-MM-DD",
+          level: "error",
+          maxSize: "20m",
+          maxFiles: "14d",
+          format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+        }),
       );
 
       // Combined logs
       transports.push(
         new DailyRotateFile({
-          filename: 'logs/combined-%DATE%.log',
-          datePattern: 'YYYY-MM-DD',
-          maxSize: '20m',
-          maxFiles: '30d',
-          format: winston.format.combine(
-            winston.format.timestamp(),
-            winston.format.json()
-          ),
-        })
+          filename: "logs/combined-%DATE%.log",
+          datePattern: "YYYY-MM-DD",
+          maxSize: "20m",
+          maxFiles: "30d",
+          format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+        }),
       );
 
       // Application logs
       transports.push(
         new DailyRotateFile({
-          filename: 'logs/app-%DATE%.log',
-          datePattern: 'YYYY-MM-DD',
-          level: 'info',
-          maxSize: '20m',
-          maxFiles: '7d',
-          format: winston.format.combine(
-            winston.format.timestamp(),
-            winston.format.json()
-          ),
-        })
+          filename: "logs/app-%DATE%.log",
+          datePattern: "YYYY-MM-DD",
+          level: "info",
+          maxSize: "20m",
+          maxFiles: "7d",
+          format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+        }),
       );
     }
 
     return winston.createLogger({
-      level: this.isDevelopment ? 'debug' : 'info',
+      level: this.isDevelopment ? "debug" : "info",
       transports,
       format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.errors({ stack: true }),
-        winston.format.json()
+        winston.format.json(),
       ),
     });
   }
@@ -143,7 +134,7 @@ class Logger {
     };
 
     this.winston.log(level, message, { context, error });
-    
+
     // Send to external logging service in production
     if (!this.isDevelopment) {
       this.sendToExternalService(logEntry);
@@ -153,15 +144,15 @@ class Logger {
   private async sendToExternalService(logEntry: LogEntry): Promise<void> {
     try {
       // This would integrate with services like DataDog, LogRocket, Sentry, etc.
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'log', {
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag("event", "log", {
           level: logEntry.level,
           message: logEntry.message,
           context: logEntry.context,
         });
       }
     } catch (error) {
-      console.error('Failed to send log to external service:', error);
+      console.error("Failed to send log to external service:", error);
     }
   }
 
@@ -199,18 +190,24 @@ class Logger {
     this.info(`User action: ${action}`, {
       ...context,
       action,
-      component: 'user-action',
+      component: "user-action",
     });
   }
 
-  apiCall(method: string, url: string, statusCode: number, duration: number, context?: LogContext): void {
+  apiCall(
+    method: string,
+    url: string,
+    statusCode: number,
+    duration: number,
+    context?: LogContext,
+  ): void {
     this.http(`API ${method} ${url} - ${statusCode} (${duration}ms)`, {
       ...context,
       method,
       url,
       statusCode,
       duration,
-      component: 'api',
+      component: "api",
     });
   }
 
@@ -219,7 +216,7 @@ class Logger {
       ...context,
       metric,
       value,
-      component: 'performance',
+      component: "performance",
     });
   }
 
@@ -227,7 +224,7 @@ class Logger {
     this.warn(`Security event: ${event}`, {
       ...context,
       event,
-      component: 'security',
+      component: "security",
     });
   }
 
@@ -235,7 +232,7 @@ class Logger {
     this.info(`Business event: ${event}`, {
       ...context,
       event,
-      component: 'business',
+      component: "business",
     });
   }
 }
@@ -263,11 +260,15 @@ export function useLogger() {
 
 // Error boundary logger
 export function logError(error: Error, errorInfo: any, context?: LogContext): void {
-  logger.error('React Error Boundary caught an error', {
-    ...context,
-    component: 'error-boundary',
-    errorInfo,
-  }, error);
+  logger.error(
+    "React Error Boundary caught an error",
+    {
+      ...context,
+      component: "error-boundary",
+      errorInfo,
+    },
+    error,
+  );
 }
 
 // Performance monitoring
@@ -281,7 +282,7 @@ export function logUserInteraction(action: string, element: string, context?: Lo
     ...context,
     action,
     element,
-    component: 'user-interaction',
+    component: "user-interaction",
   });
 }
 
@@ -291,7 +292,7 @@ export function logApiCall(
   url: string,
   statusCode: number,
   duration: number,
-  context?: LogContext
+  context?: LogContext,
 ): void {
   logger.apiCall(method, url, statusCode, duration, context);
 }

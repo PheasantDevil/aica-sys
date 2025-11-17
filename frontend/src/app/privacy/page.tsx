@@ -1,5 +1,5 @@
-import { Footer } from '@/components/footer';
-import { Header } from '@/components/header';
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
 
 export default function PrivacyPage() {
   return (
@@ -7,11 +7,9 @@ export default function PrivacyPage() {
       <Header />
       <main className="container mx-auto px-4 py-16 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">プライバシーポリシー</h1>
-        
+
         <div className="prose prose-gray max-w-none">
-          <p className="text-sm text-muted-foreground mb-8">
-            最終更新日: 2024年10月11日
-          </p>
+          <p className="text-sm text-muted-foreground mb-8">最終更新日: 2024年10月11日</p>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">1. 収集する情報</h2>
@@ -60,4 +58,3 @@ export default function PrivacyPage() {
     </div>
   );
 }
-

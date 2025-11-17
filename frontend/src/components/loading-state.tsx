@@ -1,42 +1,42 @@
-import { Loader2 } from 'lucide-react';
-import { Card, CardContent } from './ui/card';
+import { Loader2 } from "lucide-react";
+import { Card, CardContent } from "./ui/card";
 
 interface LoadingStateProps {
   message?: string;
-  size?: 'sm' | 'md' | 'lg';
-  variant?: 'spinner' | 'skeleton' | 'dots';
+  size?: "sm" | "md" | "lg";
+  variant?: "spinner" | "skeleton" | "dots";
   className?: string;
 }
 
 export function LoadingState({
-  message = '読み込み中...',
-  size = 'md',
-  variant = 'spinner',
-  className = '',
+  message = "読み込み中...",
+  size = "md",
+  variant = "spinner",
+  className = "",
 }: LoadingStateProps) {
   const getSizeClasses = () => {
     switch (size) {
-      case 'sm':
-        return 'w-4 h-4';
-      case 'lg':
-        return 'w-12 h-12';
+      case "sm":
+        return "w-4 h-4";
+      case "lg":
+        return "w-12 h-12";
       default:
-        return 'w-8 h-8';
+        return "w-8 h-8";
     }
   };
 
   const getSpinnerSize = () => {
     switch (size) {
-      case 'sm':
-        return 'w-3 h-3';
-      case 'lg':
-        return 'w-8 h-8';
+      case "sm":
+        return "w-3 h-3";
+      case "lg":
+        return "w-8 h-8";
       default:
-        return 'w-5 h-5';
+        return "w-5 h-5";
     }
   };
 
-  if (variant === 'skeleton') {
+  if (variant === "skeleton") {
     return (
       <div className={`animate-pulse ${className}`}>
         <div className="space-y-3">
@@ -48,13 +48,19 @@ export function LoadingState({
     );
   }
 
-  if (variant === 'dots') {
+  if (variant === "dots") {
     return (
       <div className={`flex items-center justify-center ${className}`}>
         <div className="flex space-x-1">
           <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"></div>
-          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-          <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+          <div
+            className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"
+            style={{ animationDelay: "0.1s" }}
+          ></div>
+          <div
+            className="w-2 h-2 bg-blue-600 rounded-full animate-bounce"
+            style={{ animationDelay: "0.2s" }}
+          ></div>
         </div>
       </div>
     );

@@ -1,7 +1,7 @@
 export interface ConversionGoal {
   id: string;
   name: string;
-  type: 'signup' | 'purchase' | 'download' | 'contact' | 'custom';
+  type: "signup" | "purchase" | "download" | "contact" | "custom";
   value?: number;
   isActive: boolean;
 }
@@ -25,7 +25,7 @@ export interface ConversionFunnel {
 export interface ConversionStep {
   id: string;
   name: string;
-  type: 'page_view' | 'click' | 'form_submit' | 'custom';
+  type: "page_view" | "click" | "form_submit" | "custom";
   selector?: string; // CSS selector for tracking
   url?: string; // URL pattern for page view tracking
   isRequired: boolean;
@@ -113,7 +113,7 @@ class ConversionOptimizationService {
       return;
     }
 
-    const step = funnel.steps.find(s => s.id === stepId);
+    const step = funnel.steps.find((s) => s.id === stepId);
     if (!step) {
       return;
     }
@@ -136,16 +136,12 @@ class ConversionOptimizationService {
       return null;
     }
 
-    const funnelEvents = this.events.filter(e => 
-      e.goalId.startsWith(`funnel_${funnelId}_`)
-    );
+    const funnelEvents = this.events.filter((e) => e.goalId.startsWith(`funnel_${funnelId}_`));
 
-    const stepAnalytics = funnel.steps.map(step => {
-      const stepEvents = funnelEvents.filter(e => 
-        e.goalId === `funnel_${funnelId}_${step.id}`
-      );
-      
-      const uniqueUsers = new Set(stepEvents.map(e => e.userId || e.sessionId));
+    const stepAnalytics = funnel.steps.map((step) => {
+      const stepEvents = funnelEvents.filter((e) => e.goalId === `funnel_${funnelId}_${step.id}`);
+
+      const uniqueUsers = new Set(stepEvents.map((e) => e.userId || e.sessionId));
       const users = uniqueUsers.size;
 
       return {
@@ -162,12 +158,12 @@ class ConversionOptimizationService {
       const previousStep = i > 0 ? stepAnalytics[i - 1] : null;
 
       if (previousStep) {
-        currentStep.conversionRate = previousStep.users > 0 
-          ? (currentStep.users / previousStep.users) * 100 
-          : 0;
-        currentStep.dropOffRate = previousStep.users > 0 
-          ? ((previousStep.users - currentStep.users) / previousStep.users) * 100 
-          : 0;
+        currentStep.conversionRate =
+          previousStep.users > 0 ? (currentStep.users / previousStep.users) * 100 : 0;
+        currentStep.dropOffRate =
+          previousStep.users > 0
+            ? ((previousStep.users - currentStep.users) / previousStep.users) * 100
+            : 0;
       } else {
         currentStep.conversionRate = 100;
         currentStep.dropOffRate = 0;
@@ -176,9 +172,7 @@ class ConversionOptimizationService {
 
     const totalUsers = stepAnalytics[0]?.users || 0;
     const finalStepUsers = stepAnalytics[stepAnalytics.length - 1]?.users || 0;
-    const overallConversionRate = totalUsers > 0 
-      ? (finalStepUsers / totalUsers) * 100 
-      : 0;
+    const overallConversionRate = totalUsers > 0 ? (finalStepUsers / totalUsers) * 100 : 0;
 
     return {
       funnelId,
@@ -197,17 +191,15 @@ class ConversionOptimizationService {
       return 0;
     }
 
-    let events = this.events.filter(e => e.goalId === goalId);
-    
+    let events = this.events.filter((e) => e.goalId === goalId);
+
     if (timeRange) {
-      events = events.filter(e => 
-        e.timestamp >= timeRange.start && e.timestamp <= timeRange.end
-      );
+      events = events.filter((e) => e.timestamp >= timeRange.start && e.timestamp <= timeRange.end);
     }
 
-    const uniqueUsers = new Set(events.map(e => e.userId || e.sessionId));
+    const uniqueUsers = new Set(events.map((e) => e.userId || e.sessionId));
     const totalSessions = this.getTotalSessions(timeRange);
-    
+
     return totalSessions > 0 ? (uniqueUsers.size / totalSessions) * 100 : 0;
   }
 
@@ -215,12 +207,10 @@ class ConversionOptimizationService {
    * コンバージョン価値を取得
    */
   getConversionValue(goalId: string, timeRange?: { start: Date; end: Date }): number {
-    let events = this.events.filter(e => e.goalId === goalId);
-    
+    let events = this.events.filter((e) => e.goalId === goalId);
+
     if (timeRange) {
-      events = events.filter(e => 
-        e.timestamp >= timeRange.start && e.timestamp <= timeRange.end
-      );
+      events = events.filter((e) => e.timestamp >= timeRange.start && e.timestamp <= timeRange.end);
     }
 
     return events.reduce((total, event) => total + (event.value || 0), 0);
@@ -241,7 +231,9 @@ class ConversionOptimizationService {
     analytics.steps.forEach((step, index) => {
       if (step.dropOffRate > 50) {
         suggestions.push(
-          `ステップ「${step.stepId}」でドロップオフ率が${step.dropOffRate.toFixed(1)}%と高いです。UI/UXの改善を検討してください。`
+          `ステップ「${step.stepId}」でドロップオフ率が${step.dropOffRate.toFixed(
+            1,
+          )}%と高いです。UI/UXの改善を検討してください。`,
         );
       }
     });
@@ -249,16 +241,16 @@ class ConversionOptimizationService {
     // 全体的なコンバージョン率が低い場合
     if (analytics.overallConversionRate < 10) {
       suggestions.push(
-        `ファネルの全体的なコンバージョン率が${analytics.overallConversionRate.toFixed(1)}%と低いです。ファネル全体の見直しを検討してください。`
+        `ファネルの全体的なコンバージョン率が${analytics.overallConversionRate.toFixed(
+          1,
+        )}%と低いです。ファネル全体の見直しを検討してください。`,
       );
     }
 
     // 特定のステップでの改善提案
     const firstStep = analytics.steps[0];
     if (firstStep && firstStep.users < 100) {
-      suggestions.push(
-        'ファネルの流入数が少ないです。トラフィック獲得の改善を検討してください。'
-      );
+      suggestions.push("ファネルの流入数が少ないです。トラフィック獲得の改善を検討してください。");
     }
 
     return suggestions;
@@ -279,15 +271,15 @@ class ConversionOptimizationService {
   }
 
   private trackPageViews(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     const trackPageView = () => {
       const url = window.location.pathname;
-      
+
       // ファネルのステップをチェック
-      this.funnels.forEach(funnel => {
-        funnel.steps.forEach(step => {
-          if (step.type === 'page_view' && step.url && url.includes(step.url)) {
+      this.funnels.forEach((funnel) => {
+        funnel.steps.forEach((step) => {
+          if (step.type === "page_view" && step.url && url.includes(step.url)) {
             this.recordFunnelStep(funnel.id, step.id, { url });
           }
         });
@@ -298,24 +290,24 @@ class ConversionOptimizationService {
     trackPageView();
 
     // ページ遷移を監視
-    window.addEventListener('popstate', trackPageView);
-    
+    window.addEventListener("popstate", trackPageView);
+
     // Next.jsのルーターイベントを監視
-    if (typeof window !== 'undefined' && (window as any).next) {
-      (window as any).next.router.events.on('routeChangeComplete', trackPageView);
+    if (typeof window !== "undefined" && (window as any).next) {
+      (window as any).next.router.events.on("routeChangeComplete", trackPageView);
     }
   }
 
   private trackClicks(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
-    document.addEventListener('click', (event) => {
+    document.addEventListener("click", (event) => {
       const target = event.target as HTMLElement;
-      
+
       // ファネルのステップをチェック
-      this.funnels.forEach(funnel => {
-        funnel.steps.forEach(step => {
-          if (step.type === 'click' && step.selector) {
+      this.funnels.forEach((funnel) => {
+        funnel.steps.forEach((step) => {
+          if (step.type === "click" && step.selector) {
             if (target.matches(step.selector) || target.closest(step.selector)) {
               this.recordFunnelStep(funnel.id, step.id, {
                 element: target.tagName,
@@ -329,15 +321,15 @@ class ConversionOptimizationService {
   }
 
   private trackFormSubmissions(): void {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
-    document.addEventListener('submit', (event) => {
+    document.addEventListener("submit", (event) => {
       const form = event.target as HTMLFormElement;
-      
+
       // ファネルのステップをチェック
-      this.funnels.forEach(funnel => {
-        funnel.steps.forEach(step => {
-          if (step.type === 'form_submit' && step.selector) {
+      this.funnels.forEach((funnel) => {
+        funnel.steps.forEach((step) => {
+          if (step.type === "form_submit" && step.selector) {
             if (form.matches(step.selector)) {
               this.recordFunnelStep(funnel.id, step.id, {
                 formId: form.id,
@@ -352,9 +344,9 @@ class ConversionOptimizationService {
 
   private sendToAnalytics(event: ConversionEvent): void {
     // Google Analytics 4に送信
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'conversion', {
-        event_category: 'conversion',
+    if (typeof window !== "undefined" && (window as any).gtag) {
+      (window as any).gtag("event", "conversion", {
+        event_category: "conversion",
         event_label: event.goalId,
         value: event.value,
         custom_map: event.metadata,
@@ -362,8 +354,8 @@ class ConversionOptimizationService {
     }
 
     // カスタムアナリティクスに送信
-    if (typeof window !== 'undefined' && (window as any).analytics) {
-      (window as any).analytics.track('Conversion', {
+    if (typeof window !== "undefined" && (window as any).analytics) {
+      (window as any).analytics.track("Conversion", {
         goalId: event.goalId,
         value: event.value,
         metadata: event.metadata,
@@ -383,7 +375,7 @@ class ConversionOptimizationService {
 
   private loadData(): void {
     try {
-      const savedGoals = localStorage.getItem('conversion_goals');
+      const savedGoals = localStorage.getItem("conversion_goals");
       if (savedGoals) {
         const goals = JSON.parse(savedGoals);
         goals.forEach((goal: ConversionGoal) => {
@@ -391,7 +383,7 @@ class ConversionOptimizationService {
         });
       }
 
-      const savedFunnels = localStorage.getItem('conversion_funnels');
+      const savedFunnels = localStorage.getItem("conversion_funnels");
       if (savedFunnels) {
         const funnels = JSON.parse(savedFunnels);
         funnels.forEach((funnel: ConversionFunnel) => {
@@ -399,7 +391,7 @@ class ConversionOptimizationService {
         });
       }
 
-      const savedEvents = localStorage.getItem('conversion_events');
+      const savedEvents = localStorage.getItem("conversion_events");
       if (savedEvents) {
         const events = JSON.parse(savedEvents);
         this.events = events.map((event: any) => ({
@@ -408,17 +400,17 @@ class ConversionOptimizationService {
         }));
       }
     } catch (error) {
-      console.error('Error loading conversion data:', error);
+      console.error("Error loading conversion data:", error);
     }
   }
 
   private saveData(): void {
     try {
-      localStorage.setItem('conversion_goals', JSON.stringify(Array.from(this.goals.values())));
-      localStorage.setItem('conversion_funnels', JSON.stringify(Array.from(this.funnels.values())));
-      localStorage.setItem('conversion_events', JSON.stringify(this.events));
+      localStorage.setItem("conversion_goals", JSON.stringify(Array.from(this.goals.values())));
+      localStorage.setItem("conversion_funnels", JSON.stringify(Array.from(this.funnels.values())));
+      localStorage.setItem("conversion_events", JSON.stringify(this.events));
     } catch (error) {
-      console.error('Error saving conversion data:', error);
+      console.error("Error saving conversion data:", error);
     }
   }
 }
