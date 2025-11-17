@@ -62,6 +62,7 @@ SessionLocal = sessionmaker(
 # ベースクラス
 Base = declarative_base()
 
+
 # 接続プールの監視
 @event.listens_for(engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
@@ -75,15 +76,18 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
         cursor.execute("PRAGMA mmap_size=268435456")  # メモリマップサイズ
         cursor.close()
 
+
 @event.listens_for(engine, "checkout")
 def receive_checkout(dbapi_connection, connection_record, connection_proxy):
     """接続チェックアウト時のログ"""
     logger.debug("Connection checked out from pool")
 
+
 @event.listens_for(engine, "checkin")
 def receive_checkin(dbapi_connection, connection_record):
     """接続チェックイン時のログ"""
     logger.debug("Connection checked in to pool")
+
 
 def get_db():
     """データベースセッションを取得（最適化版）"""
@@ -97,14 +101,17 @@ def get_db():
     finally:
         db.close()
 
+
 def get_db_session():
     """直接セッションを取得（バッチ処理用）"""
     return SessionLocal()
+
 
 def close_db_session(session):
     """セッションを明示的に閉じる"""
     if session:
         session.close()
+
 
 def init_db():
     """データベースを初期化（テーブル作成）"""
@@ -122,6 +129,7 @@ def init_db():
     except Exception as e:
         logger.error(f"Error creating database tables: {e}")
         return False
+
 
 def drop_db():
     """データベースを削除（全テーブル削除）"""

@@ -26,6 +26,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # JWT security
 security = HTTPBearer()
 
+
 class JWTAuth:
     def __init__(self):
         self.secret_key = SECRET_KEY
@@ -49,27 +50,33 @@ class JWTAuth:
             logger.error(f"Password hashing error: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Password hashing failed"
+                detail="Password hashing failed",
             )
 
-    def create_access_token(self, data: Dict[str, Any], expires_delta: Optional[timedelta] = None) -> str:
+    def create_access_token(
+        self, data: Dict[str, Any], expires_delta: Optional[timedelta] = None
+    ) -> str:
         """Create JWT access token"""
         to_encode = data.copy()
         if expires_delta:
             expire = datetime.utcnow() + expires_delta
         else:
-            expire = datetime.utcnow() + timedelta(minutes=self.access_token_expire_minutes)
-        
+            expire = datetime.utcnow() + timedelta(
+                minutes=self.access_token_expire_minutes
+            )
+
         to_encode.update({"exp": expire, "type": "access"})
-        
+
         try:
-            encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
+            encoded_jwt = jwt.encode(
+                to_encode, self.secret_key, algorithm=self.algorithm
+            )
             return encoded_jwt
         except Exception as e:
             logger.error(f"JWT creation error: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Token creation failed"
+                detail="Token creation failed",
             )
 
     def create_refresh_token(self, data: Dict[str, Any]) -> str:
@@ -77,52 +84,55 @@ class JWTAuth:
         to_encode = data.copy()
         expire = datetime.utcnow() + timedelta(days=self.refresh_token_expire_days)
         to_encode.update({"exp": expire, "type": "refresh"})
-        
+
         try:
-            encoded_jwt = jwt.encode(to_encode, self.secret_key, algorithm=self.algorithm)
+            encoded_jwt = jwt.encode(
+                to_encode, self.secret_key, algorithm=self.algorithm
+            )
             return encoded_jwt
         except Exception as e:
             logger.error(f"Refresh token creation error: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Refresh token creation failed"
+                detail="Refresh token creation failed",
             )
 
     def verify_token(self, token: str, token_type: str = "access") -> Dict[str, Any]:
         """Verify and decode JWT token"""
         try:
             payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
-            
+
             # Check token type
             if payload.get("type") != token_type:
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail=f"Invalid token type. Expected {token_type}"
+                    detail=f"Invalid token type. Expected {token_type}",
                 )
-            
+
             # Check expiration
             exp = payload.get("exp")
             if exp is None or datetime.utcnow() > datetime.fromtimestamp(exp):
                 raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Token has expired"
+                    status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired"
                 )
-            
+
             return payload
         except PyJWTError as e:
             logger.warning(f"JWT verification error: {e}")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Could not validate credentials"
+                detail="Could not validate credentials",
             )
         except Exception as e:
             logger.error(f"Token verification error: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Token verification failed"
+                detail="Token verification failed",
             )
 
-    def authenticate_user(self, email: str, password: str, db: Session) -> Optional[User]:
+    def authenticate_user(
+        self, email: str, password: str, db: Session
+    ) -> Optional[User]:
         """Authenticate user with email and password"""
         try:
             user = db.query(User).filter(User.email == email).first()
@@ -135,33 +145,34 @@ class JWTAuth:
             logger.error(f"User authentication error: {e}")
             return None
 
+
 # Global JWT auth instance
 jwt_auth = JWTAuth()
+
 
 # Dependency functions
 async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ) -> User:
     """Get current authenticated user"""
     try:
         token = credentials.credentials
         payload = jwt_auth.verify_token(token, "access")
         user_id = payload.get("sub")
-        
+
         if user_id is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Could not validate credentials"
+                detail="Could not validate credentials",
             )
-        
+
         user = db.query(User).filter(User.id == user_id).first()
         if user is None:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="User not found"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found"
             )
-        
+
         return user
     except HTTPException:
         raise
@@ -169,26 +180,31 @@ async def get_current_user(
         logger.error(f"Get current user error: {e}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials"
+            detail="Could not validate credentials",
         )
 
-async def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
+
+async def get_current_active_user(
+    current_user: User = Depends(get_current_user),
+) -> User:
     """Get current active user"""
     if not current_user.is_active:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Inactive user"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user"
         )
     return current_user
 
-async def get_current_admin_user(current_user: User = Depends(get_current_user)) -> User:
+
+async def get_current_admin_user(
+    current_user: User = Depends(get_current_user),
+) -> User:
     """Get current admin user"""
     if not current_user.is_admin:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Not enough permissions"
+            status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions"
         )
     return current_user
+
 
 # Token refresh functionality
 async def refresh_access_token(refresh_token: str, db: Session) -> Dict[str, str]:
@@ -196,37 +212,33 @@ async def refresh_access_token(refresh_token: str, db: Session) -> Dict[str, str
     try:
         payload = jwt_auth.verify_token(refresh_token, "refresh")
         user_id = payload.get("sub")
-        
+
         if user_id is None:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid refresh token"
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
             )
-        
+
         user = db.query(User).filter(User.id == user_id).first()
         if user is None or not user.is_active:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="User not found or inactive"
+                detail="User not found or inactive",
             )
-        
+
         # Create new access token
         access_token = jwt_auth.create_access_token(
             data={"sub": str(user.id), "email": user.email, "is_admin": user.is_admin}
         )
-        
-        return {
-            "access_token": access_token,
-            "token_type": "bearer"
-        }
+
+        return {"access_token": access_token, "token_type": "bearer"}
     except HTTPException:
         raise
     except Exception as e:
         logger.error(f"Token refresh error: {e}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not refresh token"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not refresh token"
         )
+
 
 # Security utilities
 def create_tokens_for_user(user: User) -> Dict[str, str]:
@@ -234,37 +246,36 @@ def create_tokens_for_user(user: User) -> Dict[str, str]:
     access_token = jwt_auth.create_access_token(
         data={"sub": str(user.id), "email": user.email, "is_admin": user.is_admin}
     )
-    refresh_token = jwt_auth.create_refresh_token(
-        data={"sub": str(user.id)}
-    )
-    
+    refresh_token = jwt_auth.create_refresh_token(data={"sub": str(user.id)})
+
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
-        "token_type": "bearer"
+        "token_type": "bearer",
     }
+
 
 def validate_password_strength(password: str) -> Dict[str, Any]:
     """Validate password strength"""
     errors = []
-    
+
     if len(password) < 8:
         errors.append("Password must be at least 8 characters long")
-    
+
     if not any(c.isupper() for c in password):
         errors.append("Password must contain at least one uppercase letter")
-    
+
     if not any(c.islower() for c in password):
         errors.append("Password must contain at least one lowercase letter")
-    
+
     if not any(c.isdigit() for c in password):
         errors.append("Password must contain at least one number")
-    
+
     if not any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password):
         errors.append("Password must contain at least one special character")
-    
+
     return {
         "is_valid": len(errors) == 0,
         "errors": errors,
-        "strength": "strong" if len(errors) == 0 else "weak"
+        "strength": "strong" if len(errors) == 0 else "weak",
     }

@@ -18,6 +18,7 @@ Base = declarative_base()
 
 class AuditEventType(str, Enum):
     """Audit event types"""
+
     USER_LOGIN = "USER_LOGIN"
     USER_LOGOUT = "USER_LOGOUT"
     USER_REGISTRATION = "USER_REGISTRATION"
@@ -34,6 +35,7 @@ class AuditEventType(str, Enum):
 
 class AuditEvent(BaseModel):
     """Audit event Pydantic model"""
+
     id: str
     event_type: AuditEventType
     user_id: Optional[str] = None
@@ -54,6 +56,7 @@ class AuditEvent(BaseModel):
 
 class AuditEventDB(Base):
     """Audit event SQLAlchemy model"""
+
     __tablename__ = "audit_events"
 
     id = Column(String, primary_key=True, index=True)

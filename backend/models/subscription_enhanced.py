@@ -9,11 +9,22 @@ from typing import Optional
 
 from database import Base
 from pydantic import BaseModel
-from sqlalchemy import JSON, Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
 
 
 class PlanType(str, Enum):
     """プランタイプ"""
+
     FREE = "free"
     BASIC = "basic"
     PRO = "pro"
@@ -22,18 +33,21 @@ class PlanType(str, Enum):
 
 class BillingCycle(str, Enum):
     """請求サイクル"""
+
     MONTHLY = "monthly"
     YEARLY = "yearly"
 
 
 class CouponType(str, Enum):
     """クーポンタイプ"""
+
     PERCENTAGE = "percentage"
     FIXED_AMOUNT = "fixed_amount"
 
 
 class InvoiceStatus(str, Enum):
     """請求書ステータス"""
+
     DRAFT = "draft"
     OPEN = "open"
     PAID = "paid"
@@ -44,6 +58,7 @@ class InvoiceStatus(str, Enum):
 # SQLAlchemy Models
 class SubscriptionPlanDB(Base):
     """サブスクリプションプランDBモデル"""
+
     __tablename__ = "subscription_plans"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -62,6 +77,7 @@ class SubscriptionPlanDB(Base):
 
 class UserSubscriptionDB(Base):
     """ユーザーサブスクリプションDBモデル"""
+
     __tablename__ = "user_subscriptions"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -81,6 +97,7 @@ class UserSubscriptionDB(Base):
 
 class CouponDB(Base):
     """クーポンDBモデル"""
+
     __tablename__ = "coupons"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -98,6 +115,7 @@ class CouponDB(Base):
 
 class CouponUsageDB(Base):
     """クーポン使用履歴DBモデル"""
+
     __tablename__ = "coupon_usage"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -110,6 +128,7 @@ class CouponUsageDB(Base):
 
 class InvoiceDB(Base):
     """請求書DBモデル"""
+
     __tablename__ = "invoices"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -129,6 +148,7 @@ class InvoiceDB(Base):
 
 class PaymentMethodDB(Base):
     """支払い方法DBモデル"""
+
     __tablename__ = "payment_methods"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -142,6 +162,7 @@ class PaymentMethodDB(Base):
 
 class SubscriptionEventDB(Base):
     """サブスクリプションイベントDBモデル"""
+
     __tablename__ = "subscription_events"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -157,6 +178,7 @@ class SubscriptionEventDB(Base):
 # Pydantic Models
 class SubscriptionPlan(BaseModel):
     """サブスクリプションプランモデル"""
+
     id: int
     plan_type: str
     name: str
@@ -176,6 +198,7 @@ class SubscriptionPlan(BaseModel):
 
 class UserSubscription(BaseModel):
     """ユーザーサブスクリプションモデル"""
+
     id: int
     user_id: str
     plan_id: int
@@ -196,6 +219,7 @@ class UserSubscription(BaseModel):
 
 class Coupon(BaseModel):
     """クーポンモデル"""
+
     id: int
     code: str
     coupon_type: str
@@ -214,6 +238,7 @@ class Coupon(BaseModel):
 
 class Invoice(BaseModel):
     """請求書モデル"""
+
     id: int
     invoice_number: str
     user_id: str
@@ -234,6 +259,7 @@ class Invoice(BaseModel):
 
 class PaymentMethod(BaseModel):
     """支払い方法モデル"""
+
     id: int
     user_id: str
     stripe_payment_method_id: str
@@ -248,6 +274,7 @@ class PaymentMethod(BaseModel):
 
 class SubscriptionEvent(BaseModel):
     """サブスクリプションイベントモデル"""
+
     id: int
     user_id: str
     subscription_id: int
@@ -259,4 +286,3 @@ class SubscriptionEvent(BaseModel):
 
     class Config:
         from_attributes = True
-

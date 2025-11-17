@@ -6,6 +6,7 @@ from fastapi import APIRouter
 
 router = APIRouter(prefix="/analysis", tags=["Analysis"])
 
+
 @router.get("/")
 async def get_analysis():
     """分析結果を取得"""

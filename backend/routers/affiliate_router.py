@@ -22,11 +22,13 @@ router = APIRouter(prefix="/api/affiliate", tags=["affiliate"])
 # Request Models
 class AffiliateRegisterRequest(BaseModel):
     """アフィリエイト登録リクエスト"""
+
     user_id: str
 
 
 class ReferralLinkCreateRequest(BaseModel):
     """紹介リンク作成リクエスト"""
+
     affiliate_id: int
     destination_url: str
     campaign_name: Optional[str] = None
@@ -34,6 +36,7 @@ class ReferralLinkCreateRequest(BaseModel):
 
 class ClickTrackRequest(BaseModel):
     """クリック追跡リクエスト"""
+
     link_code: str
     ip_address: Optional[str] = None
     user_agent: Optional[str] = None
@@ -42,6 +45,7 @@ class ClickTrackRequest(BaseModel):
 
 class ConversionRecordRequest(BaseModel):
     """コンバージョン記録リクエスト"""
+
     link_code: str
     referred_user_id: str
     conversion_value: float
@@ -50,6 +54,7 @@ class ConversionRecordRequest(BaseModel):
 
 class CommissionRuleCreateRequest(BaseModel):
     """報酬ルール作成リクエスト"""
+
     tier: str
     reward_type: str
     fixed_amount: Optional[float] = None
@@ -59,6 +64,7 @@ class CommissionRuleCreateRequest(BaseModel):
 
 class PayoutRequest(BaseModel):
     """支払いリクエスト"""
+
     affiliate_id: int
     amount: Optional[float] = None
     payment_method: str = "bank_transfer"
@@ -66,6 +72,7 @@ class PayoutRequest(BaseModel):
 
 class AffiliateCouponCreateRequest(BaseModel):
     """アフィリエイトクーポン作成リクエスト"""
+
     affiliate_id: int
     discount_type: str
     discount_value: float
@@ -76,8 +83,7 @@ class AffiliateCouponCreateRequest(BaseModel):
 # Affiliate Endpoints
 @router.post("/register")
 async def register_affiliate(
-    request: AffiliateRegisterRequest,
-    db: Session = Depends(get_db)
+    request: AffiliateRegisterRequest, db: Session = Depends(get_db)
 ):
     """アフィリエイトを登録"""
     try:
@@ -90,17 +96,16 @@ async def register_affiliate(
 
 
 @router.get("/profile/{user_id}")
-async def get_affiliate_profile(
-    user_id: str,
-    db: Session = Depends(get_db)
-):
+async def get_affiliate_profile(user_id: str, db: Session = Depends(get_db)):
     """アフィリエイトプロフィールを取得"""
     try:
         service = AffiliateService(db)
         affiliate = await service.get_affiliate(user_id)
         if not affiliate:
-            raise HTTPException(status_code=404, detail="アフィリエイトが見つかりません")
-        
+            raise HTTPException(
+                status_code=404, detail="アフィリエイトが見つかりません"
+            )
+
         stats = await service.get_affiliate_stats(affiliate.id)
         return {"success": True, "affiliate": affiliate, "stats": stats}
     except HTTPException:
@@ -112,9 +117,7 @@ async def get_affiliate_profile(
 
 @router.put("/{affiliate_id}/tier")
 async def update_affiliate_tier(
-    affiliate_id: int,
-    new_tier: str,
-    db: Session = Depends(get_db)
+    affiliate_id: int, new_tier: str, db: Session = Depends(get_db)
 ):
     """アフィリエイトティアを更新"""
     try:
@@ -131,8 +134,7 @@ async def update_affiliate_tier(
 # Referral Link Endpoints
 @router.post("/referral-links")
 async def create_referral_link(
-    request: ReferralLinkCreateRequest,
-    db: Session = Depends(get_db)
+    request: ReferralLinkCreateRequest, db: Session = Depends(get_db)
 ):
     """紹介リンクを作成"""
     try:
@@ -140,7 +142,7 @@ async def create_referral_link(
         link = await service.create_referral_link(
             affiliate_id=request.affiliate_id,
             destination_url=request.destination_url,
-            campaign_name=request.campaign_name
+            campaign_name=request.campaign_name,
         )
         return {"success": True, "link": link}
     except Exception as e:
@@ -150,9 +152,7 @@ async def create_referral_link(
 
 @router.get("/referral-links/{affiliate_id}")
 async def get_referral_links(
-    affiliate_id: int,
-    active_only: bool = True,
-    db: Session = Depends(get_db)
+    affiliate_id: int, active_only: bool = True, db: Session = Depends(get_db)
 ):
     """紹介リンク一覧を取得"""
     try:
@@ -166,10 +166,7 @@ async def get_referral_links(
 
 # Click Tracking Endpoints
 @router.post("/track-click")
-async def track_click(
-    request: ClickTrackRequest,
-    db: Session = Depends(get_db)
-):
+async def track_click(request: ClickTrackRequest, db: Session = Depends(get_db)):
     """クリックを追跡"""
     try:
         service = AffiliateService(db)
@@ -177,7 +174,7 @@ async def track_click(
             link_code=request.link_code,
             ip_address=request.ip_address,
             user_agent=request.user_agent,
-            referrer=request.referrer
+            referrer=request.referrer,
         )
         return {"success": True, "click": click}
     except ValueError as e:
@@ -190,8 +187,7 @@ async def track_click(
 # Conversion Endpoints
 @router.post("/conversions")
 async def record_conversion(
-    request: ConversionRecordRequest,
-    db: Session = Depends(get_db)
+    request: ConversionRecordRequest, db: Session = Depends(get_db)
 ):
     """コンバージョンを記録"""
     try:
@@ -200,7 +196,7 @@ async def record_conversion(
             link_code=request.link_code,
             referred_user_id=request.referred_user_id,
             conversion_value=request.conversion_value,
-            subscription_id=request.subscription_id
+            subscription_id=request.subscription_id,
         )
         return {"success": True, "conversion": conversion}
     except ValueError as e:
@@ -211,10 +207,7 @@ async def record_conversion(
 
 
 @router.put("/conversions/{conversion_id}/approve")
-async def approve_conversion(
-    conversion_id: int,
-    db: Session = Depends(get_db)
-):
+async def approve_conversion(conversion_id: int, db: Session = Depends(get_db)):
     """コンバージョンを承認"""
     try:
         service = AffiliateService(db)
@@ -230,8 +223,7 @@ async def approve_conversion(
 # Commission Rule Endpoints
 @router.post("/commission-rules")
 async def create_commission_rule(
-    request: CommissionRuleCreateRequest,
-    db: Session = Depends(get_db)
+    request: CommissionRuleCreateRequest, db: Session = Depends(get_db)
 ):
     """報酬ルールを作成"""
     try:
@@ -241,7 +233,7 @@ async def create_commission_rule(
             reward_type=request.reward_type,
             fixed_amount=request.fixed_amount,
             percentage=request.percentage,
-            min_threshold=request.min_threshold
+            min_threshold=request.min_threshold,
         )
         return {"success": True, "rule": rule}
     except Exception as e:
@@ -251,9 +243,7 @@ async def create_commission_rule(
 
 @router.get("/commission-rules")
 async def get_commission_rules(
-    tier: Optional[str] = None,
-    active_only: bool = True,
-    db: Session = Depends(get_db)
+    tier: Optional[str] = None, active_only: bool = True, db: Session = Depends(get_db)
 ):
     """報酬ルール一覧を取得"""
     try:
@@ -267,17 +257,14 @@ async def get_commission_rules(
 
 # Payout Endpoints
 @router.post("/payouts")
-async def request_payout(
-    request: PayoutRequest,
-    db: Session = Depends(get_db)
-):
+async def request_payout(request: PayoutRequest, db: Session = Depends(get_db)):
     """支払いをリクエスト"""
     try:
         service = AffiliateService(db)
         payout = await service.request_payout(
             affiliate_id=request.affiliate_id,
             amount=request.amount,
-            payment_method=request.payment_method
+            payment_method=request.payment_method,
         )
         return {"success": True, "payout": payout}
     except ValueError as e:
@@ -289,9 +276,7 @@ async def request_payout(
 
 @router.put("/payouts/{payout_id}/complete")
 async def complete_payout(
-    payout_id: int,
-    transaction_id: Optional[str] = None,
-    db: Session = Depends(get_db)
+    payout_id: int, transaction_id: Optional[str] = None, db: Session = Depends(get_db)
 ):
     """支払いを完了"""
     try:
@@ -307,9 +292,7 @@ async def complete_payout(
 
 @router.get("/payouts/{affiliate_id}")
 async def get_payouts(
-    affiliate_id: int,
-    limit: int = 50,
-    db: Session = Depends(get_db)
+    affiliate_id: int, limit: int = 50, db: Session = Depends(get_db)
 ):
     """支払い履歴を取得"""
     try:
@@ -324,8 +307,7 @@ async def get_payouts(
 # Affiliate Coupon Endpoints
 @router.post("/coupons")
 async def create_affiliate_coupon(
-    request: AffiliateCouponCreateRequest,
-    db: Session = Depends(get_db)
+    request: AffiliateCouponCreateRequest, db: Session = Depends(get_db)
 ):
     """アフィリエイト専用クーポンを作成"""
     try:
@@ -335,7 +317,7 @@ async def create_affiliate_coupon(
             discount_type=request.discount_type,
             discount_value=request.discount_value,
             max_uses=request.max_uses,
-            valid_until=request.valid_until
+            valid_until=request.valid_until,
         )
         return {"success": True, "coupon": coupon}
     except Exception as e:
@@ -345,10 +327,7 @@ async def create_affiliate_coupon(
 
 # Analytics Endpoints
 @router.get("/stats/{affiliate_id}")
-async def get_affiliate_stats(
-    affiliate_id: int,
-    db: Session = Depends(get_db)
-):
+async def get_affiliate_stats(affiliate_id: int, db: Session = Depends(get_db)):
     """アフィリエイト統計を取得"""
     try:
         service = AffiliateService(db)
@@ -363,9 +342,7 @@ async def get_affiliate_stats(
 
 @router.get("/top-affiliates")
 async def get_top_affiliates(
-    limit: int = 10,
-    order_by: str = "total_revenue",
-    db: Session = Depends(get_db)
+    limit: int = 10, order_by: str = "total_revenue", db: Session = Depends(get_db)
 ):
     """トップアフィリエイトを取得"""
     try:
@@ -375,4 +352,3 @@ async def get_top_affiliates(
     except Exception as e:
         logger.error(f"Get top affiliates error: {e}")
         raise HTTPException(status_code=500, detail="取得に失敗しました")
-

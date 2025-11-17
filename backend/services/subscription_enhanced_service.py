@@ -11,11 +11,16 @@ from typing import Any, Dict, List, Optional
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from models.subscription_enhanced import (CouponDB, CouponType, InvoiceDB,
-                                          InvoiceStatus, PaymentMethodDB,
-                                          SubscriptionEventDB,
-                                          SubscriptionPlanDB,
-                                          UserSubscriptionDB)
+from models.subscription_enhanced import (
+    CouponDB,
+    CouponType,
+    InvoiceDB,
+    InvoiceStatus,
+    PaymentMethodDB,
+    SubscriptionEventDB,
+    SubscriptionPlanDB,
+    UserSubscriptionDB,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +41,7 @@ class SubscriptionEnhancedService:
         yearly_price: float,
         features: List[str],
         max_content_generation: int,
-        max_storage_gb: int
+        max_storage_gb: int,
     ) -> SubscriptionPlanDB:
         """プランを作成"""
         plan = SubscriptionPlanDB(
@@ -47,7 +52,7 @@ class SubscriptionEnhancedService:
             yearly_price=yearly_price,
             features=features,
             max_content_generation=max_content_generation,
-            max_storage_gb=max_storage_gb
+            max_storage_gb=max_storage_gb,
         )
         self.db.add(plan)
         self.db.commit()
@@ -55,10 +60,7 @@ class SubscriptionEnhancedService:
         logger.info(f"Plan created: {plan.id}")
         return plan
 
-    async def get_plans(
-        self,
-        active_only: bool = True
-    ) -> List[SubscriptionPlanDB]:
+    async def get_plans(self, active_only: bool = True) -> List[SubscriptionPlanDB]:
         """プラン一覧を取得"""
         query = self.db.query(SubscriptionPlanDB)
         if active_only:
@@ -67,17 +69,15 @@ class SubscriptionEnhancedService:
 
     async def get_plan_by_type(self, plan_type: str) -> Optional[SubscriptionPlanDB]:
         """プランタイプでプランを取得"""
-        return self.db.query(SubscriptionPlanDB).filter(
-            SubscriptionPlanDB.plan_type == plan_type
-        ).first()
+        return (
+            self.db.query(SubscriptionPlanDB)
+            .filter(SubscriptionPlanDB.plan_type == plan_type)
+            .first()
+        )
 
     # サブスクリプション管理
     async def create_subscription(
-        self,
-        user_id: str,
-        plan_type: str,
-        billing_cycle: str,
-        with_trial: bool = True
+        self, user_id: str, plan_type: str, billing_cycle: str, with_trial: bool = True
     ) -> UserSubscriptionDB:
         """サブスクリプションを作成"""
         plan = await self.get_plan_by_type(plan_type)
@@ -103,7 +103,7 @@ class SubscriptionEnhancedService:
             status="active",
             trial_end_date=trial_end_date,
             current_period_start=current_period_start,
-            current_period_end=current_period_end
+            current_period_end=current_period_end,
         )
         self.db.add(subscription)
         self.db.commit()
@@ -114,28 +114,30 @@ class SubscriptionEnhancedService:
             user_id=user_id,
             subscription_id=subscription.id,
             event_type="created",
-            to_plan=plan_type
+            to_plan=plan_type,
         )
 
         logger.info(f"Subscription created: {subscription.id}")
         return subscription
 
     async def upgrade_subscription(
-        self,
-        subscription_id: int,
-        new_plan_type: str
+        self, subscription_id: int, new_plan_type: str
     ) -> UserSubscriptionDB:
         """サブスクリプションをアップグレード"""
-        subscription = self.db.query(UserSubscriptionDB).filter(
-            UserSubscriptionDB.id == subscription_id
-        ).first()
+        subscription = (
+            self.db.query(UserSubscriptionDB)
+            .filter(UserSubscriptionDB.id == subscription_id)
+            .first()
+        )
 
         if not subscription:
             raise ValueError("Subscription not found")
 
-        old_plan = self.db.query(SubscriptionPlanDB).filter(
-            SubscriptionPlanDB.id == subscription.plan_id
-        ).first()
+        old_plan = (
+            self.db.query(SubscriptionPlanDB)
+            .filter(SubscriptionPlanDB.id == subscription.plan_id)
+            .first()
+        )
 
         new_plan = await self.get_plan_by_type(new_plan_type)
         if not new_plan:
@@ -152,21 +154,21 @@ class SubscriptionEnhancedService:
             subscription_id=subscription.id,
             event_type="upgraded",
             from_plan=old_plan.plan_type,
-            to_plan=new_plan_type
+            to_plan=new_plan_type,
         )
 
         logger.info(f"Subscription upgraded: {subscription.id}")
         return subscription
 
     async def cancel_subscription(
-        self,
-        subscription_id: int,
-        cancel_at_period_end: bool = True
+        self, subscription_id: int, cancel_at_period_end: bool = True
     ) -> UserSubscriptionDB:
         """サブスクリプションをキャンセル"""
-        subscription = self.db.query(UserSubscriptionDB).filter(
-            UserSubscriptionDB.id == subscription_id
-        ).first()
+        subscription = (
+            self.db.query(UserSubscriptionDB)
+            .filter(UserSubscriptionDB.id == subscription_id)
+            .first()
+        )
 
         if not subscription:
             raise ValueError("Subscription not found")
@@ -184,7 +186,7 @@ class SubscriptionEnhancedService:
             user_id=subscription.user_id,
             subscription_id=subscription.id,
             event_type="canceled",
-            metadata={"cancel_at_period_end": cancel_at_period_end}
+            metadata={"cancel_at_period_end": cancel_at_period_end},
         )
 
         logger.info(f"Subscription canceled: {subscription.id}")
@@ -198,7 +200,7 @@ class SubscriptionEnhancedService:
         amount: float,
         description: Optional[str] = None,
         max_uses: Optional[int] = None,
-        valid_until: Optional[datetime] = None
+        valid_until: Optional[datetime] = None,
     ) -> CouponDB:
         """クーポンを作成"""
         coupon = CouponDB(
@@ -207,7 +209,7 @@ class SubscriptionEnhancedService:
             amount=amount,
             description=description,
             max_uses=max_uses,
-            valid_until=valid_until
+            valid_until=valid_until,
         )
         self.db.add(coupon)
         self.db.commit()
@@ -217,10 +219,11 @@ class SubscriptionEnhancedService:
 
     async def validate_coupon(self, code: str) -> Optional[CouponDB]:
         """クーポンを検証"""
-        coupon = self.db.query(CouponDB).filter(
-            CouponDB.code == code.upper(),
-            CouponDB.is_active == True
-        ).first()
+        coupon = (
+            self.db.query(CouponDB)
+            .filter(CouponDB.code == code.upper(), CouponDB.is_active == True)
+            .first()
+        )
 
         if not coupon:
             return None
@@ -236,11 +239,7 @@ class SubscriptionEnhancedService:
         return coupon
 
     async def apply_coupon(
-        self,
-        code: str,
-        user_id: str,
-        subscription_id: int,
-        base_amount: float
+        self, code: str, user_id: str, subscription_id: int, base_amount: float
     ) -> float:
         """クーポンを適用"""
         coupon = await self.validate_coupon(code)
@@ -255,11 +254,12 @@ class SubscriptionEnhancedService:
 
         # 使用履歴記録
         from models.subscription_enhanced import CouponUsageDB
+
         usage = CouponUsageDB(
             coupon_id=coupon.id,
             user_id=user_id,
             subscription_id=subscription_id,
-            discount_amount=discount_amount
+            discount_amount=discount_amount,
         )
         self.db.add(usage)
 
@@ -272,18 +272,16 @@ class SubscriptionEnhancedService:
 
     # 請求書管理
     async def create_invoice(
-        self,
-        user_id: str,
-        subscription_id: int,
-        amount: float,
-        tax_rate: float = 0.1
+        self, user_id: str, subscription_id: int, amount: float, tax_rate: float = 0.1
     ) -> InvoiceDB:
         """請求書を作成"""
         tax = amount * tax_rate
         total_amount = amount + tax
 
         # 請求書番号生成
-        invoice_number = f"INV-{datetime.utcnow().strftime('%Y%m%d')}-{secrets.token_hex(4).upper()}"
+        invoice_number = (
+            f"INV-{datetime.utcnow().strftime('%Y%m%d')}-{secrets.token_hex(4).upper()}"
+        )
 
         invoice = InvoiceDB(
             invoice_number=invoice_number,
@@ -293,7 +291,7 @@ class SubscriptionEnhancedService:
             tax=tax,
             total_amount=total_amount,
             status=InvoiceStatus.OPEN,
-            due_date=datetime.utcnow() + timedelta(days=7)
+            due_date=datetime.utcnow() + timedelta(days=7),
         )
         self.db.add(invoice)
         self.db.commit()
@@ -302,14 +300,10 @@ class SubscriptionEnhancedService:
         return invoice
 
     async def mark_invoice_paid(
-        self,
-        invoice_id: int,
-        stripe_invoice_id: Optional[str] = None
+        self, invoice_id: int, stripe_invoice_id: Optional[str] = None
     ) -> InvoiceDB:
         """請求書を支払い済みにする"""
-        invoice = self.db.query(InvoiceDB).filter(
-            InvoiceDB.id == invoice_id
-        ).first()
+        invoice = self.db.query(InvoiceDB).filter(InvoiceDB.id == invoice_id).first()
 
         if not invoice:
             raise ValueError("Invoice not found")
@@ -324,15 +318,15 @@ class SubscriptionEnhancedService:
         logger.info(f"Invoice marked paid: {invoice.invoice_number}")
         return invoice
 
-    async def get_invoices(
-        self,
-        user_id: str,
-        limit: int = 50
-    ) -> List[InvoiceDB]:
+    async def get_invoices(self, user_id: str, limit: int = 50) -> List[InvoiceDB]:
         """請求書一覧を取得"""
-        invoices = self.db.query(InvoiceDB).filter(
-            InvoiceDB.user_id == user_id
-        ).order_by(InvoiceDB.created_at.desc()).limit(limit).all()
+        invoices = (
+            self.db.query(InvoiceDB)
+            .filter(InvoiceDB.user_id == user_id)
+            .order_by(InvoiceDB.created_at.desc())
+            .limit(limit)
+            .all()
+        )
         return invoices
 
     # 支払い方法管理
@@ -342,7 +336,7 @@ class SubscriptionEnhancedService:
         stripe_payment_method_id: str,
         card_brand: Optional[str] = None,
         card_last4: Optional[str] = None,
-        set_default: bool = False
+        set_default: bool = False,
     ) -> PaymentMethodDB:
         """支払い方法を追加"""
         # デフォルトに設定する場合、他をデフォルトから外す
@@ -356,7 +350,7 @@ class SubscriptionEnhancedService:
             stripe_payment_method_id=stripe_payment_method_id,
             card_brand=card_brand,
             card_last4=card_last4,
-            is_default=set_default
+            is_default=set_default,
         )
         self.db.add(payment_method)
         self.db.commit()
@@ -364,49 +358,55 @@ class SubscriptionEnhancedService:
         logger.info(f"Payment method added: {payment_method.id}")
         return payment_method
 
-    async def get_payment_methods(
-        self,
-        user_id: str
-    ) -> List[PaymentMethodDB]:
+    async def get_payment_methods(self, user_id: str) -> List[PaymentMethodDB]:
         """支払い方法一覧を取得"""
-        methods = self.db.query(PaymentMethodDB).filter(
-            PaymentMethodDB.user_id == user_id
-        ).order_by(PaymentMethodDB.is_default.desc()).all()
+        methods = (
+            self.db.query(PaymentMethodDB)
+            .filter(PaymentMethodDB.user_id == user_id)
+            .order_by(PaymentMethodDB.is_default.desc())
+            .all()
+        )
         return methods
 
     # 分析
     async def calculate_mrr(self) -> float:
         """MRR（月次経常収益）を計算"""
         # アクティブなサブスクリプションの合計
-        result = self.db.query(
-            func.sum(SubscriptionPlanDB.monthly_price)
-        ).join(
-            UserSubscriptionDB,
-            UserSubscriptionDB.plan_id == SubscriptionPlanDB.id
-        ).filter(
-            UserSubscriptionDB.status == "active"
-        ).scalar()
+        result = (
+            self.db.query(func.sum(SubscriptionPlanDB.monthly_price))
+            .join(
+                UserSubscriptionDB, UserSubscriptionDB.plan_id == SubscriptionPlanDB.id
+            )
+            .filter(UserSubscriptionDB.status == "active")
+            .scalar()
+        )
 
         return float(result) if result else 0.0
 
     async def calculate_churn_rate(
-        self,
-        start_date: datetime,
-        end_date: datetime
+        self, start_date: datetime, end_date: datetime
     ) -> float:
         """チャーン率を計算"""
         # 期間開始時のアクティブユーザー数
-        start_count = self.db.query(UserSubscriptionDB).filter(
-            UserSubscriptionDB.status == "active",
-            UserSubscriptionDB.created_at < start_date
-        ).count()
+        start_count = (
+            self.db.query(UserSubscriptionDB)
+            .filter(
+                UserSubscriptionDB.status == "active",
+                UserSubscriptionDB.created_at < start_date,
+            )
+            .count()
+        )
 
         # 期間中にキャンセルされたユーザー数
-        churned_count = self.db.query(SubscriptionEventDB).filter(
-            SubscriptionEventDB.event_type == "canceled",
-            SubscriptionEventDB.created_at >= start_date,
-            SubscriptionEventDB.created_at <= end_date
-        ).count()
+        churned_count = (
+            self.db.query(SubscriptionEventDB)
+            .filter(
+                SubscriptionEventDB.event_type == "canceled",
+                SubscriptionEventDB.created_at >= start_date,
+                SubscriptionEventDB.created_at <= end_date,
+            )
+            .count()
+        )
 
         if start_count == 0:
             return 0.0
@@ -415,15 +415,17 @@ class SubscriptionEnhancedService:
 
     async def get_revenue_by_plan(self) -> Dict[str, float]:
         """プラン別収益を取得"""
-        results = self.db.query(
-            SubscriptionPlanDB.plan_type,
-            func.sum(SubscriptionPlanDB.monthly_price)
-        ).join(
-            UserSubscriptionDB,
-            UserSubscriptionDB.plan_id == SubscriptionPlanDB.id
-        ).filter(
-            UserSubscriptionDB.status == "active"
-        ).group_by(SubscriptionPlanDB.plan_type).all()
+        results = (
+            self.db.query(
+                SubscriptionPlanDB.plan_type, func.sum(SubscriptionPlanDB.monthly_price)
+            )
+            .join(
+                UserSubscriptionDB, UserSubscriptionDB.plan_id == SubscriptionPlanDB.id
+            )
+            .filter(UserSubscriptionDB.status == "active")
+            .group_by(SubscriptionPlanDB.plan_type)
+            .all()
+        )
 
         return {plan_type: float(revenue) for plan_type, revenue in results}
 
@@ -435,7 +437,7 @@ class SubscriptionEnhancedService:
         event_type: str,
         from_plan: Optional[str] = None,
         to_plan: Optional[str] = None,
-        metadata: Optional[Dict[str, Any]] = None
+        metadata: Optional[Dict[str, Any]] = None,
     ):
         """イベントを記録"""
         event = SubscriptionEventDB(
@@ -444,8 +446,7 @@ class SubscriptionEnhancedService:
             event_type=event_type,
             from_plan=from_plan,
             to_plan=to_plan,
-            metadata=metadata
+            metadata=metadata,
         )
         self.db.add(event)
         self.db.commit()
-

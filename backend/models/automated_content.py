@@ -14,6 +14,7 @@ from sqlalchemy import JSON, Boolean, Column, DateTime, Float, Integer, String, 
 
 class ContentType(str, Enum):
     """コンテンツタイプ"""
+
     ARTICLE = "article"
     NEWSLETTER = "newsletter"
     TREND = "trend"
@@ -21,6 +22,7 @@ class ContentType(str, Enum):
 
 class ContentStatus(str, Enum):
     """コンテンツステータス"""
+
     DRAFT = "draft"
     PUBLISHED = "published"
     ARCHIVED = "archived"
@@ -28,6 +30,7 @@ class ContentStatus(str, Enum):
 
 class SourceType(str, Enum):
     """ソースタイプ"""
+
     HACKER_NEWS = "hacker_news"
     DEV_TO = "dev_to"
     GITHUB_TRENDING = "github_trending"
@@ -38,6 +41,7 @@ class SourceType(str, Enum):
 # SQLAlchemy Models
 class AutomatedContentDB(Base):
     """自動生成コンテンツDBモデル"""
+
     __tablename__ = "automated_contents"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -57,6 +61,7 @@ class AutomatedContentDB(Base):
 
 class TrendDataDB(Base):
     """トレンドデータDBモデル"""
+
     __tablename__ = "trend_data"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -71,6 +76,7 @@ class TrendDataDB(Base):
 
 class SourceDataDB(Base):
     """ソースデータDBモデル"""
+
     __tablename__ = "source_data"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -85,6 +91,7 @@ class SourceDataDB(Base):
 
 class ContentGenerationLogDB(Base):
     """コンテンツ生成ログDBモデル"""
+
     __tablename__ = "content_generation_logs"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -101,6 +108,7 @@ class ContentGenerationLogDB(Base):
 # Pydantic Models
 class AutomatedContent(BaseModel):
     """自動生成コンテンツモデル"""
+
     id: int
     content_type: str
     title: str
@@ -121,6 +129,7 @@ class AutomatedContent(BaseModel):
 
 class TrendData(BaseModel):
     """トレンドデータモデル"""
+
     id: int
     trend_name: str
     trend_score: float
@@ -136,6 +145,7 @@ class TrendData(BaseModel):
 
 class SourceData(BaseModel):
     """ソースデータモデル"""
+
     id: int
     source_type: str
     source_url: str
@@ -151,6 +161,7 @@ class SourceData(BaseModel):
 
 class ContentGenerationLog(BaseModel):
     """コンテンツ生成ログモデル"""
+
     id: int
     content_id: Optional[int] = None
     generation_type: str
@@ -163,4 +174,3 @@ class ContentGenerationLog(BaseModel):
 
     class Config:
         from_attributes = True
-

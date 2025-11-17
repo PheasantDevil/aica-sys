@@ -2,6 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 from main import app
 
+
 @pytest.fixture
 def client():
     return TestClient(app)
@@ -19,8 +20,7 @@ class TestAIRouter:
     def test_analyze_endpoint_success(self):
         """Test AI analyze endpoint with valid input"""
         response = client.post(
-            "/ai/analyze",
-            json={"prompt": "Test prompt for analysis"}
+            "/ai/analyze", json={"prompt": "Test prompt for analysis"}
         )
         # Note: This will fail without proper API keys, but tests the endpoint structure
         assert response.status_code in [200, 500]  # 500 expected without API keys
@@ -33,8 +33,7 @@ class TestAIRouter:
     def test_generate_endpoint_success(self):
         """Test AI generate endpoint with valid input"""
         response = client.post(
-            "/ai/generate",
-            json={"type": "article", "topic": "TypeScript"}
+            "/ai/generate", json={"type": "article", "topic": "TypeScript"}
         )
         # Note: This will fail without proper API keys, but tests the endpoint structure
         assert response.status_code in [200, 500]  # 500 expected without API keys
@@ -93,7 +92,7 @@ class TestCollectionRouter:
             "name": "Test Job",
             "sources": ["github", "npm"],
             "keywords": ["typescript"],
-            "schedule": "daily"
+            "schedule": "daily",
         }
         response = client.post("/collection/jobs", json=job_config)
         assert response.status_code == 200
