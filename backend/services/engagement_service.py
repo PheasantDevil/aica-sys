@@ -7,19 +7,9 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from models.engagement import (BadgeDB, CommentDB, FollowDB, NotificationDB, NotificationType,
+                               ReactionDB, ReviewDB, UserBadgeDB, UserPointDB)
 from sqlalchemy.orm import Session
-
-from models.engagement import (
-    BadgeDB,
-    CommentDB,
-    FollowDB,
-    NotificationDB,
-    NotificationType,
-    ReactionDB,
-    ReviewDB,
-    UserBadgeDB,
-    UserPointDB,
-)
 
 logger = logging.getLogger(__name__)
 

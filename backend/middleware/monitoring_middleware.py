@@ -1,5 +1,6 @@
 import time
-from typing import Callable, Dict, Any
+from typing import Any, Callable, Dict
+
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from utils.logging import get_logger
@@ -113,8 +114,9 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
     ):
         """監視サービスにメトリクスを送信"""
         try:
-            from services.monitoring_service import Metric, MetricType
             from datetime import datetime
+
+            from services.monitoring_service import Metric, MetricType
 
             # レスポンス時間メトリクス
             response_time_metric = Metric(
@@ -157,13 +159,9 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
     ):
         """監視サービスにエラーメトリクスを送信"""
         try:
-            from services.monitoring_service import (
-                Metric,
-                MetricType,
-                Alert,
-                AlertLevel,
-            )
             from datetime import datetime
+
+            from services.monitoring_service import Alert, AlertLevel, Metric, MetricType
 
             # エラー数メトリクス
             error_count_metric = Metric(

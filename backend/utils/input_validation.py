@@ -1,11 +1,12 @@
-import re
 import html
 import logging
+import re
 from typing import Any, Dict, List, Optional, Union
-from pydantic import BaseModel, validator, Field
-from fastapi import HTTPException, status
-import bleach
 from urllib.parse import urlparse
+
+import bleach
+from fastapi import HTTPException, status
+from pydantic import BaseModel, Field, validator
 
 logger = logging.getLogger(__name__)
 

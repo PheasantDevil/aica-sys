@@ -7,17 +7,10 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from models.analytics import (AnalyticsEventDB, DashboardDB, MetricSnapshotDB, ReportDB,
+                              ScheduledReportDB, UserSegmentDB)
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-
-from models.analytics import (
-    AnalyticsEventDB,
-    DashboardDB,
-    MetricSnapshotDB,
-    ReportDB,
-    ScheduledReportDB,
-    UserSegmentDB,
-)
 
 logger = logging.getLogger(__name__)
 
@@ -113,7 +106,7 @@ class AnalyticsService:
     ) -> Dict[str, Any]:
         """売上分析を取得"""
         # 実装では実際のサブスクリプションデータから集計
-        from models.subscription_enhanced import UserSubscriptionDB, SubscriptionPlanDB
+        from models.subscription_enhanced import SubscriptionPlanDB, UserSubscriptionDB
 
         # 期間内のアクティブサブスクリプション
         subscriptions = (
@@ -232,7 +225,7 @@ class AnalyticsService:
     # KPI計算
     async def calculate_kpis(self) -> Dict[str, Any]:
         """主要KPIを計算"""
-        from models.subscription_enhanced import UserSubscriptionDB, SubscriptionPlanDB
+        from models.subscription_enhanced import SubscriptionPlanDB, UserSubscriptionDB
 
         # MRR
         mrr_result = (

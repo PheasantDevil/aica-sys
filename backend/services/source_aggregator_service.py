@@ -9,9 +9,8 @@ from typing import Any, Dict, List
 
 import feedparser
 import requests
-from sqlalchemy.orm import Session
-
 from models.automated_content import SourceDataDB, SourceType
+from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
 

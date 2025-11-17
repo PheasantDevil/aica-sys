@@ -4,9 +4,9 @@ Phase 9-1: Content quality improvement
 """
 
 import logging
-from typing import Dict, Any, List, Optional
-from datetime import datetime
 import re
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 

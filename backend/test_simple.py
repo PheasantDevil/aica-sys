@@ -4,8 +4,8 @@
 依存関係なしでAI機能の基本構造をテスト
 """
 
-import sys
 import os
+import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -16,13 +16,13 @@ def test_imports():
 
     try:
         # 基本的なPythonモジュール
+        import asyncio
         import json
         import re
-        import asyncio
-        from datetime import datetime
-        from typing import List, Dict, Any, Optional
-        from dataclasses import dataclass
         from collections import Counter, defaultdict
+        from dataclasses import dataclass
+        from datetime import datetime
+        from typing import Any, Dict, List, Optional
 
         print("✅ Basic Python modules imported successfully")
     except ImportError as e:
@@ -31,7 +31,7 @@ def test_imports():
 
     try:
         # データ収集サービスのテスト
-        from services.data_collector import DataCollector, ContentItem
+        from services.data_collector import ContentItem, DataCollector
 
         print("✅ DataCollector imported successfully")
     except ImportError as e:
@@ -49,11 +49,7 @@ def test_imports():
 
     try:
         # コンテンツ生成サービスのテスト
-        from services.content_generator import (
-            ContentGenerator,
-            GeneratedContent,
-            ContentType,
-        )
+        from services.content_generator import ContentGenerator, ContentType, GeneratedContent
 
         print("✅ ContentGenerator imported successfully")
     except ImportError as e:
@@ -62,11 +58,9 @@ def test_imports():
 
     try:
         # データベースモデルのテスト
-        from models.ai_models import (
-            CollectedContent,
-            AnalysisResult as DBAnalysisResult,
-            GeneratedContent as DBGeneratedContent,
-        )
+        from models.ai_models import AnalysisResult as DBAnalysisResult
+        from models.ai_models import CollectedContent
+        from models.ai_models import GeneratedContent as DBGeneratedContent
 
         print("✅ Database models imported successfully")
     except ImportError as e:
@@ -81,9 +75,9 @@ def test_data_structures():
     print("\nTesting data structures...")
 
     try:
-        from services.data_collector import ContentItem
         from services.ai_analyzer import AnalysisResult
-        from services.content_generator import GeneratedContent, ContentType
+        from services.content_generator import ContentType, GeneratedContent
+        from services.data_collector import ContentItem
 
         # ContentItemのテスト
         item = ContentItem(

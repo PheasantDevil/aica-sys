@@ -1,9 +1,10 @@
-import time
 import logging
-from typing import Dict, Optional, Tuple
+import time
 from functools import wraps
+from typing import Dict, Optional, Tuple
+
 from fastapi import HTTPException, Request, status
-from utils.cache import cache_manager, CACHE_TTL
+from utils.cache import CACHE_TTL, cache_manager
 
 logger = logging.getLogger(__name__)
 

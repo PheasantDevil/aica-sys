@@ -6,12 +6,11 @@ Phase 2: 自動生成コンテンツ配信
 from datetime import datetime
 from typing import List, Optional
 
+from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, Query
+from models.automated_content import AutomatedContentDB, ContentStatus, ContentType
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-
-from database import get_db
-from models.automated_content import AutomatedContentDB, ContentStatus, ContentType
 
 router = APIRouter(prefix="/content", tags=["Content"])
 

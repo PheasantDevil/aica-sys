@@ -3,21 +3,12 @@ AI関連のデータベースモデル
 収集データ、分析結果、生成コンテンツを管理
 """
 
-from sqlalchemy import (
-    Column,
-    Integer,
-    String,
-    Text,
-    DateTime,
-    Float,
-    Boolean,
-    JSON,
-    ForeignKey,
-)
+from datetime import datetime
+from typing import Any, Dict, Optional
+
+from sqlalchemy import JSON, Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from datetime import datetime
-from typing import Dict, Any, Optional
 
 Base = declarative_base()
 

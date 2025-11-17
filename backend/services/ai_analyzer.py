@@ -4,18 +4,18 @@ AI分析エンジン
 """
 
 import asyncio
-import logging
-import os
-from datetime import datetime, timedelta
-from typing import List, Dict, Any, Optional, Tuple
-from groq import Groq
-
 # from sentence_transformers import SentenceTransformer
 # import numpy as np
 import json
+import logging
+import os
 import re
-from dataclasses import dataclass
 from collections import Counter, defaultdict
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional, Tuple
+
+from groq import Groq
 
 from .data_collector import ContentItem
 

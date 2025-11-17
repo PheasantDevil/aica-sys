@@ -4,13 +4,14 @@ Database initialization script for AICA-SyS
 
 import os
 import sys
+
+from models.base import Base
+from models.collection import AnalysisResult, CollectionJob
+from models.content import Article, Newsletter, Trend
+from models.subscription import Subscription
+from models.user import User
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-from models.base import Base
-from models.user import User
-from models.content import Article, Newsletter, Trend
-from models.collection import CollectionJob, AnalysisResult
-from models.subscription import Subscription
 
 
 def create_database_tables(database_url: str):

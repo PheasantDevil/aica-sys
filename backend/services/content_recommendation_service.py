@@ -4,10 +4,10 @@ Phase 9-1: Content quality improvement
 """
 
 import logging
-from typing import Dict, Any, List, Optional
-from datetime import datetime, timedelta
-from collections import defaultdict
 import math
+from collections import defaultdict
+from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 

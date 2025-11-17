@@ -6,23 +6,19 @@ AIを使用して記事、ニュースレター、ソーシャルメディア投
 import asyncio
 import json
 import logging
+import os
 import re
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-import os
 import requests
 from groq import Groq
 from PIL import Image
 from services.ai_analyzer import AnalysisResult
 from services.data_collector import ContentItem
-from utils.cache_decorators import (
-    cache_article_data,
-    cache_newsletter_data,
-    cache_result,
-)
+from utils.cache_decorators import cache_article_data, cache_newsletter_data, cache_result
 
 logger = logging.getLogger(__name__)
 

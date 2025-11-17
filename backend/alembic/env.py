@@ -16,18 +16,14 @@ from sqlalchemy import create_engine, engine_from_config, pool
 # Add the backend directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from models.automated_content import (AutomatedContentDB, ContentGenerationLogDB, SourceDataDB,
+                                      TrendDataDB)
 # Import your models
 from models.base import Base
 from models.collection import AnalysisResult, CollectionJob
 from models.content import Article, Newsletter, Trend
 from models.subscription import Subscription
 from models.user import User
-from models.automated_content import (
-    AutomatedContentDB,
-    TrendDataDB,
-    SourceDataDB,
-    ContentGenerationLogDB,
-)
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
