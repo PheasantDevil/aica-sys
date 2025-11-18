@@ -82,6 +82,34 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX npm run dev
 
 ---
 
+## 🖼️ OGP 画像自動生成 & プレビュー
+
+1. **自動生成 API**
+   - `frontend/src/app/api/og/route.tsx`
+   - `SEOUtils.generateOGImageUrl()` が `/api/og` を呼び出し、タイトル・説明・ハッシュタグに応じて 1200x630px の画像を生成
+   - `theme` / `tags` / `badge` / `slug` などのクエリパラメータでバリエーション指定が可能
+
+2. **既定メタデータ**
+   - `app/layout.tsx` の `metadata.openGraph` / `twitter` がデフォルトで `/api/og?...` を参照
+   - 各記事ページ (`app/articles/[slug]/page.tsx`) は `SEOUtils.generateOGImageUrl` を使用し、記事本文に合わせた OGP を生成
+
+3. **プレビュー検証手順**
+   - 端末1: フロントエンド開発サーバーを起動  
+     ```bash
+     cd frontend
+     npm run dev
+     ```
+   - 端末2: ルートディレクトリで OGP プレビューを取得  
+     ```bash
+     npm run og:preview -- --title="TypeScript 2025 新機能" --description="AST最適化と型安全性が向上" --slug="typescript-2025" --tags="TypeScript,AI自動生成,Next.js"
+     ```
+   - 生成された PNG は `tmp/og-previews/` に保存されます。  
+   - **手作業が必要な項目**: ブラウザで `http://localhost:3000/api/og?title=...` を直接開き、SNS プレビュー（Twitter Card Validator 等）で見た目を最終確認。
+
+> 本番環境では Vercel Edge Runtime で自動生成されるため追加設定は不要です。
+
+---
+
 ## 🔄 運用フロー
 
 1. **新しいページ追加時**:  
