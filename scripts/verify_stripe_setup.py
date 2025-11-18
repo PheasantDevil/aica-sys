@@ -7,6 +7,7 @@ P0タスク: Stripe本番設定確認
 import os
 import sys
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # カラー出力用
