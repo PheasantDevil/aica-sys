@@ -8,16 +8,9 @@ import secrets
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from models.subscription_enhanced import (
-    CouponDB,
-    CouponType,
-    InvoiceDB,
-    InvoiceStatus,
-    PaymentMethodDB,
-    SubscriptionEventDB,
-    SubscriptionPlanDB,
-    UserSubscriptionDB,
-)
+from models.subscription_enhanced import (CouponDB, CouponType, InvoiceDB, InvoiceStatus,
+                                          PaymentMethodDB, SubscriptionEventDB, SubscriptionPlanDB,
+                                          UserSubscriptionDB)
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
