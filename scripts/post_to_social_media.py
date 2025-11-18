@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Social Media Posting Script
 P1タスク: SNS自動投稿ワークフロー用スクリプト
@@ -21,7 +20,7 @@ env_local = BACKEND_DIR / ".env.local"
 if env_local.exists():
     load_dotenv(env_local)
 
-from services.social_media_service import SocialMediaService  # noqa: E402
+from services.social_media_service import SocialMediaService
 
 
 def parse_args() -> argparse.Namespace:
