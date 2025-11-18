@@ -25,22 +25,22 @@ class RateLimiter {
     }
 
     // デフォルト: IPアドレスベース
-    const forwarded = req.headers.get('x-forwarded-for');
-    const ip = forwarded ? forwarded.split(',')[0] : 'unknown';
+    const forwarded = req.headers.get("x-forwarded-for");
+    const ip = forwarded ? forwarded.split(",")[0] : "unknown";
     return ip;
   }
 
   private cleanup(): void {
     const now = Date.now();
     const keysToDelete: string[] = [];
-    
+
     this.store.forEach((entry, key) => {
       if (now > entry.resetTime) {
         keysToDelete.push(key);
       }
     });
-    
-    keysToDelete.forEach(key => {
+
+    keysToDelete.forEach((key) => {
       this.store.delete(key);
     });
   }
@@ -100,7 +100,10 @@ class RateLimiter {
     this.store.delete(key);
   }
 
-  getStats(): { totalKeys: number; entries: Array<{ key: string; count: number; resetTime: number }> } {
+  getStats(): {
+    totalKeys: number;
+    entries: Array<{ key: string; count: number; resetTime: number }>;
+  } {
     const entries = Array.from(this.store.entries()).map(([key, entry]) => ({
       key,
       count: entry.count,
@@ -150,27 +153,27 @@ export const rateLimiters = {
 // レート制限ミドルウェア
 export async function rateLimit(
   req: Request,
-  limiter: RateLimiter = rateLimiters.api
+  limiter: RateLimiter = rateLimiters.api,
 ): Promise<Response | null> {
   const result = await limiter.check(req);
 
   if (!result.allowed) {
     return new Response(
       JSON.stringify({
-        error: 'Too Many Requests',
-        message: 'レート制限に達しました。しばらくしてから再試行してください。',
+        error: "Too Many Requests",
+        message: "レート制限に達しました。しばらくしてから再試行してください。",
         retryAfter: result.retryAfter,
       }),
       {
         status: 429,
         headers: {
-          'Content-Type': 'application/json',
-          'Retry-After': result.retryAfter?.toString() || '60',
-          'X-RateLimit-Limit': limiter === rateLimiters.api ? '100' : '5',
-          'X-RateLimit-Remaining': result.remaining.toString(),
-          'X-RateLimit-Reset': new Date(result.resetTime).toISOString(),
+          "Content-Type": "application/json",
+          "Retry-After": result.retryAfter?.toString() || "60",
+          "X-RateLimit-Limit": limiter === rateLimiters.api ? "100" : "5",
+          "X-RateLimit-Remaining": result.remaining.toString(),
+          "X-RateLimit-Reset": new Date(result.resetTime).toISOString(),
         },
-      }
+      },
     );
   }
 

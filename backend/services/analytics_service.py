@@ -7,11 +7,10 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from models.analytics import (AnalyticsEventDB, DashboardDB, MetricSnapshotDB, ReportDB,
+                              ScheduledReportDB, UserSegmentDB)
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-
-from models.analytics import (AnalyticsEventDB, DashboardDB, MetricSnapshotDB,
-                               ReportDB, ScheduledReportDB, UserSegmentDB)
 
 logger = logging.getLogger(__name__)
 
@@ -28,14 +27,14 @@ class AnalyticsService:
         event_type: str,
         user_id: Optional[str] = None,
         session_id: Optional[str] = None,
-        properties: Optional[Dict[str, Any]] = None
+        properties: Optional[Dict[str, Any]] = None,
     ) -> AnalyticsEventDB:
         """イベントを追跡"""
         event = AnalyticsEventDB(
             event_type=event_type,
             user_id=user_id,
             session_id=session_id,
-            properties=properties
+            properties=properties,
         )
         self.db.add(event)
         self.db.commit()
@@ -49,7 +48,7 @@ class AnalyticsService:
         user_id: Optional[str] = None,
         start_date: Optional[datetime] = None,
         end_date: Optional[datetime] = None,
-        limit: int = 1000
+        limit: int = 1000,
     ) -> List[AnalyticsEventDB]:
         """イベント一覧を取得"""
         query = self.db.query(AnalyticsEventDB)
@@ -70,13 +69,11 @@ class AnalyticsService:
         self,
         metric_name: str,
         metric_value: float,
-        dimensions: Optional[Dict[str, Any]] = None
+        dimensions: Optional[Dict[str, Any]] = None,
     ) -> MetricSnapshotDB:
         """メトリックを記録"""
         snapshot = MetricSnapshotDB(
-            metric_name=metric_name,
-            metric_value=metric_value,
-            dimensions=dimensions
+            metric_name=metric_name, metric_value=metric_value, dimensions=dimensions
         )
         self.db.add(snapshot)
         self.db.commit()
@@ -89,7 +86,7 @@ class AnalyticsService:
         metric_name: str,
         start_date: Optional[datetime] = None,
         end_date: Optional[datetime] = None,
-        dimensions: Optional[Dict[str, Any]] = None
+        dimensions: Optional[Dict[str, Any]] = None,
     ) -> List[MetricSnapshotDB]:
         """メトリック履歴を取得"""
         query = self.db.query(MetricSnapshotDB).filter(
@@ -105,29 +102,27 @@ class AnalyticsService:
 
     # ビジネス分析
     async def get_revenue_analytics(
-        self,
-        start_date: datetime,
-        end_date: datetime
+        self, start_date: datetime, end_date: datetime
     ) -> Dict[str, Any]:
         """売上分析を取得"""
         # 実装では実際のサブスクリプションデータから集計
-        from models.subscription_enhanced import UserSubscriptionDB, SubscriptionPlanDB
+        from models.subscription_enhanced import SubscriptionPlanDB, UserSubscriptionDB
 
         # 期間内のアクティブサブスクリプション
-        subscriptions = self.db.query(
-            UserSubscriptionDB, SubscriptionPlanDB
-        ).join(
-            SubscriptionPlanDB,
-            UserSubscriptionDB.plan_id == SubscriptionPlanDB.id
-        ).filter(
-            UserSubscriptionDB.current_period_start >= start_date,
-            UserSubscriptionDB.current_period_start <= end_date,
-            UserSubscriptionDB.status == "active"
-        ).all()
-
-        total_revenue = sum(
-            plan.monthly_price for _, plan in subscriptions
+        subscriptions = (
+            self.db.query(UserSubscriptionDB, SubscriptionPlanDB)
+            .join(
+                SubscriptionPlanDB, UserSubscriptionDB.plan_id == SubscriptionPlanDB.id
+            )
+            .filter(
+                UserSubscriptionDB.current_period_start >= start_date,
+                UserSubscriptionDB.current_period_start <= end_date,
+                UserSubscriptionDB.status == "active",
+            )
+            .all()
         )
+
+        total_revenue = sum(plan.monthly_price for _, plan in subscriptions)
 
         # プラン別収益
         plan_revenue = {}
@@ -139,39 +134,46 @@ class AnalyticsService:
         return {
             "total_revenue": total_revenue,
             "subscription_count": len(subscriptions),
-            "average_revenue": total_revenue / len(subscriptions) if subscriptions else 0,
+            "average_revenue": (
+                total_revenue / len(subscriptions) if subscriptions else 0
+            ),
             "revenue_by_plan": plan_revenue,
-            "period": {
-                "start": start_date.isoformat(),
-                "end": end_date.isoformat()
-            }
+            "period": {"start": start_date.isoformat(), "end": end_date.isoformat()},
         }
 
     async def get_user_growth_analytics(
-        self,
-        start_date: datetime,
-        end_date: datetime
+        self, start_date: datetime, end_date: datetime
     ) -> Dict[str, Any]:
         """ユーザー成長分析を取得"""
         from models.subscription_enhanced import UserSubscriptionDB
 
         # 新規ユーザー数（期間内）
-        new_users = self.db.query(UserSubscriptionDB).filter(
-            UserSubscriptionDB.created_at >= start_date,
-            UserSubscriptionDB.created_at <= end_date
-        ).count()
+        new_users = (
+            self.db.query(UserSubscriptionDB)
+            .filter(
+                UserSubscriptionDB.created_at >= start_date,
+                UserSubscriptionDB.created_at <= end_date,
+            )
+            .count()
+        )
 
         # チャーンユーザー数
-        churned_users = self.db.query(UserSubscriptionDB).filter(
-            UserSubscriptionDB.status == "canceled",
-            UserSubscriptionDB.updated_at >= start_date,
-            UserSubscriptionDB.updated_at <= end_date
-        ).count()
+        churned_users = (
+            self.db.query(UserSubscriptionDB)
+            .filter(
+                UserSubscriptionDB.status == "canceled",
+                UserSubscriptionDB.updated_at >= start_date,
+                UserSubscriptionDB.updated_at <= end_date,
+            )
+            .count()
+        )
 
         # アクティブユーザー数
-        active_users = self.db.query(UserSubscriptionDB).filter(
-            UserSubscriptionDB.status == "active"
-        ).count()
+        active_users = (
+            self.db.query(UserSubscriptionDB)
+            .filter(UserSubscriptionDB.status == "active")
+            .count()
+        )
 
         # 成長率
         growth_rate = 0.0
@@ -184,36 +186,32 @@ class AnalyticsService:
             "active_users": active_users,
             "net_growth": new_users - churned_users,
             "growth_rate": round(growth_rate, 2),
-            "period": {
-                "start": start_date.isoformat(),
-                "end": end_date.isoformat()
-            }
+            "period": {"start": start_date.isoformat(), "end": end_date.isoformat()},
         }
 
     async def get_content_performance(
-        self,
-        start_date: datetime,
-        end_date: datetime,
-        limit: int = 10
+        self, start_date: datetime, end_date: datetime, limit: int = 10
     ) -> Dict[str, Any]:
         """コンテンツパフォーマンスを取得"""
         # イベントから集計
-        views = self.db.query(
-            AnalyticsEventDB.properties['content_id'].label('content_id'),
-            func.count(AnalyticsEventDB.id).label('view_count')
-        ).filter(
-            AnalyticsEventDB.event_type == "content_view",
-            AnalyticsEventDB.created_at >= start_date,
-            AnalyticsEventDB.created_at <= end_date
-        ).group_by(
-            AnalyticsEventDB.properties['content_id']
-        ).order_by(
-            func.count(AnalyticsEventDB.id).desc()
-        ).limit(limit).all()
+        views = (
+            self.db.query(
+                AnalyticsEventDB.properties["content_id"].label("content_id"),
+                func.count(AnalyticsEventDB.id).label("view_count"),
+            )
+            .filter(
+                AnalyticsEventDB.event_type == "content_view",
+                AnalyticsEventDB.created_at >= start_date,
+                AnalyticsEventDB.created_at <= end_date,
+            )
+            .group_by(AnalyticsEventDB.properties["content_id"])
+            .order_by(func.count(AnalyticsEventDB.id).desc())
+            .limit(limit)
+            .all()
+        )
 
         top_content = [
-            {"content_id": row.content_id, "views": row.view_count}
-            for row in views
+            {"content_id": row.content_id, "views": row.view_count} for row in views
         ]
 
         total_views = sum(row.view_count for row in views)
@@ -221,47 +219,49 @@ class AnalyticsService:
         return {
             "total_views": total_views,
             "top_content": top_content,
-            "period": {
-                "start": start_date.isoformat(),
-                "end": end_date.isoformat()
-            }
+            "period": {"start": start_date.isoformat(), "end": end_date.isoformat()},
         }
 
     # KPI計算
     async def calculate_kpis(self) -> Dict[str, Any]:
         """主要KPIを計算"""
-        from models.subscription_enhanced import (UserSubscriptionDB,
-                                                   SubscriptionPlanDB)
+        from models.subscription_enhanced import SubscriptionPlanDB, UserSubscriptionDB
 
         # MRR
-        mrr_result = self.db.query(
-            func.sum(SubscriptionPlanDB.monthly_price)
-        ).join(
-            UserSubscriptionDB,
-            UserSubscriptionDB.plan_id == SubscriptionPlanDB.id
-        ).filter(
-            UserSubscriptionDB.status == "active"
-        ).scalar()
+        mrr_result = (
+            self.db.query(func.sum(SubscriptionPlanDB.monthly_price))
+            .join(
+                UserSubscriptionDB, UserSubscriptionDB.plan_id == SubscriptionPlanDB.id
+            )
+            .filter(UserSubscriptionDB.status == "active")
+            .scalar()
+        )
         mrr = float(mrr_result) if mrr_result else 0.0
 
         # ARR
         arr = mrr * 12
 
         # アクティブユーザー数
-        active_users = self.db.query(UserSubscriptionDB).filter(
-            UserSubscriptionDB.status == "active"
-        ).count()
+        active_users = (
+            self.db.query(UserSubscriptionDB)
+            .filter(UserSubscriptionDB.status == "active")
+            .count()
+        )
 
         # ARPU
         arpu = mrr / active_users if active_users > 0 else 0
 
         # 30日間のチャーン率
         thirty_days_ago = datetime.utcnow() - timedelta(days=30)
-        churned_30d = self.db.query(UserSubscriptionDB).filter(
-            UserSubscriptionDB.status == "canceled",
-            UserSubscriptionDB.updated_at >= thirty_days_ago
-        ).count()
-        
+        churned_30d = (
+            self.db.query(UserSubscriptionDB)
+            .filter(
+                UserSubscriptionDB.status == "canceled",
+                UserSubscriptionDB.updated_at >= thirty_days_ago,
+            )
+            .count()
+        )
+
         churn_rate = (churned_30d / active_users * 100) if active_users > 0 else 0
 
         return {
@@ -270,7 +270,7 @@ class AnalyticsService:
             "active_users": active_users,
             "arpu": round(arpu, 2),
             "churn_rate_30d": round(churn_rate, 2),
-            "calculated_at": datetime.utcnow().isoformat()
+            "calculated_at": datetime.utcnow().isoformat(),
         }
 
     # レポート生成
@@ -279,7 +279,7 @@ class AnalyticsService:
         report_type: str,
         title: str,
         parameters: Optional[Dict[str, Any]] = None,
-        created_by: Optional[str] = None
+        created_by: Optional[str] = None,
     ) -> ReportDB:
         """レポートを生成"""
         # レポートデータ生成
@@ -291,7 +291,7 @@ class AnalyticsService:
             parameters=parameters,
             data=data,
             format="json",
-            created_by=created_by
+            created_by=created_by,
         )
         self.db.add(report)
         self.db.commit()
@@ -300,9 +300,7 @@ class AnalyticsService:
         return report
 
     async def _generate_report_data(
-        self,
-        report_type: str,
-        parameters: Optional[Dict[str, Any]] = None
+        self, report_type: str, parameters: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """レポートデータを生成"""
         params = parameters or {}
@@ -327,7 +325,7 @@ class AnalyticsService:
         title: str,
         frequency: str,
         recipients: List[str],
-        parameters: Optional[Dict[str, Any]] = None
+        parameters: Optional[Dict[str, Any]] = None,
     ) -> ScheduledReportDB:
         """スケジュールレポートを作成"""
         # 次回実行日時を計算
@@ -339,7 +337,7 @@ class AnalyticsService:
             frequency=frequency,
             recipients=recipients,
             parameters=parameters,
-            next_run=next_run
+            next_run=next_run,
         )
         self.db.add(scheduled)
         self.db.commit()
@@ -366,7 +364,7 @@ class AnalyticsService:
         user_id: str,
         widgets: List[Dict[str, Any]],
         description: Optional[str] = None,
-        is_public: bool = False
+        is_public: bool = False,
     ) -> DashboardDB:
         """ダッシュボードを作成"""
         dashboard = DashboardDB(
@@ -374,7 +372,7 @@ class AnalyticsService:
             description=description,
             user_id=user_id,
             widgets=widgets,
-            is_public=is_public
+            is_public=is_public,
         )
         self.db.add(dashboard)
         self.db.commit()
@@ -383,9 +381,7 @@ class AnalyticsService:
         return dashboard
 
     async def get_dashboards(
-        self,
-        user_id: Optional[str] = None,
-        include_public: bool = True
+        self, user_id: Optional[str] = None, include_public: bool = True
     ) -> List[DashboardDB]:
         """ダッシュボード一覧を取得"""
         query = self.db.query(DashboardDB)
@@ -404,20 +400,14 @@ class AnalyticsService:
 
     # ユーザーセグメント
     async def create_user_segment(
-        self,
-        name: str,
-        criteria: Dict[str, Any],
-        description: Optional[str] = None
+        self, name: str, criteria: Dict[str, Any], description: Optional[str] = None
     ) -> UserSegmentDB:
         """ユーザーセグメントを作成"""
         # ユーザー数を計算
         user_count = await self._calculate_segment_size(criteria)
 
         segment = UserSegmentDB(
-            name=name,
-            description=description,
-            criteria=criteria,
-            user_count=user_count
+            name=name, description=description, criteria=criteria, user_count=user_count
         )
         self.db.add(segment)
         self.db.commit()
@@ -425,10 +415,7 @@ class AnalyticsService:
         logger.info(f"User segment created: {segment.id}")
         return segment
 
-    async def _calculate_segment_size(
-        self,
-        criteria: Dict[str, Any]
-    ) -> int:
+    async def _calculate_segment_size(self, criteria: Dict[str, Any]) -> int:
         """セグメントサイズを計算"""
         # 簡易実装
         from models.subscription_enhanced import UserSubscriptionDB
@@ -441,4 +428,3 @@ class AnalyticsService:
             pass
 
         return query.count()
-

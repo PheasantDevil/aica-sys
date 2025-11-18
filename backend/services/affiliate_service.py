@@ -8,13 +8,11 @@ import secrets
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from models.affiliate import (AffiliateCouponDB, AffiliateDB, AffiliateStatus, ClickTrackingDB,
+                              CommissionRuleDB, ConversionDB, ConversionStatus, PayoutDB,
+                              PayoutStatus, ReferralLinkDB, RewardType)
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-
-from models.affiliate import (AffiliateCouponDB, AffiliateDB, AffiliateStatus,
-                               ClickTrackingDB, CommissionRuleDB,
-                               ConversionDB, ConversionStatus, PayoutDB,
-                               PayoutStatus, ReferralLinkDB, RewardType)
 
 logger = logging.getLogger(__name__)
 
@@ -26,16 +24,13 @@ class AffiliateService:
         self.db = db
 
     # アフィリエイト登録
-    async def register_affiliate(
-        self,
-        user_id: str
-    ) -> AffiliateDB:
+    async def register_affiliate(self, user_id: str) -> AffiliateDB:
         """アフィリエイトを登録"""
         # 既存チェック
-        existing = self.db.query(AffiliateDB).filter(
-            AffiliateDB.user_id == user_id
-        ).first()
-        
+        existing = (
+            self.db.query(AffiliateDB).filter(AffiliateDB.user_id == user_id).first()
+        )
+
         if existing:
             return existing
 
@@ -46,7 +41,7 @@ class AffiliateService:
             user_id=user_id,
             affiliate_code=affiliate_code,
             status=AffiliateStatus.ACTIVE,
-            tier="bronze"
+            tier="bronze",
         )
         self.db.add(affiliate)
         self.db.commit()
@@ -54,24 +49,17 @@ class AffiliateService:
         logger.info(f"Affiliate registered: {affiliate.id}")
         return affiliate
 
-    async def get_affiliate(
-        self,
-        user_id: str
-    ) -> Optional[AffiliateDB]:
+    async def get_affiliate(self, user_id: str) -> Optional[AffiliateDB]:
         """アフィリエイトを取得"""
-        return self.db.query(AffiliateDB).filter(
-            AffiliateDB.user_id == user_id
-        ).first()
+        return self.db.query(AffiliateDB).filter(AffiliateDB.user_id == user_id).first()
 
     async def update_affiliate_tier(
-        self,
-        affiliate_id: int,
-        new_tier: str
+        self, affiliate_id: int, new_tier: str
     ) -> AffiliateDB:
         """アフィリエイトのティアを更新"""
-        affiliate = self.db.query(AffiliateDB).filter(
-            AffiliateDB.id == affiliate_id
-        ).first()
+        affiliate = (
+            self.db.query(AffiliateDB).filter(AffiliateDB.id == affiliate_id).first()
+        )
 
         if not affiliate:
             raise ValueError("Affiliate not found")
@@ -87,7 +75,7 @@ class AffiliateService:
         self,
         affiliate_id: int,
         destination_url: str,
-        campaign_name: Optional[str] = None
+        campaign_name: Optional[str] = None,
     ) -> ReferralLinkDB:
         """紹介リンクを作成"""
         link_code = self._generate_link_code()
@@ -96,7 +84,7 @@ class AffiliateService:
             affiliate_id=affiliate_id,
             link_code=link_code,
             campaign_name=campaign_name,
-            destination_url=destination_url
+            destination_url=destination_url,
         )
         self.db.add(link)
         self.db.commit()
@@ -105,9 +93,7 @@ class AffiliateService:
         return link
 
     async def get_referral_links(
-        self,
-        affiliate_id: int,
-        active_only: bool = True
+        self, affiliate_id: int, active_only: bool = True
     ) -> List[ReferralLinkDB]:
         """紹介リンク一覧を取得"""
         query = self.db.query(ReferralLinkDB).filter(
@@ -123,14 +109,17 @@ class AffiliateService:
         link_code: str,
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
-        referrer: Optional[str] = None
+        referrer: Optional[str] = None,
     ) -> ClickTrackingDB:
         """クリックを追跡"""
         # リンク取得
-        link = self.db.query(ReferralLinkDB).filter(
-            ReferralLinkDB.link_code == link_code,
-            ReferralLinkDB.is_active == True
-        ).first()
+        link = (
+            self.db.query(ReferralLinkDB)
+            .filter(
+                ReferralLinkDB.link_code == link_code, ReferralLinkDB.is_active == True
+            )
+            .first()
+        )
 
         if not link:
             raise ValueError("Referral link not found or inactive")
@@ -141,15 +130,17 @@ class AffiliateService:
             affiliate_id=link.affiliate_id,
             ip_address=ip_address,
             user_agent=user_agent,
-            referrer=referrer
+            referrer=referrer,
         )
         self.db.add(click)
 
         # クリック数更新
         link.clicks += 1
-        affiliate = self.db.query(AffiliateDB).filter(
-            AffiliateDB.id == link.affiliate_id
-        ).first()
+        affiliate = (
+            self.db.query(AffiliateDB)
+            .filter(AffiliateDB.id == link.affiliate_id)
+            .first()
+        )
         if affiliate:
             affiliate.total_clicks += 1
 
@@ -164,29 +155,32 @@ class AffiliateService:
         link_code: str,
         referred_user_id: str,
         conversion_value: float,
-        subscription_id: Optional[int] = None
+        subscription_id: Optional[int] = None,
     ) -> ConversionDB:
         """コンバージョンを記録"""
         # リンク取得
-        link = self.db.query(ReferralLinkDB).filter(
-            ReferralLinkDB.link_code == link_code
-        ).first()
+        link = (
+            self.db.query(ReferralLinkDB)
+            .filter(ReferralLinkDB.link_code == link_code)
+            .first()
+        )
 
         if not link:
             raise ValueError("Referral link not found")
 
         # アフィリエイト取得
-        affiliate = self.db.query(AffiliateDB).filter(
-            AffiliateDB.id == link.affiliate_id
-        ).first()
+        affiliate = (
+            self.db.query(AffiliateDB)
+            .filter(AffiliateDB.id == link.affiliate_id)
+            .first()
+        )
 
         if not affiliate:
             raise ValueError("Affiliate not found")
 
         # 報酬計算
         commission_rate, commission_amount = await self._calculate_commission(
-            affiliate.tier,
-            conversion_value
+            affiliate.tier, conversion_value
         )
 
         # コンバージョン記録
@@ -198,7 +192,7 @@ class AffiliateService:
             conversion_value=conversion_value,
             commission_rate=commission_rate,
             commission_amount=commission_amount,
-            status=ConversionStatus.PENDING
+            status=ConversionStatus.PENDING,
         )
         self.db.add(conversion)
 
@@ -212,14 +206,11 @@ class AffiliateService:
         logger.info(f"Conversion recorded: {conversion.id}")
         return conversion
 
-    async def approve_conversion(
-        self,
-        conversion_id: int
-    ) -> ConversionDB:
+    async def approve_conversion(self, conversion_id: int) -> ConversionDB:
         """コンバージョンを承認"""
-        conversion = self.db.query(ConversionDB).filter(
-            ConversionDB.id == conversion_id
-        ).first()
+        conversion = (
+            self.db.query(ConversionDB).filter(ConversionDB.id == conversion_id).first()
+        )
 
         if not conversion:
             raise ValueError("Conversion not found")
@@ -228,9 +219,11 @@ class AffiliateService:
         conversion.approved_at = datetime.utcnow()
 
         # アフィリエイトの残高更新
-        affiliate = self.db.query(AffiliateDB).filter(
-            AffiliateDB.id == conversion.affiliate_id
-        ).first()
+        affiliate = (
+            self.db.query(AffiliateDB)
+            .filter(AffiliateDB.id == conversion.affiliate_id)
+            .first()
+        )
 
         if affiliate:
             affiliate.total_commission += conversion.commission_amount
@@ -248,7 +241,7 @@ class AffiliateService:
         reward_type: RewardType,
         fixed_amount: Optional[float] = None,
         percentage: Optional[float] = None,
-        min_threshold: Optional[float] = None
+        min_threshold: Optional[float] = None,
     ) -> CommissionRuleDB:
         """報酬ルールを作成"""
         rule = CommissionRuleDB(
@@ -256,7 +249,7 @@ class AffiliateService:
             reward_type=reward_type,
             fixed_amount=fixed_amount,
             percentage=percentage,
-            min_threshold=min_threshold
+            min_threshold=min_threshold,
         )
         self.db.add(rule)
         self.db.commit()
@@ -265,9 +258,7 @@ class AffiliateService:
         return rule
 
     async def get_commission_rules(
-        self,
-        tier: Optional[str] = None,
-        active_only: bool = True
+        self, tier: Optional[str] = None, active_only: bool = True
     ) -> List[CommissionRuleDB]:
         """報酬ルール一覧を取得"""
         query = self.db.query(CommissionRuleDB)
@@ -282,12 +273,12 @@ class AffiliateService:
         self,
         affiliate_id: int,
         amount: Optional[float] = None,
-        payment_method: str = "bank_transfer"
+        payment_method: str = "bank_transfer",
     ) -> PayoutDB:
         """支払いをリクエスト"""
-        affiliate = self.db.query(AffiliateDB).filter(
-            AffiliateDB.id == affiliate_id
-        ).first()
+        affiliate = (
+            self.db.query(AffiliateDB).filter(AffiliateDB.id == affiliate_id).first()
+        )
 
         if not affiliate:
             raise ValueError("Affiliate not found")
@@ -305,7 +296,7 @@ class AffiliateService:
             affiliate_id=affiliate_id,
             amount=payout_amount,
             payment_method=payment_method,
-            status=PayoutStatus.PENDING
+            status=PayoutStatus.PENDING,
         )
         self.db.add(payout)
 
@@ -318,14 +309,10 @@ class AffiliateService:
         return payout
 
     async def complete_payout(
-        self,
-        payout_id: int,
-        transaction_id: Optional[str] = None
+        self, payout_id: int, transaction_id: Optional[str] = None
     ) -> PayoutDB:
         """支払いを完了"""
-        payout = self.db.query(PayoutDB).filter(
-            PayoutDB.id == payout_id
-        ).first()
+        payout = self.db.query(PayoutDB).filter(PayoutDB.id == payout_id).first()
 
         if not payout:
             raise ValueError("Payout not found")
@@ -340,15 +327,15 @@ class AffiliateService:
         logger.info(f"Payout completed: {payout.id}")
         return payout
 
-    async def get_payouts(
-        self,
-        affiliate_id: int,
-        limit: int = 50
-    ) -> List[PayoutDB]:
+    async def get_payouts(self, affiliate_id: int, limit: int = 50) -> List[PayoutDB]:
         """支払い履歴を取得"""
-        payouts = self.db.query(PayoutDB).filter(
-            PayoutDB.affiliate_id == affiliate_id
-        ).order_by(PayoutDB.requested_at.desc()).limit(limit).all()
+        payouts = (
+            self.db.query(PayoutDB)
+            .filter(PayoutDB.affiliate_id == affiliate_id)
+            .order_by(PayoutDB.requested_at.desc())
+            .limit(limit)
+            .all()
+        )
         return payouts
 
     # 専用クーポン
@@ -358,7 +345,7 @@ class AffiliateService:
         discount_type: str,
         discount_value: float,
         max_uses: Optional[int] = None,
-        valid_until: Optional[datetime] = None
+        valid_until: Optional[datetime] = None,
     ) -> AffiliateCouponDB:
         """アフィリエイト専用クーポンを作成"""
         # クーポンコード生成
@@ -370,7 +357,7 @@ class AffiliateService:
             discount_type=discount_type,
             discount_value=discount_value,
             max_uses=max_uses,
-            valid_until=valid_until
+            valid_until=valid_until,
         )
         self.db.add(coupon)
         self.db.commit()
@@ -379,14 +366,11 @@ class AffiliateService:
         return coupon
 
     # 分析
-    async def get_affiliate_stats(
-        self,
-        affiliate_id: int
-    ) -> Dict[str, Any]:
+    async def get_affiliate_stats(self, affiliate_id: int) -> Dict[str, Any]:
         """アフィリエイト統計を取得"""
-        affiliate = self.db.query(AffiliateDB).filter(
-            AffiliateDB.id == affiliate_id
-        ).first()
+        affiliate = (
+            self.db.query(AffiliateDB).filter(AffiliateDB.id == affiliate_id).first()
+        )
 
         if not affiliate:
             raise ValueError("Affiliate not found")
@@ -394,7 +378,9 @@ class AffiliateService:
         # コンバージョン率
         conversion_rate = 0.0
         if affiliate.total_clicks > 0:
-            conversion_rate = (affiliate.total_conversions / affiliate.total_clicks) * 100
+            conversion_rate = (
+                affiliate.total_conversions / affiliate.total_clicks
+            ) * 100
 
         # 平均注文額
         avg_order_value = 0.0
@@ -402,10 +388,14 @@ class AffiliateService:
             avg_order_value = affiliate.total_revenue / affiliate.total_conversions
 
         # 保留中のコンバージョン
-        pending_conversions = self.db.query(ConversionDB).filter(
-            ConversionDB.affiliate_id == affiliate_id,
-            ConversionDB.status == ConversionStatus.PENDING
-        ).count()
+        pending_conversions = (
+            self.db.query(ConversionDB)
+            .filter(
+                ConversionDB.affiliate_id == affiliate_id,
+                ConversionDB.status == ConversionStatus.PENDING,
+            )
+            .count()
+        )
 
         return {
             "affiliate_code": affiliate.affiliate_code,
@@ -417,13 +407,11 @@ class AffiliateService:
             "total_commission": affiliate.total_commission,
             "avg_order_value": round(avg_order_value, 2),
             "balance": affiliate.balance,
-            "pending_conversions": pending_conversions
+            "pending_conversions": pending_conversions,
         }
 
     async def get_top_affiliates(
-        self,
-        limit: int = 10,
-        order_by: str = "total_revenue"
+        self, limit: int = 10, order_by: str = "total_revenue"
     ) -> List[AffiliateDB]:
         """トップアフィリエイトを取得"""
         query = self.db.query(AffiliateDB).filter(
@@ -444,9 +432,11 @@ class AffiliateService:
         """アフィリエイトコードを生成"""
         while True:
             code = f"AFF-{secrets.token_hex(4).upper()}"
-            existing = self.db.query(AffiliateDB).filter(
-                AffiliateDB.affiliate_code == code
-            ).first()
+            existing = (
+                self.db.query(AffiliateDB)
+                .filter(AffiliateDB.affiliate_code == code)
+                .first()
+            )
             if not existing:
                 return code
 
@@ -454,9 +444,11 @@ class AffiliateService:
         """リンクコードを生成"""
         while True:
             code = secrets.token_urlsafe(8)
-            existing = self.db.query(ReferralLinkDB).filter(
-                ReferralLinkDB.link_code == code
-            ).first()
+            existing = (
+                self.db.query(ReferralLinkDB)
+                .filter(ReferralLinkDB.link_code == code)
+                .first()
+            )
             if not existing:
                 return code
 
@@ -464,23 +456,24 @@ class AffiliateService:
         """クーポンコードを生成"""
         while True:
             code = f"PARTNER-{secrets.token_hex(3).upper()}"
-            existing = self.db.query(AffiliateCouponDB).filter(
-                AffiliateCouponDB.coupon_code == code
-            ).first()
+            existing = (
+                self.db.query(AffiliateCouponDB)
+                .filter(AffiliateCouponDB.coupon_code == code)
+                .first()
+            )
             if not existing:
                 return code
 
     async def _calculate_commission(
-        self,
-        tier: str,
-        conversion_value: float
+        self, tier: str, conversion_value: float
     ) -> tuple[float, float]:
         """報酬を計算"""
         # ティア別のルールを取得
-        rule = self.db.query(CommissionRuleDB).filter(
-            CommissionRuleDB.tier == tier,
-            CommissionRuleDB.is_active == True
-        ).first()
+        rule = (
+            self.db.query(CommissionRuleDB)
+            .filter(CommissionRuleDB.tier == tier, CommissionRuleDB.is_active == True)
+            .first()
+        )
 
         if not rule:
             # デフォルト: 10%
@@ -498,4 +491,3 @@ class AffiliateService:
             commission_amount = conversion_value * (commission_rate / 100)
 
         return commission_rate, commission_amount
-

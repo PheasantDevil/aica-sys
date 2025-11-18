@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useAnalytics } from '@/lib/analytics';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
+import { useAnalytics } from "@/lib/analytics";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface AnalyticsLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href: string;
@@ -26,7 +26,7 @@ export function AnalyticsLink({
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // Track the event
     trackEvent(eventName, eventParameters);
-    
+
     // Call original onClick if provided
     if (onClick) {
       onClick(e);
@@ -34,12 +34,7 @@ export function AnalyticsLink({
   };
 
   return (
-    <Link
-      href={href}
-      className={cn(className)}
-      onClick={handleClick}
-      {...props}
-    >
+    <Link href={href} className={cn(className)} onClick={handleClick} {...props}>
       {children}
     </Link>
   );

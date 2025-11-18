@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from "react";
 
 interface VirtualizedListProps<T> {
   items: T[];
@@ -16,7 +16,7 @@ function VirtualizedList<T>({
   itemHeight,
   containerHeight,
   renderItem,
-  className = '',
+  className = "",
   overscan = 5,
 }: VirtualizedListProps<T>) {
   const [scrollTop, setScrollTop] = useState(0);
@@ -26,7 +26,7 @@ function VirtualizedList<T>({
     const startIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
     const endIndex = Math.min(
       items.length - 1,
-      Math.ceil((scrollTop + containerHeight) / itemHeight) + overscan
+      Math.ceil((scrollTop + containerHeight) / itemHeight) + overscan,
     );
     return { startIndex, endIndex };
   }, [scrollTop, itemHeight, containerHeight, items.length, overscan]);
@@ -48,9 +48,9 @@ function VirtualizedList<T>({
       const handleScrollEvent = () => {
         setScrollTop(container.scrollTop);
       };
-      
-      container.addEventListener('scroll', handleScrollEvent);
-      return () => container.removeEventListener('scroll', handleScrollEvent);
+
+      container.addEventListener("scroll", handleScrollEvent);
+      return () => container.removeEventListener("scroll", handleScrollEvent);
     }
   }, []);
 
@@ -61,11 +61,11 @@ function VirtualizedList<T>({
       style={{ height: containerHeight }}
       onScroll={handleScroll}
     >
-      <div style={{ height: totalHeight, position: 'relative' }}>
+      <div style={{ height: totalHeight, position: "relative" }}>
         <div
           style={{
             transform: `translateY(${offsetY}px)`,
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             left: 0,
             right: 0,
@@ -74,11 +74,7 @@ function VirtualizedList<T>({
           {visibleItems.map((item, index) => {
             const actualIndex = visibleRange.startIndex + index;
             return (
-              <div
-                key={actualIndex}
-                style={{ height: itemHeight }}
-                className="flex items-center"
-              >
+              <div key={actualIndex} style={{ height: itemHeight }} className="flex items-center">
                 {renderItem(item, actualIndex)}
               </div>
             );

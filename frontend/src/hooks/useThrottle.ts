@@ -1,4 +1,4 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback } from "react";
 
 /**
  * Custom hook for throttling function calls
@@ -6,17 +6,14 @@ import { useRef, useCallback } from 'react';
  * @param delay - The delay in milliseconds
  * @returns The throttled function
  */
-function useThrottle<T extends (...args: any[]) => any>(
-  callback: T,
-  delay: number
-): T {
+function useThrottle<T extends (...args: any[]) => any>(callback: T, delay: number): T {
   const lastCall = useRef<number>(0);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const throttledCallback = useCallback(
     (...args: Parameters<T>) => {
       const now = Date.now();
-      
+
       if (now - lastCall.current >= delay) {
         lastCall.current = now;
         callback(...args);
@@ -24,14 +21,17 @@ function useThrottle<T extends (...args: any[]) => any>(
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
         }
-        
-        timeoutRef.current = setTimeout(() => {
-          lastCall.current = Date.now();
-          callback(...args);
-        }, delay - (now - lastCall.current));
+
+        timeoutRef.current = setTimeout(
+          () => {
+            lastCall.current = Date.now();
+            callback(...args);
+          },
+          delay - (now - lastCall.current),
+        );
       }
     },
-    [callback, delay]
+    [callback, delay],
   ) as T;
 
   return throttledCallback;

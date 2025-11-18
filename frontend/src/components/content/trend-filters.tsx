@@ -1,8 +1,14 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { X } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { X } from "lucide-react";
 
 interface Filters {
   timeframe: string;
@@ -16,27 +22,27 @@ interface TrendFiltersProps {
 }
 
 const timeframes = [
-  { value: 'day', label: '今日' },
-  { value: 'week', label: '今週' },
-  { value: 'month', label: '今月' },
-  { value: 'quarter', label: '今四半期' },
-  { value: 'year', label: '今年' },
+  { value: "day", label: "今日" },
+  { value: "week", label: "今週" },
+  { value: "month", label: "今月" },
+  { value: "quarter", label: "今四半期" },
+  { value: "year", label: "今年" },
 ];
 
 const categories = [
-  { value: 'all', label: 'すべて' },
-  { value: 'libraries', label: 'ライブラリ' },
-  { value: 'frameworks', label: 'フレームワーク' },
-  { value: 'tools', label: 'ツール' },
-  { value: 'patterns', label: 'パターン' },
-  { value: 'ecosystem', label: 'エコシステム' },
+  { value: "all", label: "すべて" },
+  { value: "libraries", label: "ライブラリ" },
+  { value: "frameworks", label: "フレームワーク" },
+  { value: "tools", label: "ツール" },
+  { value: "patterns", label: "パターン" },
+  { value: "ecosystem", label: "エコシステム" },
 ];
 
 const sortOptions = [
-  { value: 'trending', label: 'トレンド順' },
-  { value: 'newest', label: '新しい順' },
-  { value: 'engagement', label: 'エンゲージメント順' },
-  { value: 'score', label: 'スコア順' },
+  { value: "trending", label: "トレンド順" },
+  { value: "newest", label: "新しい順" },
+  { value: "engagement", label: "エンゲージメント順" },
+  { value: "score", label: "スコア順" },
 ];
 
 export function TrendFilters({ filters, onFiltersChange }: TrendFiltersProps) {
@@ -54,16 +60,14 @@ export function TrendFilters({ filters, onFiltersChange }: TrendFiltersProps) {
 
   const clearFilters = () => {
     onFiltersChange({
-      timeframe: 'week',
-      category: 'all',
-      sortBy: 'trending',
+      timeframe: "week",
+      category: "all",
+      sortBy: "trending",
     });
   };
 
-  const hasActiveFilters = 
-    filters.timeframe !== 'week' || 
-    filters.category !== 'all' || 
-    filters.sortBy !== 'trending';
+  const hasActiveFilters =
+    filters.timeframe !== "week" || filters.category !== "all" || filters.sortBy !== "trending";
 
   return (
     <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -80,7 +84,7 @@ export function TrendFilters({ filters, onFiltersChange }: TrendFiltersProps) {
             ))}
           </SelectContent>
         </Select>
-        
+
         <Select value={filters.category} onValueChange={handleCategoryChange}>
           <SelectTrigger className="w-full sm:w-40">
             <SelectValue placeholder="カテゴリ" />
@@ -93,7 +97,7 @@ export function TrendFilters({ filters, onFiltersChange }: TrendFiltersProps) {
             ))}
           </SelectContent>
         </Select>
-        
+
         <Select value={filters.sortBy} onValueChange={handleSortChange}>
           <SelectTrigger className="w-full sm:w-40">
             <SelectValue placeholder="並び順" />
@@ -107,7 +111,7 @@ export function TrendFilters({ filters, onFiltersChange }: TrendFiltersProps) {
           </SelectContent>
         </Select>
       </div>
-      
+
       {hasActiveFilters && (
         <Button variant="outline" size="sm" onClick={clearFilters}>
           <X className="h-4 w-4 mr-2" />

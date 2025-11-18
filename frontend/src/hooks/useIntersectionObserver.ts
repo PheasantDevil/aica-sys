@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface UseIntersectionObserverOptions {
   threshold?: number | number[];
@@ -13,14 +13,9 @@ interface UseIntersectionObserverOptions {
  * @returns [ref, isIntersecting, entry]
  */
 function useIntersectionObserver(
-  options: UseIntersectionObserverOptions = {}
+  options: UseIntersectionObserverOptions = {},
 ): [React.RefObject<Element>, boolean, IntersectionObserverEntry | undefined] {
-  const {
-    threshold = 0,
-    root = null,
-    rootMargin = '0%',
-    freezeOnceVisible = false,
-  } = options;
+  const { threshold = 0, root = null, rootMargin = "0%", freezeOnceVisible = false } = options;
 
   const elementRef = useRef<Element>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -43,7 +38,7 @@ function useIntersectionObserver(
         threshold,
         root,
         rootMargin,
-      }
+      },
     );
 
     observer.observe(node);

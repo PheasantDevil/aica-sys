@@ -1,6 +1,6 @@
-import { SecurityUtils, apiRateLimiter } from './security';
+import { SecurityUtils, apiRateLimiter } from "./security";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export interface ApiResponse<T = any> {
   data?: T;
@@ -14,7 +14,7 @@ export class ApiError extends Error {
 
   constructor(message: string, status: number, response?: ApiResponse) {
     super(message);
-    this.name = 'ApiError';
+    this.name = "ApiError";
     this.status = status;
     this.response = response;
   }
@@ -35,14 +35,11 @@ export class ApiClient {
     return this.csrfToken;
   }
 
-  async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<ApiResponse<T>> {
+  async request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
     // Check rate limit
     if (!apiRateLimiter.isAllowed()) {
       return {
-        error: 'Rate limit exceeded. Please try again later.',
+        error: "Rate limit exceeded. Please try again later.",
       };
     }
 
@@ -53,9 +50,9 @@ export class ApiClient {
     const csrfToken = await this.getCSRFToken();
 
     const defaultHeaders = {
-      'Content-Type': 'application/json',
-      'X-Session-ID': sessionId || '',
-      'X-CSRF-Token': csrfToken,
+      "Content-Type": "application/json",
+      "X-Session-ID": sessionId || "",
+      "X-CSRF-Token": csrfToken,
     };
 
     const config: RequestInit = {
@@ -64,7 +61,7 @@ export class ApiClient {
         ...defaultHeaders,
         ...options.headers,
       },
-      credentials: 'include', // Include cookies for authentication
+      credentials: "include", // Include cookies for authentication
     };
 
     try {
@@ -73,13 +70,13 @@ export class ApiClient {
       // Handle different response types
       if (response.status === 429) {
         return {
-          error: 'Rate limit exceeded. Please try again later.',
+          error: "Rate limit exceeded. Please try again later.",
         };
       }
 
       if (response.status === 403) {
         return {
-          error: 'Access forbidden. Please check your permissions.',
+          error: "Access forbidden. Please check your permissions.",
         };
       }
 
@@ -87,50 +84,42 @@ export class ApiClient {
         // Clear session on unauthorized
         SecurityUtils.clearSession();
         return {
-          error: 'Authentication required. Please log in again.',
+          error: "Authentication required. Please log in again.",
         };
       }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.detail || `HTTP error! status: ${response.status}`
-        );
+        throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
       return { data };
     } catch (error) {
-      console.error('API request failed:', error);
+      console.error("API request failed:", error);
       return {
-        error:
-          error instanceof Error ? error.message : 'Unknown error occurred',
+        error: error instanceof Error ? error.message : "Unknown error occurred",
       };
     }
   }
 
   // Health check
   async healthCheck(): Promise<ApiResponse<{ status: string }>> {
-    return this.request('/health');
+    return this.request("/health");
   }
 
   // AI Analysis
-  async analyzeContent(
-    prompt: string
-  ): Promise<ApiResponse<{ analysis: string }>> {
-    return this.request('/ai/analyze', {
-      method: 'POST',
+  async analyzeContent(prompt: string): Promise<ApiResponse<{ analysis: string }>> {
+    return this.request("/ai/analyze", {
+      method: "POST",
       body: JSON.stringify({ prompt }),
     });
   }
 
   // Content Generation
-  async generateContent(
-    type: string,
-    topic: string
-  ): Promise<ApiResponse<{ content: string }>> {
-    return this.request('/ai/generate', {
-      method: 'POST',
+  async generateContent(type: string, topic: string): Promise<ApiResponse<{ content: string }>> {
+    return this.request("/ai/generate", {
+      method: "POST",
       body: JSON.stringify({ type, topic }),
     });
   }
@@ -144,14 +133,14 @@ export class ApiClient {
     limit?: number;
   }): Promise<ApiResponse<{ articles: any[]; total: number }>> {
     const searchParams = new URLSearchParams();
-    if (params?.category) searchParams.append('category', params.category);
-    if (params?.sortBy) searchParams.append('sortBy', params.sortBy);
-    if (params?.search) searchParams.append('search', params.search);
-    if (params?.page) searchParams.append('page', params.page.toString());
-    if (params?.limit) searchParams.append('limit', params.limit.toString());
+    if (params?.category) searchParams.append("category", params.category);
+    if (params?.sortBy) searchParams.append("sortBy", params.sortBy);
+    if (params?.search) searchParams.append("search", params.search);
+    if (params?.page) searchParams.append("page", params.page.toString());
+    if (params?.limit) searchParams.append("limit", params.limit.toString());
 
     const queryString = searchParams.toString();
-    const endpoint = queryString ? `/articles?${queryString}` : '/articles';
+    const endpoint = queryString ? `/articles?${queryString}` : "/articles";
 
     return this.request(endpoint);
   }
@@ -166,13 +155,11 @@ export class ApiClient {
     limit?: number;
   }): Promise<ApiResponse<{ newsletters: any[]; total: number }>> {
     const searchParams = new URLSearchParams();
-    if (params?.page) searchParams.append('page', params.page.toString());
-    if (params?.limit) searchParams.append('limit', params.limit.toString());
+    if (params?.page) searchParams.append("page", params.page.toString());
+    if (params?.limit) searchParams.append("limit", params.limit.toString());
 
     const queryString = searchParams.toString();
-    const endpoint = queryString
-      ? `/newsletters?${queryString}`
-      : '/newsletters';
+    const endpoint = queryString ? `/newsletters?${queryString}` : "/newsletters";
 
     return this.request(endpoint);
   }
@@ -190,14 +177,14 @@ export class ApiClient {
     limit?: number;
   }): Promise<ApiResponse<{ trends: any[]; total: number }>> {
     const searchParams = new URLSearchParams();
-    if (params?.timeframe) searchParams.append('timeframe', params.timeframe);
-    if (params?.category) searchParams.append('category', params.category);
-    if (params?.sortBy) searchParams.append('sortBy', params.sortBy);
-    if (params?.page) searchParams.append('page', params.page.toString());
-    if (params?.limit) searchParams.append('limit', params.limit.toString());
+    if (params?.timeframe) searchParams.append("timeframe", params.timeframe);
+    if (params?.category) searchParams.append("category", params.category);
+    if (params?.sortBy) searchParams.append("sortBy", params.sortBy);
+    if (params?.page) searchParams.append("page", params.page.toString());
+    if (params?.limit) searchParams.append("limit", params.limit.toString());
 
     const queryString = searchParams.toString();
-    const endpoint = queryString ? `/trends?${queryString}` : '/trends';
+    const endpoint = queryString ? `/trends?${queryString}` : "/trends";
 
     return this.request(endpoint);
   }
@@ -208,12 +195,12 @@ export class ApiClient {
 
   // Collection Jobs
   async getCollectionJobs(): Promise<ApiResponse<{ jobs: any[] }>> {
-    return this.request('/collection/jobs');
+    return this.request("/collection/jobs");
   }
 
   async createCollectionJob(config: any): Promise<ApiResponse<{ job: any }>> {
-    return this.request('/collection/jobs', {
-      method: 'POST',
+    return this.request("/collection/jobs", {
+      method: "POST",
       body: JSON.stringify(config),
     });
   }
@@ -228,13 +215,11 @@ export class ApiClient {
     limit?: number;
   }): Promise<ApiResponse<{ results: any[]; total: number }>> {
     const searchParams = new URLSearchParams();
-    if (params?.page) searchParams.append('page', params.page.toString());
-    if (params?.limit) searchParams.append('limit', params.limit.toString());
+    if (params?.page) searchParams.append("page", params.page.toString());
+    if (params?.limit) searchParams.append("limit", params.limit.toString());
 
     const queryString = searchParams.toString();
-    const endpoint = queryString
-      ? `/analysis/results?${queryString}`
-      : '/analysis/results';
+    const endpoint = queryString ? `/analysis/results?${queryString}` : "/analysis/results";
 
     return this.request(endpoint);
   }

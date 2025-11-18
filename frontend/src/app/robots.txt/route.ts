@@ -1,27 +1,27 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
-const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://aica-sys.vercel.app';
+const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://aica-sys.vercel.app";
 
 export async function GET(request: NextRequest) {
   try {
     const robotsTxt = generateRobotsTxt();
-    
+
     return new NextResponse(robotsTxt, {
       status: 200,
       headers: {
-        'Content-Type': 'text/plain',
-        'Cache-Control': 'public, max-age=86400, s-maxage=86400', // 24時間キャッシュ
+        "Content-Type": "text/plain",
+        "Cache-Control": "public, max-age=86400, s-maxage=86400", // 24時間キャッシュ
       },
     });
   } catch (error) {
-    console.error('Error generating robots.txt:', error);
-    return new NextResponse('Error generating robots.txt', { status: 500 });
+    console.error("Error generating robots.txt:", error);
+    return new NextResponse("Error generating robots.txt", { status: 500 });
   }
 }
 
 function generateRobotsTxt(): string {
-  const isProduction = process.env.NODE_ENV === 'production';
-  
+  const isProduction = process.env.NODE_ENV === "production";
+
   if (!isProduction) {
     // 開発環境では全てのクローラーをブロック
     return `User-agent: *

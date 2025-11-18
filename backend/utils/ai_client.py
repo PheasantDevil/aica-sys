@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 class AnalysisRequest(BaseModel):
     """Request model for AI analysis"""
+
     content: str
     content_type: str  # "github_commit", "rss_entry", "web_content", etc.
     context: Optional[str] = None
@@ -24,6 +25,7 @@ class AnalysisRequest(BaseModel):
 
 class AnalysisResponse(BaseModel):
     """Response model for AI analysis"""
+
     summary: str
     key_points: List[str]
     sentiment: str  # "positive", "neutral", "negative"
@@ -34,6 +36,7 @@ class AnalysisResponse(BaseModel):
 
 class ContentGenerationRequest(BaseModel):
     """Request model for content generation"""
+
     topic: str
     content_type: str  # "blog_post", "newsletter", "social_media"
     target_audience: str  # "beginner", "intermediate", "advanced"
@@ -43,6 +46,7 @@ class ContentGenerationRequest(BaseModel):
 
 class ContentGenerationResponse(BaseModel):
     """Response model for content generation"""
+
     title: str
     content: str
     summary: str
@@ -52,20 +56,22 @@ class ContentGenerationResponse(BaseModel):
 
 class AIClient:
     """Client for AI services (Groq and OpenAI)"""
-    
-    def __init__(self, groq_api_key: Optional[str] = None, openai_api_key: Optional[str] = None):
+
+    def __init__(
+        self, groq_api_key: Optional[str] = None, openai_api_key: Optional[str] = None
+    ):
         self.groq_api_key = groq_api_key or os.getenv("GROQ_API_KEY")
         self.openai_api_key = openai_api_key or os.getenv("OPENAI_API_KEY")
-        
+
         # Initialize Groq client
         if self.groq_api_key:
             self.groq_client = Groq(api_key=self.groq_api_key)
         else:
             self.groq_client = None
-        
+
         # OpenAI is kept as fallback (optional)
         self.openai_api_key = openai_api_key
-    
+
     async def analyze_content(self, request: AnalysisRequest) -> AnalysisResponse:
         """Analyze content using AI"""
         try:
@@ -76,7 +82,7 @@ class AIClient:
                 return await self._analyze_with_openai(request)
             else:
                 raise ValueError("No AI service configured")
-                
+
         except Exception as e:
             logger.error(f"Content analysis failed: {e}")
             # Return default response
@@ -86,10 +92,12 @@ class AIClient:
                 sentiment="neutral",
                 relevance_score=0.0,
                 category="unknown",
-                impact="low"
+                impact="low",
             )
-    
-    async def generate_content(self, request: ContentGenerationRequest) -> ContentGenerationResponse:
+
+    async def generate_content(
+        self, request: ContentGenerationRequest
+    ) -> ContentGenerationResponse:
         """Generate content using AI"""
         try:
             # Use Groq (Llama 3.1), fallback to OpenAI if needed
@@ -99,7 +107,7 @@ class AIClient:
                 return await self._generate_with_openai(request)
             else:
                 raise ValueError("No AI service configured")
-                
+
         except Exception as e:
             logger.error(f"Content generation failed: {e}")
             # Return default response
@@ -108,9 +116,9 @@ class AIClient:
                 content="Unable to generate content at this time.",
                 summary="Content generation failed",
                 tags=[],
-                estimated_read_time=1
+                estimated_read_time=1,
             )
-    
+
     async def _analyze_with_groq(self, request: AnalysisRequest) -> AnalysisResponse:
         """Analyze content using Groq (Llama 3.1 70B)"""
         prompt = f"""
@@ -136,22 +144,25 @@ class AIClient:
             "impact": "..."
         }}
         """
-        
+
         # Groq API call (synchronous, so wrap in asyncio.to_thread)
         def _call_groq():
             response = self.groq_client.chat.completions.create(
                 model="llama-3.3-70b-versatile",  # or "llama-3.1-8b-instant" for faster responses
                 messages=[
-                    {"role": "system", "content": "You are an expert TypeScript developer analyzing content for relevance to the TypeScript ecosystem. Always respond with valid JSON."},
-                    {"role": "user", "content": prompt}
+                    {
+                        "role": "system",
+                        "content": "You are an expert TypeScript developer analyzing content for relevance to the TypeScript ecosystem. Always respond with valid JSON.",
+                    },
+                    {"role": "user", "content": prompt},
                 ],
                 temperature=0.3,
-                max_tokens=1024
+                max_tokens=1024,
             )
             return response.choices[0].message.content
-        
+
         response_text = await asyncio.to_thread(_call_groq)
-        
+
         # Parse JSON response
         try:
             result = json.loads(response_text)
@@ -159,8 +170,10 @@ class AIClient:
         except json.JSONDecodeError:
             # Fallback parsing if JSON is malformed
             return self._parse_text_response(response_text)
-    
-    async def _generate_with_groq(self, request: ContentGenerationRequest) -> ContentGenerationResponse:
+
+    async def _generate_with_groq(
+        self, request: ContentGenerationRequest
+    ) -> ContentGenerationResponse:
         """Generate content using Groq (Llama 3.1 70B)"""
         prompt = f"""
         Generate a {request.content_type} about {request.topic} for {request.target_audience} TypeScript developers.
@@ -180,29 +193,32 @@ class AIClient:
         
         Format as valid JSON only.
         """
-        
+
         # Groq API call
         def _call_groq():
             response = self.groq_client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
                 messages=[
-                    {"role": "system", "content": "You are an expert TypeScript developer and technical writer. Always respond with valid JSON."},
-                    {"role": "user", "content": prompt}
+                    {
+                        "role": "system",
+                        "content": "You are an expert TypeScript developer and technical writer. Always respond with valid JSON.",
+                    },
+                    {"role": "user", "content": prompt},
                 ],
                 temperature=0.7,
-                max_tokens=2048
+                max_tokens=2048,
             )
             return response.choices[0].message.content
-        
+
         response_text = await asyncio.to_thread(_call_groq)
-        
+
         # Parse JSON response
         try:
             result = json.loads(response_text)
             return ContentGenerationResponse(**result)
         except json.JSONDecodeError:
             return self._parse_content_response(response_text)
-    
+
     async def _analyze_with_openai(self, request: AnalysisRequest) -> AnalysisResponse:
         """Analyze content using OpenAI (fallback)"""
         # OpenAI implementation kept for fallback
@@ -214,10 +230,12 @@ class AIClient:
             sentiment="neutral",
             relevance_score=0.5,
             category="unknown",
-            impact="low"
+            impact="low",
         )
-    
-    async def _generate_with_openai(self, request: ContentGenerationRequest) -> ContentGenerationResponse:
+
+    async def _generate_with_openai(
+        self, request: ContentGenerationRequest
+    ) -> ContentGenerationResponse:
         """Generate content using OpenAI (fallback)"""
         # OpenAI implementation kept for fallback
         logger.warning("OpenAI fallback not fully implemented")
@@ -226,9 +244,9 @@ class AIClient:
             content="Content generation using fallback mode.",
             summary="Fallback content",
             tags=["typescript"],
-            estimated_read_time=1
+            estimated_read_time=1,
         )
-    
+
     def _parse_text_response(self, text: str) -> AnalysisResponse:
         """Parse text response when JSON parsing fails"""
         return AnalysisResponse(
@@ -237,9 +255,9 @@ class AIClient:
             sentiment="neutral",
             relevance_score=0.5,
             category="unknown",
-            impact="medium"
+            impact="medium",
         )
-    
+
     def _parse_content_response(self, text: str) -> ContentGenerationResponse:
         """Parse content response when JSON parsing fails"""
         return ContentGenerationResponse(
@@ -247,5 +265,5 @@ class AIClient:
             content=text,
             summary=text[:100] + "..." if len(text) > 100 else text,
             tags=["typescript", "development"],
-            estimated_read_time=max(1, len(text.split()) // 200)
+            estimated_read_time=max(1, len(text.split()) // 200),
         )

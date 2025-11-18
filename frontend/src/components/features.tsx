@@ -1,4 +1,4 @@
-import { CheckCircle, Zap, Shield, BarChart3 } from 'lucide-react'
+import { CheckCircle, Zap, Shield, BarChart3 } from "lucide-react";
 
 export function Features() {
   const features = [
@@ -22,20 +22,18 @@ export function Features() {
       description: "収益、エンゲージメント、コンテンツ品質を詳細に分析",
       icon: BarChart3,
     },
-  ]
+  ];
 
   return (
     <section className="py-20">
       <div className="container">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
-            なぜAICA-SySなのか
-          </h2>
+          <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl">なぜAICA-SySなのか</h2>
           <p className="text-lg text-muted-foreground">
             TypeScript開発者向けに特化した、次世代のコンテンツ自動生成プラットフォーム
           </p>
         </div>
-        
+
         <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature) => (
             <div key={feature.title} className="text-center">
@@ -49,5 +47,5 @@ export function Features() {
         </div>
       </div>
     </section>
-  )
+  );
 }

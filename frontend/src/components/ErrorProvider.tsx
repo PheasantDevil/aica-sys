@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { errorHandler } from '@/lib/error-handler';
-import { createContext, ReactNode, useContext, useEffect } from 'react';
+import { errorHandler } from "@/lib/error-handler";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 
 interface ErrorContextType {
   handleError: (errorData: Partial<any>) => void;
@@ -21,9 +21,9 @@ interface ErrorProviderProps {
 export function ErrorProvider({ children }: ErrorProviderProps) {
   useEffect(() => {
     // Load persisted errors from localStorage
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       try {
-        const persistedErrors = localStorage.getItem('error_logs');
+        const persistedErrors = localStorage.getItem("error_logs");
         if (persistedErrors) {
           const errors = JSON.parse(persistedErrors);
           // Add persisted errors to the error handler
@@ -32,34 +32,27 @@ export function ErrorProvider({ children }: ErrorProviderProps) {
           });
         }
       } catch (error) {
-        console.warn('Failed to load persisted errors:', error);
+        console.warn("Failed to load persisted errors:", error);
       }
     }
   }, []);
 
   const contextValue: ErrorContextType = {
-    handleError: (errorData: Partial<any>) =>
-      errorHandler.handleError(errorData),
+    handleError: (errorData: Partial<any>) => errorHandler.handleError(errorData),
     getErrors: () => errorHandler.getErrors(),
-    getErrorsBySeverity: (severity: string) =>
-      errorHandler.getErrorsBySeverity(severity as any),
-    getErrorsByCategory: (category: string) =>
-      errorHandler.getErrorsByCategory(category as any),
+    getErrorsBySeverity: (severity: string) => errorHandler.getErrorsBySeverity(severity as any),
+    getErrorsByCategory: (category: string) => errorHandler.getErrorsByCategory(category as any),
     clearErrors: () => errorHandler.clearErrors(),
     getErrorStats: () => errorHandler.getErrorStats(),
   };
 
-  return (
-    <ErrorContext.Provider value={contextValue}>
-      {children}
-    </ErrorContext.Provider>
-  );
+  return <ErrorContext.Provider value={contextValue}>{children}</ErrorContext.Provider>;
 }
 
 export function useError() {
   const context = useContext(ErrorContext);
   if (context === undefined) {
-    throw new Error('useError must be used within an ErrorProvider');
+    throw new Error("useError must be used within an ErrorProvider");
   }
   return context;
 }

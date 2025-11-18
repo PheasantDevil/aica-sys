@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export interface ABTestConfig {
   id: string;
@@ -93,7 +93,7 @@ class ABTestingService {
 
     // バリアントを決定
     const variant = this.selectVariant(test);
-    
+
     // 結果を記録
     this.recordTestAssignment(testId, variant.id);
 
@@ -104,10 +104,7 @@ class ABTestingService {
    * コンバージョンイベントを記録
    */
   recordConversion(testId: string, event: ConversionEvent): void {
-    const result = this.results.find(r => 
-      r.testId === testId && 
-      r.sessionId === this.sessionId
-    );
+    const result = this.results.find((r) => r.testId === testId && r.sessionId === this.sessionId);
 
     if (result) {
       result.conversionEvents.push(event.eventType);
@@ -127,12 +124,12 @@ class ABTestingService {
       conversionRate: number;
     }>;
   } {
-    const testResults = this.results.filter(r => r.testId === testId);
-    const variantStats = new Map<string, { users: Set<string>, conversions: number }>();
+    const testResults = this.results.filter((r) => r.testId === testId);
+    const variantStats = new Map<string, { users: Set<string>; conversions: number }>();
 
-    testResults.forEach(result => {
+    testResults.forEach((result) => {
       const userKey = result.userId || result.sessionId;
-      
+
       if (!variantStats.has(result.variantId)) {
         variantStats.set(result.variantId, { users: new Set(), conversions: 0 });
       }
@@ -164,7 +161,7 @@ class ABTestingService {
     pValue: number;
   } {
     const results = this.getTestResults(testId);
-    
+
     if (results.variants.length < 2) {
       return { isSignificant: false, confidenceLevel: 0, pValue: 1 };
     }
@@ -182,14 +179,14 @@ class ABTestingService {
     const p1 = variantA.conversions / variantA.users;
     const p2 = variantB.conversions / variantB.users;
     const pooledP = totalConversions / totalUsers;
-    
-    const se = Math.sqrt(pooledP * (1 - pooledP) * (1/variantA.users + 1/variantB.users));
+
+    const se = Math.sqrt(pooledP * (1 - pooledP) * (1 / variantA.users + 1 / variantB.users));
     const z = Math.abs(p1 - p2) / se;
-    
+
     // 95%信頼区間での有意性
     const isSignificant = z > 1.96;
     const confidenceLevel = isSignificant ? 95 : 0;
-    const pValue = Math.max(0, 1 - (z / 1.96));
+    const pValue = Math.max(0, 1 - z / 1.96);
 
     return { isSignificant, confidenceLevel, pValue };
   }
@@ -200,7 +197,7 @@ class ABTestingService {
 
   private isUserInTrafficAllocation(test: ABTestConfig): boolean {
     const hash = this.hashString(`${this.userId || this.sessionId}_${test.id}`);
-    return (hash % 100) < test.trafficAllocation;
+    return hash % 100 < test.trafficAllocation;
   }
 
   private isUserInTargetAudience(test: ABTestConfig): boolean {
@@ -221,7 +218,7 @@ class ABTestingService {
   private selectVariant(test: ABTestConfig): ABTestVariant {
     const hash = this.hashString(`${this.userId || this.sessionId}_${test.id}_variant`);
     const randomValue = hash % 100;
-    
+
     let cumulativeWeight = 0;
     for (const variant of test.variants) {
       cumulativeWeight += variant.weight;
@@ -252,7 +249,7 @@ class ABTestingService {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
+      hash = (hash << 5) - hash + char;
       hash = hash & hash; // Convert to 32bit integer
     }
     return Math.abs(hash);
@@ -260,7 +257,7 @@ class ABTestingService {
 
   private loadTests(): void {
     try {
-      const saved = localStorage.getItem('ab_tests');
+      const saved = localStorage.getItem("ab_tests");
       if (saved) {
         const tests = JSON.parse(saved);
         tests.forEach((test: ABTestConfig) => {
@@ -272,22 +269,22 @@ class ABTestingService {
         });
       }
     } catch (error) {
-      console.error('Error loading A/B tests:', error);
+      console.error("Error loading A/B tests:", error);
     }
   }
 
   private saveTests(): void {
     try {
       const tests = Array.from(this.tests.values());
-      localStorage.setItem('ab_tests', JSON.stringify(tests));
+      localStorage.setItem("ab_tests", JSON.stringify(tests));
     } catch (error) {
-      console.error('Error saving A/B tests:', error);
+      console.error("Error saving A/B tests:", error);
     }
   }
 
   private loadResults(): void {
     try {
-      const saved = localStorage.getItem('ab_test_results');
+      const saved = localStorage.getItem("ab_test_results");
       if (saved) {
         const results = JSON.parse(saved);
         this.results = results.map((result: any) => ({
@@ -296,15 +293,15 @@ class ABTestingService {
         }));
       }
     } catch (error) {
-      console.error('Error loading A/B test results:', error);
+      console.error("Error loading A/B test results:", error);
     }
   }
 
   private saveResults(): void {
     try {
-      localStorage.setItem('ab_test_results', JSON.stringify(this.results));
+      localStorage.setItem("ab_test_results", JSON.stringify(this.results));
     } catch (error) {
-      console.error('Error saving A/B test results:', error);
+      console.error("Error saving A/B test results:", error);
     }
   }
 }
@@ -349,13 +346,13 @@ export function useABTestManagement() {
 
   useEffect(() => {
     // テスト一覧を取得
-    const testList = Array.from(abTestingService['tests'].values());
+    const testList = Array.from(abTestingService["tests"].values());
     setTests(testList);
   }, []);
 
   const createTest = (test: ABTestConfig) => {
     abTestingService.registerTest(test);
-    setTests(prev => [...prev, test]);
+    setTests((prev) => [...prev, test]);
   };
 
   const getTestResults = (testId: string) => {

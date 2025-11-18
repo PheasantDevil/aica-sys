@@ -1,9 +1,9 @@
-import AuditDashboard from '@/components/audit/audit-dashboard';
-import { Suspense } from 'react';
+import AuditDashboard from "@/components/audit/audit-dashboard";
+import { Suspense } from "react";
 
 export const metadata = {
-  title: 'Audit Dashboard - AICA-SyS',
-  description: 'Security audit and compliance monitoring for AICA-SyS.',
+  title: "Audit Dashboard - AICA-SyS",
+  description: "Security audit and compliance monitoring for AICA-SyS.",
 };
 
 const AuditPage = () => {

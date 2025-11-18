@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { TrendingUp, Calendar, BarChart3, ExternalLink, ArrowUp, ArrowDown } from 'lucide-react';
-import Link from 'next/link';
-import { formatDistanceToNow } from 'date-fns';
-import { ja } from 'date-fns/locale';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { TrendingUp, Calendar, BarChart3, ExternalLink, ArrowUp, ArrowDown } from "lucide-react";
+import Link from "next/link";
+import { formatDistanceToNow } from "date-fns";
+import { ja } from "date-fns/locale";
 
 interface Trend {
   id: string;
@@ -23,7 +23,7 @@ interface Trend {
   metrics: {
     mentions: number;
     growth: number;
-    sentiment: 'positive' | 'neutral' | 'negative';
+    sentiment: "positive" | "neutral" | "negative";
   };
 }
 
@@ -39,23 +39,23 @@ export function TrendCard({ trend }: TrendCardProps) {
 
   const getSentimentColor = (sentiment: string) => {
     switch (sentiment) {
-      case 'positive':
-        return 'text-green-600 bg-green-50 border-green-200';
-      case 'negative':
-        return 'text-red-600 bg-red-50 border-red-200';
+      case "positive":
+        return "text-green-600 bg-green-50 border-green-200";
+      case "negative":
+        return "text-red-600 bg-red-50 border-red-200";
       default:
-        return 'text-gray-600 bg-gray-50 border-gray-200';
+        return "text-gray-600 bg-gray-50 border-gray-200";
     }
   };
 
   const getSentimentLabel = (sentiment: string) => {
     switch (sentiment) {
-      case 'positive':
-        return 'ポジティブ';
-      case 'negative':
-        return 'ネガティブ';
+      case "positive":
+        return "ポジティブ";
+      case "negative":
+        return "ネガティブ";
       default:
-        return 'ニュートラル';
+        return "ニュートラル";
     }
   };
 
@@ -70,28 +70,20 @@ export function TrendCard({ trend }: TrendCardProps) {
           />
         </div>
       )}
-      
+
       <CardHeader>
         <div className="flex items-center justify-between mb-2">
           <Badge variant="secondary">{trend.category}</Badge>
-          {trend.isPremium && (
-            <Badge className="bg-yellow-500 text-white">
-              Premium
-            </Badge>
-          )}
+          {trend.isPremium && <Badge className="bg-yellow-500 text-white">Premium</Badge>}
         </div>
-        
+
         <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
-          <Link href={`/trends/${trend.id}`}>
-            {trend.title}
-          </Link>
+          <Link href={`/trends/${trend.id}`}>{trend.title}</Link>
         </CardTitle>
-        
-        <CardDescription className="line-clamp-2">
-          {trend.description}
-        </CardDescription>
+
+        <CardDescription className="line-clamp-2">{trend.description}</CardDescription>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         <div className="flex flex-wrap gap-1">
           {trend.tags.slice(0, 3).map((tag) => (
@@ -105,19 +97,19 @@ export function TrendCard({ trend }: TrendCardProps) {
             </Badge>
           )}
         </div>
-        
+
         <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <Calendar className="h-3 w-3" />
             <span>{timeAgo}</span>
           </div>
-          
+
           <div className="flex items-center gap-1">
             <TrendingUp className="h-3 w-3" />
             <span>スコア: {trend.trendScore}</span>
           </div>
         </div>
-        
+
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div className="flex items-center gap-2">
             <BarChart3 className="h-3 w-3 text-muted-foreground" />
@@ -131,27 +123,27 @@ export function TrendCard({ trend }: TrendCardProps) {
               <ArrowDown className="h-3 w-3 text-red-600" />
             )}
             <span className="text-muted-foreground">変化率:</span>
-            <span className={`font-medium ${
-              trend.changeRate >= 0 ? 'text-green-600' : 'text-red-600'
-            }`}>
+            <span
+              className={`font-medium ${trend.changeRate >= 0 ? "text-green-600" : "text-red-600"}`}
+            >
               {Math.abs(trend.changeRate)}%
             </span>
           </div>
         </div>
-        
+
         <div className="flex items-center justify-between">
-          <Badge 
-            variant="outline" 
+          <Badge
+            variant="outline"
             className={`text-xs ${getSentimentColor(trend.metrics.sentiment)}`}
           >
             {getSentimentLabel(trend.metrics.sentiment)}
           </Badge>
-          
+
           <span className="text-sm text-muted-foreground">
             エンゲージメント: {trend.engagement}%
           </span>
         </div>
-        
+
         <div className="pt-2">
           <Button variant="outline" size="sm" className="w-full" asChild>
             <Link href={`/trends/${trend.id}`}>

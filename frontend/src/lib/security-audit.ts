@@ -11,23 +11,23 @@ interface SecurityEvent {
 }
 
 enum SecurityEventType {
-  LOGIN_SUCCESS = 'LOGIN_SUCCESS',
-  LOGIN_FAILURE = 'LOGIN_FAILURE',
-  LOGOUT = 'LOGOUT',
-  PASSWORD_CHANGE = 'PASSWORD_CHANGE',
-  RATE_LIMIT_EXCEEDED = 'RATE_LIMIT_EXCEEDED',
-  CSRF_VIOLATION = 'CSRF_VIOLATION',
-  SUSPICIOUS_ACTIVITY = 'SUSPICIOUS_ACTIVITY',
-  UNAUTHORIZED_ACCESS = 'UNAUTHORIZED_ACCESS',
-  DATA_BREACH_ATTEMPT = 'DATA_BREACH_ATTEMPT',
-  MALICIOUS_INPUT = 'MALICIOUS_INPUT',
+  LOGIN_SUCCESS = "LOGIN_SUCCESS",
+  LOGIN_FAILURE = "LOGIN_FAILURE",
+  LOGOUT = "LOGOUT",
+  PASSWORD_CHANGE = "PASSWORD_CHANGE",
+  RATE_LIMIT_EXCEEDED = "RATE_LIMIT_EXCEEDED",
+  CSRF_VIOLATION = "CSRF_VIOLATION",
+  SUSPICIOUS_ACTIVITY = "SUSPICIOUS_ACTIVITY",
+  UNAUTHORIZED_ACCESS = "UNAUTHORIZED_ACCESS",
+  DATA_BREACH_ATTEMPT = "DATA_BREACH_ATTEMPT",
+  MALICIOUS_INPUT = "MALICIOUS_INPUT",
 }
 
 enum SecuritySeverity {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL',
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  CRITICAL = "CRITICAL",
 }
 
 class SecurityAuditLogger {
@@ -53,7 +53,7 @@ class SecurityAuditLogger {
     details: Record<string, any>,
     userId?: string,
     ipAddress?: string,
-    userAgent?: string
+    userAgent?: string,
   ): string {
     const event: SecurityEvent = {
       id: this.generateId(),
@@ -61,8 +61,8 @@ class SecurityAuditLogger {
       type,
       severity,
       userId,
-      ipAddress: ipAddress || 'unknown',
-      userAgent: userAgent || 'unknown',
+      ipAddress: ipAddress || "unknown",
+      userAgent: userAgent || "unknown",
       details,
       resolved: false,
     };
@@ -71,10 +71,10 @@ class SecurityAuditLogger {
     this.cleanup();
 
     // 本番環境では外部ログサービスに送信
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       this.sendToExternalService(event);
     } else {
-      console.warn('Security Event:', event);
+      console.warn("Security Event:", event);
     }
 
     return event.id;
@@ -83,9 +83,9 @@ class SecurityAuditLogger {
   private async sendToExternalService(event: SecurityEvent): Promise<void> {
     try {
       // 実際の実装では、Sentry、DataDog、CloudWatch等に送信
-      console.log('Sending security event to external service:', event);
+      console.log("Sending security event to external service:", event);
     } catch (error) {
-      console.error('Failed to send security event:', error);
+      console.error("Failed to send security event:", error);
     }
   }
 
@@ -101,22 +101,22 @@ class SecurityAuditLogger {
 
     if (filters) {
       if (filters.type) {
-        filteredEvents = filteredEvents.filter(event => event.type === filters.type);
+        filteredEvents = filteredEvents.filter((event) => event.type === filters.type);
       }
       if (filters.severity) {
-        filteredEvents = filteredEvents.filter(event => event.severity === filters.severity);
+        filteredEvents = filteredEvents.filter((event) => event.severity === filters.severity);
       }
       if (filters.userId) {
-        filteredEvents = filteredEvents.filter(event => event.userId === filters.userId);
+        filteredEvents = filteredEvents.filter((event) => event.userId === filters.userId);
       }
       if (filters.resolved !== undefined) {
-        filteredEvents = filteredEvents.filter(event => event.resolved === filters.resolved);
+        filteredEvents = filteredEvents.filter((event) => event.resolved === filters.resolved);
       }
       if (filters.startDate) {
-        filteredEvents = filteredEvents.filter(event => event.timestamp >= filters.startDate!);
+        filteredEvents = filteredEvents.filter((event) => event.timestamp >= filters.startDate!);
       }
       if (filters.endDate) {
-        filteredEvents = filteredEvents.filter(event => event.timestamp <= filters.endDate!);
+        filteredEvents = filteredEvents.filter((event) => event.timestamp <= filters.endDate!);
       }
     }
 
@@ -124,7 +124,7 @@ class SecurityAuditLogger {
   }
 
   markAsResolved(eventId: string): boolean {
-    const event = this.events.find(e => e.id === eventId);
+    const event = this.events.find((e) => e.id === eventId);
     if (event) {
       event.resolved = true;
       return true;
@@ -146,15 +146,15 @@ class SecurityAuditLogger {
     };
 
     // 初期化
-    Object.values(SecurityEventType).forEach(type => {
+    Object.values(SecurityEventType).forEach((type) => {
       stats.eventsByType[type] = 0;
     });
-    Object.values(SecuritySeverity).forEach(severity => {
+    Object.values(SecuritySeverity).forEach((severity) => {
       stats.eventsBySeverity[severity] = 0;
     });
 
     // 集計
-    this.events.forEach(event => {
+    this.events.forEach((event) => {
       stats.eventsByType[event.type]++;
       stats.eventsBySeverity[event.severity]++;
       if (!event.resolved) {
@@ -177,7 +177,7 @@ export const securityEvents = {
       { userId },
       userId,
       ipAddress,
-      userAgent
+      userAgent,
     );
   },
 
@@ -188,7 +188,7 @@ export const securityEvents = {
       { email, reason },
       undefined,
       ipAddress,
-      userAgent
+      userAgent,
     );
   },
 
@@ -199,7 +199,7 @@ export const securityEvents = {
       { endpoint },
       undefined,
       ipAddress,
-      userAgent
+      userAgent,
     );
   },
 
@@ -210,7 +210,7 @@ export const securityEvents = {
       { userId },
       userId,
       ipAddress,
-      userAgent
+      userAgent,
     );
   },
 
@@ -221,7 +221,7 @@ export const securityEvents = {
       details,
       undefined,
       ipAddress,
-      userAgent
+      userAgent,
     );
   },
 
@@ -232,7 +232,7 @@ export const securityEvents = {
       { input: input.substring(0, 100) }, // 入力の最初の100文字のみ記録
       undefined,
       ipAddress,
-      userAgent
+      userAgent,
     );
   },
 };

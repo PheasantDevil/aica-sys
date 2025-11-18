@@ -14,6 +14,7 @@ from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, St
 
 class AffiliateStatus(str, Enum):
     """アフィリエイトステータス"""
+
     PENDING = "pending"
     ACTIVE = "active"
     SUSPENDED = "suspended"
@@ -22,6 +23,7 @@ class AffiliateStatus(str, Enum):
 
 class RewardType(str, Enum):
     """報酬タイプ"""
+
     FIXED = "fixed"  # 定額
     PERCENTAGE = "percentage"  # パーセント
     TIERED = "tiered"  # 段階制
@@ -29,6 +31,7 @@ class RewardType(str, Enum):
 
 class PayoutStatus(str, Enum):
     """支払いステータス"""
+
     PENDING = "pending"
     PROCESSING = "processing"
     COMPLETED = "completed"
@@ -37,6 +40,7 @@ class PayoutStatus(str, Enum):
 
 class ConversionStatus(str, Enum):
     """コンバージョンステータス"""
+
     PENDING = "pending"
     APPROVED = "approved"
     REJECTED = "rejected"
@@ -45,6 +49,7 @@ class ConversionStatus(str, Enum):
 # SQLAlchemy Models
 class AffiliateDB(Base):
     """アフィリエイトDBモデル"""
+
     __tablename__ = "affiliates"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -63,6 +68,7 @@ class AffiliateDB(Base):
 
 class ReferralLinkDB(Base):
     """紹介リンクDBモデル"""
+
     __tablename__ = "referral_links"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -78,6 +84,7 @@ class ReferralLinkDB(Base):
 
 class ClickTrackingDB(Base):
     """クリック追跡DBモデル"""
+
     __tablename__ = "click_tracking"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -91,6 +98,7 @@ class ClickTrackingDB(Base):
 
 class ConversionDB(Base):
     """コンバージョンDBモデル"""
+
     __tablename__ = "conversions"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -108,6 +116,7 @@ class ConversionDB(Base):
 
 class CommissionRuleDB(Base):
     """報酬ルールDBモデル"""
+
     __tablename__ = "commission_rules"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -122,6 +131,7 @@ class CommissionRuleDB(Base):
 
 class PayoutDB(Base):
     """支払いDBモデル"""
+
     __tablename__ = "payouts"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -137,6 +147,7 @@ class PayoutDB(Base):
 
 class AffiliateCouponDB(Base):
     """アフィリエイト専用クーポンDBモデル"""
+
     __tablename__ = "affiliate_coupons"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -154,6 +165,7 @@ class AffiliateCouponDB(Base):
 # Pydantic Models
 class Affiliate(BaseModel):
     """アフィリエイトモデル"""
+
     id: int
     user_id: str
     affiliate_code: str
@@ -173,6 +185,7 @@ class Affiliate(BaseModel):
 
 class ReferralLink(BaseModel):
     """紹介リンクモデル"""
+
     id: int
     affiliate_id: int
     link_code: str
@@ -189,6 +202,7 @@ class ReferralLink(BaseModel):
 
 class ClickTracking(BaseModel):
     """クリック追跡モデル"""
+
     id: int
     referral_link_id: int
     affiliate_id: int
@@ -203,6 +217,7 @@ class ClickTracking(BaseModel):
 
 class Conversion(BaseModel):
     """コンバージョンモデル"""
+
     id: int
     affiliate_id: int
     referral_link_id: int
@@ -221,6 +236,7 @@ class Conversion(BaseModel):
 
 class CommissionRule(BaseModel):
     """報酬ルールモデル"""
+
     id: int
     tier: str
     reward_type: str
@@ -236,6 +252,7 @@ class CommissionRule(BaseModel):
 
 class Payout(BaseModel):
     """支払いモデル"""
+
     id: int
     affiliate_id: int
     amount: float
@@ -252,6 +269,7 @@ class Payout(BaseModel):
 
 class AffiliateCoupon(BaseModel):
     """アフィリエイト専用クーポンモデル"""
+
     id: int
     affiliate_id: int
     coupon_code: str
@@ -265,4 +283,3 @@ class AffiliateCoupon(BaseModel):
 
     class Config:
         from_attributes = True
-

@@ -9,9 +9,9 @@ export interface OptimizedImageProps {
   width: number;
   height: number;
   quality?: number;
-  format?: 'webp' | 'avif' | 'jpeg' | 'png';
+  format?: "webp" | "avif" | "jpeg" | "png";
   priority?: boolean;
-  placeholder?: 'blur' | 'empty';
+  placeholder?: "blur" | "empty";
   blurDataURL?: string;
 }
 
@@ -25,8 +25,8 @@ export interface CDNConfig {
 
 // CDN設定
 const CDN_CONFIG: CDNConfig = {
-  baseUrl: process.env.NEXT_PUBLIC_CDN_URL || '',
-  fallbackUrl: process.env.NEXT_PUBLIC_FALLBACK_URL || '',
+  baseUrl: process.env.NEXT_PUBLIC_CDN_URL || "",
+  fallbackUrl: process.env.NEXT_PUBLIC_FALLBACK_URL || "",
   enableWebP: true,
   enableAVIF: true,
   quality: 80,
@@ -39,9 +39,9 @@ export function optimizeImageUrl(
   src: string,
   width: number,
   height: number,
-  options: Partial<OptimizedImageProps> = {}
+  options: Partial<OptimizedImageProps> = {},
 ): string {
-  const { quality = CDN_CONFIG.quality, format = 'auto' } = options;
+  const { quality = CDN_CONFIG.quality, format = "auto" } = options;
 
   // CDNが設定されている場合
   if (CDN_CONFIG.baseUrl) {
@@ -49,7 +49,7 @@ export function optimizeImageUrl(
       w: width.toString(),
       h: height.toString(),
       q: quality.toString(),
-      f: format === 'auto' ? 'auto' : format,
+      f: format === "auto" ? "auto" : format,
     });
 
     return `${CDN_CONFIG.baseUrl}/${src}?${params.toString()}`;
@@ -69,46 +69,46 @@ export function optimizeImageUrl(
 export function generateSrcSet(
   src: string,
   sizes: number[],
-  options: Partial<OptimizedImageProps> = {}
+  options: Partial<OptimizedImageProps> = {},
 ): string {
   return sizes
-    .map(size => {
+    .map((size) => {
       const url = optimizeImageUrl(src, size, size, options);
       return `${url} ${size}w`;
     })
-    .join(', ');
+    .join(", ");
 }
 
 /**
  * 画像のプレースホルダーを生成
  */
 export function generateBlurDataURL(width: number, height: number): string {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
 
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return '';
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return "";
 
   // シンプルなグラデーション
   const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, '#f3f4f6');
-  gradient.addColorStop(1, '#e5e7eb');
+  gradient.addColorStop(0, "#f3f4f6");
+  gradient.addColorStop(1, "#e5e7eb");
 
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
 
-  return canvas.toDataURL('image/jpeg', 0.1);
+  return canvas.toDataURL("image/jpeg", 0.1);
 }
 
 /**
  * アセットのプリロード
  */
 export function preloadAsset(href: string, as: string, type?: string): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
 
-  const link = document.createElement('link');
-  link.rel = 'preload';
+  const link = document.createElement("link");
+  link.rel = "preload";
   link.href = href;
   link.as = as;
 
@@ -122,32 +122,29 @@ export function preloadAsset(href: string, as: string, type?: string): void {
 /**
  * フォントのプリロード
  */
-export function preloadFont(href: string, type: string = 'font/woff2'): void {
-  preloadAsset(href, 'font', type);
+export function preloadFont(href: string, type: string = "font/woff2"): void {
+  preloadAsset(href, "font", type);
 }
 
 /**
  * 画像のプリロード
  */
 export function preloadImage(href: string): void {
-  preloadAsset(href, 'image');
+  preloadAsset(href, "image");
 }
 
 /**
  * スクリプトのプリロード
  */
-export function preloadScript(
-  href: string,
-  type: string = 'text/javascript'
-): void {
-  preloadAsset(href, 'script', type);
+export function preloadScript(href: string, type: string = "text/javascript"): void {
+  preloadAsset(href, "script", type);
 }
 
 /**
  * スタイルシートのプリロード
  */
 export function preloadStylesheet(href: string): void {
-  preloadAsset(href, 'style', 'text/css');
+  preloadAsset(href, "style", "text/css");
 }
 
 /**
@@ -156,11 +153,11 @@ export function preloadStylesheet(href: string): void {
 export function lazyLoadAsset(
   element: HTMLElement,
   callback: () => void,
-  options: IntersectionObserverInit = {}
+  options: IntersectionObserverInit = {},
 ): IntersectionObserver {
   const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
+    (entries) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           callback();
           observer.unobserve(entry.target);
@@ -168,10 +165,10 @@ export function lazyLoadAsset(
       });
     },
     {
-      rootMargin: '50px',
+      rootMargin: "50px",
       threshold: 0.1,
       ...options,
-    }
+    },
   );
 
   observer.observe(element);
@@ -184,11 +181,11 @@ export function lazyLoadAsset(
 export function lazyLoadImage(
   img: HTMLImageElement,
   src: string,
-  options: Partial<OptimizedImageProps> = {}
+  options: Partial<OptimizedImageProps> = {},
 ): IntersectionObserver {
   return lazyLoadAsset(img, () => {
     img.src = optimizeImageUrl(src, img.width, img.height, options);
-    img.classList.add('loaded');
+    img.classList.add("loaded");
   });
 }
 
@@ -234,13 +231,13 @@ export const assetCache = new AssetCache();
  */
 export const ASSET_OPTIMIZATION = {
   images: {
-    formats: ['image/webp', 'image/avif'],
+    formats: ["image/webp", "image/avif"],
     quality: 80,
     sizes: [320, 640, 768, 1024, 1280, 1920],
   },
   fonts: {
     preload: true,
-    display: 'swap',
+    display: "swap",
   },
   scripts: {
     defer: true,

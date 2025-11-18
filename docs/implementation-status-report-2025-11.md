@@ -644,6 +644,10 @@ TypeScript エコシステム特化型の AI 自動コンテンツ生成・販�
   ```bash
   python3 scripts/generate_daily_article.py
   ```
+- [ ] ローカル動作確認（モックデータ）
+  ```bash
+  python3 scripts/generate_daily_article.py --mock-data --max-articles 1
+  ```
 - [ ] GitHub Actions 手動トリガー
   ```bash
   gh workflow run daily-articles.yml

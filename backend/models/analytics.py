@@ -14,6 +14,7 @@ from sqlalchemy import JSON, Boolean, Column, DateTime, Float, Integer, String, 
 
 class ReportType(str, Enum):
     """レポートタイプ"""
+
     REVENUE = "revenue"
     USERS = "users"
     CONTENT = "content"
@@ -24,6 +25,7 @@ class ReportType(str, Enum):
 
 class ReportFormat(str, Enum):
     """レポートフォーマット"""
+
     PDF = "pdf"
     CSV = "csv"
     EXCEL = "excel"
@@ -32,6 +34,7 @@ class ReportFormat(str, Enum):
 
 class ScheduleFrequency(str, Enum):
     """スケジュール頻度"""
+
     DAILY = "daily"
     WEEKLY = "weekly"
     MONTHLY = "monthly"
@@ -40,6 +43,7 @@ class ScheduleFrequency(str, Enum):
 # SQLAlchemy Models
 class AnalyticsEventDB(Base):
     """アナリティクスイベントDBモデル"""
+
     __tablename__ = "analytics_events"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -52,6 +56,7 @@ class AnalyticsEventDB(Base):
 
 class MetricSnapshotDB(Base):
     """メトリックスナップショットDBモデル"""
+
     __tablename__ = "metric_snapshots"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -63,6 +68,7 @@ class MetricSnapshotDB(Base):
 
 class ReportDB(Base):
     """レポートDBモデル"""
+
     __tablename__ = "reports"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -79,6 +85,7 @@ class ReportDB(Base):
 
 class ScheduledReportDB(Base):
     """スケジュールレポートDBモデル"""
+
     __tablename__ = "scheduled_reports"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -95,6 +102,7 @@ class ScheduledReportDB(Base):
 
 class DashboardDB(Base):
     """ダッシュボードDBモデル"""
+
     __tablename__ = "dashboards"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -109,6 +117,7 @@ class DashboardDB(Base):
 
 class UserSegmentDB(Base):
     """ユーザーセグメントDBモデル"""
+
     __tablename__ = "user_segments"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -123,6 +132,7 @@ class UserSegmentDB(Base):
 # Pydantic Models
 class AnalyticsEvent(BaseModel):
     """アナリティクスイベントモデル"""
+
     id: int
     event_type: str
     user_id: Optional[str] = None
@@ -136,6 +146,7 @@ class AnalyticsEvent(BaseModel):
 
 class MetricSnapshot(BaseModel):
     """メトリックスナップショットモデル"""
+
     id: int
     metric_name: str
     metric_value: float
@@ -148,6 +159,7 @@ class MetricSnapshot(BaseModel):
 
 class Report(BaseModel):
     """レポートモデル"""
+
     id: int
     report_type: str
     title: str
@@ -165,6 +177,7 @@ class Report(BaseModel):
 
 class ScheduledReport(BaseModel):
     """スケジュールレポートモデル"""
+
     id: int
     report_type: str
     title: str
@@ -182,6 +195,7 @@ class ScheduledReport(BaseModel):
 
 class Dashboard(BaseModel):
     """ダッシュボードモデル"""
+
     id: int
     name: str
     description: Optional[str] = None
@@ -197,6 +211,7 @@ class Dashboard(BaseModel):
 
 class UserSegment(BaseModel):
     """ユーザーセグメントモデル"""
+
     id: int
     name: str
     description: Optional[str] = None
@@ -207,4 +222,3 @@ class UserSegment(BaseModel):
 
     class Config:
         from_attributes = True
-

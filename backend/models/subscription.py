@@ -30,16 +30,22 @@ class SubscriptionStatus(str, Enum):
 class Subscription(Base):
     __tablename__ = "subscriptions"
 
-    id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id: Mapped[str] = mapped_column(
+        UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4())
+    )
     user_id: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
     plan: Mapped[SubscriptionPlan] = mapped_column(String(50), nullable=False)
     status: Mapped[SubscriptionStatus] = mapped_column(String(50), nullable=False)
     current_period_start: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     current_period_end: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     cancel_at_period_end: Mapped[bool] = mapped_column(Boolean, default=False)
-    stripe_subscription_id: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    stripe_subscription_id: Mapped[Optional[str]] = mapped_column(
+        String(255), nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
 
     def __repr__(self) -> str:
         return f"<Subscription(id={self.id}, user_id={self.user_id}, plan={self.plan})>"

@@ -1,4 +1,4 @@
-import { randomBytes, createHmac } from 'crypto';
+import { randomBytes, createHmac } from "crypto";
 
 interface CSRFConfig {
   secret: string;
@@ -7,7 +7,7 @@ interface CSRFConfig {
 }
 
 const defaultConfig: CSRFConfig = {
-  secret: process.env.CSRF_SECRET || 'your-csrf-secret-key',
+  secret: process.env.CSRF_SECRET || "your-csrf-secret-key",
   tokenLength: 32,
   maxAge: 60 * 60 * 1000, // 1時間
 };
@@ -22,18 +22,18 @@ class CSRFProtection {
 
   // CSRFトークンを生成
   generateToken(sessionId: string): string {
-    const token = randomBytes(this.config.tokenLength).toString('hex');
+    const token = randomBytes(this.config.tokenLength).toString("hex");
     const expires = Date.now() + this.config.maxAge;
-    
+
     this.tokenStore.set(sessionId, { token, expires });
-    
+
     return token;
   }
 
   // CSRFトークンを検証
   validateToken(sessionId: string, token: string): boolean {
     const stored = this.tokenStore.get(sessionId);
-    
+
     if (!stored) {
       return false;
     }
@@ -57,23 +57,21 @@ class CSRFProtection {
   cleanup(): void {
     const now = Date.now();
     const keysToDelete: string[] = [];
-    
+
     this.tokenStore.forEach(({ expires }, sessionId) => {
       if (now > expires) {
         keysToDelete.push(sessionId);
       }
     });
-    
-    keysToDelete.forEach(sessionId => {
+
+    keysToDelete.forEach((sessionId) => {
       this.tokenStore.delete(sessionId);
     });
   }
 
   // トークンのハッシュ値を生成（セキュアな比較用）
   generateTokenHash(token: string): string {
-    return createHmac('sha256', this.config.secret)
-      .update(token)
-      .digest('hex');
+    return createHmac("sha256", this.config.secret).update(token).digest("hex");
   }
 }
 
@@ -81,10 +79,13 @@ class CSRFProtection {
 export const csrfProtection = new CSRFProtection();
 
 // 定期的なクリーンアップ（5分ごと）
-if (typeof window !== 'undefined') {
-  setInterval(() => {
-    csrfProtection.cleanup();
-  }, 5 * 60 * 1000);
+if (typeof window !== "undefined") {
+  setInterval(
+    () => {
+      csrfProtection.cleanup();
+    },
+    5 * 60 * 1000,
+  );
 }
 
 // クライアントサイド用のCSRFトークン管理
@@ -102,9 +103,9 @@ export class CSRFClient {
     }
 
     try {
-      const response = await fetch('/api/csrf/token', {
-        method: 'GET',
-        credentials: 'include',
+      const response = await fetch("/api/csrf/token", {
+        method: "GET",
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -113,7 +114,7 @@ export class CSRFClient {
         return this.token;
       }
     } catch (error) {
-      console.error('Failed to get CSRF token:', error);
+      console.error("Failed to get CSRF token:", error);
     }
 
     return null;
@@ -134,7 +135,7 @@ export class CSRFClient {
     }
 
     return {
-      'X-CSRF-Token': this.token,
+      "X-CSRF-Token": this.token,
     };
   }
 }

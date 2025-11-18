@@ -23,37 +23,59 @@ class ContentAutomationService:
         self.db = db
         self.ai_client = AIClient(groq_api_key=groq_api_key)
 
-    async def analyze_trends(self, source_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    async def analyze_trends(
+        self, source_data: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
         """トレンド分析"""
         # キーワード抽出
         keywords = []
         for item in source_data:
-            title_words = item.get('title', '').lower().split()
+            title_words = item.get("title", "").lower().split()
             keywords.extend(title_words)
 
         # 頻度分析
         keyword_freq = Counter(keywords)
         # 一般的な単語を除外
-        stopwords = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for'}
-        keyword_freq_filtered = {k: v for k, v in keyword_freq.items() if k not in stopwords and len(k) > 3}
+        stopwords = {
+            "the",
+            "a",
+            "an",
+            "and",
+            "or",
+            "but",
+            "in",
+            "on",
+            "at",
+            "to",
+            "for",
+        }
+        keyword_freq_filtered = {
+            k: v for k, v in keyword_freq.items() if k not in stopwords and len(k) > 3
+        }
 
         # トップトレンド抽出（頻度順にソート）
-        top_keywords = sorted(keyword_freq_filtered.items(), key=lambda x: x[1], reverse=True)[:20]
+        top_keywords = sorted(
+            keyword_freq_filtered.items(), key=lambda x: x[1], reverse=True
+        )[:20]
 
         # トレンドグルーピング
         trends = []
         for keyword, count in top_keywords[:10]:
-            related_items = [item for item in source_data if keyword in item.get('title', '').lower()]
+            related_items = [
+                item for item in source_data if keyword in item.get("title", "").lower()
+            ]
             if len(related_items) >= 2:  # 複数ソースで言及
-                trends.append({
-                    'keyword': keyword,
-                    'score': count * len(related_items),
-                    'source_count': len(related_items),
-                    'related_items': related_items
-                })
+                trends.append(
+                    {
+                        "keyword": keyword,
+                        "score": count * len(related_items),
+                        "source_count": len(related_items),
+                        "related_items": related_items,
+                    }
+                )
 
         # スコアでソート
-        trends.sort(key=lambda x: x['score'], reverse=True)
+        trends.sort(key=lambda x: x["score"], reverse=True)
         return trends[:5]
 
     async def generate_article(self, trend: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -63,48 +85,48 @@ class ContentAutomationService:
         try:
             # トレンド情報から詳細なトピックを構築
             topic = self._build_topic_description(trend)
-            
+
             # Groq APIで記事生成
             generation_request = ContentGenerationRequest(
                 topic=topic,
                 content_type="blog_post",
                 target_audience="intermediate",
                 length="long",
-                style="technical"
+                style="technical",
             )
-            
+
             response = await self.ai_client.generate_content(generation_request)
-            
+
             # 参考リソースを追加
             resources_section = self._generate_resources(trend)
             full_content = f"{response.content}\n\n## 参考リソース\n{resources_section}"
-            
+
             quality_score = self._evaluate_quality(full_content, response)
             generation_time = time.time() - start_time
 
             # SEOメタデータ生成
             seo_data = {
-                'keywords': response.tags,
-                'description': response.summary,
-                'og_title': response.title,
-                'og_description': response.summary
+                "keywords": response.tags,
+                "description": response.summary,
+                "og_title": response.title,
+                "og_description": response.summary,
             }
 
             return {
-                'title': response.title,
-                'content': full_content,
-                'summary': response.summary,
-                'tags': response.tags,
-                'quality_score': quality_score,
-                'generation_time': generation_time,
-                'read_time': response.estimated_read_time,
-                'seo_data': seo_data,
-                'metadata': {
-                    'keyword': trend['keyword'],
-                    'source_count': trend['source_count'],
-                    'trend_score': trend['score'],
-                    'ai_model': 'groq-llama-3.3-70b'
-                }
+                "title": response.title,
+                "content": full_content,
+                "summary": response.summary,
+                "tags": response.tags,
+                "quality_score": quality_score,
+                "generation_time": generation_time,
+                "read_time": response.estimated_read_time,
+                "seo_data": seo_data,
+                "metadata": {
+                    "keyword": trend["keyword"],
+                    "source_count": trend["source_count"],
+                    "trend_score": trend["score"],
+                    "ai_model": "groq-llama-3.3-70b",
+                },
             }
 
         except Exception as e:
@@ -113,39 +135,39 @@ class ContentAutomationService:
 
     def _build_topic_description(self, trend: Dict[str, Any]) -> str:
         """トレンド情報から詳細なトピック説明を構築"""
-        keyword = trend['keyword']
-        source_count = trend['source_count']
-        related_items = trend.get('related_items', [])
-        
+        keyword = trend["keyword"]
+        source_count = trend["source_count"]
+        related_items = trend.get("related_items", [])
+
         # 関連記事のタイトルから文脈を抽出
-        context_titles = [item.get('title', '') for item in related_items[:3]]
-        context = ' | '.join(context_titles) if context_titles else ''
-        
+        context_titles = [item.get("title", "") for item in related_items[:3]]
+        context = " | ".join(context_titles) if context_titles else ""
+
         topic = f"{keyword}（TypeScript開発トレンド）"
         if context:
             topic += f" - 文脈: {context}"
-        
+
         topic += f" - {source_count}以上のソースで言及された注目技術"
         return topic
 
     def _generate_resources(self, trend: Dict[str, Any]) -> str:
         """リソースリンク生成"""
         resources = []
-        for item in trend.get('related_items', [])[:5]:
-            title = item.get('title', 'リソース')
-            url = item.get('source_url', '#')
-            source_type = item.get('source_type', 'unknown')
+        for item in trend.get("related_items", [])[:5]:
+            title = item.get("title", "リソース")
+            url = item.get("source_url", "#")
+            source_type = item.get("source_type", "unknown")
             resources.append(f"- [{title}]({url}) ({source_type})")
-        
+
         if not resources:
             resources.append("- 関連リソースは随時更新されます")
-        
-        return '\n'.join(resources)
+
+        return "\n".join(resources)
 
     def _evaluate_quality(self, content: str, ai_response: Any = None) -> float:
         """品質評価（改善版）"""
         score = 60.0
-        
+
         # コンテンツ長
         word_count = len(content.split())
         if word_count > 800:
@@ -154,30 +176,29 @@ class ContentAutomationService:
             score += 10
         elif word_count > 300:
             score += 5
-        
+
         # コード例の有無
-        if '```' in content:
+        if "```" in content:
             score += 10
-        
+
         # 構造化（見出し）
-        heading_count = content.count('##')
+        heading_count = content.count("##")
         if heading_count >= 5:
             score += 10
         elif heading_count >= 3:
             score += 5
-        
+
         # FAQ形式
-        if 'FAQ' in content or 'Q:' in content:
+        if "FAQ" in content or "Q:" in content:
             score += 5
-        
+
         # リスト形式
-        if content.count('-') >= 5 or content.count('*') >= 5:
+        if content.count("-") >= 5 or content.count("*") >= 5:
             score += 5
-        
+
         # AI応答タグの豊富さ
-        if ai_response and hasattr(ai_response, 'tags'):
+        if ai_response and hasattr(ai_response, "tags"):
             if len(ai_response.tags) >= 5:
                 score += 5
-        
-        return min(score, 100.0)
 
+        return min(score, 100.0)

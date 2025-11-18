@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
-import { CheckoutForm } from '@/components/payment/checkout-form';
-import { OrderSummary } from '@/components/payment/order-summary';
-import { useSubscription } from '@/hooks/use-subscription';
-import { useSession } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, Suspense } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { CheckoutForm } from "@/components/payment/checkout-form";
+import { OrderSummary } from "@/components/payment/order-summary";
+import { useSubscription } from "@/hooks/use-subscription";
+import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import { Loader2 } from "lucide-react";
 
 function CheckoutContent() {
   const { data: session } = useSession();
@@ -17,17 +17,17 @@ function CheckoutContent() {
   const { subscription } = useSubscription();
   const [isLoading, setIsLoading] = useState(true);
 
-  const priceId = searchParams.get('priceId');
-  const plan = searchParams.get('plan') || 'premium';
+  const priceId = searchParams.get("priceId");
+  const plan = searchParams.get("plan") || "premium";
 
   useEffect(() => {
     if (!session) {
-      router.push('/auth/signin?callbackUrl=/checkout');
+      router.push("/auth/signin?callbackUrl=/checkout");
       return;
     }
 
     if (subscription?.isPaid) {
-      router.push('/dashboard');
+      router.push("/dashboard");
       return;
     }
 
@@ -58,7 +58,7 @@ function CheckoutContent() {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <main className="container py-8">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
@@ -72,7 +72,7 @@ function CheckoutContent() {
             <div className="order-2 lg:order-1">
               <CheckoutForm priceId={priceId} plan={plan} />
             </div>
-            
+
             <div className="order-1 lg:order-2">
               <OrderSummary plan={plan} />
             </div>
@@ -87,20 +87,22 @@ function CheckoutContent() {
 
 export default function CheckoutPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main className="container py-20">
-          <div className="flex items-center justify-center">
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-6 w-6 animate-spin" />
-              <span>読み込み中...</span>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background">
+          <Header />
+          <main className="container py-20">
+            <div className="flex items-center justify-center">
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-6 w-6 animate-spin" />
+                <span>読み込み中...</span>
+              </div>
             </div>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    }>
+          </main>
+          <Footer />
+        </div>
+      }
+    >
       <CheckoutContent />
     </Suspense>
   );

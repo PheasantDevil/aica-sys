@@ -4,6 +4,7 @@ Daily Article Generation Script
 Phase 10-1: Execute daily article generation workflow
 """
 
+import argparse
 import asyncio
 import os
 import sys
@@ -20,30 +21,131 @@ load_dotenv(backend_dir / ".env.local")
 
 from datetime import datetime, timezone
 
-from database import SessionLocal
-from models.automated_content import (AutomatedContentDB, ContentGenerationLogDB, ContentStatus,
-                                      ContentType, TrendDataDB)
+from database import DATABASE_URL, Base, SessionLocal, engine
+from models.automated_content import (
+    AutomatedContentDB,
+    ContentGenerationLogDB,
+    ContentStatus,
+    ContentType,
+    TrendDataDB,
+)
 from services.content_automation_service import ContentAutomationService
 from services.source_aggregator_service import SourceAggregatorService
 
+IS_SQLITE = DATABASE_URL.startswith("sqlite")
 
-async def main_async():
+SAMPLE_SOURCE_DATA = [
+    {
+        "title": "TypeScript 5.6 Released",
+        "summary": "TypeScript 5.6 introduces new decorators and faster incremental builds.",
+        "url": "https://dev.example.com/typescript-5-6",
+        "score": 12,
+    },
+    {
+        "title": "Next.js Edge Functions Best Practices",
+        "summary": "A guide to optimizing Edge Functions for latency-sensitive workloads.",
+        "url": "https://blog.example.com/next-edge-guide",
+        "score": 9,
+    },
+]
+
+SAMPLE_TRENDS = [
+    {
+        "keyword": "typescript decorators",
+        "score": 24,
+        "source_count": 3,
+        "related_items": SAMPLE_SOURCE_DATA,
+    },
+    {
+        "keyword": "edge functions performance",
+        "score": 18,
+        "source_count": 2,
+        "related_items": SAMPLE_SOURCE_DATA,
+    },
+]
+
+SAMPLE_ARTICLES = [
+    {
+        "title": "TypeScript Decorators Reach Production Readiness",
+        "summary": "Decorators unlock cleaner architectures in front-end and serverless apps.",
+        "content": "## Why Decorators Matter\nDecorators allow teams to reduce boilerplate while keeping strong typing...",
+        "tags": ["TypeScript", "Decorators", "Best Practices"],
+        "read_time": 6,
+        "metadata": {"author": "Mock Writer"},
+        "seo_data": {
+            "keywords": ["TypeScript", "Decorators", "Architecture"],
+            "description": "How to adopt decorators safely in production systems.",
+        },
+        "quality_score": 92.5,
+    },
+    {
+        "title": "Edge Functions Tuning Checklist",
+        "summary": "Latency budget tips for Next.js and Cloudflare Workers deployments.",
+        "content": "### Cold starts\nUse regional cache priming and smaller bundles...",
+        "tags": ["Edge", "Next.js", "Performance"],
+        "read_time": 5,
+        "metadata": {"author": "Mock Writer"},
+        "seo_data": {
+            "keywords": ["Edge Functions", "Performance"],
+            "description": "Checklist to reduce edge latency under heavy load.",
+        },
+        "quality_score": 88.0,
+    },
+]
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Daily article generation workflow runner"
+    )
+    parser.add_argument(
+        "--mock-data",
+        action="store_true",
+        help="Use local mock data instead of calling external APIs (no GROQ_API_KEY required)",
+    )
+    parser.add_argument(
+        "--max-articles",
+        type=int,
+        default=3,
+        help="Number of articles to attempt to generate (default: 3)",
+    )
+    return parser.parse_args()
+
+
+async def main_async(args: argparse.Namespace):
     """メイン処理（非同期）"""
     print("🚀 Starting daily article generation...")
 
+    if IS_SQLITE:
+        Base.metadata.create_all(bind=engine)
+
     db = SessionLocal()
     try:
-        # Step 1: 情報収集
-        print("📡 Collecting data from sources...")
-        aggregator = SourceAggregatorService(db)
-        source_data = await aggregator.collect_all_sources()
+        use_mock = args.mock_data
+        max_articles = max(1, args.max_articles)
+        groq_api_key = os.getenv("GROQ_API_KEY", "")
+
+        if use_mock:
+            print("🧪 Mock mode enabled - skipping external API calls")
+            source_data = SAMPLE_SOURCE_DATA
+        else:
+            if not groq_api_key:
+                raise ValueError(
+                    "GROQ_API_KEY is not set. Provide the key or run with --mock-data."
+                )
+            print("📡 Collecting data from sources...")
+            aggregator = SourceAggregatorService(db)
+            source_data = await aggregator.collect_all_sources()
         print(f"✅ Collected {len(source_data)} items")
 
         # Step 2: トレンド分析
         print("📊 Analyzing trends...")
-        groq_api_key = os.getenv("GROQ_API_KEY", "")
-        automation = ContentAutomationService(db, groq_api_key)
-        trends = await automation.analyze_trends(source_data)
+        if use_mock:
+            trends = SAMPLE_TRENDS
+            automation = None
+        else:
+            automation = ContentAutomationService(db, groq_api_key)
+            trends = await automation.analyze_trends(source_data)
         print(f"✅ Found {len(trends)} trends")
 
         # Step 3: トレンドデータ保存
@@ -67,11 +169,18 @@ async def main_async():
         generated_count = 0
         skipped_count = 0
         
-        for i, trend in enumerate(trends[:3], 1):  # トップ3記事生成
-            print(f"  Generating article {i}/3: {trend['keyword']}")
+        for i, trend in enumerate(trends[:max_articles], 1):
+            print(f"  Generating article {i}/{max_articles}: {trend['keyword']}")
             
             start_time = datetime.now(timezone.utc)
-            article = await automation.generate_article(trend)
+            if use_mock:
+                article = SAMPLE_ARTICLES[(i - 1) % len(SAMPLE_ARTICLES)]
+                article = {
+                    **article,
+                    "generation_time": article.get("generation_time", 0),
+                }
+            else:
+                article = await automation.generate_article(trend)
             
             # 生成ログ保存
             log = ContentGenerationLogDB(
@@ -134,7 +243,8 @@ async def main_async():
 
 def main():
     """エントリーポイント"""
-    asyncio.run(main_async())
+    args = parse_args()
+    asyncio.run(main_async(args))
 
 
 if __name__ == "__main__":

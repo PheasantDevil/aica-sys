@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 
 export interface ErrorState {
   hasError: boolean;
@@ -16,49 +16,53 @@ export function useErrorHandler(options: ErrorHandlerOptions = {}) {
   const [errorState, setErrorState] = useState<ErrorState>({
     hasError: false,
     error: null,
-    message: '',
+    message: "",
   });
 
-  const handleError = useCallback((error: Error | string, customMessage?: string) => {
-    const errorObj = typeof error === 'string' ? new Error(error) : error;
-    const message = customMessage || errorObj.message || options.fallbackMessage || 'エラーが発生しました';
+  const handleError = useCallback(
+    (error: Error | string, customMessage?: string) => {
+      const errorObj = typeof error === "string" ? new Error(error) : error;
+      const message =
+        customMessage || errorObj.message || options.fallbackMessage || "エラーが発生しました";
 
-    setErrorState({
-      hasError: true,
-      error: errorObj,
-      message,
-    });
+      setErrorState({
+        hasError: true,
+        error: errorObj,
+        message,
+      });
 
-    // エラーログの出力
-    if (options.logError !== false) {
-      console.error('Error handled by useErrorHandler:', errorObj);
-    }
+      // エラーログの出力
+      if (options.logError !== false) {
+        console.error("Error handled by useErrorHandler:", errorObj);
+      }
 
-    // カスタムエラーハンドラー
-    if (options.onError) {
-      options.onError(errorObj);
-    }
-  }, [options]);
+      // カスタムエラーハンドラー
+      if (options.onError) {
+        options.onError(errorObj);
+      }
+    },
+    [options],
+  );
 
   const clearError = useCallback(() => {
     setErrorState({
       hasError: false,
       error: null,
-      message: '',
+      message: "",
     });
   }, []);
 
-  const handleAsyncError = useCallback(async <T>(
-    asyncFn: () => Promise<T>,
-    customMessage?: string
-  ): Promise<T | null> => {
-    try {
-      return await asyncFn();
-    } catch (error) {
-      handleError(error as Error, customMessage);
-      return null;
-    }
-  }, [handleError]);
+  const handleAsyncError = useCallback(
+    async <T>(asyncFn: () => Promise<T>, customMessage?: string): Promise<T | null> => {
+      try {
+        return await asyncFn();
+      } catch (error) {
+        handleError(error as Error, customMessage);
+        return null;
+      }
+    },
+    [handleError],
+  );
 
   return {
     errorState,

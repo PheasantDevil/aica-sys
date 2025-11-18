@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { useSubscription } from '@/hooks/use-subscription';
-import { getStripe } from '@/lib/stripe';
-import { CreditCard, Lock, Shield, Zap } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { useSubscription } from "@/hooks/use-subscription";
+import { getStripe } from "@/lib/stripe";
+import { CreditCard, Lock, Shield, Zap } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface CheckoutFormProps {
   priceId?: string | null;
@@ -22,19 +22,19 @@ export function CheckoutForm({ priceId, plan }: CheckoutFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!priceId) {
-      toast.error('価格IDが見つかりません');
+      toast.error("価格IDが見つかりません");
       return;
     }
 
     setIsProcessing(true);
-    
+
     try {
       await handleUpgrade(priceId);
     } catch (error) {
-      console.error('Checkout error:', error);
-      toast.error('決済処理中にエラーが発生しました');
+      console.error("Checkout error:", error);
+      toast.error("決済処理中にエラーが発生しました");
     } finally {
       setIsProcessing(false);
     }
@@ -42,33 +42,33 @@ export function CheckoutForm({ priceId, plan }: CheckoutFormProps) {
 
   const handleStripeCheckout = async () => {
     if (!priceId) {
-      toast.error('価格IDが見つかりません');
+      toast.error("価格IDが見つかりません");
       return;
     }
 
     setIsProcessing(true);
-    
+
     try {
-      const response = await fetch('/api/stripe/checkout', {
-        method: 'POST',
+      const response = await fetch("/api/stripe/checkout", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ priceId }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create checkout session');
+        throw new Error("Failed to create checkout session");
       }
 
       const { url } = await response.json();
-      
+
       if (url) {
         window.location.href = url;
       }
     } catch (error) {
-      console.error('Stripe checkout error:', error);
-      toast.error('決済セッションの作成に失敗しました');
+      console.error("Stripe checkout error:", error);
+      toast.error("決済セッションの作成に失敗しました");
     } finally {
       setIsProcessing(false);
     }
@@ -82,9 +82,7 @@ export function CheckoutForm({ priceId, plan }: CheckoutFormProps) {
             <CreditCard className="h-5 w-5" />
             お支払い情報
           </CardTitle>
-          <CardDescription>
-            安全な決済処理のため、Stripeを使用しています
-          </CardDescription>
+          <CardDescription>安全な決済処理のため、Stripeを使用しています</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -97,22 +95,17 @@ export function CheckoutForm({ priceId, plan }: CheckoutFormProps) {
               <Input id="lastName" placeholder="田中" required />
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="email">メールアドレス</Label>
-            <Input 
-              id="email" 
-              type="email" 
-              placeholder="tanaka@example.com" 
-              required 
-            />
+            <Input id="email" type="email" placeholder="tanaka@example.com" required />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="country">国・地域</Label>
             <Input id="country" placeholder="日本" required />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="postalCode">郵便番号</Label>
             <Input id="postalCode" placeholder="123-4567" required />
@@ -123,9 +116,7 @@ export function CheckoutForm({ priceId, plan }: CheckoutFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>決済方法</CardTitle>
-          <CardDescription>
-            Stripe Checkoutで安全にお支払いください
-          </CardDescription>
+          <CardDescription>Stripe Checkoutで安全にお支払いください</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="p-4 border rounded-lg bg-muted/50">
@@ -141,8 +132,8 @@ export function CheckoutForm({ priceId, plan }: CheckoutFormProps) {
               </div>
             </div>
           </div>
-          
-          <Button 
+
+          <Button
             onClick={handleStripeCheckout}
             disabled={isProcessing || isUpgrading}
             className="w-full"
@@ -160,7 +151,7 @@ export function CheckoutForm({ priceId, plan }: CheckoutFormProps) {
               </>
             )}
           </Button>
-          
+
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Shield className="h-4 w-4" />
             <span>SSL暗号化により保護されています</span>
@@ -182,21 +173,19 @@ export function CheckoutForm({ priceId, plan }: CheckoutFormProps) {
               </p>
             </div>
           </div>
-          
+
           <Separator />
-          
+
           <div className="flex items-start gap-3">
             <Lock className="h-5 w-5 text-blue-600 mt-0.5" />
             <div>
               <p className="font-medium">SSL暗号化</p>
-              <p className="text-sm text-muted-foreground">
-                すべての通信が256ビットSSLで暗号化
-              </p>
+              <p className="text-sm text-muted-foreground">すべての通信が256ビットSSLで暗号化</p>
             </div>
           </div>
-          
+
           <Separator />
-          
+
           <div className="flex items-start gap-3">
             <Zap className="h-5 w-5 text-purple-600 mt-0.5" />
             <div>

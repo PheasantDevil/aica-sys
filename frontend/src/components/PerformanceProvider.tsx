@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { performanceMonitor } from '@/lib/performance';
-import { createContext, ReactNode, useContext, useEffect } from 'react';
+import { performanceMonitor } from "@/lib/performance";
+import { createContext, ReactNode, useContext, useEffect } from "react";
 
 interface PerformanceContextType {
   getMetrics: () => any[];
@@ -11,9 +11,7 @@ interface PerformanceContextType {
   clearMetrics: () => void;
 }
 
-const PerformanceContext = createContext<PerformanceContextType | undefined>(
-  undefined
-);
+const PerformanceContext = createContext<PerformanceContextType | undefined>(undefined);
 
 interface PerformanceProviderProps {
   children: ReactNode;
@@ -23,7 +21,7 @@ export function PerformanceProvider({ children }: PerformanceProviderProps) {
   useEffect(() => {
     // Initialize performance monitoring
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === "visible") {
         // Page became visible, record metric
         // performanceMonitor.recordMetric('PageVisibility', Date.now());
       }
@@ -37,46 +35,40 @@ export function PerformanceProvider({ children }: PerformanceProviderProps) {
     };
 
     // Add event listeners
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     // Record page load metrics
-    if (document.readyState === 'complete') {
+    if (document.readyState === "complete") {
       // performanceMonitor.recordMetric('PageLoadComplete', performance.now());
     } else {
-      window.addEventListener('load', () => {
+      window.addEventListener("load", () => {
         // performanceMonitor.recordMetric('PageLoadComplete', performance.now());
       });
     }
 
     // Cleanup
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
   const contextValue: PerformanceContextType = {
     getMetrics: () => performanceMonitor.getMetrics(),
-    getMetricsByName: (name: string) =>
-      performanceMonitor.getMetricsByName(name),
-    getAverageMetric: (name: string) =>
-      performanceMonitor.getAverageMetric(name),
+    getMetricsByName: (name: string) => performanceMonitor.getMetricsByName(name),
+    getAverageMetric: (name: string) => performanceMonitor.getAverageMetric(name),
     getLatestMetric: (name: string) => performanceMonitor.getLatestMetric(name),
     clearMetrics: () => performanceMonitor.clearMetrics(),
   };
 
-  return (
-    <PerformanceContext.Provider value={contextValue}>
-      {children}
-    </PerformanceContext.Provider>
-  );
+  return <PerformanceContext.Provider value={contextValue}>{children}</PerformanceContext.Provider>;
 }
 
 export function usePerformance() {
   const context = useContext(PerformanceContext);
   if (context === undefined) {
-    throw new Error('usePerformance must be used within a PerformanceProvider');
+    throw new Error("usePerformance must be used within a PerformanceProvider");
   }
   return context;
 }

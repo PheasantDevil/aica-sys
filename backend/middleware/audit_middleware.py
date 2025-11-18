@@ -3,8 +3,7 @@ import time
 from typing import Any, Callable, Dict, Optional
 
 from fastapi import Request, Response
-from services.audit_service import (AuditEventType, AuditService,
-                                    get_audit_service)
+from services.audit_service import AuditEventType, AuditService, get_audit_service
 from starlette.middleware.base import BaseHTTPMiddleware
 from utils.logging import get_logger
 
@@ -29,14 +28,14 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 "/api/admin/",
                 "/api/subscriptions/",
                 "/api/payments/",
-                "/api/monitoring/"
+                "/api/monitoring/",
             ],
             "exclude_paths": [
                 "/health",
                 "/metrics",
                 "/docs",
                 "/openapi.json",
-                "/favicon.ico"
+                "/favicon.ico",
             ],
             "audit_methods": ["POST", "PUT", "DELETE", "PATCH"],
             "include_get_requests": False,
@@ -48,8 +47,8 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 "key",
                 "ssn",
                 "credit_card",
-                "api_key"
-            ]
+                "api_key",
+            ],
         }
 
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
@@ -61,20 +60,22 @@ class AuditMiddleware(BaseHTTPMiddleware):
 
             # リクエスト情報を記録
             request_info = await self._capture_request_info(request)
-            
+
             # リクエストを処理
             start_time = time.time()
             response = await call_next(request)
             end_time = time.time()
-            
+
             # レスポンス情報を記録
-            response_info = await self._capture_response_info(response, end_time - start_time)
-            
+            response_info = await self._capture_response_info(
+                response, end_time - start_time
+            )
+
             # 監査イベントを記録
             await self._log_audit_event(request_info, response_info, request, response)
-            
+
             return response
-            
+
         except Exception as e:
             logger.error(f"Error in audit middleware: {e}")
             return await call_next(request)
@@ -84,24 +85,30 @@ class AuditMiddleware(BaseHTTPMiddleware):
         try:
             if not self.audit_config["enabled"]:
                 return False
-            
+
             # パスをチェック
             path = request.url.path
-            if any(path.startswith(exclude_path) for exclude_path in self.audit_config["exclude_paths"]):
+            if any(
+                path.startswith(exclude_path)
+                for exclude_path in self.audit_config["exclude_paths"]
+            ):
                 return False
-            
+
             # 監査対象パスをチェック
-            if not any(path.startswith(audit_path) for audit_path in self.audit_config["audit_paths"]):
+            if not any(
+                path.startswith(audit_path)
+                for audit_path in self.audit_config["audit_paths"]
+            ):
                 return False
-            
+
             # HTTPメソッドをチェック
             method = request.method
             if method not in self.audit_config["audit_methods"]:
                 if method == "GET" and not self.audit_config["include_get_requests"]:
                     return False
-            
+
             return True
-            
+
         except Exception as e:
             logger.error(f"Error checking audit requirement: {e}")
             return False
@@ -115,25 +122,27 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 try:
                     body_bytes = await request.body()
                     if body_bytes:
-                        body = json.loads(body_bytes.decode('utf-8'))
+                        body = json.loads(body_bytes.decode("utf-8"))
                         # センシティブデータをマスク
                         if self.audit_config["mask_sensitive_data"]:
                             body = self._mask_sensitive_data(body)
                 except (json.JSONDecodeError, UnicodeDecodeError):
-                    body = body_bytes.decode('utf-8', errors='ignore')[:1000]  # 最初の1000文字のみ
-            
+                    body = body_bytes.decode("utf-8", errors="ignore")[
+                        :1000
+                    ]  # 最初の1000文字のみ
+
             # クエリパラメータを取得
             query_params = dict(request.query_params)
             if self.audit_config["mask_sensitive_data"]:
                 query_params = self._mask_sensitive_data(query_params)
-            
+
             # ヘッダーを取得（センシティブなヘッダーを除外）
             headers = dict(request.headers)
             sensitive_headers = ["authorization", "cookie", "x-api-key"]
             for header in sensitive_headers:
                 if header in headers:
                     headers[header] = "***MASKED***"
-            
+
             request_info = {
                 "method": request.method,
                 "path": request.url.path,
@@ -144,42 +153,48 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 "user_agent": request.headers.get("user-agent"),
                 "content_type": request.headers.get("content-type"),
                 "content_length": request.headers.get("content-length"),
-                "timestamp": time.time()
+                "timestamp": time.time(),
             }
-            
+
             return request_info
-            
+
         except Exception as e:
             logger.error(f"Error capturing request info: {e}")
             return {}
 
-    async def _capture_response_info(self, response: Response, duration: float) -> Dict[str, Any]:
+    async def _capture_response_info(
+        self, response: Response, duration: float
+    ) -> Dict[str, Any]:
         """レスポンス情報をキャプチャ"""
         try:
             response_info = {
                 "status_code": response.status_code,
                 "headers": dict(response.headers),
                 "duration_seconds": duration,
-                "timestamp": time.time()
+                "timestamp": time.time(),
             }
-            
+
             return response_info
-            
+
         except Exception as e:
             logger.error(f"Error capturing response info: {e}")
             return {}
 
-    async def _log_audit_event(self, request_info: Dict[str, Any], 
-                              response_info: Dict[str, Any], 
-                              request: Request, response: Response) -> None:
+    async def _log_audit_event(
+        self,
+        request_info: Dict[str, Any],
+        response_info: Dict[str, Any],
+        request: Request,
+        response: Response,
+    ) -> None:
         """監査イベントをログ"""
         try:
             # イベントタイプを決定
             event_type = self._determine_event_type(request_info, response_info)
-            
+
             # ユーザーIDを取得
             user_id = self._extract_user_id(request)
-            
+
             # イベントデータを構築
             event_data = {
                 "method": request_info.get("method"),
@@ -194,28 +209,40 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 "session_id": self._extract_session_id(request),
                 "resource_type": self._extract_resource_type(request_info.get("path")),
                 "resource_id": self._extract_resource_id(request_info.get("path")),
-                "action": self._extract_action(request_info.get("method"), request_info.get("path")),
-                "result": "success" if response_info.get("status_code", 500) < 400 else "failure",
-                "error_message": None if response_info.get("status_code", 500) < 400 else f"HTTP {response_info.get('status_code')}"
+                "action": self._extract_action(
+                    request_info.get("method"), request_info.get("path")
+                ),
+                "result": (
+                    "success"
+                    if response_info.get("status_code", 500) < 400
+                    else "failure"
+                ),
+                "error_message": (
+                    None
+                    if response_info.get("status_code", 500) < 400
+                    else f"HTTP {response_info.get('status_code')}"
+                ),
             }
-            
+
             # データベースセッションを取得（実際の実装では適切に取得）
             from database import get_db
+
             db = next(get_db())
-            
+
             # 監査イベントをログ
             self.audit_service.log_event(event_type, event_data, db, user_id)
-            
+
         except Exception as e:
             logger.error(f"Error logging audit event: {e}")
 
-    def _determine_event_type(self, request_info: Dict[str, Any], 
-                             response_info: Dict[str, Any]) -> AuditEventType:
+    def _determine_event_type(
+        self, request_info: Dict[str, Any], response_info: Dict[str, Any]
+    ) -> AuditEventType:
         """イベントタイプを決定"""
         try:
             method = request_info.get("method", "")
             path = request_info.get("path", "")
-            
+
             # 認証関連
             if "/auth/login" in path:
                 return AuditEventType.USER_LOGIN
@@ -223,7 +250,7 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 return AuditEventType.USER_LOGOUT
             elif "/auth/register" in path:
                 return AuditEventType.USER_REGISTRATION
-            
+
             # ユーザー管理
             elif "/users/" in path:
                 if method in ["PUT", "PATCH"]:
@@ -232,7 +259,7 @@ class AuditMiddleware(BaseHTTPMiddleware):
                     return AuditEventType.USER_DELETE
                 else:
                     return AuditEventType.DATA_ACCESS
-            
+
             # データ操作
             elif method in ["POST", "PUT", "PATCH"]:
                 return AuditEventType.DATA_MODIFICATION
@@ -240,19 +267,19 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 return AuditEventType.DATA_DELETION
             elif method == "GET":
                 return AuditEventType.DATA_ACCESS
-            
+
             # 管理者操作
             elif "/admin/" in path:
                 return AuditEventType.ADMIN_ACTION
-            
+
             # 権限変更
             elif "/permissions/" in path or "/roles/" in path:
                 return AuditEventType.PERMISSION_CHANGE
-            
+
             # デフォルト
             else:
                 return AuditEventType.DATA_ACCESS
-                
+
         except Exception as e:
             logger.error(f"Error determining event type: {e}")
             return AuditEventType.DATA_ACCESS
@@ -266,9 +293,9 @@ class AuditMiddleware(BaseHTTPMiddleware):
             if auth_header:
                 # JWTトークンからユーザーIDを抽出（簡易実装）
                 return "user_123"  # 仮のユーザーID
-            
+
             return None
-            
+
         except Exception as e:
             logger.error(f"Error extracting user ID: {e}")
             return None
@@ -278,7 +305,7 @@ class AuditMiddleware(BaseHTTPMiddleware):
         try:
             # 実際の実装では、セッション情報からセッションIDを取得
             return request.headers.get("x-session-id")
-            
+
         except Exception as e:
             logger.error(f"Error extracting session ID: {e}")
             return None
@@ -288,14 +315,14 @@ class AuditMiddleware(BaseHTTPMiddleware):
         try:
             if not path:
                 return None
-            
+
             # パスからリソースタイプを抽出
             path_parts = path.strip("/").split("/")
             if len(path_parts) >= 2:
                 return path_parts[1]  # /api/users/123 -> users
-            
+
             return None
-            
+
         except Exception as e:
             logger.error(f"Error extracting resource type: {e}")
             return None
@@ -305,14 +332,14 @@ class AuditMiddleware(BaseHTTPMiddleware):
         try:
             if not path:
                 return None
-            
+
             # パスからリソースIDを抽出
             path_parts = path.strip("/").split("/")
             if len(path_parts) >= 3:
                 return path_parts[2]  # /api/users/123 -> 123
-            
+
             return None
-            
+
         except Exception as e:
             logger.error(f"Error extracting resource ID: {e}")
             return None
@@ -322,7 +349,7 @@ class AuditMiddleware(BaseHTTPMiddleware):
         try:
             if not method or not path:
                 return "unknown"
-            
+
             # HTTPメソッドとパスからアクションを決定
             if method == "GET":
                 return "read"
@@ -332,7 +359,7 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 return "delete"
             else:
                 return "unknown"
-                
+
         except Exception as e:
             logger.error(f"Error extracting action: {e}")
             return "unknown"
@@ -343,7 +370,10 @@ class AuditMiddleware(BaseHTTPMiddleware):
             if isinstance(data, dict):
                 masked_data = {}
                 for key, value in data.items():
-                    if any(sensitive_field in key.lower() for sensitive_field in self.audit_config["sensitive_fields"]):
+                    if any(
+                        sensitive_field in key.lower()
+                        for sensitive_field in self.audit_config["sensitive_fields"]
+                    ):
                         masked_data[key] = "***MASKED***"
                     else:
                         masked_data[key] = self._mask_sensitive_data(value)
@@ -352,7 +382,7 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 return [self._mask_sensitive_data(item) for item in data]
             else:
                 return data
-                
+
         except Exception as e:
             logger.error(f"Error masking sensitive data: {e}")
             return data
@@ -362,7 +392,7 @@ class AuditMiddleware(BaseHTTPMiddleware):
         try:
             self.audit_config.update(new_config)
             logger.info("Audit middleware configuration updated")
-            
+
         except Exception as e:
             logger.error(f"Error updating audit configuration: {e}")
             raise
@@ -377,9 +407,9 @@ class AuditMiddleware(BaseHTTPMiddleware):
                 "audit_methods": self.audit_config["audit_methods"],
                 "include_get_requests": self.audit_config["include_get_requests"],
                 "mask_sensitive_data": self.audit_config["mask_sensitive_data"],
-                "sensitive_fields_count": len(self.audit_config["sensitive_fields"])
+                "sensitive_fields_count": len(self.audit_config["sensitive_fields"]),
             }
-            
+
         except Exception as e:
             logger.error(f"Error getting audit stats: {e}")
             return {}
@@ -388,10 +418,14 @@ class AuditMiddleware(BaseHTTPMiddleware):
 class SelectiveAuditMiddleware(AuditMiddleware):
     """選択的監査ミドルウェア"""
 
-    def __init__(self, app, audit_paths: Optional[list] = None, 
-                 exclude_paths: Optional[list] = None):
+    def __init__(
+        self,
+        app,
+        audit_paths: Optional[list] = None,
+        exclude_paths: Optional[list] = None,
+    ):
         super().__init__(app)
-        
+
         if audit_paths:
             self.audit_config["audit_paths"] = audit_paths
         if exclude_paths:
@@ -402,18 +436,24 @@ class SelectiveAuditMiddleware(AuditMiddleware):
         try:
             if not self.audit_config["enabled"]:
                 return False
-            
+
             # パスをチェック
             path = request.url.path
-            if any(path.startswith(exclude_path) for exclude_path in self.audit_config["exclude_paths"]):
+            if any(
+                path.startswith(exclude_path)
+                for exclude_path in self.audit_config["exclude_paths"]
+            ):
                 return False
-            
+
             # 監査対象パスをチェック
-            if not any(path.startswith(audit_path) for audit_path in self.audit_config["audit_paths"]):
+            if not any(
+                path.startswith(audit_path)
+                for audit_path in self.audit_config["audit_paths"]
+            ):
                 return False
-            
+
             return True
-            
+
         except Exception as e:
             logger.error(f"Error checking selective audit requirement: {e}")
             return False

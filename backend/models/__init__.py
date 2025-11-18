@@ -10,14 +10,14 @@ from models.subscription import Subscription
 from models.user import User
 
 __all__ = [
-    'User',
-    'Article',
-    'Newsletter',
-    'Trend',
-    'Subscription',
-    'CollectionJob',
-    'AnalysisResult',
-    'AuditEvent',
-    'AuditEventDB',
-    'AuditEventType',
+    "User",
+    "Article",
+    "Newsletter",
+    "Trend",
+    "Subscription",
+    "CollectionJob",
+    "AnalysisResult",
+    "AuditEvent",
+    "AuditEventDB",
+    "AuditEventType",
 ]

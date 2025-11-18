@@ -1,5 +1,5 @@
-import { Footer } from '@/components/footer';
-import { Header } from '@/components/header';
+import { Footer } from "@/components/footer";
+import { Header } from "@/components/header";
 
 export default function TermsPage() {
   return (
@@ -7,11 +7,9 @@ export default function TermsPage() {
       <Header />
       <main className="container mx-auto px-4 py-16 max-w-4xl">
         <h1 className="text-4xl font-bold mb-8">利用規約</h1>
-        
+
         <div className="prose prose-gray max-w-none">
-          <p className="text-sm text-muted-foreground mb-8">
-            最終更新日: 2024年10月11日
-          </p>
+          <p className="text-sm text-muted-foreground mb-8">最終更新日: 2024年10月11日</p>
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">第1条（適用）</h2>
@@ -30,9 +28,7 @@ export default function TermsPage() {
 
           <section className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">第3条（禁止事項）</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              以下の行為を禁止します：
-            </p>
+            <p className="text-muted-foreground leading-relaxed">以下の行為を禁止します：</p>
             <ul className="list-disc list-inside space-y-2 text-muted-foreground mt-4">
               <li>法令または公序良俗に違反する行為</li>
               <li>当社または第三者の権利を侵害する行為</li>
@@ -69,4 +65,3 @@ export default function TermsPage() {
     </div>
   );
 }
-

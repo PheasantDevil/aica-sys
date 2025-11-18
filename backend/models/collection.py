@@ -37,7 +37,9 @@ class Sentiment(str, Enum):
 class CollectionJob(Base):
     __tablename__ = "collection_jobs"
 
-    id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id: Mapped[str] = mapped_column(
+        UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4())
+    )
     source: Mapped[str] = mapped_column(String(500), nullable=False)
     type: Mapped[CollectionType] = mapped_column(String(50), nullable=False)
     status: Mapped[JobStatus] = mapped_column(String(50), default=JobStatus.PENDING)
@@ -48,13 +50,17 @@ class CollectionJob(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     def __repr__(self) -> str:
-        return f"<CollectionJob(id={self.id}, source={self.source}, status={self.status})>"
+        return (
+            f"<CollectionJob(id={self.id}, source={self.source}, status={self.status})>"
+        )
 
 
 class AnalysisResult(Base):
     __tablename__ = "analysis_results"
 
-    id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id: Mapped[str] = mapped_column(
+        UUID(as_uuid=False), primary_key=True, default=lambda: str(uuid.uuid4())
+    )
     source_id: Mapped[str] = mapped_column(String(500), nullable=False)
     title: Mapped[str] = mapped_column(String(500), nullable=False)
     summary: Mapped[str] = mapped_column(Text, nullable=False)

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { forwardRef, useRef, useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
-import { AccessibilityUtils } from '@/lib/accessibility';
+import React, { forwardRef, useRef, useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { AccessibilityUtils } from "@/lib/accessibility";
 
 interface AccessibleFormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
@@ -23,14 +23,17 @@ interface FormFieldProps {
 }
 
 export const AccessibleForm = forwardRef<HTMLFormElement, AccessibleFormProps>(
-  ({
-    children,
-    className,
-    onSubmit,
-    validateOnSubmit = true,
-    showValidationSummary = true,
-    ...props
-  }, ref) => {
+  (
+    {
+      children,
+      className,
+      onSubmit,
+      validateOnSubmit = true,
+      showValidationSummary = true,
+      ...props
+    },
+    ref,
+  ) => {
     const formRef = useRef<HTMLFormElement>(null);
     const [errors, setErrors] = useState<string[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -48,8 +51,10 @@ export const AccessibleForm = forwardRef<HTMLFormElement, AccessibleFormProps>(
           if (!validation.isValid) {
             setErrors(validation.errors);
             AccessibilityUtils.announceToScreenReader(
-              `Form validation failed. ${validation.errors.length} error${validation.errors.length > 1 ? 's' : ''} found.`,
-              'assertive'
+              `Form validation failed. ${validation.errors.length} error${
+                validation.errors.length > 1 ? "s" : ""
+              } found.`,
+              "assertive",
             );
             return;
           }
@@ -66,7 +71,7 @@ export const AccessibleForm = forwardRef<HTMLFormElement, AccessibleFormProps>(
     return (
       <form
         ref={formRef}
-        className={cn('space-y-6', className)}
+        className={cn("space-y-6", className)}
         onSubmit={handleSubmit}
         noValidate
         {...props}
@@ -90,38 +95,27 @@ export const AccessibleForm = forwardRef<HTMLFormElement, AccessibleFormProps>(
         {children}
       </form>
     );
-  }
+  },
 );
 
-AccessibleForm.displayName = 'AccessibleForm';
+AccessibleForm.displayName = "AccessibleForm";
 
 export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
-  ({
-    label,
-    error,
-    required = false,
-    children,
-    className,
-    description,
-    hint,
-  }, ref) => {
-    const fieldId = AccessibilityUtils.generateId('field');
-    const errorId = AccessibilityUtils.generateId('error');
-    const descriptionId = AccessibilityUtils.generateId('description');
-    const hintId = AccessibilityUtils.generateId('hint');
+  ({ label, error, required = false, children, className, description, hint }, ref) => {
+    const fieldId = AccessibilityUtils.generateId("field");
+    const errorId = AccessibilityUtils.generateId("error");
+    const descriptionId = AccessibilityUtils.generateId("description");
+    const hintId = AccessibilityUtils.generateId("hint");
 
     const describedBy = AccessibilityUtils.getAriaDescribedBy(
       error ? errorId : undefined,
       description ? descriptionId : undefined,
-      hint ? hintId : undefined
+      hint ? hintId : undefined,
     );
 
     return (
-      <div ref={ref} className={cn('space-y-2', className)}>
-        <label
-          htmlFor={fieldId}
-          className="block text-sm font-medium text-gray-700"
-        >
+      <div ref={ref} className={cn("space-y-2", className)}>
+        <label htmlFor={fieldId} className="block text-sm font-medium text-gray-700">
           {label}
           {required && (
             <span className="text-red-500 ml-1" aria-label="required">
@@ -129,13 +123,13 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
             </span>
           )}
         </label>
-        
+
         {description && (
           <p id={descriptionId} className="text-sm text-gray-600">
             {description}
           </p>
         )}
-        
+
         {hint && (
           <p id={hintId} className="text-sm text-gray-500">
             {hint}
@@ -145,28 +139,23 @@ export const FormField = forwardRef<HTMLDivElement, FormFieldProps>(
         <div className="relative">
           {React.cloneElement(children as React.ReactElement, {
             id: fieldId,
-            'aria-invalid': error ? 'true' : 'false',
-            'aria-describedby': describedBy,
-            'aria-required': required,
+            "aria-invalid": error ? "true" : "false",
+            "aria-describedby": describedBy,
+            "aria-required": required,
           })}
         </div>
 
         {error && (
-          <p
-            id={errorId}
-            role="alert"
-            aria-live="polite"
-            className="text-sm text-red-600"
-          >
+          <p id={errorId} role="alert" aria-live="polite" className="text-sm text-red-600">
             {error}
           </p>
         )}
       </div>
     );
-  }
+  },
 );
 
-FormField.displayName = 'FormField';
+FormField.displayName = "FormField";
 
 interface AccessibleInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -178,24 +167,16 @@ interface AccessibleInputProps extends React.InputHTMLAttributes<HTMLInputElemen
 }
 
 export const AccessibleInput = forwardRef<HTMLInputElement, AccessibleInputProps>(
-  ({
-    label,
-    error,
-    required = false,
-    description,
-    hint,
-    className,
-    ...props
-  }, ref) => {
-    const fieldId = AccessibilityUtils.generateId('input');
-    const errorId = AccessibilityUtils.generateId('error');
-    const descriptionId = AccessibilityUtils.generateId('description');
-    const hintId = AccessibilityUtils.generateId('hint');
+  ({ label, error, required = false, description, hint, className, ...props }, ref) => {
+    const fieldId = AccessibilityUtils.generateId("input");
+    const errorId = AccessibilityUtils.generateId("error");
+    const descriptionId = AccessibilityUtils.generateId("description");
+    const hintId = AccessibilityUtils.generateId("hint");
 
     const describedBy = AccessibilityUtils.getAriaDescribedBy(
       error ? errorId : undefined,
       description ? descriptionId : undefined,
-      hint ? hintId : undefined
+      hint ? hintId : undefined,
     );
 
     return (
@@ -210,21 +191,21 @@ export const AccessibleInput = forwardRef<HTMLInputElement, AccessibleInputProps
           ref={ref}
           id={fieldId}
           className={cn(
-            'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-            error && 'border-red-500 focus-visible:ring-red-500',
-            className
+            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            error && "border-red-500 focus-visible:ring-red-500",
+            className,
           )}
-          aria-invalid={error ? 'true' : 'false'}
+          aria-invalid={error ? "true" : "false"}
           aria-describedby={describedBy}
           aria-required={required}
           {...props}
         />
       </FormField>
     );
-  }
+  },
 );
 
-AccessibleInput.displayName = 'AccessibleInput';
+AccessibleInput.displayName = "AccessibleInput";
 
 interface AccessibleTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label: string;
@@ -236,24 +217,16 @@ interface AccessibleTextareaProps extends React.TextareaHTMLAttributes<HTMLTextA
 }
 
 export const AccessibleTextarea = forwardRef<HTMLTextAreaElement, AccessibleTextareaProps>(
-  ({
-    label,
-    error,
-    required = false,
-    description,
-    hint,
-    className,
-    ...props
-  }, ref) => {
-    const fieldId = AccessibilityUtils.generateId('textarea');
-    const errorId = AccessibilityUtils.generateId('error');
-    const descriptionId = AccessibilityUtils.generateId('description');
-    const hintId = AccessibilityUtils.generateId('hint');
+  ({ label, error, required = false, description, hint, className, ...props }, ref) => {
+    const fieldId = AccessibilityUtils.generateId("textarea");
+    const errorId = AccessibilityUtils.generateId("error");
+    const descriptionId = AccessibilityUtils.generateId("description");
+    const hintId = AccessibilityUtils.generateId("hint");
 
     const describedBy = AccessibilityUtils.getAriaDescribedBy(
       error ? errorId : undefined,
       description ? descriptionId : undefined,
-      hint ? hintId : undefined
+      hint ? hintId : undefined,
     );
 
     return (
@@ -268,18 +241,18 @@ export const AccessibleTextarea = forwardRef<HTMLTextAreaElement, AccessibleText
           ref={ref}
           id={fieldId}
           className={cn(
-            'flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-            error && 'border-red-500 focus-visible:ring-red-500',
-            className
+            "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            error && "border-red-500 focus-visible:ring-red-500",
+            className,
           )}
-          aria-invalid={error ? 'true' : 'false'}
+          aria-invalid={error ? "true" : "false"}
           aria-describedby={describedBy}
           aria-required={required}
           {...props}
         />
       </FormField>
     );
-  }
+  },
 );
 
-AccessibleTextarea.displayName = 'AccessibleTextarea';
+AccessibleTextarea.displayName = "AccessibleTextarea";

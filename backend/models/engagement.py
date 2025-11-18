@@ -7,15 +7,14 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel
-from sqlalchemy import (JSON, Boolean, Column, DateTime, ForeignKey, Integer,
-                        String, Text)
-
 from database import Base
+from pydantic import BaseModel
+from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 
 
 class ReactionType(str, Enum):
     """リアクションタイプ"""
+
     LIKE = "like"
     LOVE = "love"
     HELPFUL = "helpful"
@@ -25,6 +24,7 @@ class ReactionType(str, Enum):
 
 class NotificationType(str, Enum):
     """通知タイプ"""
+
     COMMENT = "comment"
     REPLY = "reply"
     REACTION = "reaction"
@@ -37,6 +37,7 @@ class NotificationType(str, Enum):
 # SQLAlchemy Models
 class CommentDB(Base):
     """コメントDBモデル"""
+
     __tablename__ = "comments"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -50,6 +51,7 @@ class CommentDB(Base):
 
 class ReviewDB(Base):
     """レビューDBモデル"""
+
     __tablename__ = "reviews"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -64,6 +66,7 @@ class ReviewDB(Base):
 
 class ReactionDB(Base):
     """リアクションDBモデル"""
+
     __tablename__ = "reactions"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -76,6 +79,7 @@ class ReactionDB(Base):
 
 class FollowDB(Base):
     """フォローDBモデル"""
+
     __tablename__ = "follows"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -86,6 +90,7 @@ class FollowDB(Base):
 
 class NotificationDB(Base):
     """通知DBモデル"""
+
     __tablename__ = "notifications"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -101,6 +106,7 @@ class NotificationDB(Base):
 
 class UserPointDB(Base):
     """ユーザーポイントDBモデル"""
+
     __tablename__ = "user_points"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -113,6 +119,7 @@ class UserPointDB(Base):
 
 class BadgeDB(Base):
     """バッジDBモデル"""
+
     __tablename__ = "badges"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -125,6 +132,7 @@ class BadgeDB(Base):
 
 class UserBadgeDB(Base):
     """ユーザーバッジDBモデル"""
+
     __tablename__ = "user_badges"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -136,6 +144,7 @@ class UserBadgeDB(Base):
 # Pydantic Models
 class Comment(BaseModel):
     """コメントモデル"""
+
     id: int
     content_id: str
     user_id: str
@@ -150,6 +159,7 @@ class Comment(BaseModel):
 
 class Review(BaseModel):
     """レビューモデル"""
+
     id: int
     content_id: str
     user_id: str
@@ -165,6 +175,7 @@ class Review(BaseModel):
 
 class Reaction(BaseModel):
     """リアクションモデル"""
+
     id: int
     target_type: str
     target_id: str
@@ -178,6 +189,7 @@ class Reaction(BaseModel):
 
 class Follow(BaseModel):
     """フォローモデル"""
+
     id: int
     follower_id: str
     following_id: str
@@ -189,6 +201,7 @@ class Follow(BaseModel):
 
 class Notification(BaseModel):
     """通知モデル"""
+
     id: int
     user_id: str
     notification_type: str
@@ -205,6 +218,7 @@ class Notification(BaseModel):
 
 class UserPoint(BaseModel):
     """ユーザーポイントモデル"""
+
     id: int
     user_id: str
     total_points: int
@@ -218,6 +232,7 @@ class UserPoint(BaseModel):
 
 class Badge(BaseModel):
     """バッジモデル"""
+
     id: int
     name: str
     description: str
@@ -231,6 +246,7 @@ class Badge(BaseModel):
 
 class UserBadge(BaseModel):
     """ユーザーバッジモデル"""
+
     id: int
     user_id: str
     badge_id: int
@@ -238,4 +254,3 @@ class UserBadge(BaseModel):
 
     class Config:
         from_attributes = True
-

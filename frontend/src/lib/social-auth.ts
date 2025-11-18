@@ -1,5 +1,5 @@
-import { signIn, signOut, getSession } from 'next-auth/react';
-import { useAnalytics } from '@/lib/analytics';
+import { signIn, signOut, getSession } from "next-auth/react";
+import { useAnalytics } from "@/lib/analytics";
 
 export interface SocialProvider {
   id: string;
@@ -28,7 +28,7 @@ export interface SocialPost {
   url?: string;
   scheduledAt?: Date;
   publishedAt?: Date;
-  status: 'draft' | 'scheduled' | 'published' | 'failed';
+  status: "draft" | "scheduled" | "published" | "failed";
   engagement?: {
     likes?: number;
     shares?: number;
@@ -41,31 +41,31 @@ class SocialAuthService {
 
   readonly providers: SocialProvider[] = [
     {
-      id: 'google',
-      name: 'Google',
-      icon: 'google',
-      color: '#4285F4',
+      id: "google",
+      name: "Google",
+      icon: "google",
+      color: "#4285F4",
       enabled: true,
     },
     {
-      id: 'twitter',
-      name: 'Twitter',
-      icon: 'twitter',
-      color: '#1DA1F2',
+      id: "twitter",
+      name: "Twitter",
+      icon: "twitter",
+      color: "#1DA1F2",
       enabled: false, // 実装が必要
     },
     {
-      id: 'github',
-      name: 'GitHub',
-      icon: 'github',
-      color: '#333333',
+      id: "github",
+      name: "GitHub",
+      icon: "github",
+      color: "#333333",
       enabled: false, // 実装が必要
     },
     {
-      id: 'linkedin',
-      name: 'LinkedIn',
-      icon: 'linkedin',
-      color: '#0077B5',
+      id: "linkedin",
+      name: "LinkedIn",
+      icon: "linkedin",
+      color: "#0077B5",
       enabled: false, // 実装が必要
     },
   ];
@@ -75,27 +75,27 @@ class SocialAuthService {
    */
   async signInWithProvider(providerId: string, redirectTo?: string): Promise<void> {
     try {
-      this.analytics.trackEvent('Social Sign In Attempt', {
+      this.analytics.trackEvent("Social Sign In Attempt", {
         provider: providerId,
         redirectTo,
       });
 
       const result = await signIn(providerId, {
         redirect: false,
-        callbackUrl: redirectTo || '/dashboard',
+        callbackUrl: redirectTo || "/dashboard",
       });
 
       if (result?.error) {
         throw new Error(result.error);
       }
 
-      this.analytics.trackEvent('Social Sign In Success', {
+      this.analytics.trackEvent("Social Sign In Success", {
         provider: providerId,
       });
     } catch (error) {
-      this.analytics.trackEvent('Social Sign In Error', {
+      this.analytics.trackEvent("Social Sign In Error", {
         provider: providerId,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       throw error;
     }
@@ -106,15 +106,15 @@ class SocialAuthService {
    */
   async signOut(): Promise<void> {
     try {
-      this.analytics.trackEvent('Sign Out', {});
+      this.analytics.trackEvent("Sign Out", {});
 
       await signOut({
         redirect: false,
-        callbackUrl: '/',
+        callbackUrl: "/",
       });
     } catch (error) {
-      this.analytics.trackEvent('Sign Out Error', {
-        error: error instanceof Error ? error.message : 'Unknown error',
+      this.analytics.trackEvent("Sign Out Error", {
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       throw error;
     }
@@ -142,10 +142,10 @@ class SocialAuthService {
       // Googleプロファイル
       if (session.user.email) {
         profiles.push({
-          provider: 'google',
+          provider: "google",
           id: session.user.email,
           email: session.user.email,
-          name: session.user.name || '',
+          name: session.user.name || "",
           image: session.user.image || undefined,
           verified: true,
           connectedAt: new Date(),
@@ -154,7 +154,7 @@ class SocialAuthService {
 
       return profiles;
     } catch (error) {
-      console.error('Error getting social profiles:', error);
+      console.error("Error getting social profiles:", error);
       return [];
     }
   }
@@ -164,7 +164,7 @@ class SocialAuthService {
    */
   async disconnectProvider(providerId: string): Promise<void> {
     try {
-      this.analytics.trackEvent('Social Disconnect', {
+      this.analytics.trackEvent("Social Disconnect", {
         provider: providerId,
       });
 
@@ -172,9 +172,9 @@ class SocialAuthService {
       // ここでは簡易的な実装
       console.log(`Disconnecting ${providerId} provider`);
     } catch (error) {
-      this.analytics.trackEvent('Social Disconnect Error', {
+      this.analytics.trackEvent("Social Disconnect Error", {
         provider: providerId,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       throw error;
     }
@@ -183,9 +183,9 @@ class SocialAuthService {
   /**
    * ソーシャル投稿をスケジュール
    */
-  async schedulePost(post: Omit<SocialPost, 'id' | 'status'>): Promise<SocialPost> {
+  async schedulePost(post: Omit<SocialPost, "id" | "status">): Promise<SocialPost> {
     try {
-      this.analytics.trackEvent('Social Post Schedule', {
+      this.analytics.trackEvent("Social Post Schedule", {
         provider: post.provider,
         scheduledAt: post.scheduledAt?.toISOString(),
       });
@@ -194,14 +194,14 @@ class SocialAuthService {
       const scheduledPost: SocialPost = {
         id: `post_${Date.now()}`,
         ...post,
-        status: 'scheduled',
+        status: "scheduled",
       };
 
       return scheduledPost;
     } catch (error) {
-      this.analytics.trackEvent('Social Post Schedule Error', {
+      this.analytics.trackEvent("Social Post Schedule Error", {
         provider: post.provider,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       throw error;
     }
@@ -215,7 +215,7 @@ class SocialAuthService {
       // 実際の実装では、バックエンドAPIから取得
       return [];
     } catch (error) {
-      console.error('Error getting scheduled posts:', error);
+      console.error("Error getting scheduled posts:", error);
       return [];
     }
   }
@@ -225,16 +225,16 @@ class SocialAuthService {
    */
   async deletePost(postId: string): Promise<void> {
     try {
-      this.analytics.trackEvent('Social Post Delete', {
+      this.analytics.trackEvent("Social Post Delete", {
         postId,
       });
 
       // 実際の実装では、バックエンドAPIを呼び出して投稿を削除
       console.log(`Deleting post ${postId}`);
     } catch (error) {
-      this.analytics.trackEvent('Social Post Delete Error', {
+      this.analytics.trackEvent("Social Post Delete Error", {
         postId,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       });
       throw error;
     }
@@ -243,7 +243,7 @@ class SocialAuthService {
   /**
    * ソーシャルエンゲージメントを取得
    */
-  async getEngagement(postId: string): Promise<SocialPost['engagement']> {
+  async getEngagement(postId: string): Promise<SocialPost["engagement"]> {
     try {
       // 実際の実装では、各プラットフォームのAPIから取得
       return {
@@ -252,7 +252,7 @@ class SocialAuthService {
         comments: Math.floor(Math.random() * 30),
       };
     } catch (error) {
-      console.error('Error getting engagement:', error);
+      console.error("Error getting engagement:", error);
       return {};
     }
   }
@@ -261,14 +261,14 @@ class SocialAuthService {
    * 利用可能なプロバイダーを取得
    */
   getAvailableProviders(): SocialProvider[] {
-    return this.providers.filter(provider => provider.enabled);
+    return this.providers.filter((provider) => provider.enabled);
   }
 
   /**
    * プロバイダーが有効かチェック
    */
   isProviderEnabled(providerId: string): boolean {
-    const provider = this.providers.find(p => p.id === providerId);
+    const provider = this.providers.find((p) => p.id === providerId);
     return provider?.enabled || false;
   }
 }
@@ -300,7 +300,7 @@ export function useSocialAuth() {
     return await socialAuthService.disconnectProvider(providerId);
   };
 
-  const schedulePost = async (post: Omit<SocialPost, 'id' | 'status'>) => {
+  const schedulePost = async (post: Omit<SocialPost, "id" | "status">) => {
     return await socialAuthService.schedulePost(post);
   };
 

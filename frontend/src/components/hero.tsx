@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button'
-import { ArrowRight, Sparkles, TrendingUp, Users } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Sparkles, TrendingUp, Users } from "lucide-react";
 
 export function Hero() {
   return (
@@ -12,18 +12,17 @@ export function Hero() {
               TypeScriptエコシステム特化型AI
             </div>
           </div>
-          
+
           <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl">
             AI駆動型コンテンツ
             <span className="text-primary">自動生成システム</span>
           </h1>
-          
+
           <p className="mb-8 text-lg text-muted-foreground sm:text-xl">
-            TypeScriptの最新動向を自動収集・分析し、
-            高品質なコンテンツを自動生成・販売する
+            TypeScriptの最新動向を自動収集・分析し、 高品質なコンテンツを自動生成・販売する
             完全自動化プラットフォーム
           </p>
-          
+
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             <Button size="lg" className="text-lg px-8">
               無料で始める
@@ -33,7 +32,7 @@ export function Hero() {
               デモを見る
             </Button>
           </div>
-          
+
           <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-3">
             <div className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
@@ -44,7 +43,7 @@ export function Hero() {
                 TypeScriptエコシステムの最新動向を24時間365日監視
               </p>
             </div>
-            
+
             <div className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                 <Sparkles className="h-6 w-6 text-primary" />
@@ -54,7 +53,7 @@ export function Hero() {
                 Gemini APIを活用した高品質なコンテンツ自動生成
               </p>
             </div>
-            
+
             <div className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                 <Users className="h-6 w-6 text-primary" />
@@ -68,5 +67,5 @@ export function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }

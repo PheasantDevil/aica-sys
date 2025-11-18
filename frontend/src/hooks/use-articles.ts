@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { apiClient } from '@/lib/api-client';
-import { useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
+import { apiClient } from "@/lib/api-client";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
 interface Article {
   id: string;
@@ -33,10 +33,10 @@ export function useArticles(filters: Filters) {
   const { data: session } = useSession();
 
   const query = useQuery({
-    queryKey: ['articles', filters],
+    queryKey: ["articles", filters],
     queryFn: async (): Promise<Article[]> => {
       const response = await apiClient.getArticles({
-        category: filters.category !== 'all' ? filters.category : undefined,
+        category: filters.category !== "all" ? filters.category : undefined,
         sortBy: filters.sortBy,
         search: filters.search || undefined,
       });
@@ -50,118 +50,118 @@ export function useArticles(filters: Filters) {
     // モックデータを返す（実際の実装ではAPIから取得）
     placeholderData: () => [
       {
-        id: '1',
-        title: 'TypeScript 5.0の新機能とベストプラクティス',
+        id: "1",
+        title: "TypeScript 5.0の新機能とベストプラクティス",
         description:
-          '最新のTypeScript 5.0で追加された新機能について詳しく解説します。const assertions、template literal types、そして新しいコンパイラオプションについて学びましょう。',
-        content: '',
+          "最新のTypeScript 5.0で追加された新機能について詳しく解説します。const assertions、template literal types、そして新しいコンパイラオプションについて学びましょう。",
+        content: "",
         author: {
-          name: '田中太郎',
-          avatar: '/avatars/tanaka.jpg',
+          name: "田中太郎",
+          avatar: "/avatars/tanaka.jpg",
         },
-        category: 'tutorial',
-        tags: ['TypeScript', 'JavaScript', 'Tutorial', 'New Features'],
-        publishedAt: '2024-01-15T10:00:00Z',
+        category: "tutorial",
+        tags: ["TypeScript", "JavaScript", "Tutorial", "New Features"],
+        publishedAt: "2024-01-15T10:00:00Z",
         readTime: 8,
         views: 1234,
         likes: 89,
         isPremium: false,
-        imageUrl: '/images/typescript-5-0.jpg',
+        imageUrl: "/images/typescript-5-0.jpg",
       },
       {
-        id: '2',
-        title: 'React 18とTypeScriptの完全ガイド',
+        id: "2",
+        title: "React 18とTypeScriptの完全ガイド",
         description:
-          'React 18の新機能をTypeScriptと組み合わせて使用する方法を詳しく解説します。Concurrent Features、Suspense、そして新しいHooksについて学びましょう。',
-        content: '',
+          "React 18の新機能をTypeScriptと組み合わせて使用する方法を詳しく解説します。Concurrent Features、Suspense、そして新しいHooksについて学びましょう。",
+        content: "",
         author: {
-          name: '佐藤花子',
-          avatar: '/avatars/sato.jpg',
+          name: "佐藤花子",
+          avatar: "/avatars/sato.jpg",
         },
-        category: 'tutorial',
-        tags: ['React', 'TypeScript', 'JavaScript', 'Frontend'],
-        publishedAt: '2024-01-14T14:30:00Z',
+        category: "tutorial",
+        tags: ["React", "TypeScript", "JavaScript", "Frontend"],
+        publishedAt: "2024-01-14T14:30:00Z",
         readTime: 12,
         views: 2156,
         likes: 156,
         isPremium: true,
-        imageUrl: '/images/react-18-typescript.jpg',
+        imageUrl: "/images/react-18-typescript.jpg",
       },
       {
-        id: '3',
-        title: 'TypeScriptの型安全性を最大化する10のテクニック',
+        id: "3",
+        title: "TypeScriptの型安全性を最大化する10のテクニック",
         description:
-          'TypeScriptの型システムを最大限活用して、より安全で保守しやすいコードを書くための実践的なテクニックを紹介します。',
-        content: '',
+          "TypeScriptの型システムを最大限活用して、より安全で保守しやすいコードを書くための実践的なテクニックを紹介します。",
+        content: "",
         author: {
-          name: '山田次郎',
-          avatar: '/avatars/yamada.jpg',
+          name: "山田次郎",
+          avatar: "/avatars/yamada.jpg",
         },
-        category: 'tips',
-        tags: ['TypeScript', 'Type Safety', 'Best Practices', 'Tips'],
-        publishedAt: '2024-01-13T09:15:00Z',
+        category: "tips",
+        tags: ["TypeScript", "Type Safety", "Best Practices", "Tips"],
+        publishedAt: "2024-01-13T09:15:00Z",
         readTime: 6,
         views: 987,
         likes: 67,
         isPremium: false,
-        imageUrl: '/images/typescript-tips.jpg',
+        imageUrl: "/images/typescript-tips.jpg",
       },
       {
-        id: '4',
-        title: 'Next.js 14とTypeScriptで作るフルスタックアプリ',
+        id: "4",
+        title: "Next.js 14とTypeScriptで作るフルスタックアプリ",
         description:
-          'Next.js 14の最新機能とTypeScriptを組み合わせて、本格的なフルスタックアプリケーションを構築する方法をステップバイステップで解説します。',
-        content: '',
+          "Next.js 14の最新機能とTypeScriptを組み合わせて、本格的なフルスタックアプリケーションを構築する方法をステップバイステップで解説します。",
+        content: "",
         author: {
-          name: '鈴木一郎',
-          avatar: '/avatars/suzuki.jpg',
+          name: "鈴木一郎",
+          avatar: "/avatars/suzuki.jpg",
         },
-        category: 'tutorial',
-        tags: ['Next.js', 'TypeScript', 'Full Stack', 'Tutorial'],
-        publishedAt: '2024-01-12T16:45:00Z',
+        category: "tutorial",
+        tags: ["Next.js", "TypeScript", "Full Stack", "Tutorial"],
+        publishedAt: "2024-01-12T16:45:00Z",
         readTime: 15,
         views: 3456,
         likes: 234,
         isPremium: true,
-        imageUrl: '/images/nextjs-typescript.jpg',
+        imageUrl: "/images/nextjs-typescript.jpg",
       },
       {
-        id: '5',
-        title: 'TypeScript 4.9から5.0への移行ガイド',
+        id: "5",
+        title: "TypeScript 4.9から5.0への移行ガイド",
         description:
-          'TypeScript 4.9から5.0への移行時に注意すべき点と、新機能を活用するための移行戦略について詳しく解説します。',
-        content: '',
+          "TypeScript 4.9から5.0への移行時に注意すべき点と、新機能を活用するための移行戦略について詳しく解説します。",
+        content: "",
         author: {
-          name: '高橋美咲',
-          avatar: '/avatars/takahashi.jpg',
+          name: "高橋美咲",
+          avatar: "/avatars/takahashi.jpg",
         },
-        category: 'news',
-        tags: ['TypeScript', 'Migration', 'Update', 'News'],
-        publishedAt: '2024-01-11T11:20:00Z',
+        category: "news",
+        tags: ["TypeScript", "Migration", "Update", "News"],
+        publishedAt: "2024-01-11T11:20:00Z",
         readTime: 10,
         views: 1876,
         likes: 123,
         isPremium: false,
-        imageUrl: '/images/typescript-migration.jpg',
+        imageUrl: "/images/typescript-migration.jpg",
       },
       {
-        id: '6',
-        title: 'TypeScriptの高度な型操作テクニック',
+        id: "6",
+        title: "TypeScriptの高度な型操作テクニック",
         description:
-          'TypeScriptの条件型、マッピング型、テンプレートリテラル型などの高度な型操作テクニックを実例とともに詳しく解説します。',
-        content: '',
+          "TypeScriptの条件型、マッピング型、テンプレートリテラル型などの高度な型操作テクニックを実例とともに詳しく解説します。",
+        content: "",
         author: {
-          name: '伊藤健太',
-          avatar: '/avatars/ito.jpg',
+          name: "伊藤健太",
+          avatar: "/avatars/ito.jpg",
         },
-        category: 'advanced',
-        tags: ['TypeScript', 'Advanced', 'Type Manipulation', 'Expert'],
-        publishedAt: '2024-01-10T13:10:00Z',
+        category: "advanced",
+        tags: ["TypeScript", "Advanced", "Type Manipulation", "Expert"],
+        publishedAt: "2024-01-10T13:10:00Z",
         readTime: 18,
         views: 987,
         likes: 78,
         isPremium: true,
-        imageUrl: '/images/advanced-typescript.jpg',
+        imageUrl: "/images/advanced-typescript.jpg",
       },
     ],
   });
