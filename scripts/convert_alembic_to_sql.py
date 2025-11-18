@@ -7,6 +7,7 @@ AlembicマイグレーションをSQLに変換するスクリプト
 import re
 from pathlib import Path
 
+
 def convert_alembic_to_sql():
     """AlembicマイグレーションをSQLに変換"""
     alembic_file = Path("backend/alembic/versions/223a0ac841bb_initial_migration_with_automated_content.py")
