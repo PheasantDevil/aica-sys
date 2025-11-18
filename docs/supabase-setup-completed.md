@@ -19,9 +19,9 @@ SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ### 2. GitHub Secrets
 
-以下のSecretsが設定されました：
+以下の Secrets が設定されました：
 
-- ✅ `DATABASE_URL` (Pooler接続)
+- ✅ `DATABASE_URL` (Pooler 接続)
 - ✅ `SUPABASE_URL`
 - ✅ `SUPABASE_ANON_KEY`
 - ✅ `SUPABASE_SERVICE_KEY`
@@ -29,9 +29,9 @@ SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ## ⚠️ 手作業が必要な設定
 
-### 1. Vercel環境変数の設定
+### 1. Vercel 環境変数の設定
 
-**理由**: Vercel CLIのログインが必要
+**理由**: Vercel CLI のログインが必要
 
 **手順**:
 
@@ -40,16 +40,16 @@ SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 3. **Settings** → **Environment Variables** を開く
 4. 以下を追加：
 
-| 変数名 | 値 | 環境 |
-|--------|-----|------|
-| `DATABASE_URL` | `postgresql://postgres.ndetbklyymekcifheqaj:r2mSO4MkD2GLWLe4@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres` | Production, Preview, Development |
-| `SUPABASE_URL` | `https://ndetbklyymekcifheqaj.supabase.co` | Production, Preview, Development |
-| `SUPABASE_ANON_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZXRia2x5eW1la2NpZmhlcWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1OTQ3MTIsImV4cCI6MjA3MzE3MDcxMn0.fsnTvaefyUayFmNusThORLRjTMpOvXQOBaf2yTOk1t0` | Production, Preview, Development |
-| `SUPABASE_SERVICE_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZXRia2x5eW1la2NpZmhlcWFqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzU5NDcxMiwiZXhwIjoyMDczMTcwNzEyfQ.8g1d_7fNn32CzuTvj7y4_gqmXjMrhtMsiPAn1cMQFjw` | Production, Preview, Development |
-| `NEXT_PUBLIC_SUPABASE_URL` | `https://ndetbklyymekcifheqaj.supabase.co` | Production, Preview, Development |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZXRia2x5eW1la2NpZmhlcWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1OTQ3MTIsImV4cCI6MjA3MzE3MDcxMn0.fsnTvaefyUayFmNusThORLRjTMpOvXQOBaf2yTOk1t0` | Production, Preview, Development |
+| 変数名                          | 値                                                                                                                                                                                                                            | 環境                             |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| `DATABASE_URL`                  | `postgresql://postgres.ndetbklyymekcifheqaj:r2mSO4MkD2GLWLe4@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres`                                                                                                          | Production, Preview, Development |
+| `SUPABASE_URL`                  | `https://ndetbklyymekcifheqaj.supabase.co`                                                                                                                                                                                    | Production, Preview, Development |
+| `SUPABASE_ANON_KEY`             | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZXRia2x5eW1la2NpZmhlcWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1OTQ3MTIsImV4cCI6MjA3MzE3MDcxMn0.fsnTvaefyUayFmNusThORLRjTMpOvXQOBaf2yTOk1t0`            | Production, Preview, Development |
+| `SUPABASE_SERVICE_KEY`          | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZXRia2x5eW1la2NpZmhlcWFqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzU5NDcxMiwiZXhwIjoyMDczMTcwNzEyfQ.8g1d_7fNn32CzuTvj7y4_gqmXjMrhtMsiPAn1cMQFjw` | Production, Preview, Development |
+| `NEXT_PUBLIC_SUPABASE_URL`      | `https://ndetbklyymekcifheqaj.supabase.co`                                                                                                                                                                                    | Production, Preview, Development |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZXRia2x5eW1la2NpZmhlcWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1OTQ3MTIsImV4cCI6MjA3MzE3MDcxMn0.fsnTvaefyUayFmNusThORLRjTMpOvXQOBaf2yTOk1t0`            | Production, Preview, Development |
 
-**または、Vercel CLIで設定（ログイン後）:**
+**または、Vercel CLI で設定（ログイン後）:**
 
 ```bash
 cd /Users/Work/aica-sys
@@ -82,7 +82,7 @@ cd /Users/Work/aica-sys
 python3 scripts/check_database_url.py
 ```
 
-### 3. Supabase RLSポリシーの適用確認
+### 3. Supabase RLS ポリシーの適用確認
 
 **手順**:
 
@@ -99,31 +99,36 @@ supabase db execute --file supabase/migrations/20251015102236_enable_rls_policie
 - **Database Password**: `r2mSO4MkD2GLWLe4`
 - **Region**: Northeast Asia (Tokyo)
 
-### 接続URL
+### 接続 URL
 
-**Direct接続（開発用）:**
+**Direct 接続（開発用）:**
+
 ```
 postgresql://postgres:r2mSO4MkD2GLWLe4@db.ndetbklyymekcifheqaj.supabase.co:5432/postgres
 ```
 
-**Pooler接続（本番用・推奨）:**
+**Pooler 接続（本番用・推奨）:**
+
 ```
 postgresql://postgres.ndetbklyymekcifheqaj:r2mSO4MkD2GLWLe4@aws-0-ap-northeast-1.pooler.supabase.com:5432/postgres
 ```
 
 **API URL:**
+
 ```
 https://ndetbklyymekcifheqaj.supabase.co
 ```
 
-### APIキー
+### API キー
 
 **Anon Key:**
+
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZXRia2x5eW1la2NpZmhlcWFqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1OTQ3MTIsImV4cCI6MjA3MzE3MDcxMn0.fsnTvaefyUayFmNusThORLRjTMpOvXQOBaf2yTOk1t0
 ```
 
 **Service Role Key:**
+
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZXRia2x5eW1la2NpZmhlcWFqIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NzU5NDcxMiwiZXhwIjoyMDczMTcwNzEyfQ.8g1d_7fNn32CzuTvj7y4_gqmXjMrhtMsiPAn1cMQFjw
 ```
@@ -131,14 +136,13 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kZXRia2x
 ## 🔄 次のステップ
 
 1. ✅ ローカル環境変数設定完了
-2. ✅ GitHub Secrets設定完了
-3. ⚠️ Vercel環境変数の設定（手作業）
+2. ✅ GitHub Secrets 設定完了
+3. ⚠️ Vercel 環境変数の設定（手作業）
 4. ⚠️ データベース接続テスト
-5. ⚠️ RLSポリシーの適用確認
+5. ⚠️ RLS ポリシーの適用確認
 
 ## 📚 参考ドキュメント
 
-- [Supabase現状確認レポート](./supabase-current-status.md)
+- [Supabase 現状確認レポート](./supabase-current-status.md)
 - [Supabase + Vercel セットアップガイド](./supabase-vercel-setup-guide.md)
-- [データベースURL確認ガイド](./database-url-check-guide.md)
-
+- [データベース URL 確認ガイド](./database-url-check-guide.md)
