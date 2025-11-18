@@ -36,7 +36,7 @@ python-multipart==0.0.20
 structlog==24.1.0
 
 # Social Media Integration
-tweepy>=5.0.0  # Twitter API v2 client
+tweepy>=4.16.0  # Twitter API v2 client
 
 # Development and testing
 pytest==7.4.0
