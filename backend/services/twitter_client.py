@@ -3,10 +3,10 @@ Twitter API Client
 Handles Twitter/X API v2 integration for automated social media posting
 """
 
-import os
 import logging
-from typing import Optional, Dict, Any
+import os
 from datetime import datetime
+from typing import Any, Dict, Optional
 
 try:
     import tweepy

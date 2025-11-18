@@ -7,6 +7,7 @@ P1タスク: Twitter API統合確認
 import os
 import sys
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # Add backend to path

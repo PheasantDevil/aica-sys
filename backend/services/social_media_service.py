@@ -4,8 +4,8 @@ Handles automated social media posting for articles and service promotion
 """
 
 import logging
-from typing import Optional, Dict, Any, List
 from datetime import datetime
+from typing import Any, Dict, List, Optional
 from urllib.parse import quote
 
 from services.twitter_client import TwitterClient
