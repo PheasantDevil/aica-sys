@@ -191,6 +191,19 @@ result = service.post_trend_info(
 )
 ```
 
+### 記事生成スクリプトでの自動投稿
+
+`scripts/generate_daily_article.py` では、記事が保存されたタイミングで `SocialMediaService` を呼び出し、Twitter へ自動投稿するフックを追加済みです。
+
+```bash
+cd /Users/Work/aica-sys
+python3 scripts/generate_daily_article.py             # 本番データで実行
+python3 scripts/generate_daily_article.py --mock-data # モックデータでテスト（投稿はスキップ）
+python3 scripts/generate_daily_article.py --skip-social-post  # 投稿せずに実行
+```
+
+実行結果に `📣 Posted to Twitter` が表示されれば投稿成功です。`--skip-social-post` オプションを使うと、Twitter への投稿を行わずに記事生成のみをテストできます。
+
 ---
 
 ## 🔒 セキュリティ注意事項
