@@ -49,6 +49,10 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ DATABASE_URL not set, skipping database connection check"
+            exit 0
+          fi
           python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('backend'))); from database import SessionLocal; db = SessionLocal(); db.close(); print('✅ Database connection OK')"
 
       - name: Verify scripts exist
