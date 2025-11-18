@@ -30,9 +30,13 @@ from models.automated_content import (
     TrendDataDB,
 )
 from services.content_automation_service import ContentAutomationService
+from services.social_media_service import SocialMediaService
 from services.source_aggregator_service import SourceAggregatorService
 
 IS_SQLITE = DATABASE_URL.startswith("sqlite")
+SITE_BASE_URL = os.getenv("NEXT_PUBLIC_BASE_URL", "https://aica-sys.vercel.app").rstrip(
+    "/"
+)
 
 SAMPLE_SOURCE_DATA = [
     {
@@ -109,6 +113,11 @@ def parse_args() -> argparse.Namespace:
         default=3,
         help="Number of articles to attempt to generate (default: 3)",
     )
+    parser.add_argument(
+        "--skip-social-post",
+        action="store_true",
+        help="Skip social media posting after article generation",
+    )
     return parser.parse_args()
 
 
@@ -122,6 +131,7 @@ async def main_async(args: argparse.Namespace):
     db = SessionLocal()
     try:
         use_mock = args.mock_data
+        skip_social_post = args.skip_social_post
         max_articles = max(1, args.max_articles)
         groq_api_key = os.getenv("GROQ_API_KEY", "")
 
@@ -152,26 +162,38 @@ async def main_async(args: argparse.Namespace):
         print("💾 Saving trend data...")
         for trend in trends[:5]:
             trend_db = TrendDataDB(
-                trend_name=trend['keyword'],
-                trend_score=float(trend['score']),
-                source_count=trend['source_count'],
-                keywords=[trend['keyword']],
-                related_topics=[item.get('title', '') for item in trend.get('related_items', [])[:3]],
+                trend_name=trend["keyword"],
+                trend_score=float(trend["score"]),
+                source_count=trend["source_count"],
+                keywords=[trend["keyword"]],
+                related_topics=[
+                    item.get("title", "") for item in trend.get("related_items", [])[:3]
+                ],
                 data_snapshot=trend,
-                detected_at=datetime.now(timezone.utc)
+                detected_at=datetime.now(timezone.utc),
             )
             db.add(trend_db)
         db.commit()
         print(f"✅ Saved {len(trends[:5])} trend data")
 
+        # Initialize social media service (production mode only)
+        social_service = None
+        if not use_mock and not skip_social_post:
+            try:
+                social_service = SocialMediaService()
+                print("📣 Social media service initialized")
+            except Exception as social_error:
+                print(f"⚠️  Social media service unavailable: {social_error}")
+                print("    (Posting will be skipped)")
+
         # Step 4: 記事生成と保存
         print("✍️  Generating articles...")
         generated_count = 0
         skipped_count = 0
-        
+
         for i, trend in enumerate(trends[:max_articles], 1):
             print(f"  Generating article {i}/{max_articles}: {trend['keyword']}")
-            
+
             start_time = datetime.now(timezone.utc)
             if use_mock:
                 article = SAMPLE_ARTICLES[(i - 1) % len(SAMPLE_ARTICLES)]
@@ -181,52 +203,85 @@ async def main_async(args: argparse.Namespace):
                 }
             else:
                 article = await automation.generate_article(trend)
-            
+
             # 生成ログ保存
             log = ContentGenerationLogDB(
                 generation_type="daily_article",
                 status="success" if article else "failed",
                 api_cost=0.0,  # Groqは無料
-                generation_time=article.get('generation_time', 0) if article else 0,
-                quality_score=article.get('quality_score', 0) if article else 0
+                generation_time=article.get("generation_time", 0) if article else 0,
+                quality_score=article.get("quality_score", 0) if article else 0,
             )
-            
-            if article and article.get('quality_score', 0) >= 80:
+
+            if article and article.get("quality_score", 0) >= 80:
                 # スラッグ生成
-                slug = article['title'].lower().replace(' ', '-').replace('/', '-')[:100]
-                
+                slug = (
+                    article["title"].lower().replace(" ", "-").replace("/", "-")[:100]
+                )
+
                 # 記事をDBに保存
                 article_db = AutomatedContentDB(
                     content_type=ContentType.ARTICLE,
-                    title=article['title'],
+                    title=article["title"],
                     slug=slug,
-                    summary=article.get('summary', '')[:500],
-                    content=article['content'],
+                    summary=article.get("summary", "")[:500],
+                    content=article["content"],
                     content_metadata={
-                        'tags': article.get('tags', []),
-                        'read_time': article.get('read_time', 5),
-                        **article.get('metadata', {})
+                        "tags": article.get("tags", []),
+                        "read_time": article.get("read_time", 5),
+                        **article.get("metadata", {}),
                     },
-                    seo_data=article.get('seo_data', {}),
-                    quality_score=article['quality_score'],
+                    seo_data=article.get("seo_data", {}),
+                    quality_score=article["quality_score"],
                     status=ContentStatus.PUBLISHED,
-                    published_at=datetime.now(timezone.utc)
+                    published_at=datetime.now(timezone.utc),
                 )
                 db.add(article_db)
                 db.commit()
-                
+
                 log.content_id = article_db.id
                 log.status = "success"
                 generated_count += 1
-                
+
                 print(f"  ✅ Generated & Saved: {article['title']}")
-                print(f"     Score: {article['quality_score']:.1f} | ID: {article_db.id}")
+                print(
+                    f"     Score: {article['quality_score']:.1f} | ID: {article_db.id}"
+                )
+
+                # Post to social media (production mode only)
+                if social_service:
+                    try:
+                        article_url = f"{SITE_BASE_URL}/articles/{slug}"
+                        seo_keywords = article.get("seo_data", {}).get("keywords")
+                        hashtags = None
+                        if isinstance(seo_keywords, list):
+                            hashtags = [
+                                kw if kw.startswith("#") else f"#{kw}"
+                                for kw in seo_keywords[:3]
+                            ]
+                        post_result = social_service.post_article(
+                            title=article["title"],
+                            summary=article.get("summary", ""),
+                            url=article_url,
+                            hashtags=hashtags,
+                        )
+                        if post_result.get("success"):
+                            print("     📣 Posted to Twitter")
+                        else:
+                            print(
+                                f"     ⚠️  Twitter post failed: "
+                                f"{'; '.join(post_result.get('errors', []))}"
+                            )
+                    except Exception as post_error:
+                        print(f"     ⚠️  Social posting error: {post_error}")
             else:
-                log.error_message = "Quality score < 80" if article else "Generation failed"
+                log.error_message = (
+                    "Quality score < 80" if article else "Generation failed"
+                )
                 log.status = "skipped" if article else "failed"
                 skipped_count += 1
                 print(f"  ⚠️  Skipped (low quality or failed)")
-            
+
             db.add(log)
             db.commit()
 
@@ -249,4 +304,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
