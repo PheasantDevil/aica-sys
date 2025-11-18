@@ -10,6 +10,7 @@ from typing import Any, Dict, Optional
 
 try:
     import tweepy
+
     TWEEPY_AVAILABLE = True
 except ImportError:
     TWEEPY_AVAILABLE = False
@@ -199,12 +200,16 @@ class TwitterClient:
                 return {
                     "id": tweet.data.id,
                     "text": tweet.data.text,
-                    "created_at": tweet.data.created_at.isoformat()
-                    if tweet.data.created_at
-                    else None,
-                    "metrics": tweet.data.public_metrics.__dict__
-                    if hasattr(tweet.data, "public_metrics")
-                    else {},
+                    "created_at": (
+                        tweet.data.created_at.isoformat()
+                        if tweet.data.created_at
+                        else None
+                    ),
+                    "metrics": (
+                        tweet.data.public_metrics.__dict__
+                        if hasattr(tweet.data, "public_metrics")
+                        else {}
+                    ),
                 }
             return None
         except Exception as e:
@@ -231,4 +236,3 @@ class TwitterClient:
         except Exception as e:
             logger.error(f"Twitter credentials verification failed: {e}")
             return False
-

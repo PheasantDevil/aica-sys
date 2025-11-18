@@ -75,7 +75,7 @@ class SocialMediaService:
         # Add title (truncate if needed)
         title_max = 100
         if len(title) > title_max:
-            title = title[:title_max - 3] + "..."
+            title = title[: title_max - 3] + "..."
         tweet_parts.append(f"📝 {title}")
 
         # Add summary (truncate to fit)
@@ -242,7 +242,9 @@ class SocialMediaService:
             # Truncate summary
             excess = len(tweet_text) - 280
             if len(trend_summary) > excess:
-                tweet_parts[1] = trend_summary[: len(trend_summary) - excess - 3] + "..."
+                tweet_parts[1] = (
+                    trend_summary[: len(trend_summary) - excess - 3] + "..."
+                )
                 tweet_text = "\n\n".join(tweet_parts)
 
         results = {
@@ -289,4 +291,3 @@ class SocialMediaService:
             status["twitter"] = False
 
         return status
-
