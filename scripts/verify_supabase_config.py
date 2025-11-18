@@ -8,6 +8,14 @@ import os
 import sys
 from pathlib import Path
 from urllib.parse import urlparse
+from dotenv import load_dotenv
+
+# .env.localを読み込む
+backend_dir = Path(__file__).resolve().parent.parent / "backend"
+env_local = backend_dir / ".env.local"
+if env_local.exists():
+    load_dotenv(env_local)
+
 
 def check_supabase_config():
     """Supabase設定を確認"""

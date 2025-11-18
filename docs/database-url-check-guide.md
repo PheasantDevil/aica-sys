@@ -1,13 +1,15 @@
-# データベースURL確認方法ガイド
+# データベース URL 確認方法ガイド
 
-## 1. GitHub Secretsでの確認方法
+## 1. GitHub Secrets での確認方法
 
-### GitHubリポジトリの設定から確認
-1. GitHubリポジトリにアクセス
+### GitHub リポジトリの設定から確認
+
+1. GitHub リポジトリにアクセス
 2. **Settings** → **Secrets and variables** → **Actions** を開く
 3. `DATABASE_URL` を検索して確認
 
-### GitHub CLIで確認（値は表示されません）
+### GitHub CLI で確認（値は表示されません）
+
 ```bash
 gh secret list
 ```
@@ -15,6 +17,7 @@ gh secret list
 ## 2. ローカル環境での確認方法
 
 ### 環境変数の確認
+
 ```bash
 # 現在の環境変数を確認
 echo $DATABASE_URL
@@ -23,7 +26,8 @@ echo $DATABASE_URL
 cat backend/.env | grep DATABASE_URL
 ```
 
-### Pythonスクリプトで確認
+### Python スクリプトで確認
+
 ```python
 import os
 from pathlib import Path
@@ -40,7 +44,8 @@ print(f"Default SQLite URL: {DEFAULT_SQLITE_URL}")
 
 ## 3. データベース接続の確認方法
 
-### Pythonスクリプトで接続テスト
+### Python スクリプトで接続テスト
+
 ```python
 from pathlib import Path
 import sys
@@ -59,6 +64,7 @@ except Exception as e:
 ```
 
 ### コマンドラインで確認
+
 ```bash
 cd backend
 python3 -c "
@@ -85,6 +91,7 @@ except Exception as e:
 ## 4. データベースタイプの判定
 
 ### コード内での確認
+
 ```python
 from backend.database import DATABASE_URL, is_sqlite, is_postgresql
 
@@ -95,19 +102,22 @@ print(f"Is PostgreSQL: {is_postgresql}")
 
 ## 5. デフォルト値の確認
 
-### デフォルトのSQLiteパス
+### デフォルトの SQLite パス
+
 - デフォルト: `sqlite:///backend/aica_sys.db`
 - `DATABASE_URL`が設定されていない場合、自動的にこのパスが使用されます
 
 ### 確認方法
+
 ```bash
 # デフォルトのSQLiteファイルの存在確認
 ls -la backend/aica_sys.db
 ```
 
-## 6. GitHub Actionsでの確認方法
+## 6. GitHub Actions での確認方法
 
 ### ワークフロー内で確認（デバッグ用）
+
 ```yaml
 - name: Check DATABASE_URL
   env:
@@ -125,12 +135,14 @@ ls -la backend/aica_sys.db
 
 ### よくある問題
 
-1. **DATABASE_URLが空の場合**
-   - デフォルトのSQLiteが使用されます
+1. **DATABASE_URL が空の場合**
+
+   - デフォルトの SQLite が使用されます
    - ワークフローでは接続チェックをスキップします
 
 2. **接続エラーの場合**
-   - URLの形式を確認: `postgresql://user:password@host:port/dbname`
+
+   - URL の形式を確認: `postgresql://user:password@host:port/dbname`
    - ネットワーク接続を確認
    - 認証情報を確認
 
@@ -141,9 +153,9 @@ ls -la backend/aica_sys.db
 
 ## 8. セキュリティ注意事項
 
-⚠️ **重要**: 
+⚠️ **重要**:
+
 - `DATABASE_URL`には機密情報（パスワードなど）が含まれます
 - ログや出力に直接表示しないでください
-- GitHub Secretsに適切に保存してください
-- 本番環境のURLは絶対に公開しないでください
-
+- GitHub Secrets に適切に保存してください
+- 本番環境の URL は絶対に公開しないでください

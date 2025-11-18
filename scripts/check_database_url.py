@@ -55,7 +55,8 @@ def check_database_url():
     print("=" * 60)
     
     try:
-        from database import SessionLocal, engine, DATABASE_URL as db_url
+        from database import DATABASE_URL as db_url
+        from database import SessionLocal, engine
         
         print(f"Attempting to connect to: {mask_password(str(db_url))}")
         
