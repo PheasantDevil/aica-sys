@@ -237,6 +237,15 @@ python3 scripts/test_twitter_connection.py
 
 スクリプト内でツイートフォーマットをテスト（実際には投稿しない）
 
+### 定期投稿ワークフロー
+
+- GitHub Actions: `.github/workflows/social-media-post.yml`
+  - 毎日 03:00 UTC に実行
+  - 月・水・金はサービス紹介を自動投稿
+  - 毎日トレンドハイライトを投稿
+- 実行コマンド: `python scripts/post_to_social_media.py ...`
+- 環境変数は GitHub Secrets (`TWITTER_*`) から読み込まれます
+
 ---
 
 ## 📚 参考リソース

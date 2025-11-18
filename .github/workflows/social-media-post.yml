@@ -1,0 +1,57 @@
+name: Social Media Auto Post
+
+on:
+  schedule:
+    # 毎日 03:00 UTC (12:00 JST 相当)
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  social-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Get day of week
+        id: date
+        run: echo "day=$(date -u +%u)" >> "$GITHUB_OUTPUT"
+
+      - name: Post service introduction (Mon/Wed/Fri)
+        if: ${{ steps.date.outputs.day == '1' || steps.date.outputs.day == '3' || steps.date.outputs.day == '5' }}
+        env:
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+        run: |
+          python scripts/post_to_social_media.py \
+            --type service \
+            --message "🚀 AICA-SyS で TypeScript トレンドを毎日キャッチ！AI が高品質な技術記事を自動生成します。" \
+            --hashtags "#TypeScript,#AI,#開発ツール"
+
+      - name: Post daily trend highlight
+        env:
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+          TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
+          TWITTER_API_SECRET: ${{ secrets.TWITTER_API_SECRET }}
+          TWITTER_ACCESS_TOKEN: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+          TWITTER_ACCESS_TOKEN_SECRET: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+        run: |
+          python scripts/post_to_social_media.py \
+            --type trend \
+            --title "Daily TypeScript Trend" \
+            --summary "最新のTypeScriptエコシステム洞察をAICA-SySでチェック。AIが注目トピックを自動分析！" \
+            --url "https://aica-sys.vercel.app/trends" \
+            --hashtags "#TypeScript,#技術記事,#AI自動生成"
