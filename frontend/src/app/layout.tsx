@@ -4,6 +4,7 @@ import PerformanceMonitor from "@/components/PerformanceMonitor";
 import { PerformanceProvider } from "@/components/PerformanceProvider";
 import { Providers } from "@/components/providers";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -15,6 +16,10 @@ const inter = Inter({
   preload: true,
   fallback: ["system-ui", "arial"],
 });
+
+const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://aica-sys.vercel.app";
+const GOOGLE_SITE_VERIFICATION = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata: Metadata = {
   title: "AICA-SyS - AI-driven Information Curation System",
@@ -28,18 +33,18 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://aica-sys-konishib0engineer-gmailcoms-projects.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
-    canonical: "/",
+    canonical: SITE_URL,
   },
   openGraph: {
     title: "AICA-SyS - AI-driven Information Curation System",
     description: "AI-driven niche information curation and automated sales system",
-    url: "https://aica-sys-konishib0engineer-gmailcoms-projects.vercel.app",
+    url: SITE_URL,
     siteName: "AICA-SyS",
     images: [
       {
-        url: "/og-image.jpg",
+        url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: "AICA-SyS - AI-driven Information Curation System",
@@ -52,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AICA-SyS - AI-driven Information Curation System",
     description: "AI-driven niche information curation and automated sales system",
-    images: ["/og-image.jpg"],
+    images: [`${SITE_URL}/og-image.jpg`],
   },
   robots: {
     index: true,
@@ -65,9 +70,11 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "your-google-verification-code",
-  },
+  verification: GOOGLE_SITE_VERIFICATION
+    ? {
+        google: GOOGLE_SITE_VERIFICATION,
+      }
+    : undefined,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -92,6 +99,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </ErrorProvider>
         </Providers>
         <SpeedInsights />
+        {GA_MEASUREMENT_ID ? <GoogleAnalytics gaId={GA_MEASUREMENT_ID} /> : null}
       </body>
     </html>
   );
