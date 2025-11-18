@@ -5,11 +5,12 @@ P0タスク: 本番環境デプロイ確認
 """
 
 import os
-import sys
 import subprocess
-import requests
+import sys
 from pathlib import Path
 from urllib.parse import urlparse
+
+import requests
 
 # カラー出力用
 GREEN = "\033[32m"
