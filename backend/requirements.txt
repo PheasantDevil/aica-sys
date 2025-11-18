@@ -21,7 +21,7 @@ PyGithub==1.59.0
 aiohttp==3.12.14
 
 # AI and ML
-groq==0.11.0
+groq==0.34.1
 
 # Image processing
 Pillow==10.4.0
