@@ -422,9 +422,6 @@ class ContentRecommendationService:
         """コンテンツのユーザー適合スコアを計算"""
         score = 0.0
 
-        # コンテンツのベクトルを構築
-        content_vector = self._build_content_vector(content)
-
         # ユーザープロフィールのカテゴリとタグとマッチング
         user_categories = user_profile.get("categories", {})
         user_tags = user_profile.get("tags", {})
