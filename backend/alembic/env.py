@@ -16,13 +16,8 @@ from sqlalchemy import create_engine, engine_from_config, pool
 # Add the backend directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from models.automated_content import (
-    AutomatedContentDB,
-    ContentGenerationLogDB,
-    SourceDataDB,
-    TrendDataDB,
-)
-
+from models.automated_content import (AutomatedContentDB, ContentGenerationLogDB, SourceDataDB,
+                                      TrendDataDB)
 # Import your models
 from models.base import Base
 from models.collection import AnalysisResult, CollectionJob

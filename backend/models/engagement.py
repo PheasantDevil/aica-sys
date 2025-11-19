@@ -9,16 +9,7 @@ from typing import Optional
 
 from database import Base
 from pydantic import BaseModel
-from sqlalchemy import (
-    JSON,
-    Boolean,
-    Column,
-    DateTime,
-    ForeignKey,
-    Integer,
-    String,
-    Text,
-)
+from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 
 
 class ReactionType(str, Enum):

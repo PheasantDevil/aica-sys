@@ -7,15 +7,8 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from models.analytics import (
-    AnalyticsEventDB,
-    DashboardDB,
-    MetricSnapshotDB,
-    ReportDB,
-    ReportType,
-    ScheduledReportDB,
-    UserSegmentDB,
-)
+from models.analytics import (AnalyticsEventDB, DashboardDB, MetricSnapshotDB, ReportDB, ReportType,
+                              ScheduledReportDB, UserSegmentDB)
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
