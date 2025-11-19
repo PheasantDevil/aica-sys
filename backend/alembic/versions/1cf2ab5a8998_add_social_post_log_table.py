@@ -5,6 +5,7 @@ Revises: 223a0ac841bb
 Create Date: 2025-11-19 19:20:39.170947
 
 """
+
 from typing import Sequence, Union
 
 from alembic import op
@@ -22,7 +23,9 @@ def upgrade() -> None:
     op.create_table(
         "social_post_logs",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("platform", sa.String(length=50), nullable=False, server_default="twitter"),
+        sa.Column(
+            "platform", sa.String(length=50), nullable=False, server_default="twitter"
+        ),
         sa.Column("post_type", sa.String(length=50), nullable=False),
         sa.Column("title", sa.String(length=300), nullable=True),
         sa.Column("summary", sa.Text(), nullable=True),
@@ -30,14 +33,26 @@ def upgrade() -> None:
         sa.Column("hashtags", sa.JSON(), nullable=True),
         sa.Column("message", sa.Text(), nullable=True),
         sa.Column("tweet_id", sa.String(length=100), nullable=True),
-        sa.Column("status", sa.String(length=20), nullable=False, server_default="pending"),
+        sa.Column(
+            "status", sa.String(length=20), nullable=False, server_default="pending"
+        ),
         sa.Column("error_message", sa.Text(), nullable=True),
         sa.Column("tweet_text", sa.Text(), nullable=True),
         sa.Column("tweet_metrics", sa.JSON(), nullable=True),
         sa.Column("metadata", sa.JSON(), nullable=True),
-        sa.Column("posted_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("CURRENT_TIMESTAMP")),
+        sa.Column(
+            "posted_at",
+            sa.DateTime(timezone=True),
+            nullable=False,
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+        ),
         sa.Column("metrics_updated_at", sa.DateTime(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("CURRENT_TIMESTAMP")),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            nullable=False,
+            server_default=sa.text("CURRENT_TIMESTAMP"),
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index("ix_social_post_logs_platform", "social_post_logs", ["platform"])
