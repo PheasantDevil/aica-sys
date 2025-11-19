@@ -49,11 +49,7 @@ def test_imports():
 
     try:
         # コンテンツ生成サービスのテスト
-        from services.content_generator import (
-            ContentGenerator,
-            ContentType,
-            GeneratedContent,
-        )
+        from services.content_generator import ContentGenerator, ContentType, GeneratedContent
 
         print("✅ ContentGenerator imported successfully")
     except ImportError as e:
@@ -79,6 +75,8 @@ def test_data_structures():
     print("\nTesting data structures...")
 
     try:
+        from datetime import datetime
+
         from services.ai_analyzer import AnalysisResult
         from services.content_generator import ContentType, GeneratedContent
         from services.data_collector import ContentItem

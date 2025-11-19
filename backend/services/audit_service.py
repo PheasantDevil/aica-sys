@@ -644,34 +644,34 @@ class AuditService:
             監査ログのリスト
         """
         try:
-            query = db.query(AuditLog)
+            query = db.query(AuditEventDB)
 
             # フィルターを適用
             if filters.get("user_id"):
-                query = query.filter(AuditLog.user_id == filters["user_id"])
+                query = query.filter(AuditEventDB.user_id == filters["user_id"])
 
             if filters.get("event_type"):
-                query = query.filter(AuditLog.event_type == filters["event_type"])
+                query = query.filter(AuditEventDB.event_type == filters["event_type"])
 
             if filters.get("severity"):
-                query = query.filter(AuditLog.severity == filters["severity"])
+                query = query.filter(AuditEventDB.severity == filters["severity"])
 
             if filters.get("start_date"):
                 start_date = datetime.fromisoformat(filters["start_date"])
-                query = query.filter(AuditLog.timestamp >= start_date)
+                query = query.filter(AuditEventDB.timestamp >= start_date)
 
             if filters.get("end_date"):
                 end_date = datetime.fromisoformat(filters["end_date"])
-                query = query.filter(AuditLog.timestamp <= end_date)
+                query = query.filter(AuditEventDB.timestamp <= end_date)
 
             if filters.get("ip_address"):
-                query = query.filter(AuditLog.ip_address == filters["ip_address"])
+                query = query.filter(AuditEventDB.ip_address == filters["ip_address"])
 
             if filters.get("result"):
-                query = query.filter(AuditLog.result == filters["result"])
+                query = query.filter(AuditEventDB.result == filters["result"])
 
             # ソートとページネーション
-            query = query.order_by(AuditLog.timestamp.desc())
+            query = query.order_by(AuditEventDB.timestamp.desc())
             query = query.offset(offset).limit(limit)
 
             audit_logs = query.all()
@@ -933,7 +933,7 @@ class AuditService:
 
             # 古いログを削除
             deleted_count = (
-                db.query(AuditLog).filter(AuditLog.timestamp < cutoff_date).delete()
+                db.query(AuditEventDB).filter(AuditEventDB.timestamp < cutoff_date).delete()
             )
             db.commit()
 
