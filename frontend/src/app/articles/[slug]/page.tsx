@@ -1,8 +1,9 @@
+import { AnalyticsButton } from "@/components/analytics/analytics-button";
+import { ArticleViewTracker } from "@/components/content/article-view-tracker";
+import { RecommendedArticles } from "@/components/content/recommended-articles";
+import { SEOUtils } from "@/lib/seo";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SEOUtils } from "@/lib/seo";
-import { ArticleCard } from "@/components/content/article-card";
-import { AnalyticsButton } from "@/components/analytics/analytics-button";
 
 interface ArticlePageProps {
   params: {
@@ -135,6 +136,16 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div dangerouslySetInnerHTML={{ __html: article.content }} />
       </article>
 
+      {/* View Tracker - 閲覧履歴を記録 */}
+      <ArticleViewTracker
+        articleId={article.id}
+        metadata={{
+          category: article.category,
+          tags: article.tags,
+          title: article.title,
+        }}
+      />
+
       {/* Article Actions */}
       <div className="flex items-center gap-4 mb-8">
         <AnalyticsButton
@@ -174,14 +185,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </AnalyticsButton>
       </div>
 
-      {/* Related Articles */}
-      <section className="mt-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">関連記事</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* This would be populated with related articles */}
-          <ArticleCard article={article} />
-        </div>
-      </section>
+      {/* Similar Articles - 類似記事推薦 */}
+      <RecommendedArticles contentId={article.id} type="similar" limit={6} title="関連記事" />
     </div>
   );
 }

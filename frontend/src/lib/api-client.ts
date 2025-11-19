@@ -227,6 +227,46 @@ export class ApiClient {
   async getAnalysisResult(id: string): Promise<ApiResponse<any>> {
     return this.request(`/analysis/results/${id}`);
   }
+
+  // Content Recommendations
+  async getRecommendations(
+    userId: string,
+    limit: number = 10,
+  ): Promise<ApiResponse<{ recommendations: any[]; count: number }>> {
+    return this.request(`/content-quality/recommendations/${userId}?limit=${limit}`);
+  }
+
+  async getSimilarContent(
+    contentId: string,
+    limit: number = 5,
+  ): Promise<ApiResponse<{ similar_contents: any[]; count: number }>> {
+    return this.request(`/content-quality/similar/${contentId}?limit=${limit}`);
+  }
+
+  async getTrendingContent(
+    category?: string,
+    limit: number = 10,
+  ): Promise<ApiResponse<{ trending_contents: any[]; count: number }>> {
+    const query = category ? `?category=${category}&limit=${limit}` : `?limit=${limit}`;
+    return this.request(`/content-quality/trending${query}`);
+  }
+
+  async recordInteraction(
+    userId: string,
+    contentId: string,
+    interactionType: "view" | "like" | "share" | "bookmark",
+    metadata?: Record<string, any>,
+  ): Promise<ApiResponse<{ message: string }>> {
+    return this.request("/content-quality/interaction", {
+      method: "POST",
+      body: JSON.stringify({
+        user_id: userId,
+        content_id: contentId,
+        interaction_type: interactionType,
+        metadata,
+      }),
+    });
+  }
 }
 
 // Singleton instance

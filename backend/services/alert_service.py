@@ -6,6 +6,7 @@ import smtplib
 from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from enum import Enum
 from typing import Any, Dict, List, Optional
 
 import aiohttp

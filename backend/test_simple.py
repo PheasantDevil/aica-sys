@@ -79,6 +79,8 @@ def test_data_structures():
     print("\nTesting data structures...")
 
     try:
+        from datetime import datetime
+
         from services.ai_analyzer import AnalysisResult
         from services.content_generator import ContentType, GeneratedContent
         from services.data_collector import ContentItem

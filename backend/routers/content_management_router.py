@@ -486,8 +486,8 @@ async def get_scheduler_status(current_user: User = Depends(get_current_user)):
                 status_code=status.HTTP_403_FORBIDDEN, detail="Admin access required"
             )
 
-        status = await scheduler.get_schedule_status()
-        return status
+        schedule_status = await scheduler.get_schedule_status()
+        return schedule_status
 
     except HTTPException:
         raise

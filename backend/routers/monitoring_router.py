@@ -302,9 +302,11 @@ async def get_monitoring_stats(
             "by_status": {},
         }
 
-        for status in HealthStatus:
-            status_checks = [h for h in health_checks if h.status == status]
-            health_stats["by_status"][status.value] = len(status_checks)
+        for health_status_value in HealthStatus:
+            status_checks = [
+                h for h in health_checks if h.status == health_status_value
+            ]
+            health_stats["by_status"][health_status_value.value] = len(status_checks)
 
         stats = {
             "metrics": {

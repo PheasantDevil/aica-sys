@@ -664,13 +664,13 @@ def get_monitoring_service(db: Session = Depends(get_db)) -> MonitoringService:
 
 async def start_monitoring_service():
     """監視サービスを開始（アプリケーション起動時に呼び出し）"""
-    global _monitoring_service_instance
+    global _monitoring_service_instance  # noqa: F824
     if _monitoring_service_instance and not _monitoring_service_instance.is_running:
         await _monitoring_service_instance.start_monitoring()
 
 
 async def stop_monitoring_service():
     """監視サービスを停止（アプリケーション終了時に呼び出し）"""
-    global _monitoring_service_instance
+    global _monitoring_service_instance  # noqa: F824
     if _monitoring_service_instance and _monitoring_service_instance.is_running:
         await _monitoring_service_instance.stop_monitoring()
