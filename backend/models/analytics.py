@@ -21,6 +21,7 @@ class ReportType(str, Enum):
     SUBSCRIPTION = "subscription"
     AFFILIATE = "affiliate"
     CUSTOM = "custom"
+    SOCIAL = "social"
 
 
 class ReportFormat(str, Enum):
@@ -129,6 +130,30 @@ class UserSegmentDB(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
+class SocialPostLogDB(Base):
+    """SNS投稿ログ"""
+
+    __tablename__ = "social_post_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    platform = Column(String(50), default="twitter", index=True)
+    post_type = Column(String(50), index=True)
+    title = Column(String(300), nullable=True)
+    summary = Column(Text, nullable=True)
+    url = Column(String, nullable=True)
+    hashtags = Column(JSON, nullable=True)
+    message = Column(Text, nullable=True)
+    tweet_id = Column(String(100), nullable=True, index=True)
+    status = Column(String(20), default="pending", index=True)
+    error_message = Column(Text, nullable=True)
+    tweet_text = Column(Text, nullable=True)
+    tweet_metrics = Column(JSON, nullable=True)
+    metadata = Column(JSON, nullable=True)
+    posted_at = Column(DateTime, default=datetime.utcnow, index=True)
+    metrics_updated_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
 # Pydantic Models
 class AnalyticsEvent(BaseModel):
     """アナリティクスイベントモデル"""
@@ -219,6 +244,31 @@ class UserSegment(BaseModel):
     user_count: int
     created_at: datetime
     updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class SocialPostLog(BaseModel):
+    """SNS投稿ログモデル"""
+
+    id: int
+    platform: str
+    post_type: str
+    title: Optional[str] = None
+    summary: Optional[str] = None
+    url: Optional[str] = None
+    hashtags: Optional[list] = None
+    message: Optional[str] = None
+    tweet_id: Optional[str] = None
+    status: str
+    error_message: Optional[str] = None
+    tweet_text: Optional[str] = None
+    tweet_metrics: Optional[dict] = None
+    metadata: Optional[dict] = None
+    posted_at: datetime
+    metrics_updated_at: Optional[datetime] = None
+    created_at: datetime
 
     class Config:
         from_attributes = True

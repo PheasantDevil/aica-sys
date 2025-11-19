@@ -20,6 +20,7 @@ env_local = BACKEND_DIR / ".env.local"
 if env_local.exists():
     load_dotenv(env_local)
 
+from database import SessionLocal
 from services.social_media_service import SocialMediaService
 
 
@@ -66,9 +67,18 @@ def parse_hashtags(raw: str | None):
     return tags or None
 
 
+def get_db_session():
+    try:
+        return SessionLocal()
+    except Exception as exc:
+        print(f"⚠️  Failed to initialize database session: {exc}")
+        return None
+
+
 def main():
     args = parse_args()
-    service = SocialMediaService()
+    db_session = get_db_session()
+    service = SocialMediaService(db_session=db_session)
     hashtags = parse_hashtags(args.hashtags)
 
     if args.type == "article":
@@ -127,16 +137,20 @@ def main():
         )
 
     status = result.get("platforms", {}).get("twitter", {})
-    if result.get("success") and status.get("success", True):
-        print("✅ Twitter post successful")
-    else:
-        print("⚠️ Twitter post failed")
-        errors = result.get("errors", [])
-        if status.get("error"):
-            errors.append(status["error"])
-        for err in errors:
-            print(f"  - {err}")
-        raise SystemExit(1)
+    try:
+        if result.get("success") and status.get("success", True):
+            print("✅ Twitter post successful")
+        else:
+            print("⚠️ Twitter post failed")
+            errors = result.get("errors", [])
+            if status.get("error"):
+                errors.append(status["error"])
+            for err in errors:
+                print(f"  - {err}")
+            raise SystemExit(1)
+    finally:
+        if db_session:
+            db_session.close()
 
 
 if __name__ == "__main__":

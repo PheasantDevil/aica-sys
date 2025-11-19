@@ -7,6 +7,7 @@ pydantic[email]==2.8.0
 # Database
 sqlalchemy==2.0.36
 psycopg[binary]>=3.2.0  # Supabase PostgreSQL接続用（Python 3.13対応）
+psycopg2-binary>=2.9.0  # Alembic/autogenerate用
 
 # Authentication and Security
 PyJWT==2.10.1

@@ -4,11 +4,12 @@ Handles automated social media posting for articles and service promotion
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
-from urllib.parse import quote
 
+from models.analytics import SocialPostLogDB
 from services.twitter_client import TwitterClient
+from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
 
@@ -27,10 +28,15 @@ class SocialMediaService:
         "#AI自動生成",
     ]
 
-    def __init__(self):
+    def __init__(self, db_session: Optional[Session] = None):
         """Initialize social media service"""
+        self.db: Optional[Session] = db_session
         self.twitter_client: Optional[TwitterClient] = None
         self._initialize_clients()
+
+    def set_db_session(self, db_session: Session):
+        """Assign or update the DB session."""
+        self.db = db_session
 
     def _initialize_clients(self):
         """Initialize social media API clients"""
@@ -140,7 +146,13 @@ class SocialMediaService:
             "posted_at": datetime.now().isoformat(),
         }
 
-        # Format tweet text
+        payload = {
+            "title": title,
+            "summary": summary,
+            "url": url,
+            "hashtags": hashtags,
+        }
+
         try:
             tweet_text = self.format_article_tweet(title, summary, url, hashtags)
         except Exception as e:
@@ -164,6 +176,7 @@ class SocialMediaService:
             logger.warning("Twitter client not available. Skipping Twitter post.")
             results["errors"].append("Twitter client not initialized")
 
+        self._log_post("article", payload, results)
         return results
 
     def post_service_introduction(
@@ -196,6 +209,8 @@ class SocialMediaService:
             tweet_text = tweet_text[:277] + "..."
 
         # Post to Twitter
+        payload = {"message": message, "hashtags": hashtags}
+
         if self.twitter_client:
             try:
                 twitter_result = self.twitter_client.post_tweet(tweet_text)
@@ -211,6 +226,7 @@ class SocialMediaService:
             logger.warning("Twitter client not available. Skipping Twitter post.")
             results["errors"].append("Twitter client not initialized")
 
+        self._log_post("service", payload, results)
         return results
 
     def post_trend_info(
@@ -227,6 +243,12 @@ class SocialMediaService:
         Returns:
             Dict containing posting results
         """
+        payload = {
+            "title": trend_title,
+            "summary": trend_summary,
+            "url": url,
+        }
+
         # Format trend tweet
         tweet_parts = [f"📊 {trend_title}", trend_summary]
 
@@ -254,7 +276,6 @@ class SocialMediaService:
             "posted_at": datetime.now().isoformat(),
         }
 
-        # Post to Twitter
         if self.twitter_client:
             try:
                 twitter_result = self.twitter_client.post_tweet(tweet_text)
@@ -270,6 +291,7 @@ class SocialMediaService:
             logger.warning("Twitter client not available. Skipping Twitter post.")
             results["errors"].append("Twitter client not initialized")
 
+        self._log_post("trend", payload, results)
         return results
 
     def verify_connections(self) -> Dict[str, bool]:
@@ -291,3 +313,86 @@ class SocialMediaService:
             status["twitter"] = False
 
         return status
+
+    def refresh_post_metrics(
+        self, log_ids: Optional[List[int]] = None, hours: int = 168
+    ) -> List[Dict[str, Any]]:
+        """Refresh tweet metrics for logged posts."""
+        if not self.db or not self.twitter_client:
+            logger.info(
+                "Skipping metrics refresh (missing DB session or Twitter client)"
+            )
+            return []
+
+        query = self.db.query(SocialPostLogDB).filter(
+            SocialPostLogDB.platform == "twitter",
+            SocialPostLogDB.tweet_id.isnot(None),
+        )
+
+        if log_ids:
+            query = query.filter(SocialPostLogDB.id.in_(log_ids))
+        else:
+            cutoff = datetime.utcnow() - timedelta(hours=hours)
+            query = query.filter(SocialPostLogDB.posted_at >= cutoff)
+
+        logs = query.all()
+        updated: List[Dict[str, Any]] = []
+
+        for log in logs:
+            if not log.tweet_id:
+                continue
+            tweet = self.twitter_client.get_tweet(str(log.tweet_id))
+            if tweet and tweet.get("metrics"):
+                log.tweet_metrics = tweet["metrics"]
+                log.metrics_updated_at = datetime.utcnow()
+                updated.append(
+                    {
+                        "id": log.id,
+                        "tweet_id": log.tweet_id,
+                        "metrics": log.tweet_metrics,
+                    }
+                )
+
+        if updated:
+            self.db.commit()
+
+        return updated
+
+    def _log_post(
+        self, post_type: str, payload: Dict[str, Any], result: Dict[str, Any]
+    ) -> None:
+        """Persist social post attempt for analytics."""
+        if not self.db:
+            return
+
+        try:
+            twitter_status = result.get("platforms", {}).get("twitter") or {}
+            log = SocialPostLogDB(
+                platform="twitter",
+                post_type=post_type,
+                title=payload.get("title"),
+                summary=payload.get("summary"),
+                url=payload.get("url"),
+                hashtags=payload.get("hashtags"),
+                message=payload.get("message"),
+                tweet_id=twitter_status.get("tweet_id"),
+                tweet_text=twitter_status.get("text"),
+                status="success" if result.get("success") else "failed",
+                error_message=(
+                    "; ".join(result.get("errors", []))
+                    if result.get("errors")
+                    else None
+                ),
+                metadata={
+                    "payload": {
+                        key: value
+                        for key, value in payload.items()
+                        if key not in {"title", "summary", "url", "hashtags", "message"}
+                    }
+                },
+            )
+            self.db.add(log)
+            self.db.commit()
+        except Exception as exc:
+            self.db.rollback()
+            logger.warning(f"Failed to log social post analytics: {exc}")
