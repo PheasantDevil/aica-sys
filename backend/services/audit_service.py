@@ -933,7 +933,9 @@ class AuditService:
 
             # 古いログを削除
             deleted_count = (
-                db.query(AuditEventDB).filter(AuditEventDB.timestamp < cutoff_date).delete()
+                db.query(AuditEventDB)
+                .filter(AuditEventDB.timestamp < cutoff_date)
+                .delete()
             )
             db.commit()
 
