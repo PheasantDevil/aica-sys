@@ -42,18 +42,24 @@ export function RecommendedArticles({
         let response;
         if (type === "similar") {
           response = await apiClient.getSimilarContent(contentId, limit);
-          if (response.success && response.data) {
+          if (response.data) {
             setArticles(response.data.similar_contents || []);
+          } else if (response.error) {
+            setError(response.error);
           }
         } else if (type === "trending") {
           response = await apiClient.getTrendingContent(undefined, limit);
-          if (response.success && response.data) {
+          if (response.data) {
             setArticles(response.data.trending_contents || []);
+          } else if (response.error) {
+            setError(response.error);
           }
         } else if (type === "personalized" && userId) {
           response = await apiClient.getRecommendations(userId, limit);
-          if (response.success && response.data) {
+          if (response.data) {
             setArticles(response.data.recommendations || []);
+          } else if (response.error) {
+            setError(response.error);
           }
         }
       } catch (err) {

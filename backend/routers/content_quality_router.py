@@ -48,9 +48,7 @@ async def evaluate_content(request: ContentEvaluationRequest):
 
 
 @router.get("/recommendations/{user_id}")
-async def get_recommendations(
-    user_id: str, limit: int = 10, db=Depends(get_db)
-):
+async def get_recommendations(user_id: str, limit: int = 10, db=Depends(get_db)):
     """ユーザーへのコンテンツ推薦（改善版：データベース連携）"""
     try:
         recommendation_service = ContentRecommendationService(db=db)
@@ -70,9 +68,7 @@ async def get_recommendations(
 
 
 @router.get("/similar/{content_id}")
-async def get_similar_content(
-    content_id: str, limit: int = 5, db=Depends(get_db)
-):
+async def get_similar_content(content_id: str, limit: int = 5, db=Depends(get_db)):
     """類似コンテンツの取得（改善版：データベース連携）"""
     try:
         recommendation_service = ContentRecommendationService(db=db)

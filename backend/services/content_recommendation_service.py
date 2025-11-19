@@ -30,7 +30,9 @@ class ContentRecommendationService:
         """ユーザーに基づいたコンテンツ推薦（改善版：データベース連携）"""
 
         if not self.db:
-            logger.warning("Database session not provided, returning empty recommendations")
+            logger.warning(
+                "Database session not provided, returning empty recommendations"
+            )
             return []
 
         # ユーザーの閲覧履歴を取得
@@ -70,7 +72,11 @@ class ContentRecommendationService:
                     "slug": content.slug,
                     "summary": content.summary,
                     "score": score,
-                    "published_at": content.published_at.isoformat() if content.published_at else None,
+                    "published_at": (
+                        content.published_at.isoformat()
+                        if content.published_at
+                        else None
+                    ),
                 }
             )
 
@@ -85,7 +91,9 @@ class ContentRecommendationService:
         """類似コンテンツの推薦（改善版：データベース連携）"""
 
         if not self.db:
-            logger.warning("Database session not provided, returning empty recommendations")
+            logger.warning(
+                "Database session not provided, returning empty recommendations"
+            )
             return []
 
         # 対象コンテンツを取得
@@ -126,7 +134,11 @@ class ContentRecommendationService:
                     "slug": content.slug,
                     "summary": content.summary,
                     "similarity": similarity,
-                    "published_at": content.published_at.isoformat() if content.published_at else None,
+                    "published_at": (
+                        content.published_at.isoformat()
+                        if content.published_at
+                        else None
+                    ),
                 }
             )
 
@@ -141,7 +153,9 @@ class ContentRecommendationService:
         """トレンドコンテンツの推薦（改善版：データベース連携）"""
 
         if not self.db:
-            logger.warning("Database session not provided, returning empty recommendations")
+            logger.warning(
+                "Database session not provided, returning empty recommendations"
+            )
             return []
 
         # 最近24時間のインタラクションを集計
@@ -161,9 +175,9 @@ class ContentRecommendationService:
                 AutomatedContentDB.content_metadata["category"].astext == category
             )
 
-        published_contents = query.order_by(
-            AutomatedContentDB.published_at.desc()
-        ).limit(100).all()
+        published_contents = (
+            query.order_by(AutomatedContentDB.published_at.desc()).limit(100).all()
+        )
 
         # スコアとコンテンツ情報を結合
         trending_contents = []
@@ -181,7 +195,11 @@ class ContentRecommendationService:
                     "slug": content.slug,
                     "summary": content.summary,
                     "score": score,
-                    "published_at": content.published_at.isoformat() if content.published_at else None,
+                    "published_at": (
+                        content.published_at.isoformat()
+                        if content.published_at
+                        else None
+                    ),
                 }
             )
 
@@ -302,7 +320,11 @@ class ContentRecommendationService:
                         seen.add(key)
                         unique_history.append(h)
 
-                return sorted(unique_history, key=lambda x: x.get("timestamp", datetime.min), reverse=True)
+                return sorted(
+                    unique_history,
+                    key=lambda x: x.get("timestamp", datetime.min),
+                    reverse=True,
+                )
             except Exception as e:
                 logger.error(f"Failed to get user history from DB: {e}")
                 return memory_history
@@ -531,4 +553,3 @@ class ContentRecommendationService:
         ]
 
         return trending
-
