@@ -18,11 +18,7 @@ from groq import Groq
 from PIL import Image
 from services.ai_analyzer import AnalysisResult
 from services.data_collector import ContentItem
-from utils.cache_decorators import (
-    cache_article_data,
-    cache_newsletter_data,
-    cache_result,
-)
+from utils.cache_decorators import cache_article_data, cache_newsletter_data, cache_result
 
 logger = logging.getLogger(__name__)
 
@@ -197,7 +193,9 @@ class ContentGenerator:
             seo_keywords = topics[:5] + categories[:3]
 
         # 主要キーワードを強調
-        primary_keyword = seo_keywords[0] if seo_keywords else topics[0] if topics else "TypeScript"
+        primary_keyword = (
+            seo_keywords[0] if seo_keywords else topics[0] if topics else "TypeScript"
+        )
 
         prompt = f"""
 以下の情報を基に、高品質な{content_type.value}を生成してください。
@@ -294,7 +292,7 @@ EstimatedReadTime: [読了時間（分）]
 - リスト・表・引用を効果的に活用
 
 常に高品質で実用的なコンテンツを生成してください。"""
-                
+
                 response = self.groq_client.chat.completions.create(
                     model="llama-3.3-70b-versatile",
                     messages=[

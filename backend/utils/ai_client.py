@@ -178,8 +178,10 @@ class AIClient:
         # Extract SEO keywords from topic
         topic_words = request.topic.lower().split()
         primary_keyword = topic_words[0] if topic_words else "TypeScript"
-        secondary_keywords = topic_words[1:6] if len(topic_words) > 1 else ["development", "guide"]
-        
+        secondary_keywords = (
+            topic_words[1:6] if len(topic_words) > 1 else ["development", "guide"]
+        )
+
         prompt = f"""
 Generate a high-quality {request.content_type} about "{request.topic}" for {request.target_audience} TypeScript developers.
 
@@ -240,7 +242,7 @@ Quality standards:
 5. Engagement: Address reader pain points and provide clear next steps
 
 Always respond with valid JSON format only."""
-            
+
             response = self.groq_client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
                 messages=[
