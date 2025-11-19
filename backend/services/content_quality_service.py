@@ -210,7 +210,9 @@ class ContentQualityService:
             r"Node\.js\s+[\d.]+",
             r"v[\d.]+",
         ]
-        has_version = any(re.search(pattern, content, re.IGNORECASE) for pattern in version_patterns)
+        has_version = any(
+            re.search(pattern, content, re.IGNORECASE) for pattern in version_patterns
+        )
         if not has_version:
             score -= 15
 
@@ -228,11 +230,21 @@ class ContentQualityService:
 
         # 非推奨機能の回避（deprecated, 非推奨などのキーワードがないことを確認）
         deprecated_keywords = ["deprecated", "非推奨", "廃止", "obsolete"]
-        has_deprecated = any(keyword in content.lower() for keyword in deprecated_keywords)
+        has_deprecated = any(
+            keyword in content.lower() for keyword in deprecated_keywords
+        )
         if has_deprecated:
             # 非推奨機能について言及している場合は、代替案が提示されているか確認
-            alternative_keywords = ["代わりに", "代替", "alternative", "推奨", "recommended"]
-            has_alternative = any(keyword in content.lower() for keyword in alternative_keywords)
+            alternative_keywords = [
+                "代わりに",
+                "代替",
+                "alternative",
+                "推奨",
+                "recommended",
+            ]
+            has_alternative = any(
+                keyword in content.lower() for keyword in alternative_keywords
+            )
             if not has_alternative:
                 score -= 20
 
@@ -279,13 +291,26 @@ class ContentQualityService:
             r"Step\s*\d+",
             r"^\d+\.\s+.*実装|実装.*\d+\.\s+",
         ]
-        has_steps = any(re.search(pattern, content, re.IGNORECASE | re.MULTILINE) for pattern in step_patterns)
+        has_steps = any(
+            re.search(pattern, content, re.IGNORECASE | re.MULTILINE)
+            for pattern in step_patterns
+        )
         if not has_steps:
             score -= 15
 
         # エラー解決方法の記載
-        error_keywords = ["エラー", "error", "問題", "issue", "解決", "solution", "トラブルシューティング"]
-        has_error_solution = any(keyword in content.lower() for keyword in error_keywords)
+        error_keywords = [
+            "エラー",
+            "error",
+            "問題",
+            "issue",
+            "解決",
+            "solution",
+            "トラブルシューティング",
+        ]
+        has_error_solution = any(
+            keyword in content.lower() for keyword in error_keywords
+        )
         if not has_error_solution:
             score -= 10
 
@@ -298,7 +323,9 @@ class ContentQualityService:
             "最適化",
             "optimization",
         ]
-        has_best_practices = any(keyword in content.lower() for keyword in best_practice_keywords)
+        has_best_practices = any(
+            keyword in content.lower() for keyword in best_practice_keywords
+        )
         if not has_best_practices:
             score -= 10
 
@@ -332,7 +359,9 @@ class ContentQualityService:
             "独自の視点",
             "新しいアプローチ",
         ]
-        has_unique_perspective = any(indicator in content.lower() for indicator in unique_indicators)
+        has_unique_perspective = any(
+            indicator in content.lower() for indicator in unique_indicators
+        )
         if not has_unique_perspective:
             score -= 15
 
@@ -346,7 +375,9 @@ class ContentQualityService:
             "実例",
             "実際の",
         ]
-        has_experience = any(keyword in content.lower() for keyword in experience_keywords)
+        has_experience = any(
+            keyword in content.lower() for keyword in experience_keywords
+        )
         if not has_experience:
             score -= 10
 
@@ -360,7 +391,9 @@ class ContentQualityService:
             "versus",
             "vs",
         ]
-        has_comparison = any(keyword in content.lower() for keyword in comparison_keywords)
+        has_comparison = any(
+            keyword in content.lower() for keyword in comparison_keywords
+        )
         if has_comparison:
             score += 10  # 比較がある場合は加点
 
@@ -384,7 +417,9 @@ class ContentQualityService:
             "誰でも知っている",
             "基本的な",
         ]
-        generic_count = sum(1 for phrase in generic_phrases if phrase in content.lower())
+        generic_count = sum(
+            1 for phrase in generic_phrases if phrase in content.lower()
+        )
         if generic_count > 3:
             score -= 20
 
@@ -415,8 +450,12 @@ class ContentQualityService:
         suggestions = []
 
         if readability < 70:
-            suggestions.append("文章をもっと短く、読みやすくしましょう（1文20語程度が理想）")
-            suggestions.append("段落を適切に分割し、視覚的な区切り（水平線、引用ブロック）を活用しましょう")
+            suggestions.append(
+                "文章をもっと短く、読みやすくしましょう（1文20語程度が理想）"
+            )
+            suggestions.append(
+                "段落を適切に分割し、視覚的な区切り（水平線、引用ブロック）を活用しましょう"
+            )
             suggestions.append("箇条書きや番号付きリストを効果的に使用しましょう")
 
         if structure < 70:
@@ -424,23 +463,35 @@ class ContentQualityService:
             suggestions.append("リストやコードブロックを活用しましょう")
 
         if length < 70:
-            suggestions.append(f"コンテンツの長さを調整しましょう（{self.min_word_count}-{self.max_word_count}語推奨）")
+            suggestions.append(
+                f"コンテンツの長さを調整しましょう（{self.min_word_count}-{self.max_word_count}語推奨）"
+            )
 
         if title < 70:
-            suggestions.append("タイトルをより具体的で魅力的にしましょう（60文字以内、キーワードを含む）")
+            suggestions.append(
+                "タイトルをより具体的で魅力的にしましょう（60文字以内、キーワードを含む）"
+            )
             suggestions.append("SEO最適化されたキーワードをタイトルに含めましょう")
 
         if technical_accuracy < 70:
-            suggestions.append("バージョン情報（TypeScript 5.x, Next.js 14.x等）を明記しましょう")
+            suggestions.append(
+                "バージョン情報（TypeScript 5.x, Next.js 14.x等）を明記しましょう"
+            )
             suggestions.append("公式ドキュメントへの参照リンクを追加しましょう")
-            suggestions.append("コードブロックに言語指定（typescript, javascript等）を追加しましょう")
+            suggestions.append(
+                "コードブロックに言語指定（typescript, javascript等）を追加しましょう"
+            )
             suggestions.append("非推奨機能を使用する場合は、代替案を提示しましょう")
 
         if practicality < 70:
-            suggestions.append(f"コード例を最低{self.min_code_examples}個以上追加しましょう")
+            suggestions.append(
+                f"コード例を最低{self.min_code_examples}個以上追加しましょう"
+            )
             suggestions.append("実装手順を段階的に説明しましょう（ステップ形式）")
             suggestions.append("よくあるエラーとその解決方法を記載しましょう")
-            suggestions.append("ベストプラクティスやパフォーマンス最適化のヒントを含めましょう")
+            suggestions.append(
+                "ベストプラクティスやパフォーマンス最適化のヒントを含めましょう"
+            )
             suggestions.append("読者が実際に試せるアクションアイテムを明示しましょう")
 
         if uniqueness < 70:
