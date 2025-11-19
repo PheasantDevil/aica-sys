@@ -26,10 +26,10 @@ env_local = BACKEND_DIR / ".env.local"
 if env_local.exists():
     load_dotenv(env_local)
 
-from database import SessionLocal  # noqa: E402
-from models.analytics import SocialPostLogDB  # noqa: E402
-from services.analytics_service import AnalyticsService  # noqa: E402
-from services.social_media_service import SocialMediaService  # noqa: E402
+from database import SessionLocal
+from models.analytics import SocialPostLogDB
+from services.analytics_service import AnalyticsService
+from services.social_media_service import SocialMediaService
 
 
 def parse_args() -> argparse.Namespace:

@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional
 
 from models.analytics import SocialPostLogDB
 from services.twitter_client import TwitterClient
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
@@ -393,6 +394,6 @@ class SocialMediaService:
             )
             self.db.add(log)
             self.db.commit()
-        except Exception as exc:
+        except SQLAlchemyError as exc:
             self.db.rollback()
             logger.warning(f"Failed to log social post analytics: {exc}")

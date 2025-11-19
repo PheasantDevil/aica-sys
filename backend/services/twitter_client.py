@@ -201,7 +201,7 @@ class TwitterClient:
                 if getattr(tweet.data, "public_metrics", None):
                     try:
                         metrics = dict(tweet.data.public_metrics)
-                    except Exception:
+                    except TypeError:
                         metrics = tweet.data.public_metrics.__dict__
                 return {
                     "id": tweet.data.id,
@@ -214,8 +214,8 @@ class TwitterClient:
                     "metrics": metrics,
                 }
             return None
-        except Exception as e:
-            logger.error(f"Failed to get tweet: {e}")
+        except tweepy.TweepyException as exc:
+            logger.error(f"Failed to get tweet: {exc}")
             return None
 
     def verify_credentials(self) -> bool:

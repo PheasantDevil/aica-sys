@@ -3,7 +3,7 @@ Analytics Models for AICA-SyS
 Phase 9-5: Analytics and reports
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Optional
 
@@ -149,9 +149,16 @@ class SocialPostLogDB(Base):
     tweet_text = Column(Text, nullable=True)
     tweet_metrics = Column(JSON, nullable=True)
     metadata = Column(JSON, nullable=True)
-    posted_at = Column(DateTime, default=datetime.utcnow, index=True)
-    metrics_updated_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    posted_at = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        index=True,
+    )
+    metrics_updated_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+    )
 
 
 # Pydantic Models

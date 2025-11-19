@@ -22,6 +22,7 @@ if env_local.exists():
 
 from database import SessionLocal
 from services.social_media_service import SocialMediaService
+from sqlalchemy.exc import SQLAlchemyError
 
 
 def parse_args() -> argparse.Namespace:
@@ -70,7 +71,7 @@ def parse_hashtags(raw: str | None):
 def get_db_session():
     try:
         return SessionLocal()
-    except Exception as exc:
+    except SQLAlchemyError as exc:
         print(f"⚠️  Failed to initialize database session: {exc}")
         return None
 
