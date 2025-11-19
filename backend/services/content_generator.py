@@ -173,8 +173,9 @@ class ContentGenerator:
         results: List[AnalysisResult],
         target_audience: str,
         tone: str,
+        seo_keywords: Optional[List[str]] = None,
     ) -> str:
-        """AI用のプロンプトを生成"""
+        """AI用のプロンプトを生成（最適化版）"""
         template = self.templates[content_type]
 
         # 分析結果から情報を抽出
@@ -191,35 +192,75 @@ class ContentGenerator:
         topics = list(set(topics))
         categories = list(set(categories))
 
-        prompt = f"""
-以下の情報を基に、{content_type.value}を生成してください。
+        # SEOキーワードの抽出（提供されない場合はトピックから生成）
+        if not seo_keywords:
+            seo_keywords = topics[:5] + categories[:3]
 
+        # 主要キーワードを強調
+        primary_keyword = seo_keywords[0] if seo_keywords else topics[0] if topics else "TypeScript"
+
+        prompt = f"""
+以下の情報を基に、高品質な{content_type.value}を生成してください。
+
+## 基本情報
 【対象読者】: {target_audience}
 【トーン】: {tone}
 【構造】: {template['structure']}
 【推奨文字数】: {template['word_count']}文字
 
+## コンテンツテーマ
 【主要トピック】:
 {', '.join(topics[:10])}
 
 【主要カテゴリ】:
 {', '.join(categories)}
 
-【参考情報】:
-{chr(10).join(summaries[:5])}
+【SEO重要キーワード】:
+- プライマリキーワード: {primary_keyword}
+- セカンダリキーワード: {', '.join(seo_keywords[1:6])}
 
-【生成要件】:
-1. 最新のトレンドを反映した内容
-2. 実用的で価値のある情報
-3. 読みやすく魅力的な構成
-4. 適切な技術用語の使用
-5. アクションアイテムや次のステップを含める
+## 参考情報（最新トレンド・技術情報）
+{chr(10).join(f"- {summary[:200]}..." if len(summary) > 200 else f"- {summary}" for summary in summaries[:5])}
 
-【出力形式】:
-Title: [タイトル]
-Summary: [要約]
-Content: [本文]
-Tags: [タグ1, タグ2, ...]
+## 生成要件（必須）
+
+### 1. SEO最適化
+- プライマリキーワード「{primary_keyword}」をタイトル・見出し・本文に自然に配置
+- セカンダリキーワードを適切に分散配置
+- メタディスクリプション用の要約（150-160文字）を生成
+- 関連キーワードをタグとして含める
+
+### 2. 読みやすさの向上
+- 明確な階層構造（H2, H3見出しを適切に使用）
+- 箇条書き・番号付きリストを効果的に活用
+- 段落は3-5文程度に分割
+- 重要な情報は太字やコードブロックで強調
+- 視覚的な区切り（水平線、引用ブロック）を適宜使用
+
+### 3. 技術的正確性
+- 最新の公式ドキュメント・仕様に準拠
+- コード例は動作確認済みの形式で記述
+- バージョン情報（TypeScript 5.x, Next.js 14.x等）を明記
+- 非推奨機能は避け、現行のベストプラクティスを推奨
+
+### 4. 実用性と価値提供
+- 具体的なコード例を最低2-3個含める
+- 実装手順を段階的に説明
+- よくあるエラーとその解決方法を記載
+- ベストプラクティス・パフォーマンス最適化のヒントを含める
+- 読者が実際に試せるアクションアイテムを明示
+
+### 5. エンゲージメント
+- 導入部で読者の課題・疑問に共感
+- 結論部で要点を再確認し、次のステップを提示
+- 関連記事・リソースへのリンク提案を含める
+
+## 出力形式（厳密に従うこと）
+Title: [SEO最適化されたタイトル（60文字以内、プライマリキーワードを含む）]
+Summary: [メタディスクリプション用要約（150-160文字）]
+Content: [Markdown形式の本文、見出し・コードブロック・リストを適切に使用]
+Tags: [{', '.join(seo_keywords[:7])}]
+EstimatedReadTime: [読了時間（分）]
 """
 
         return prompt
@@ -232,12 +273,34 @@ Tags: [タグ1, タグ2, ...]
 
             # Groq (Llama 3.1 70B) を使用
             def _call_groq():
+                system_prompt = """あなたはTypeScriptエコシステム専門の技術ライター・コンテンツクリエイターです。
+
+【専門性】
+- TypeScript、JavaScript、Next.js、React、Vue、Node.js等の最新技術に精通
+- 公式ドキュメント・コミュニティベストプラクティスを常に参照
+- 実践的なコード例とパフォーマンス最適化の知識を持つ
+
+【記事品質基準】
+1. 技術的正確性: 最新の公式仕様・ドキュメントに準拠し、動作確認済みのコードのみを提示
+2. SEO最適化: キーワードを自然に配置し、検索エンジンと読者の両方に最適化
+3. 読みやすさ: 明確な構造、適切な見出し階層、視覚的な区切りを活用
+4. 実用性: 読者が即座に実装できる具体的なコード例とベストプラクティスを提供
+5. エンゲージメント: 読者の課題に共感し、次のステップを明確に提示
+
+【出力形式】
+- Markdown形式で構造化されたコンテンツ
+- コードブロックは言語指定（typescript, javascript, json等）を必ず含める
+- 見出しは適切な階層（H2, H3）を使用
+- リスト・表・引用を効果的に活用
+
+常に高品質で実用的なコンテンツを生成してください。"""
+                
                 response = self.groq_client.chat.completions.create(
                     model="llama-3.3-70b-versatile",
                     messages=[
                         {
                             "role": "system",
-                            "content": "あなたは技術コンテンツの専門ライターです。TypeScriptエコシステムに関する高品質な記事を生成します。",
+                            "content": system_prompt,
                         },
                         {"role": "user", "content": prompt},
                     ],

@@ -174,34 +174,79 @@ class AIClient:
     async def _generate_with_groq(
         self, request: ContentGenerationRequest
     ) -> ContentGenerationResponse:
-        """Generate content using Groq (Llama 3.1 70B)"""
+        """Generate content using Groq (Llama 3.1 70B) with optimized prompts"""
+        # Extract SEO keywords from topic
+        topic_words = request.topic.lower().split()
+        primary_keyword = topic_words[0] if topic_words else "TypeScript"
+        secondary_keywords = topic_words[1:6] if len(topic_words) > 1 else ["development", "guide"]
+        
         prompt = f"""
-        Generate a {request.content_type} about {request.topic} for {request.target_audience} TypeScript developers.
-        
-        Requirements:
-        - Style: {request.style}
-        - Length: {request.length}
-        - Include practical examples and code snippets
-        - Make it engaging and informative
-        
-        Provide a JSON response with:
-        - title: compelling title
-        - content: full article content (markdown format)
-        - summary: 2-3 sentence summary
-        - tags: array of relevant tags (5-7 tags)
-        - estimated_read_time: estimated reading time in minutes
-        
-        Format as valid JSON only.
-        """
+Generate a high-quality {request.content_type} about "{request.topic}" for {request.target_audience} TypeScript developers.
+
+## Content Requirements
+
+### SEO Optimization
+- Primary keyword: "{primary_keyword}" (include in title and headings naturally)
+- Secondary keywords: {', '.join(secondary_keywords)}
+- Title: SEO-optimized, 60 characters or less, include primary keyword
+- Meta description: 150-160 characters summary
+
+### Content Quality
+- Style: {request.style}
+- Length: {request.length}
+- Include 2-3 practical code examples with proper syntax highlighting
+- Use clear heading hierarchy (H2, H3)
+- Add bullet points, numbered lists, and code blocks appropriately
+- Include best practices and performance optimization tips
+- Address common errors and solutions
+
+### Technical Accuracy
+- Reference latest official documentation
+- Use current TypeScript/Next.js/React versions
+- Provide working, tested code examples
+- Follow community best practices
+
+### Engagement
+- Start with a hook that addresses reader's pain points
+- End with actionable next steps
+- Suggest related resources or articles
+
+## Output Format (JSON only)
+{{
+  "title": "SEO-optimized title with primary keyword",
+  "content": "Full article in Markdown format with proper structure",
+  "summary": "Meta description (150-160 characters)",
+  "tags": ["{primary_keyword}", "{secondary_keywords[0] if secondary_keywords else 'TypeScript'}", ...],
+  "estimated_read_time": <number in minutes>
+}}
+
+Respond with valid JSON only, no additional text.
+"""
 
         # Groq API call
         def _call_groq():
+            system_prompt = """You are an expert TypeScript ecosystem technical writer and content creator.
+
+Your expertise includes:
+- TypeScript, JavaScript, Next.js, React, Vue, Node.js and latest technologies
+- Official documentation and community best practices
+- Practical code examples and performance optimization
+
+Quality standards:
+1. Technical accuracy: Follow latest official specs, provide tested code only
+2. SEO optimization: Natural keyword placement for both search engines and readers
+3. Readability: Clear structure, proper heading hierarchy, visual breaks
+4. Practicality: Actionable code examples and best practices readers can implement immediately
+5. Engagement: Address reader pain points and provide clear next steps
+
+Always respond with valid JSON format only."""
+            
             response = self.groq_client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are an expert TypeScript developer and technical writer. Always respond with valid JSON.",
+                        "content": system_prompt,
                     },
                     {"role": "user", "content": prompt},
                 ],
