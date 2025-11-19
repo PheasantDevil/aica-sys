@@ -45,7 +45,7 @@ jobs:
       - name: Run isort (import sort check)
         run: |
           cd backend
-          isort --check --diff .
+          isort --profile black --check --diff .
 
       - name: Run Flake8 (linting)
         run: |
