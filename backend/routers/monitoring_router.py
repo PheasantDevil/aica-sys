@@ -6,8 +6,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from models.user import User
 from pydantic import BaseModel
 from security.auth_middleware import get_current_user
-from services.monitoring_service import (AlertLevel, HealthStatus, MetricType, MonitoringService,
-                                         get_monitoring_service)
+from services.monitoring_service import (
+    AlertLevel,
+    HealthStatus,
+    MetricType,
+    MonitoringService,
+    get_monitoring_service,
+)
 from sqlalchemy.orm import Session
 from utils.logging import get_logger
 
@@ -298,7 +303,9 @@ async def get_monitoring_stats(
         }
 
         for health_status_value in HealthStatus:
-            status_checks = [h for h in health_checks if h.status == health_status_value]
+            status_checks = [
+                h for h in health_checks if h.status == health_status_value
+            ]
             health_stats["by_status"][health_status_value.value] = len(status_checks)
 
         stats = {
