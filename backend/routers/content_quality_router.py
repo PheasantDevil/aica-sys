@@ -6,10 +6,11 @@ Phase 9-1: Content quality improvement
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException
+from database import get_db
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from services.content_quality_service import content_quality_service
-from services.content_recommendation_service import content_recommendation_service
+from services.content_recommendation_service import ContentRecommendationService
 
 logger = logging.getLogger(__name__)
 
@@ -47,10 +48,13 @@ async def evaluate_content(request: ContentEvaluationRequest):
 
 
 @router.get("/recommendations/{user_id}")
-async def get_recommendations(user_id: str, limit: int = 10):
-    """ユーザーへのコンテンツ推薦"""
+async def get_recommendations(
+    user_id: str, limit: int = 10, db=Depends(get_db)
+):
+    """ユーザーへのコンテンツ推薦（改善版：データベース連携）"""
     try:
-        recommendations = await content_recommendation_service.recommend_personalized(
+        recommendation_service = ContentRecommendationService(db=db)
+        recommendations = await recommendation_service.recommend_personalized(
             user_id=user_id, limit=limit
         )
 
@@ -66,10 +70,13 @@ async def get_recommendations(user_id: str, limit: int = 10):
 
 
 @router.get("/similar/{content_id}")
-async def get_similar_content(content_id: str, limit: int = 5):
-    """類似コンテンツの取得"""
+async def get_similar_content(
+    content_id: str, limit: int = 5, db=Depends(get_db)
+):
+    """類似コンテンツの取得（改善版：データベース連携）"""
     try:
-        similar = await content_recommendation_service.recommend_similar_content(
+        recommendation_service = ContentRecommendationService(db=db)
+        similar = await recommendation_service.recommend_similar_content(
             content_id=content_id, limit=limit
         )
 
@@ -85,10 +92,13 @@ async def get_similar_content(content_id: str, limit: int = 5):
 
 
 @router.get("/trending")
-async def get_trending_content(category: Optional[str] = None, limit: int = 10):
-    """トレンドコンテンツの取得"""
+async def get_trending_content(
+    category: Optional[str] = None, limit: int = 10, db=Depends(get_db)
+):
+    """トレンドコンテンツの取得（改善版：データベース連携）"""
     try:
-        trending = await content_recommendation_service.recommend_trending(
+        recommendation_service = ContentRecommendationService(db=db)
+        trending = await recommendation_service.recommend_trending(
             category=category, limit=limit
         )
 
@@ -104,10 +114,11 @@ async def get_trending_content(category: Optional[str] = None, limit: int = 10):
 
 
 @router.post("/interaction")
-async def record_interaction(request: InteractionRequest):
-    """ユーザーインタラクションを記録"""
+async def record_interaction(request: InteractionRequest, db=Depends(get_db)):
+    """ユーザーインタラクションを記録（改善版：データベース保存）"""
     try:
-        content_recommendation_service.record_interaction(
+        recommendation_service = ContentRecommendationService(db=db)
+        recommendation_service.record_interaction(
             user_id=request.user_id,
             content_id=request.content_id,
             interaction_type=request.interaction_type,

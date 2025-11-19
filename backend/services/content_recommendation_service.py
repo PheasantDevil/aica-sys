@@ -9,20 +9,29 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from models.ai_models import UserInteraction
+from models.automated_content import AutomatedContentDB
+from sqlalchemy.orm import Session
+
 logger = logging.getLogger(__name__)
 
 
 class ContentRecommendationService:
-    """コンテンツ推薦サービス"""
+    """コンテンツ推薦サービス（改善版：データベース連携）"""
 
-    def __init__(self):
-        self.user_interactions = defaultdict(list)
+    def __init__(self, db: Optional[Session] = None):
+        self.db = db
+        self.user_interactions = defaultdict(list)  # メモリキャッシュ（オプション）
         self.content_vectors = {}
 
     async def recommend_for_user(
         self, user_id: str, limit: int = 10, exclude_viewed: bool = True
     ) -> List[Dict[str, Any]]:
-        """ユーザーに基づいたコンテンツ推薦"""
+        """ユーザーに基づいたコンテンツ推薦（改善版：データベース連携）"""
+
+        if not self.db:
+            logger.warning("Database session not provided, returning empty recommendations")
+            return []
 
         # ユーザーの閲覧履歴を取得
         user_history = self._get_user_history(user_id)
@@ -30,39 +39,154 @@ class ContentRecommendationService:
         # ユーザーの興味プロフィールを作成
         user_profile = self._build_user_profile(user_history)
 
+        # 公開済みコンテンツを取得
+        published_contents = (
+            self.db.query(AutomatedContentDB)
+            .filter(AutomatedContentDB.status == "published")
+            .order_by(AutomatedContentDB.published_at.desc())
+            .limit(100)  # 候補を100件に制限
+            .all()
+        )
+
+        # 閲覧済みコンテンツIDを取得（除外用）
+        viewed_content_ids = set()
+        if exclude_viewed:
+            viewed_content_ids = {
+                h.get("content_id") for h in user_history if h.get("type") == "view"
+            }
+
         # コンテンツをスコアリング
-        recommendations = []
+        scored_contents = []
+        for content in published_contents:
+            if exclude_viewed and content.id in viewed_content_ids:
+                continue
 
-        # ここで実際のコンテンツデータを取得する実装を追加
-        # 現在は例として返す
+            # スコア計算
+            score = self._calculate_content_score(content, user_profile)
+            scored_contents.append(
+                {
+                    "id": content.id,
+                    "title": content.title,
+                    "slug": content.slug,
+                    "summary": content.summary,
+                    "score": score,
+                    "published_at": content.published_at.isoformat() if content.published_at else None,
+                }
+            )
 
-        return recommendations[:limit]
+        # スコアでソート
+        scored_contents.sort(key=lambda x: x["score"], reverse=True)
+
+        return scored_contents[:limit]
 
     async def recommend_similar_content(
         self, content_id: str, limit: int = 5
     ) -> List[Dict[str, Any]]:
-        """類似コンテンツの推薦"""
+        """類似コンテンツの推薦（改善版：データベース連携）"""
+
+        if not self.db:
+            logger.warning("Database session not provided, returning empty recommendations")
+            return []
+
+        # 対象コンテンツを取得
+        target_content = (
+            self.db.query(AutomatedContentDB)
+            .filter(AutomatedContentDB.id == int(content_id))
+            .first()
+        )
+
+        if not target_content:
+            logger.warning(f"Content {content_id} not found")
+            return []
 
         # コンテンツのベクトル表現を取得
-        content_vector = self._get_content_vector(content_id)
+        target_vector = self._build_content_vector(target_content)
+
+        # 公開済みコンテンツを取得（対象を除く）
+        published_contents = (
+            self.db.query(AutomatedContentDB)
+            .filter(
+                AutomatedContentDB.status == "published",
+                AutomatedContentDB.id != int(content_id),
+            )
+            .limit(100)
+            .all()
+        )
 
         # 類似度計算
-        similar_contents = self._calculate_similarity(content_vector, limit)
+        similar_contents = []
+        for content in published_contents:
+            content_vector = self._build_content_vector(content)
+            similarity = self._cosine_similarity(target_vector, content_vector)
 
-        return similar_contents
+            similar_contents.append(
+                {
+                    "id": content.id,
+                    "title": content.title,
+                    "slug": content.slug,
+                    "summary": content.summary,
+                    "similarity": similarity,
+                    "published_at": content.published_at.isoformat() if content.published_at else None,
+                }
+            )
+
+        # 類似度でソート
+        similar_contents.sort(key=lambda x: x["similarity"], reverse=True)
+
+        return similar_contents[:limit]
 
     async def recommend_trending(
         self, category: Optional[str] = None, limit: int = 10
     ) -> List[Dict[str, Any]]:
-        """トレンドコンテンツの推薦"""
+        """トレンドコンテンツの推薦（改善版：データベース連携）"""
 
-        # 最近24時間のアクセス数を集計
+        if not self.db:
+            logger.warning("Database session not provided, returning empty recommendations")
+            return []
+
+        # 最近24時間のインタラクションを集計
         trending_scores = self._calculate_trending_scores(category)
 
-        # スコアでソート
-        trending_contents = sorted(
-            trending_scores, key=lambda x: x["score"], reverse=True
+        # コンテンツIDとスコアのマッピング
+        content_scores = {item["content_id"]: item["score"] for item in trending_scores}
+
+        # 公開済みコンテンツを取得
+        query = self.db.query(AutomatedContentDB).filter(
+            AutomatedContentDB.status == "published"
         )
+
+        if category:
+            # カテゴリフィルタ（メタデータから）
+            query = query.filter(
+                AutomatedContentDB.content_metadata["category"].astext == category
+            )
+
+        published_contents = query.order_by(
+            AutomatedContentDB.published_at.desc()
+        ).limit(100).all()
+
+        # スコアとコンテンツ情報を結合
+        trending_contents = []
+        for content in published_contents:
+            score = content_scores.get(content.id, 0.0)
+            # インタラクションがない場合でも、公開日が新しいものにスコアを付与
+            if score == 0.0 and content.published_at:
+                days_old = (datetime.utcnow() - content.published_at).days
+                score = max(0, 10 - days_old)  # 新しいコンテンツほど高スコア
+
+            trending_contents.append(
+                {
+                    "id": content.id,
+                    "title": content.title,
+                    "slug": content.slug,
+                    "summary": content.summary,
+                    "score": score,
+                    "published_at": content.published_at.isoformat() if content.published_at else None,
+                }
+            )
+
+        # スコアでソート
+        trending_contents.sort(key=lambda x: x["score"], reverse=True)
 
         return trending_contents[:limit]
 
@@ -102,25 +226,88 @@ class ContentRecommendationService:
         content_id: str,
         interaction_type: str,
         metadata: Optional[Dict[str, Any]] = None,
+        session_id: Optional[str] = None,
     ):
-        """ユーザーのコンテンツインタラクションを記録"""
+        """ユーザーのコンテンツインタラクションを記録（改善版：データベース保存）"""
 
+        # メモリキャッシュにも保存（高速アクセス用）
         interaction = {
             "content_id": content_id,
             "type": interaction_type,  # view, like, share, bookmark
             "timestamp": datetime.utcnow(),
             "metadata": metadata or {},
         }
-
         self.user_interactions[user_id].append(interaction)
 
-        logger.info(
-            f"Recorded interaction: {user_id} - {interaction_type} - {content_id}"
-        )
+        # データベースに保存
+        if self.db:
+            try:
+                db_interaction = UserInteraction(
+                    user_id=int(user_id) if user_id.isdigit() else None,
+                    session_id=session_id,
+                    content_id=int(content_id),
+                    interaction_type=interaction_type,
+                    interaction_data=metadata or {},
+                )
+                self.db.add(db_interaction)
+                self.db.commit()
+                logger.info(
+                    f"Recorded interaction to DB: {user_id} - {interaction_type} - {content_id}"
+                )
+            except Exception as e:
+                logger.error(f"Failed to save interaction to DB: {e}")
+                self.db.rollback()
+        else:
+            logger.info(
+                f"Recorded interaction (memory only): {user_id} - {interaction_type} - {content_id}"
+            )
 
     def _get_user_history(self, user_id: str) -> List[Dict[str, Any]]:
-        """ユーザーの閲覧履歴を取得"""
-        return self.user_interactions.get(user_id, [])
+        """ユーザーの閲覧履歴を取得（改善版：データベースから取得）"""
+        # メモリキャッシュから取得
+        memory_history = self.user_interactions.get(user_id, [])
+
+        # データベースから取得
+        if self.db:
+            try:
+                db_interactions = (
+                    self.db.query(UserInteraction)
+                    .filter(
+                        (UserInteraction.user_id == int(user_id))
+                        if user_id.isdigit()
+                        else (UserInteraction.session_id == user_id)
+                    )
+                    .order_by(UserInteraction.created_at.desc())
+                    .limit(100)
+                    .all()
+                )
+
+                db_history = [
+                    {
+                        "content_id": str(interaction.content_id),
+                        "type": interaction.interaction_type,
+                        "timestamp": interaction.created_at,
+                        "metadata": interaction.interaction_data or {},
+                    }
+                    for interaction in db_interactions
+                ]
+
+                # メモリとDBの履歴をマージ（重複除去）
+                all_history = memory_history + db_history
+                seen = set()
+                unique_history = []
+                for h in all_history:
+                    key = (h.get("content_id"), h.get("type"), h.get("timestamp"))
+                    if key not in seen:
+                        seen.add(key)
+                        unique_history.append(h)
+
+                return sorted(unique_history, key=lambda x: x.get("timestamp", datetime.min), reverse=True)
+            except Exception as e:
+                logger.error(f"Failed to get user history from DB: {e}")
+                return memory_history
+
+        return memory_history
 
     def _build_user_profile(self, history: List[Dict[str, Any]]) -> Dict[str, Any]:
         """ユーザープロフィールを構築"""
@@ -162,10 +349,91 @@ class ContentRecommendationService:
             ),
         }
 
-    def _get_content_vector(self, content_id: str) -> Dict[str, float]:
-        """コンテンツのベクトル表現を取得"""
-        # 実装では実際のコンテンツからベクトルを生成
-        return self.content_vectors.get(content_id, {})
+    def _build_content_vector(self, content: AutomatedContentDB) -> Dict[str, float]:
+        """コンテンツのベクトル表現を構築（タグ、カテゴリ、キーワードから）"""
+        vector = {}
+
+        # SEOデータからキーワードを取得
+        if content.seo_data:
+            keywords = content.seo_data.get("keywords", [])
+            if isinstance(keywords, str):
+                keywords = [k.strip() for k in keywords.split(",")]
+            for keyword in keywords:
+                vector[f"keyword:{keyword.lower()}"] = 1.0
+
+        # メタデータからカテゴリとタグを取得
+        if content.content_metadata:
+            category = content.content_metadata.get("category")
+            if category:
+                vector[f"category:{category.lower()}"] = 2.0
+
+            tags = content.content_metadata.get("tags", [])
+            if isinstance(tags, str):
+                tags = [t.strip() for t in tags.split(",")]
+            for tag in tags:
+                vector[f"tag:{tag.lower()}"] = 1.5
+
+        # タイトルとサマリーから重要な単語を抽出
+        title_words = content.title.lower().split() if content.title else []
+        summary_words = content.summary.lower().split() if content.summary else []
+
+        # 技術用語の重み付け
+        tech_terms = [
+            "typescript",
+            "javascript",
+            "react",
+            "next.js",
+            "node.js",
+            "api",
+            "framework",
+            "library",
+        ]
+        for word in title_words + summary_words:
+            if word in tech_terms:
+                vector[f"term:{word}"] = vector.get(f"term:{word}", 0) + 1.0
+
+        return vector
+
+    def _calculate_content_score(
+        self, content: AutomatedContentDB, user_profile: Dict[str, Any]
+    ) -> float:
+        """コンテンツのユーザー適合スコアを計算"""
+        score = 0.0
+
+        # コンテンツのベクトルを構築
+        content_vector = self._build_content_vector(content)
+
+        # ユーザープロフィールのカテゴリとタグとマッチング
+        user_categories = user_profile.get("categories", {})
+        user_tags = user_profile.get("tags", {})
+
+        # カテゴリマッチング
+        if content.content_metadata:
+            content_category = content.content_metadata.get("category", "").lower()
+            if content_category in user_categories:
+                score += user_categories[content_category] * 10
+
+        # タグマッチング
+        if content.content_metadata:
+            content_tags = content.content_metadata.get("tags", [])
+            if isinstance(content_tags, str):
+                content_tags = [t.strip().lower() for t in content_tags.split(",")]
+
+            for tag in content_tags:
+                if tag in user_tags:
+                    score += user_tags[tag] * 5
+
+        # 品質スコアを考慮
+        if content.quality_score:
+            score += content.quality_score * 0.1
+
+        # 公開日の新しさを考慮（30日以内は加点）
+        if content.published_at:
+            days_old = (datetime.utcnow() - content.published_at).days
+            if days_old <= 30:
+                score += max(0, (30 - days_old) * 0.5)
+
+        return score
 
     def _calculate_similarity(
         self, vector: Dict[str, float], limit: int
@@ -209,13 +477,14 @@ class ContentRecommendationService:
     def _calculate_trending_scores(
         self, category: Optional[str] = None
     ) -> List[Dict[str, Any]]:
-        """トレンドスコアを計算"""
+        """トレンドスコアを計算（改善版：データベース連携）"""
 
         # 最近24時間のインタラクションを集計
         recent_cutoff = datetime.utcnow() - timedelta(hours=24)
 
         content_scores = defaultdict(float)
 
+        # メモリキャッシュから集計
         for user_id, interactions in self.user_interactions.items():
             for interaction in interactions:
                 if interaction["timestamp"] > recent_cutoff:
@@ -224,11 +493,37 @@ class ContentRecommendationService:
 
                     # スコア加算
                     if interaction_type == "view":
+                        content_scores[int(content_id)] += 1
+                    elif interaction_type == "like":
+                        content_scores[int(content_id)] += 3
+                    elif interaction_type == "share":
+                        content_scores[int(content_id)] += 5
+
+        # データベースから集計
+        if self.db:
+            try:
+                db_interactions = (
+                    self.db.query(UserInteraction)
+                    .filter(UserInteraction.created_at >= recent_cutoff)
+                    .all()
+                )
+
+                for interaction in db_interactions:
+                    content_id = interaction.content_id
+                    interaction_type = interaction.interaction_type
+
+                    # スコア加算
+                    if interaction_type == "view":
                         content_scores[content_id] += 1
                     elif interaction_type == "like":
                         content_scores[content_id] += 3
                     elif interaction_type == "share":
                         content_scores[content_id] += 5
+                    elif interaction_type == "bookmark":
+                        content_scores[content_id] += 2
+
+            except Exception as e:
+                logger.error(f"Failed to calculate trending scores from DB: {e}")
 
         # スコアでソート
         trending = [
@@ -237,65 +532,3 @@ class ContentRecommendationService:
 
         return trending
 
-    def _evaluate_length(self, content: str) -> float:
-        """長さを評価（0-100）"""
-        word_count = len(content.split())
-
-        if word_count < self.min_word_count:
-            return (word_count / self.min_word_count) * 100
-        elif word_count > self.max_word_count:
-            return max(0, 100 - ((word_count - self.max_word_count) / 100))
-        else:
-            return 100
-
-    def _get_quality_level(self, score: float) -> str:
-        """スコアから品質レベルを取得"""
-        if score >= 90:
-            return "excellent"
-        elif score >= 80:
-            return "good"
-        elif score >= 70:
-            return "fair"
-        else:
-            return "needs_improvement"
-
-    def _generate_suggestions(
-        self,
-        readability: float,
-        structure: float,
-        length: float,
-        title: float,
-        technical: float,
-    ) -> List[str]:
-        """改善提案を生成"""
-        suggestions = []
-
-        if readability < 70:
-            suggestions.append("文章をもっと短く、読みやすくしましょう")
-
-        if structure < 70:
-            suggestions.append("見出しやリストで構造化しましょう")
-
-        if length < 70:
-            suggestions.append("コンテンツの長さを調整しましょう")
-
-        if title < 70:
-            suggestions.append("タイトルをより魅力的にしましょう")
-
-        if technical < 70:
-            suggestions.append("コードサンプルや技術情報を追加しましょう")
-
-        return suggestions
-
-
-# グローバルインスタンス
-content_recommendation_service = ContentRecommendationService()
-
-
-def get_recommendations(user_id: str, limit: int = 10) -> List[Dict[str, Any]]:
-    """推薦コンテンツを取得"""
-    import asyncio
-
-    return asyncio.run(
-        content_recommendation_service.recommend_personalized(user_id, limit)
-    )
