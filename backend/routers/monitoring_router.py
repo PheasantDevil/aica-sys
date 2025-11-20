@@ -6,8 +6,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from models.user import User
 from pydantic import BaseModel
 from security.auth_middleware import get_current_user
-from services.monitoring_service import (AlertLevel, HealthStatus, MetricType, MonitoringService,
-                                         get_monitoring_service)
+from services.monitoring_service import (
+    AlertLevel,
+    HealthStatus,
+    MetricType,
+    MonitoringService,
+    get_monitoring_service,
+)
 from sqlalchemy.orm import Session
 from utils.logging import get_logger
 

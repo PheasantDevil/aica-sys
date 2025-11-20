@@ -8,9 +8,19 @@ import secrets
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from models.affiliate import (AffiliateCouponDB, AffiliateDB, AffiliateStatus, ClickTrackingDB,
-                              CommissionRuleDB, ConversionDB, ConversionStatus, PayoutDB,
-                              PayoutStatus, ReferralLinkDB, RewardType)
+from models.affiliate import (
+    AffiliateCouponDB,
+    AffiliateDB,
+    AffiliateStatus,
+    ClickTrackingDB,
+    CommissionRuleDB,
+    ConversionDB,
+    ConversionStatus,
+    PayoutDB,
+    PayoutStatus,
+    ReferralLinkDB,
+    RewardType,
+)
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
