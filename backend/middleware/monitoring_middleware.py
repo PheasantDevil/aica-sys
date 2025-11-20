@@ -161,12 +161,7 @@ class MonitoringMiddleware(BaseHTTPMiddleware):
         try:
             from datetime import datetime
 
-            from services.monitoring_service import (
-                Alert,
-                AlertLevel,
-                Metric,
-                MetricType,
-            )
+            from services.monitoring_service import Alert, AlertLevel, Metric, MetricType
 
             # エラー数メトリクス
             error_count_metric = Metric(

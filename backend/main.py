@@ -11,16 +11,12 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-
 # Import audit middleware
 from middleware.audit_middleware import AuditMiddleware
-
 # Import monitoring middleware
 from middleware.monitoring_middleware import MonitoringMiddleware
-
 # Import performance middleware
 from middleware.performance_middleware import performance_metrics
-
 # Import security middleware
 from security.security_headers import SecurityHeadersMiddleware
 
@@ -95,19 +91,9 @@ async def detailed_health_check():
 
 
 # Import routers
-from routers import (
-    ai_router,
-    analysis_router,
-    audit_router,
-    auth_router,
-    collection_router,
-    content_management_router,
-    content_router,
-    monitoring_router,
-    reports_router,
-    subscription_router,
-    user_router,
-)
+from routers import (ai_router, analysis_router, audit_router, auth_router, collection_router,
+                     content_management_router, content_router, monitoring_router, reports_router,
+                     subscription_router, user_router)
 from routers.affiliate_router import router as affiliate_router
 from routers.analytics_router import router as analytics_router
 from routers.content_quality_router import router as content_quality_router

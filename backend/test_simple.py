@@ -49,11 +49,7 @@ def test_imports():
 
     try:
         # コンテンツ生成サービスのテスト
-        from services.content_generator import (
-            ContentGenerator,
-            ContentType,
-            GeneratedContent,
-        )
+        from services.content_generator import ContentGenerator, ContentType, GeneratedContent
 
         print("✅ ContentGenerator imported successfully")
     except ImportError as e:

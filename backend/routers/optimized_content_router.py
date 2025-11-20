@@ -12,14 +12,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from middleware.performance_middleware import performance_metrics
 from services.query_optimizer import QueryOptimizer
 from sqlalchemy.ext.asyncio import AsyncSession
-from utils.response_optimizer import (
-    create_conditional_response,
-    create_error_response,
-    create_etag,
-    create_paginated_response,
-    create_success_response,
-    optimize_data,
-)
+from utils.response_optimizer import (create_conditional_response, create_error_response,
+                                      create_etag, create_paginated_response,
+                                      create_success_response, optimize_data)
 
 logger = logging.getLogger(__name__)
 

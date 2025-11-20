@@ -54,4 +54,3 @@ def downgrade() -> None:
     # Remove columns
     op.drop_column("click_tracking", "session_id")
     op.drop_column("referral_links", "valid_until")
-

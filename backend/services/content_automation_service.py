@@ -9,12 +9,7 @@ from collections import Counter
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from models.automated_content import (
-    AutomatedContentDB,
-    ContentStatus,
-    ContentType,
-    TrendDataDB,
-)
+from models.automated_content import AutomatedContentDB, ContentStatus, ContentType, TrendDataDB
 from sqlalchemy.orm import Session
 from utils.ai_client import AIClient, ContentGenerationRequest
 
