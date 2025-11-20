@@ -9,16 +9,7 @@ from typing import Optional
 
 from database import Base
 from pydantic import BaseModel
-from sqlalchemy import (
-    Boolean,
-    Column,
-    DateTime,
-    Float,
-    ForeignKey,
-    Integer,
-    String,
-    Text,
-)
+from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Text
 
 
 class AffiliateStatus(str, Enum):
@@ -88,6 +79,7 @@ class ReferralLinkDB(Base):
     clicks = Column(Integer, default=0)
     conversions = Column(Integer, default=0)
     is_active = Column(Boolean, default=True)
+    valid_until = Column(DateTime, nullable=True, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
@@ -102,6 +94,7 @@ class ClickTrackingDB(Base):
     ip_address = Column(String, nullable=True)
     user_agent = Column(String, nullable=True)
     referrer = Column(String, nullable=True)
+    session_id = Column(String, nullable=True, index=True)
     clicked_at = Column(DateTime, default=datetime.utcnow)
 
 
@@ -203,6 +196,7 @@ class ReferralLink(BaseModel):
     clicks: int
     conversions: int
     is_active: bool
+    valid_until: Optional[datetime] = None
     created_at: datetime
 
     class Config:
@@ -218,6 +212,7 @@ class ClickTracking(BaseModel):
     ip_address: Optional[str] = None
     user_agent: Optional[str] = None
     referrer: Optional[str] = None
+    session_id: Optional[str] = None
     clicked_at: datetime
 
     class Config:

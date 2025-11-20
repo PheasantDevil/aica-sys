@@ -8,19 +8,9 @@ import secrets
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from models.affiliate import (
-    AffiliateCouponDB,
-    AffiliateDB,
-    AffiliateStatus,
-    ClickTrackingDB,
-    CommissionRuleDB,
-    ConversionDB,
-    ConversionStatus,
-    PayoutDB,
-    PayoutStatus,
-    ReferralLinkDB,
-    RewardType,
-)
+from models.affiliate import (AffiliateCouponDB, AffiliateDB, AffiliateStatus, ClickTrackingDB,
+                              CommissionRuleDB, ConversionDB, ConversionStatus, PayoutDB,
+                              PayoutStatus, ReferralLinkDB, RewardType)
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
@@ -86,6 +76,7 @@ class AffiliateService:
         affiliate_id: int,
         destination_url: str,
         campaign_name: Optional[str] = None,
+        valid_until: Optional[datetime] = None,
     ) -> ReferralLinkDB:
         """紹介リンクを作成"""
         link_code = self._generate_link_code()
@@ -95,6 +86,7 @@ class AffiliateService:
             link_code=link_code,
             campaign_name=campaign_name,
             destination_url=destination_url,
+            valid_until=valid_until,
         )
         self.db.add(link)
         self.db.commit()
@@ -111,7 +103,84 @@ class AffiliateService:
         )
         if active_only:
             query = query.filter(ReferralLinkDB.is_active == True)
+            # 有効期限が切れていないリンクのみ
+            query = query.filter(
+                (ReferralLinkDB.valid_until.is_(None))
+                | (ReferralLinkDB.valid_until > datetime.utcnow())
+            )
         return query.all()
+
+    async def update_referral_link(
+        self,
+        link_id: int,
+        is_active: Optional[bool] = None,
+        valid_until: Optional[datetime] = None,
+    ) -> ReferralLinkDB:
+        """紹介リンクを更新"""
+        link = (
+            self.db.query(ReferralLinkDB).filter(ReferralLinkDB.id == link_id).first()
+        )
+
+        if not link:
+            raise ValueError("Referral link not found")
+
+        if is_active is not None:
+            link.is_active = is_active
+        if valid_until is not None:
+            link.valid_until = valid_until
+
+        self.db.commit()
+        self.db.refresh(link)
+        logger.info(f"Referral link updated: {link.id}")
+        return link
+
+    async def get_all_referral_links(
+        self, active_only: bool = True, limit: int = 100
+    ) -> List[ReferralLinkDB]:
+        """全紹介リンクを取得（管理者用）"""
+        query = self.db.query(ReferralLinkDB)
+        if active_only:
+            query = query.filter(ReferralLinkDB.is_active == True)
+            query = query.filter(
+                (ReferralLinkDB.valid_until.is_(None))
+                | (ReferralLinkDB.valid_until > datetime.utcnow())
+            )
+        return query.order_by(ReferralLinkDB.created_at.desc()).limit(limit).all()
+
+    async def get_click_statistics(
+        self, affiliate_id: Optional[int] = None, link_id: Optional[int] = None
+    ) -> Dict[str, Any]:
+        """クリック統計を取得"""
+        base_query = self.db.query(ClickTrackingDB)
+
+        if affiliate_id:
+            base_query = base_query.filter(ClickTrackingDB.affiliate_id == affiliate_id)
+        if link_id:
+            base_query = base_query.filter(ClickTrackingDB.referral_link_id == link_id)
+
+        total_clicks = base_query.count()
+
+        # セッション別クリック数（ユニークセッション数）
+        unique_sessions = (
+            base_query.filter(ClickTrackingDB.session_id.isnot(None))
+            .with_entities(ClickTrackingDB.session_id)
+            .distinct()
+            .count()
+        )
+
+        # リファラー別クリック数（ユニークリファラー数）
+        unique_referrers = (
+            base_query.filter(ClickTrackingDB.referrer.isnot(None))
+            .with_entities(ClickTrackingDB.referrer)
+            .distinct()
+            .count()
+        )
+
+        return {
+            "total_clicks": total_clicks,
+            "unique_sessions": unique_sessions,
+            "unique_referrers": unique_referrers,
+        }
 
     # クリック追跡
     async def track_click(
@@ -120,6 +189,7 @@ class AffiliateService:
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
         referrer: Optional[str] = None,
+        session_id: Optional[str] = None,
     ) -> ClickTrackingDB:
         """クリックを追跡"""
         # リンク取得
@@ -134,6 +204,10 @@ class AffiliateService:
         if not link:
             raise ValueError("Referral link not found or inactive")
 
+        # 有効期限チェック
+        if link.valid_until and link.valid_until < datetime.utcnow():
+            raise ValueError("Referral link has expired")
+
         # クリック記録
         click = ClickTrackingDB(
             referral_link_id=link.id,
@@ -141,6 +215,7 @@ class AffiliateService:
             ip_address=ip_address,
             user_agent=user_agent,
             referrer=referrer,
+            session_id=session_id,
         )
         self.db.add(click)
 
