@@ -5,6 +5,7 @@ Revises: 1cf2ab5a8998
 Create Date: 2025-11-20 02:00:00.000000
 
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -24,7 +25,7 @@ def upgrade() -> None:
     conn = op.get_bind()
     inspector = sa.inspect(conn)
     columns = [col["name"] for col in inspector.get_columns("social_post_logs")]
-    
+
     if "metadata" in columns and "post_metadata" not in columns:
         op.alter_column(
             "social_post_logs",
@@ -41,7 +42,7 @@ def downgrade() -> None:
     conn = op.get_bind()
     inspector = sa.inspect(conn)
     columns = [col["name"] for col in inspector.get_columns("social_post_logs")]
-    
+
     if "post_metadata" in columns and "metadata" not in columns:
         op.alter_column(
             "social_post_logs",
@@ -50,4 +51,3 @@ def downgrade() -> None:
             existing_type=sa.JSON(),
             existing_nullable=True,
         )
-
