@@ -10,7 +10,11 @@ from typing import Dict, List, Optional
 
 from models.content import Article, Newsletter, Trend, TrendCategory, TrendImpact
 from sqlalchemy.orm import Session
-from utils.ai_client import AIClient, ContentGenerationRequest, ContentGenerationResponse
+from utils.ai_client import (
+    AIClient,
+    ContentGenerationRequest,
+    ContentGenerationResponse,
+)
 
 logger = logging.getLogger(__name__)
 

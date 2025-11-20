@@ -11,8 +11,14 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer
 from models.user import User
 from pydantic import BaseModel, EmailStr
-from security.auth_middleware import (SecurityConfig, create_access_token, create_refresh_token,
-                                      get_current_active_user, get_current_user, verify_token)
+from security.auth_middleware import (
+    SecurityConfig,
+    create_access_token,
+    create_refresh_token,
+    get_current_active_user,
+    get_current_user,
+    verify_token,
+)
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/api/auth", tags=["authentication"])
