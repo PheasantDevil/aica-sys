@@ -33,11 +33,13 @@ class TrendAnalysisService:
                 .all()
             )
         except (ProgrammingError, OperationalError, SQLAlchemyError) as exc:
-            logger.warning(
-                "Skipping trend analysis because source_data table is unavailable: %s",
+            logger.error(
+                "source_data table is unavailable. Ensure database migrations ran: %s",
                 exc,
             )
-            return {}
+            raise RuntimeError(
+                "Source data table missing. Run database migrations."
+            ) from exc
 
         if not source_data:
             logger.warning("No source data found for trend analysis")
@@ -207,4 +209,5 @@ class TrendAnalysisService:
             self.db.commit()
         except (ProgrammingError, OperationalError, SQLAlchemyError) as exc:
             self.db.rollback()
-            logger.warning("Failed to persist trend data (%s). Skipping.", exc)
+            logger.error("Failed to persist trend data. Ensure migrations ran: %s", exc)
+            raise

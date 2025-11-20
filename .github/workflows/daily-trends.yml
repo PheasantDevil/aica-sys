@@ -56,6 +56,17 @@ jobs:
           fi
           python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('backend'))); from database import SessionLocal; db = SessionLocal(); db.close(); print('✅ Database connection OK')"
 
+      - name: Run database migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ DATABASE_URL not set, skipping migrations"
+            exit 0
+          fi
+          cd backend
+          python3 -m alembic upgrade head
+
       - name: Verify scripts exist
         run: |
           test -f scripts/analyze_trends.py || exit 1
