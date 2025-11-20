@@ -9,16 +9,9 @@ from typing import Any, Dict, List, Optional
 
 from database import get_db
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
-from models.ai_models import (
-    AnalysisResult,
-    CollectedContent,
-    ContentCollection,
-    GeneratedContent,
-    TrendAnalysis,
-    create_analysis_from_result,
-    create_content_from_item,
-    create_generated_content_from_result,
-)
+from models.ai_models import (AnalysisResult, CollectedContent, ContentCollection, GeneratedContent,
+                              TrendAnalysis, create_analysis_from_result, create_content_from_item,
+                              create_generated_content_from_result)
 from services.ai_analyzer import AIAnalyzer
 from services.ai_analyzer import AnalysisResult as ARAnalysisResult
 from services.content_generator import ContentGenerator, ContentType

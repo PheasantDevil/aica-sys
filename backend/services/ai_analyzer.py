@@ -4,7 +4,6 @@ AI分析エンジン
 """
 
 import asyncio
-
 # from sentence_transformers import SentenceTransformer
 # import numpy as np
 import json
