@@ -197,6 +197,12 @@ class TwitterClient:
                 id=tweet_id, tweet_fields=["created_at", "public_metrics"]
             )
             if tweet.data:
+                metrics = {}
+                if getattr(tweet.data, "public_metrics", None):
+                    try:
+                        metrics = dict(tweet.data.public_metrics)
+                    except TypeError:
+                        metrics = tweet.data.public_metrics.__dict__
                 return {
                     "id": tweet.data.id,
                     "text": tweet.data.text,
@@ -205,15 +211,11 @@ class TwitterClient:
                         if tweet.data.created_at
                         else None
                     ),
-                    "metrics": (
-                        tweet.data.public_metrics.__dict__
-                        if hasattr(tweet.data, "public_metrics")
-                        else {}
-                    ),
+                    "metrics": metrics,
                 }
             return None
-        except Exception as e:
-            logger.error(f"Failed to get tweet: {e}")
+        except tweepy.TweepyException as exc:
+            logger.error(f"Failed to get tweet: {exc}")
             return None
 
     def verify_credentials(self) -> bool:

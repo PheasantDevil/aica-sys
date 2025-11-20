@@ -22,13 +22,8 @@ load_dotenv(backend_dir / ".env.local")
 from datetime import datetime, timezone
 
 from database import DATABASE_URL, Base, SessionLocal, engine
-from models.automated_content import (
-    AutomatedContentDB,
-    ContentGenerationLogDB,
-    ContentStatus,
-    ContentType,
-    TrendDataDB,
-)
+from models.automated_content import (AutomatedContentDB, ContentGenerationLogDB, ContentStatus,
+                                      ContentType, TrendDataDB)
 from services.content_automation_service import ContentAutomationService
 from services.social_media_service import SocialMediaService
 from services.source_aggregator_service import SourceAggregatorService
@@ -180,7 +175,7 @@ async def main_async(args: argparse.Namespace):
         social_service = None
         if not use_mock and not skip_social_post:
             try:
-                social_service = SocialMediaService()
+                social_service = SocialMediaService(db_session=db)
                 print("📣 Social media service initialized")
             except Exception as social_error:
                 print(f"⚠️  Social media service unavailable: {social_error}")

@@ -12,6 +12,7 @@ from models.analytics import (
     DashboardDB,
     MetricSnapshotDB,
     ReportDB,
+    ReportType,
     ScheduledReportDB,
     UserSegmentDB,
 )
@@ -323,6 +324,29 @@ class AnalyticsService:
             return await self.calculate_kpis()
         else:
             return {}
+
+    async def save_social_post_report(
+        self,
+        title: str,
+        summary: Dict[str, Any],
+        period: Dict[str, Any],
+        created_by: Optional[str] = None,
+    ) -> ReportDB:
+        """SNS投稿レポートを保存"""
+        report = ReportDB(
+            report_type=ReportType.SOCIAL.value,
+            title=title,
+            description="Automated SNS posting summary",
+            parameters={"period": period},
+            data=summary,
+            format="json",
+            created_by=created_by,
+        )
+        self.db.add(report)
+        self.db.commit()
+        self.db.refresh(report)
+        logger.info(f"Social post report stored: {report.id}")
+        return report
 
     # スケジュールレポート
     async def create_scheduled_report(
