@@ -10,6 +10,7 @@ from typing import Any, Dict, List
 
 from models.automated_content import SourceDataDB, TrendDataDB
 from sqlalchemy import func
+from sqlalchemy.exc import OperationalError, ProgrammingError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
@@ -25,11 +26,18 @@ class TrendAnalysisService:
         """デイリートレンドを分析"""
         # 過去24時間のソースデータ取得
         yesterday = datetime.utcnow() - timedelta(days=1)
-        source_data = (
-            self.db.query(SourceDataDB)
-            .filter(SourceDataDB.collected_at >= yesterday)
-            .all()
-        )
+        try:
+            source_data = (
+                self.db.query(SourceDataDB)
+                .filter(SourceDataDB.collected_at >= yesterday)
+                .all()
+            )
+        except (ProgrammingError, OperationalError, SQLAlchemyError) as exc:
+            logger.warning(
+                "Skipping trend analysis because source_data table is unavailable: %s",
+                exc,
+            )
+            return {}
 
         if not source_data:
             logger.warning("No source data found for trend analysis")
@@ -194,5 +202,9 @@ class TrendAnalysisService:
             related_topics=related_topics,
             data_snapshot={},
         )
-        self.db.add(trend)
-        self.db.commit()
+        try:
+            self.db.add(trend)
+            self.db.commit()
+        except (ProgrammingError, OperationalError, SQLAlchemyError) as exc:
+            self.db.rollback()
+            logger.warning("Failed to persist trend data (%s). Skipping.", exc)
