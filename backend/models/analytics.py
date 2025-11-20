@@ -148,7 +148,9 @@ class SocialPostLogDB(Base):
     error_message = Column(Text, nullable=True)
     tweet_text = Column(Text, nullable=True)
     tweet_metrics = Column(JSON, nullable=True)
-    metadata = Column(JSON, nullable=True)
+    post_metadata = Column(
+        JSON, nullable=True
+    )  # 'metadata'は予約語のため'post_metadata'に変更
     posted_at = Column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc),
@@ -272,7 +274,9 @@ class SocialPostLog(BaseModel):
     error_message: Optional[str] = None
     tweet_text: Optional[str] = None
     tweet_metrics: Optional[dict] = None
-    metadata: Optional[dict] = None
+    post_metadata: Optional[dict] = (
+        None  # 'metadata'は予約語のため'post_metadata'に変更
+    )
     posted_at: datetime
     metrics_updated_at: Optional[datetime] = None
     created_at: datetime

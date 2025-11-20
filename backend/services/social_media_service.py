@@ -384,7 +384,7 @@ class SocialMediaService:
                     if result.get("errors")
                     else None
                 ),
-                metadata={
+                post_metadata={
                     "payload": {
                         key: value
                         for key, value in payload.items()

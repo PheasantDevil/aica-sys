@@ -39,7 +39,9 @@ def upgrade() -> None:
         sa.Column("error_message", sa.Text(), nullable=True),
         sa.Column("tweet_text", sa.Text(), nullable=True),
         sa.Column("tweet_metrics", sa.JSON(), nullable=True),
-        sa.Column("metadata", sa.JSON(), nullable=True),
+        sa.Column(
+            "post_metadata", sa.JSON(), nullable=True
+        ),  # 'metadata'は予約語のため'post_metadata'に変更
         sa.Column(
             "posted_at",
             sa.DateTime(timezone=True),
