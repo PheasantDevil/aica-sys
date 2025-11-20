@@ -7,12 +7,26 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from models.analytics import SocialPostLogDB
 from services.twitter_client import TwitterClient
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import InvalidRequestError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
+
+try:
+    from models.analytics import SocialPostLogDB
+except InvalidRequestError as exc:  # pragma: no cover - defensive import guard
+    SocialPostLogDB = None  # type: ignore[assignment]
+    logger.warning(
+        "Failed to import SocialPostLogDB due to metadata conflict: %s. "
+        "Social post logging disabled.",
+        exc,
+    )
+except Exception as exc:  # pragma: no cover
+    SocialPostLogDB = None  # type: ignore[assignment]
+    logger.warning(
+        "Failed to import SocialPostLogDB (%s). Social post logging disabled.", exc
+    )
 
 
 class SocialMediaService:
@@ -363,7 +377,10 @@ class SocialMediaService:
         self, post_type: str, payload: Dict[str, Any], result: Dict[str, Any]
     ) -> None:
         """Persist social post attempt for analytics."""
-        if not self.db:
+        if not self.db or SocialPostLogDB is None:
+            logger.debug(
+                "Skipping social post logging (DB session or model unavailable)"
+            )
             return
 
         try:
