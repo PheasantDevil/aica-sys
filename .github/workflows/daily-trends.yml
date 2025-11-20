@@ -18,6 +18,9 @@ jobs:
   analyze-trends:
     name: Analyze Daily Trends
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
 
     steps:
       - name: Checkout code
@@ -68,6 +71,10 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ DATABASE_URL not set, skipping trend analysis"
+            exit 0
+          fi
           python3 scripts/analyze_trends.py
 
       - name: Commit trend data
