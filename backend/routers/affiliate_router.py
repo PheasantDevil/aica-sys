@@ -31,6 +31,7 @@ class ReferralLinkCreateRequest(BaseModel):
     affiliate_id: int
     destination_url: str
     campaign_name: Optional[str] = None
+    valid_until: Optional[datetime] = None
 
 
 class ClickTrackRequest(BaseModel):
@@ -40,6 +41,7 @@ class ClickTrackRequest(BaseModel):
     ip_address: Optional[str] = None
     user_agent: Optional[str] = None
     referrer: Optional[str] = None
+    session_id: Optional[str] = None
 
 
 class ConversionRecordRequest(BaseModel):
@@ -142,6 +144,7 @@ async def create_referral_link(
             affiliate_id=request.affiliate_id,
             destination_url=request.destination_url,
             campaign_name=request.campaign_name,
+            valid_until=request.valid_until,
         )
         return {"success": True, "link": link}
     except Exception as e:
@@ -174,6 +177,7 @@ async def track_click(request: ClickTrackRequest, db: Session = Depends(get_db))
             ip_address=request.ip_address,
             user_agent=request.user_agent,
             referrer=request.referrer,
+            session_id=request.session_id,
         )
         return {"success": True, "click": click}
     except ValueError as e:
@@ -350,4 +354,66 @@ async def get_top_affiliates(
         return {"success": True, "affiliates": affiliates, "count": len(affiliates)}
     except Exception as e:
         logger.error(f"Get top affiliates error: {e}")
+        raise HTTPException(status_code=500, detail="取得に失敗しました")
+
+
+# Admin Endpoints
+class ReferralLinkUpdateRequest(BaseModel):
+    """紹介リンク更新リクエスト"""
+
+    is_active: Optional[bool] = None
+    valid_until: Optional[datetime] = None
+
+
+@router.put("/referral-links/{link_id}")
+async def update_referral_link(
+    link_id: int,
+    request: ReferralLinkUpdateRequest,
+    db: Session = Depends(get_db),
+):
+    """紹介リンクを更新（管理者用）"""
+    try:
+        service = AffiliateService(db)
+        link = await service.update_referral_link(
+            link_id=link_id,
+            is_active=request.is_active,
+            valid_until=request.valid_until,
+        )
+        return {"success": True, "link": link}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Update referral link error: {e}")
+        raise HTTPException(status_code=500, detail="更新に失敗しました")
+
+
+@router.get("/admin/referral-links")
+async def get_all_referral_links(
+    active_only: bool = True,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+):
+    """全紹介リンクを取得（管理者用）"""
+    try:
+        service = AffiliateService(db)
+        links = await service.get_all_referral_links(active_only, limit)
+        return {"success": True, "links": links, "count": len(links)}
+    except Exception as e:
+        logger.error(f"Get all referral links error: {e}")
+        raise HTTPException(status_code=500, detail="取得に失敗しました")
+
+
+@router.get("/admin/click-statistics")
+async def get_click_statistics(
+    affiliate_id: Optional[int] = None,
+    link_id: Optional[int] = None,
+    db: Session = Depends(get_db),
+):
+    """クリック統計を取得（管理者用）"""
+    try:
+        service = AffiliateService(db)
+        stats = await service.get_click_statistics(affiliate_id, link_id)
+        return {"success": True, "statistics": stats}
+    except Exception as e:
+        logger.error(f"Get click statistics error: {e}")
         raise HTTPException(status_code=500, detail="取得に失敗しました")
