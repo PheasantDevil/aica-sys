@@ -78,6 +78,17 @@ jobs:
           mkdir -p public
           echo "✅ Public directory ready"
 
+      - name: Run database migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ DATABASE_URL not set, skipping migrations"
+            exit 0
+          fi
+          cd backend
+          python3 -m alembic upgrade head
+
       - name: Run trend analysis
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
