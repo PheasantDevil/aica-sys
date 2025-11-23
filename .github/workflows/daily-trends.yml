@@ -157,9 +157,44 @@ jobs:
             python3 -m alembic upgrade head 2>&1 | tee /tmp/migration_output.log
             MIGRATION_EXIT_CODE=${PIPESTATUS[0]}
           else
-            echo "🚀 Executing migrations..."
-            python3 -m alembic upgrade head 2>&1 | tee /tmp/migration_output.log
-            MIGRATION_EXIT_CODE=${PIPESTATUS[0]}
+            echo "🚀 Migration 4741adeef488 not recorded, applying it manually..."
+            echo "Current revision before fix:"
+            python3 -m alembic current || echo "⚠️ No current revision"
+            echo ""
+            echo "Step 1: Temporarily removing 2a3b4c5d6e7f from alembic_version to allow applying 4741adeef488..."
+            python3 << 'PYEOF'
+            from pathlib import Path
+            import sys
+            sys.path.insert(0, str(Path('.').resolve()))
+            from sqlalchemy import inspect, text
+            from database import engine
+            
+            with engine.begin() as conn:
+                # Remove 2a3b4c5d6e7f if it exists
+                conn.execute(text("DELETE FROM alembic_version WHERE version_num = '2a3b4c5d6e7f'"))
+                print("✅ Removed 2a3b4c5d6e7f from alembic_version")
+                
+                # Also remove 1cf2ab5a8998 if it exists (it depends on 4741adeef488)
+                conn.execute(text("DELETE FROM alembic_version WHERE version_num = '1cf2ab5a8998'"))
+                print("✅ Removed 1cf2ab5a8998 from alembic_version")
+            PYEOF
+            echo ""
+            echo "Step 2: Applying migration 4741adeef488..."
+            python3 -m alembic upgrade 4741adeef488 2>&1 | tee /tmp/migration_4741.log
+            UPGRADE_4741_EXIT=${PIPESTATUS[0]}
+            
+            if [ $UPGRADE_4741_EXIT -eq 0 ]; then
+              echo "✅ Migration 4741adeef488 applied successfully"
+              echo ""
+              echo "Step 3: Applying remaining migrations (1cf2ab5a8998, 2a3b4c5d6e7f)..."
+              python3 -m alembic upgrade head 2>&1 | tee /tmp/migration_output.log
+              MIGRATION_EXIT_CODE=${PIPESTATUS[0]}
+            else
+              echo "❌ Failed to apply migration 4741adeef488"
+              echo "Migration output:"
+              cat /tmp/migration_4741.log
+              MIGRATION_EXIT_CODE=1
+            fi
           fi
           
           if [ $PRE_CHECK_EXIT -ne 3 ]; then
