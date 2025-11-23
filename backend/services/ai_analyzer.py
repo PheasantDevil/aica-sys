@@ -51,8 +51,8 @@ class AIAnalyzer:
             try:
                 # Groq client initialization - only pass api_key to avoid proxies error
                 self.groq_client = Groq(api_key=self.groq_api_key)
-            except Exception as e:
-                logger.error(f"Failed to initialize Groq client: {e}")
+            except Exception:
+                logger.exception("Failed to initialize Groq client")
                 self.groq_client = None
         else:
             self.groq_client = None
