@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fix broken migration chain by removing later migrations."""
+"""Fix broken migration chain by stamping to 223a0ac841bb."""
 import sys
 from pathlib import Path
 
@@ -10,12 +10,13 @@ from sqlalchemy import text
 
 try:
     with engine.begin() as conn:
+        # Remove all existing versions
+        conn.execute(text("DELETE FROM alembic_version"))
+        # Stamp to 223a0ac841bb (the base migration that already has tables)
         conn.execute(
-            text(
-                "DELETE FROM alembic_version WHERE version_num IN ('2a3b4c5d6e7f', '1cf2ab5a8998')"
-            )
+            text("INSERT INTO alembic_version (version_num) VALUES ('223a0ac841bb')")
         )
-        print("✅ Removed later migrations from alembic_version")
+        print("✅ Stamped alembic_version to 223a0ac841bb")
 except Exception as e:
     print(f"❌ Error: {e}")
     import traceback
