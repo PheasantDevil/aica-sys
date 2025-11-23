@@ -88,7 +88,7 @@ jobs:
           sys.path.insert(0, str(Path('.').resolve()))
           from sqlalchemy import text
           from database import engine
-          
+
           with engine.connect() as conn:
               result = conn.execute(text("SELECT version_num FROM alembic_version"))
               versions = [row[0] for row in result]
@@ -111,8 +111,19 @@ jobs:
           echo "📊 Current revision:"
           python3 -m alembic current || echo "⚠️ No current revision"
           echo ""
-          echo "🚀 Applying migrations..."
-          python3 -m alembic upgrade head
+          echo "🔍 Checking if migration 4741adeef488 needs to be applied..."
+          python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('.').resolve())); from sqlalchemy import text; from database import engine; conn = engine.connect(); result = conn.execute(text('SELECT version_num FROM alembic_version')); versions = [row[0] for row in result]; conn.close(); sys.exit(0 if '4741adeef488' in versions else 1)"
+          NEEDS_4741=$?
+          if [ $NEEDS_4741 -ne 0 ]; then
+            echo "⚠️ Migration 4741adeef488 not recorded, fixing migration chain..."
+            python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('.').resolve())); from sqlalchemy import text; from database import engine; conn = engine.begin(); conn.execute(text(\"DELETE FROM alembic_version WHERE version_num IN ('2a3b4c5d6e7f', '1cf2ab5a8998')\")); conn.commit(); print('✅ Removed later migrations from alembic_version'); conn.close()"
+            echo "🚀 Applying migrations from 223a0ac841bb..."
+            python3 -m alembic upgrade head
+          else
+            echo "✅ Migration 4741adeef488 already recorded"
+            echo "🚀 Applying any pending migrations..."
+            python3 -m alembic upgrade head
+          fi
           echo "✅ Migrations completed"
           python3 -m alembic current
 
@@ -131,7 +142,7 @@ jobs:
           sys.path.insert(0, str(Path('.').resolve()))
           from sqlalchemy import inspect, text
           from database import engine
-          
+
           print("🔍 Checking database connection...")
           try:
               with engine.connect() as conn:
@@ -141,12 +152,12 @@ jobs:
           except Exception as e:
               print(f"❌ Database connection error: {e}")
               sys.exit(1)
-          
+
           print("\n📋 Listing all tables in database...")
           inspector = inspect(engine)
           tables = inspector.get_table_names()
           print(f"Found {len(tables)} tables: {', '.join(sorted(tables))}")
-          
+
           print("\n🔍 Checking alembic_version table:")
           with engine.connect() as conn:
               try:
@@ -161,10 +172,10 @@ jobs:
                       print("This is likely why the tables don't exist.")
               except Exception as e:
                   print(f"⚠️ Could not check alembic_version: {e}")
-          
+
           required_tables = ['source_data', 'trend_data', 'automated_contents', 'content_generation_logs']
           missing = [t for t in required_tables if t not in tables]
-          
+
           if missing:
               print(f"\n❌ Missing tables: {', '.join(missing)}")
               print("\n💡 Possible solutions:")
