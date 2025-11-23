@@ -16,9 +16,10 @@ BACKEND_DIR = ROOT_DIR / "backend"
 sys.path.insert(0, str(BACKEND_DIR))
 
 # Load environment variables (.env.local は任意)
+# GitHub Actionsなどでは環境変数が直接設定されるため、.env.localは任意
 env_local = BACKEND_DIR / ".env.local"
 if env_local.exists():
-    load_dotenv(env_local)
+    load_dotenv(env_local, override=False)  # override=Falseで既存の環境変数を上書きしない
 
 from database import SessionLocal
 from services.social_media_service import SocialMediaService
@@ -69,15 +70,41 @@ def parse_hashtags(raw: str | None):
 
 
 def get_db_session():
+    """Get database session, returning None if connection fails."""
     try:
         return SessionLocal()
     except SQLAlchemyError as exc:
-        print(f"⚠️  Failed to initialize database session: {exc}")
+        error_str = str(exc).lower()
+        if "no such table" in error_str or "does not exist" in error_str:
+            print(f"⚠️  Database table not found (migrations may not have run): {exc}")
+        else:
+            print(f"⚠️  Failed to initialize database session: {exc}")
+        return None
+    except Exception as exc:
+        print(f"⚠️  Unexpected error initializing database session: {exc}")
         return None
 
 
 def main():
     args = parse_args()
+    
+    # 環境変数の確認（デバッグ用）
+    twitter_vars = {
+        "TWITTER_BEARER_TOKEN": bool(os.getenv("TWITTER_BEARER_TOKEN")),
+        "TWITTER_API_KEY": bool(os.getenv("TWITTER_API_KEY")),
+        "TWITTER_API_SECRET": bool(os.getenv("TWITTER_API_SECRET")),
+        "TWITTER_ACCESS_TOKEN": bool(os.getenv("TWITTER_ACCESS_TOKEN")),
+        "TWITTER_ACCESS_TOKEN_SECRET": bool(os.getenv("TWITTER_ACCESS_TOKEN_SECRET")),
+    }
+    if not any(twitter_vars.values()):
+        print("⚠️  Warning: No Twitter credentials found in environment variables")
+        print("   Set TWITTER_BEARER_TOKEN or TWITTER_API_KEY/SECRET/ACCESS_TOKEN/SECRET")
+    else:
+        print("✅ Twitter credentials found in environment")
+        for key, value in twitter_vars.items():
+            if value:
+                print(f"   - {key}: set")
+    
     db_session = get_db_session()
     service = SocialMediaService(db_session=db_session)
     hashtags = parse_hashtags(args.hashtags)

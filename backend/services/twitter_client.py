@@ -36,12 +36,35 @@ class TwitterClient:
         self.access_token_secret = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
         self.bearer_token = os.getenv("TWITTER_BEARER_TOKEN")
 
+        # Debug: Log which credentials are available (without exposing values)
+        has_bearer = bool(self.bearer_token)
+        has_oauth1 = all([self.api_key, self.api_secret, self.access_token, self.access_token_secret])
+        logger.debug(
+            f"Twitter credentials check: bearer_token={has_bearer}, "
+            f"oauth1_complete={has_oauth1}"
+        )
+
         # Validate credentials
         if not self.bearer_token and not all(
             [self.api_key, self.api_secret, self.access_token, self.access_token_secret]
         ):
+            missing = []
+            if not self.bearer_token:
+                missing.append("TWITTER_BEARER_TOKEN")
+            if not all([self.api_key, self.api_secret, self.access_token, self.access_token_secret]):
+                oauth1_missing = []
+                if not self.api_key:
+                    oauth1_missing.append("TWITTER_API_KEY")
+                if not self.api_secret:
+                    oauth1_missing.append("TWITTER_API_SECRET")
+                if not self.access_token:
+                    oauth1_missing.append("TWITTER_ACCESS_TOKEN")
+                if not self.access_token_secret:
+                    oauth1_missing.append("TWITTER_ACCESS_TOKEN_SECRET")
+                if oauth1_missing:
+                    missing.extend(oauth1_missing)
             raise ValueError(
-                "Twitter API credentials not set. "
+                f"Twitter API credentials not set. Missing: {', '.join(missing)}. "
                 "Set TWITTER_BEARER_TOKEN or TWITTER_API_KEY/SECRET/ACCESS_TOKEN/SECRET"
             )
 
@@ -54,13 +77,24 @@ class TwitterClient:
         try:
             if self.bearer_token:
                 # Use Bearer Token (OAuth 2.0) - Recommended for v2 API
+                # Strip "Bearer " prefix if present
+                bearer_token = self.bearer_token.strip()
+                if bearer_token.startswith("Bearer "):
+                    bearer_token = bearer_token[7:]
                 self.client = tweepy.Client(
-                    bearer_token=self.bearer_token,
+                    bearer_token=bearer_token,
                     wait_on_rate_limit=True,
                 )
                 logger.info("Twitter client initialized with Bearer Token (OAuth 2.0)")
             else:
                 # Use OAuth 1.0a (API Key + Secret + Access Token)
+                # Validate all OAuth 1.0a credentials are present
+                if not all([self.api_key, self.api_secret, self.access_token, self.access_token_secret]):
+                    raise ValueError(
+                        "OAuth 1.0a credentials incomplete. "
+                        "All of TWITTER_API_KEY, TWITTER_API_SECRET, "
+                        "TWITTER_ACCESS_TOKEN, and TWITTER_ACCESS_TOKEN_SECRET are required."
+                    )
                 auth = tweepy.OAuth1UserHandler(
                     self.api_key,
                     self.api_secret,
