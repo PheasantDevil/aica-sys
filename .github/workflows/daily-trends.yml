@@ -214,10 +214,18 @@ jobs:
       - name: Commit trend data
         if: success()
         run: |
+          if [ ! -f "public/trends-latest.json" ]; then
+            echo "⚠️ trends-latest.json not found, skipping commit"
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add public/trends-latest.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "chore: Update daily trend data [skip ci]"
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "ℹ️  No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: Update daily trend data [skip ci]"
           git push
 
       - name: Notify on failure
