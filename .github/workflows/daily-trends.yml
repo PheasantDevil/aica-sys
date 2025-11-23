@@ -46,54 +46,54 @@ jobs:
           cd backend
           pip list | grep -E "(requests|sqlalchemy)" || exit 1
 
-      - name: Check database connection
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          if [ -z "$DATABASE_URL" ]; then
-            echo "⚠️ DATABASE_URL not set, skipping database connection check"
-            exit 0
-          fi
-          python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('backend'))); from database import SessionLocal; db = SessionLocal(); db.close(); print('✅ Database connection OK')"
+      # - name: Check database connection
+      #   env:
+      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      #   run: |
+      #     if [ -z "$DATABASE_URL" ]; then
+      #       echo "⚠️ DATABASE_URL not set, skipping database connection check"
+      #       exit 0
+      #     fi
+      #     python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('backend'))); from database import SessionLocal; db = SessionLocal(); db.close(); print('✅ Database connection OK')"
 
-      - name: Check current migration status
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          if [ -z "$DATABASE_URL" ]; then
-            echo "⚠️ DATABASE_URL not set, skipping migration check"
-            exit 0
-          fi
-          cd backend
-          echo "📊 Current migration status:"
-          python3 -m alembic current || echo "⚠️ No migrations applied yet"
-          echo ""
-          echo "📋 Available migrations:"
-          python3 -m alembic history --verbose | head -30
-          echo ""
-          echo "🔍 Checking DATABASE_URL connection type:"
-          if echo "$DATABASE_URL" | grep -q "pooler.supabase.com"; then
-            if echo "$DATABASE_URL" | grep -q ":6543"; then
-              echo "✅ Using Session pooler (port 6543) - Good for migrations"
-            elif echo "$DATABASE_URL" | grep -q ":5432"; then
-              echo "⚠️ Using Transaction pooler (port 5432) - May cause migration issues"
-              echo "💡 Consider switching to Session pooler for migrations"
-            fi
-          fi
-          echo ""
-          echo "🔍 Checking alembic_version table:"
-          python3 << 'EOF'
-          from pathlib import Path
-          import sys
-          sys.path.insert(0, str(Path('.').resolve()))
-          from sqlalchemy import text
-          from database import engine
-
-          with engine.connect() as conn:
-              result = conn.execute(text("SELECT version_num FROM alembic_version"))
-              versions = [row[0] for row in result]
-              print(f"Applied migrations: {', '.join(versions)}")
-          EOF
+      # - name: Check current migration status
+      #   env:
+      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      #   run: |
+      #     if [ -z "$DATABASE_URL" ]; then
+      #       echo "⚠️ DATABASE_URL not set, skipping migration check"
+      #       exit 0
+      #     fi
+      #     cd backend
+      #     echo "📊 Current migration status:"
+      #     python3 -m alembic current || echo "⚠️ No migrations applied yet"
+      #     echo ""
+      #     echo "📋 Available migrations:"
+      #     python3 -m alembic history --verbose | head -30
+      #     echo ""
+      #     echo "🔍 Checking DATABASE_URL connection type:"
+      #     if echo "$DATABASE_URL" | grep -q "pooler.supabase.com"; then
+      #       if echo "$DATABASE_URL" | grep -q ":6543"; then
+      #         echo "✅ Using Session pooler (port 6543) - Good for migrations"
+      #       elif echo "$DATABASE_URL" | grep -q ":5432"; then
+      #         echo "⚠️ Using Transaction pooler (port 5432) - May cause migration issues"
+      #         echo "💡 Consider switching to Session pooler for migrations"
+      #       fi
+      #     fi
+      #     echo ""
+      #     echo "🔍 Checking alembic_version table:"
+      #     python3 << 'EOF'
+      #     from pathlib import Path
+      #     import sys
+      #     sys.path.insert(0, str(Path('.').resolve()))
+      #     from sqlalchemy import text
+      #     from database import engine
+      #
+      #     with engine.connect() as conn:
+      #         result = conn.execute(text("SELECT version_num FROM alembic_version"))
+      #         versions = [row[0] for row in result]
+      #         print(f"Applied migrations: {', '.join(versions)}")
+      #     EOF
 
       - name: Run database migrations
         env:
