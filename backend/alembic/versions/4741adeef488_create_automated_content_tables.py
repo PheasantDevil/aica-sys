@@ -38,10 +38,16 @@ def upgrade() -> None:
         sa.Column("updated_at", sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_automated_contents_content_type", "automated_contents", ["content_type"])
-    op.create_index("ix_automated_contents_created_at", "automated_contents", ["created_at"])
+    op.create_index(
+        "ix_automated_contents_content_type", "automated_contents", ["content_type"]
+    )
+    op.create_index(
+        "ix_automated_contents_created_at", "automated_contents", ["created_at"]
+    )
     op.create_index("ix_automated_contents_id", "automated_contents", ["id"])
-    op.create_index("ix_automated_contents_slug", "automated_contents", ["slug"], unique=True)
+    op.create_index(
+        "ix_automated_contents_slug", "automated_contents", ["slug"], unique=True
+    )
 
     # Create trend_data table
     op.create_table(
@@ -91,26 +97,32 @@ def upgrade() -> None:
         sa.Column("created_at", sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("ix_content_generation_logs_created_at", "content_generation_logs", ["created_at"])
+    op.create_index(
+        "ix_content_generation_logs_created_at",
+        "content_generation_logs",
+        ["created_at"],
+    )
     op.create_index("ix_content_generation_logs_id", "content_generation_logs", ["id"])
 
 
 def downgrade() -> None:
     """Downgrade schema."""
     op.drop_index("ix_content_generation_logs_id", table_name="content_generation_logs")
-    op.drop_index("ix_content_generation_logs_created_at", table_name="content_generation_logs")
+    op.drop_index(
+        "ix_content_generation_logs_created_at", table_name="content_generation_logs"
+    )
     op.drop_table("content_generation_logs")
-    
+
     op.drop_index("ix_source_data_source_type", table_name="source_data")
     op.drop_index("ix_source_data_id", table_name="source_data")
     op.drop_index("ix_source_data_collected_at", table_name="source_data")
     op.drop_table("source_data")
-    
+
     op.drop_index("ix_trend_data_trend_name", table_name="trend_data")
     op.drop_index("ix_trend_data_id", table_name="trend_data")
     op.drop_index("ix_trend_data_detected_at", table_name="trend_data")
     op.drop_table("trend_data")
-    
+
     op.drop_index("ix_automated_contents_slug", table_name="automated_contents")
     op.drop_index("ix_automated_contents_id", table_name="automated_contents")
     op.drop_index("ix_automated_contents_created_at", table_name="automated_contents")
