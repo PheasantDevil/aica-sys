@@ -113,38 +113,39 @@ jobs:
           python3 -m alembic current || echo "⚠️ No current revision"
           echo ""
           echo "🔍 Checking if automated content tables migration needs to be applied:"
-          python3 << 'PYEOF'
-          from pathlib import Path
-          import sys
-          sys.path.insert(0, str(Path('.').resolve()))
-          from sqlalchemy import inspect, text
-          from database import engine
-          
-          # Check alembic_version
-          with engine.connect() as conn:
-              result = conn.execute(text("SELECT version_num FROM alembic_version"))
-              versions = [row[0] for row in result]
-              print(f"Current alembic versions: {', '.join(versions)}")
-              
-              # Check if tables exist
-              inspector = inspect(engine)
-              tables = inspector.get_table_names()
-              required_tables = ['source_data', 'trend_data', 'automated_contents', 'content_generation_logs']
-              missing = [t for t in required_tables if t not in tables]
-              
-              if missing and '4741adeef488' not in versions:
-                  print(f"⚠️ Migration 4741adeef488 not applied and tables missing: {', '.join(missing)}")
-                  print("Will attempt to apply migration...")
-                  sys.exit(0)  # Continue to run migration
-              elif missing and '4741adeef488' in versions:
-                  print(f"⚠️ Migration 4741adeef488 is recorded but tables are missing: {', '.join(missing)}")
-                  print("This indicates the migration DDL was not executed.")
-                  print("Attempting to re-apply by downgrading and upgrading...")
-                  sys.exit(2)  # Special exit code for re-apply
-              elif not missing:
-                  print("✅ All required tables exist, migration already applied")
-                  sys.exit(3)  # Skip migration
-          PYEOF
+          cat > /tmp/check_migration.py << 'SCRIPT_END'
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path('.').resolve()))
+from sqlalchemy import inspect, text
+from database import engine
+
+# Check alembic_version
+with engine.connect() as conn:
+    result = conn.execute(text("SELECT version_num FROM alembic_version"))
+    versions = [row[0] for row in result]
+    print(f"Current alembic versions: {', '.join(versions)}")
+    
+    # Check if tables exist
+    inspector = inspect(engine)
+    tables = inspector.get_table_names()
+    required_tables = ['source_data', 'trend_data', 'automated_contents', 'content_generation_logs']
+    missing = [t for t in required_tables if t not in tables]
+    
+    if missing and '4741adeef488' not in versions:
+        print(f"⚠️ Migration 4741adeef488 not applied and tables missing: {', '.join(missing)}")
+        print("Will attempt to apply migration...")
+        sys.exit(0)  # Continue to run migration
+    elif missing and '4741adeef488' in versions:
+        print(f"⚠️ Migration 4741adeef488 is recorded but tables are missing: {', '.join(missing)}")
+        print("This indicates the migration DDL was not executed.")
+        print("Attempting to re-apply by downgrading and upgrading...")
+        sys.exit(2)  # Special exit code for re-apply
+    elif not missing:
+        print("✅ All required tables exist, migration already applied")
+        sys.exit(3)  # Skip migration
+SCRIPT_END
+          python3 /tmp/check_migration.py
           PRE_CHECK_EXIT=$?
           
           if [ $PRE_CHECK_EXIT -eq 3 ]; then
@@ -162,22 +163,23 @@ jobs:
             python3 -m alembic current || echo "⚠️ No current revision"
             echo ""
             echo "Step 1: Temporarily removing 2a3b4c5d6e7f from alembic_version to allow applying 4741adeef488..."
-            python3 << 'PYEOF'
-            from pathlib import Path
-            import sys
-            sys.path.insert(0, str(Path('.').resolve()))
-            from sqlalchemy import inspect, text
-            from database import engine
-            
-            with engine.begin() as conn:
-                # Remove 2a3b4c5d6e7f if it exists
-                conn.execute(text("DELETE FROM alembic_version WHERE version_num = '2a3b4c5d6e7f'"))
-                print("✅ Removed 2a3b4c5d6e7f from alembic_version")
-                
-                # Also remove 1cf2ab5a8998 if it exists (it depends on 4741adeef488)
-                conn.execute(text("DELETE FROM alembic_version WHERE version_num = '1cf2ab5a8998'"))
-                print("✅ Removed 1cf2ab5a8998 from alembic_version")
-            PYEOF
+            cat > /tmp/remove_versions.py << 'SCRIPT_END'
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path('.').resolve()))
+from sqlalchemy import inspect, text
+from database import engine
+
+with engine.begin() as conn:
+    # Remove 2a3b4c5d6e7f if it exists
+    conn.execute(text("DELETE FROM alembic_version WHERE version_num = '2a3b4c5d6e7f'"))
+    print("✅ Removed 2a3b4c5d6e7f from alembic_version")
+    
+    # Also remove 1cf2ab5a8998 if it exists (it depends on 4741adeef488)
+    conn.execute(text("DELETE FROM alembic_version WHERE version_num = '1cf2ab5a8998'"))
+    print("✅ Removed 1cf2ab5a8998 from alembic_version")
+SCRIPT_END
+            python3 /tmp/remove_versions.py
             echo ""
             echo "Step 2: Applying migration 4741adeef488..."
             python3 -m alembic upgrade 4741adeef488 2>&1 | tee /tmp/migration_4741.log
