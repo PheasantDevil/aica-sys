@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Fix broken migration chain by removing later migrations."""
-from pathlib import Path
 import sys
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 
-from sqlalchemy import text
 from database import engine
+from sqlalchemy import text
 
 try:
     with engine.begin() as conn:
