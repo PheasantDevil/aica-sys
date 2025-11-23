@@ -58,6 +58,24 @@ jobs:
           fi
           python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('backend'))); from database import SessionLocal; db = SessionLocal(); db.close(); print('✅ Database connection OK')"
 
+      - name: Run database migrations
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ DATABASE_URL not set, skipping migrations"
+            exit 0
+          fi
+          cd backend
+          # Check if PostgreSQL (not SQLite)
+          if [[ "$DATABASE_URL" == *"postgresql"* ]]; then
+            echo "🔄 Running database migrations..."
+            alembic upgrade head
+            echo "✅ Migrations completed"
+          else
+            echo "ℹ️  SQLite detected, skipping migrations (tables created automatically)"
+          fi
+
       - name: Verify scripts exist
         run: |
           test -f scripts/generate_daily_article.py || exit 1

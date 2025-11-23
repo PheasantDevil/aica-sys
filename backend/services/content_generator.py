@@ -64,7 +64,12 @@ class ContentGenerator:
 
         # Groq client初期化
         if self.groq_api_key:
-            self.groq_client = Groq(api_key=self.groq_api_key)
+            try:
+                # Groq client initialization - only pass api_key to avoid proxies error
+                self.groq_client = Groq(api_key=self.groq_api_key)
+            except Exception:
+                logger.exception("Failed to initialize Groq client")
+                self.groq_client = None
         else:
             self.groq_client = None
 

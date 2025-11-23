@@ -48,7 +48,9 @@ try:
             # Base tables exist, stamp to 223a0ac841bb
             conn.execute(text("DELETE FROM alembic_version"))
             conn.execute(
-                text("INSERT INTO alembic_version (version_num) VALUES ('223a0ac841bb')")
+                text(
+                    "INSERT INTO alembic_version (version_num) VALUES ('223a0ac841bb')"
+                )
             )
             print("✅ Stamped alembic_version to 223a0ac841bb")
 except Exception as e:

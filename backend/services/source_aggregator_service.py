@@ -173,9 +173,15 @@ class SourceAggregatorService:
     def _collect_reddit(self) -> List[Dict[str, Any]]:
         """Reddit r/programming から収集"""
         try:
+            # Reddit API requires authentication for most endpoints now
+            # Using a more permissive User-Agent
+            headers = {
+                "User-Agent": "AICA-SyS Content Automation Bot 1.0 (contact: info@aica-sys.com)"
+            }
             response = self.session.get(
                 "https://www.reddit.com/r/programming/hot.json",
                 params={"limit": 25},
+                headers=headers,
                 timeout=10,
             )
             response.raise_for_status()
@@ -204,7 +210,10 @@ class SourceAggregatorService:
             return collected
 
         except Exception as e:
-            logger.error(f"Failed to collect from Reddit: {e}")
+            # Reddit API may block requests - log as warning instead of error
+            logger.warning(
+                f"Failed to collect from Reddit (API may require authentication): {e}"
+            )
             return []
 
     def _collect_tech_crunch(self) -> List[Dict[str, Any]]:
