@@ -56,6 +56,18 @@ jobs:
           fi
           python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('backend'))); from database import SessionLocal; db = SessionLocal(); db.close(); print('✅ Database connection OK')"
 
+      - name: Check current migration status
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ DATABASE_URL not set, skipping migration check"
+            exit 0
+          fi
+          cd backend
+          echo "📊 Current migration status:"
+          python3 -m alembic current || echo "⚠️ No migrations applied yet"
+
       - name: Run database migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -65,7 +77,38 @@ jobs:
             exit 0
           fi
           cd backend
+          echo "⬆️ Running migrations..."
           python3 -m alembic upgrade head
+          echo "✅ Migrations completed"
+
+      - name: Verify tables exist
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ DATABASE_URL not set, skipping table verification"
+            exit 0
+          fi
+          cd backend
+          python3 << 'EOF'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, str(Path('.').resolve()))
+          from sqlalchemy import inspect, text
+          from database import engine
+          
+          inspector = inspect(engine)
+          tables = inspector.get_table_names()
+          
+          required_tables = ['source_data', 'trend_data', 'automated_contents', 'content_generation_logs']
+          missing = [t for t in required_tables if t not in tables]
+          
+          if missing:
+              print(f"❌ Missing tables: {', '.join(missing)}")
+              sys.exit(1)
+          else:
+              print(f"✅ All required tables exist: {', '.join(required_tables)}")
+          EOF
 
       - name: Verify scripts exist
         run: |
@@ -77,17 +120,6 @@ jobs:
         run: |
           mkdir -p public
           echo "✅ Public directory ready"
-
-      - name: Run database migrations
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          if [ -z "$DATABASE_URL" ]; then
-            echo "⚠️ DATABASE_URL not set, skipping migrations"
-            exit 0
-          fi
-          cd backend
-          python3 -m alembic upgrade head
 
       - name: Run trend analysis
         env:
