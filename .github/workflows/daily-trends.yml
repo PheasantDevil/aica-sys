@@ -67,11 +67,25 @@ jobs:
           cd backend
           echo "📊 Current migration status:"
           python3 -m alembic current || echo "⚠️ No migrations applied yet"
+          echo ""
+          echo "📋 Available migrations:"
+          python3 -m alembic history --verbose | head -30
+          echo ""
+          echo "🔍 Checking DATABASE_URL connection type:"
+          if echo "$DATABASE_URL" | grep -q "pooler.supabase.com"; then
+            if echo "$DATABASE_URL" | grep -q ":6543"; then
+              echo "✅ Using Session pooler (port 6543) - Good for migrations"
+            elif echo "$DATABASE_URL" | grep -q ":5432"; then
+              echo "⚠️ Using Transaction pooler (port 5432) - May cause migration issues"
+              echo "💡 Consider switching to Session pooler for migrations"
+            fi
+          fi
 
       - name: Run database migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
+          set -e  # Exit on error
           if [ -z "$DATABASE_URL" ]; then
             echo "⚠️ DATABASE_URL not set, skipping migrations"
             exit 0
@@ -85,13 +99,18 @@ jobs:
           python3 -m alembic current || echo "⚠️ No current revision"
           echo ""
           echo "🚀 Executing migrations..."
-          if python3 -m alembic upgrade head; then
+          python3 -m alembic upgrade head 2>&1 | tee /tmp/migration_output.log
+          MIGRATION_EXIT_CODE=${PIPESTATUS[0]}
+          if [ $MIGRATION_EXIT_CODE -eq 0 ]; then
             echo "✅ Migrations completed successfully"
             echo ""
             echo "📊 Current revision after migration:"
             python3 -m alembic current || echo "⚠️ Could not get current revision"
           else
-            echo "❌ Migration failed!"
+            echo "❌ Migration failed with exit code $MIGRATION_EXIT_CODE"
+            echo "📋 Migration output:"
+            cat /tmp/migration_output.log
+            echo ""
             echo "📋 Checking migration history again:"
             python3 -m alembic history | head -20
             exit 1
