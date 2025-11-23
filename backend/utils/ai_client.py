@@ -65,7 +65,12 @@ class AIClient:
 
         # Initialize Groq client
         if self.groq_api_key:
-            self.groq_client = Groq(api_key=self.groq_api_key)
+            try:
+                # Groq client initialization - only pass api_key to avoid proxies error
+                self.groq_client = Groq(api_key=self.groq_api_key)
+            except Exception as e:
+                logger.error(f"Failed to initialize Groq client: {e}")
+                self.groq_client = None
         else:
             self.groq_client = None
 

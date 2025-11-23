@@ -149,8 +149,28 @@ async def main_async(args: argparse.Namespace):
             trends = SAMPLE_TRENDS
             automation = None
         else:
-            automation = ContentAutomationService(db, groq_api_key)
-            trends = await automation.analyze_trends(source_data)
+            try:
+                automation = ContentAutomationService(db, groq_api_key)
+                trends = await automation.analyze_trends(source_data)
+            except Exception as e:
+                print(f"⚠️  Error during trend analysis: {e}")
+                # Fallback to simple keyword extraction
+                from collections import Counter
+                keywords = []
+                for item in source_data:
+                    title_words = item.get("title", "").lower().split()
+                    keywords.extend([w for w in title_words if len(w) > 3])
+                keyword_freq = Counter(keywords)
+                top_keywords = sorted(keyword_freq.items(), key=lambda x: x[1], reverse=True)[:5]
+                trends = [
+                    {
+                        "keyword": kw,
+                        "score": count * 10,
+                        "source_count": count,
+                        "related_items": [item for item in source_data if kw in item.get("title", "").lower()][:3],
+                    }
+                    for kw, count in top_keywords
+                ]
         print(f"✅ Found {len(trends)} trends")
 
         # Step 3: トレンドデータ保存
@@ -286,6 +306,8 @@ async def main_async(args: argparse.Namespace):
 
     except Exception as e:
         print(f"❌ Error: {e}")
+        import traceback
+        traceback.print_exc()
         sys.exit(1)
     finally:
         db.close()

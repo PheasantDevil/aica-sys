@@ -18,11 +18,7 @@ from groq import Groq
 from PIL import Image
 from services.ai_analyzer import AnalysisResult
 from services.data_collector import ContentItem
-from utils.cache_decorators import (
-    cache_article_data,
-    cache_newsletter_data,
-    cache_result,
-)
+from utils.cache_decorators import cache_article_data, cache_newsletter_data, cache_result
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +60,12 @@ class ContentGenerator:
 
         # Groq client初期化
         if self.groq_api_key:
-            self.groq_client = Groq(api_key=self.groq_api_key)
+            try:
+                # Groq client initialization - only pass api_key to avoid proxies error
+                self.groq_client = Groq(api_key=self.groq_api_key)
+            except Exception as e:
+                logger.error(f"Failed to initialize Groq client: {e}")
+                self.groq_client = None
         else:
             self.groq_client = None
 

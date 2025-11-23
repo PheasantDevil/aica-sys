@@ -4,7 +4,6 @@ AI分析エンジン
 """
 
 import asyncio
-
 # from sentence_transformers import SentenceTransformer
 # import numpy as np
 import json
@@ -48,7 +47,12 @@ class AIAnalyzer:
 
         # Groq client初期化
         if self.groq_api_key:
-            self.groq_client = Groq(api_key=self.groq_api_key)
+            try:
+                # Groq client initialization - only pass api_key to avoid proxies error
+                self.groq_client = Groq(api_key=self.groq_api_key)
+            except Exception as e:
+                logger.error(f"Failed to initialize Groq client: {e}")
+                self.groq_client = None
         else:
             self.groq_client = None
 
