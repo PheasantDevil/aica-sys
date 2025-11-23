@@ -80,6 +80,20 @@ jobs:
               echo "💡 Consider switching to Session pooler for migrations"
             fi
           fi
+          echo ""
+          echo "🔍 Checking alembic_version table:"
+          python3 << 'EOF'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, str(Path('.').resolve()))
+          from sqlalchemy import text
+          from database import engine
+          
+          with engine.connect() as conn:
+              result = conn.execute(text("SELECT version_num FROM alembic_version"))
+              versions = [row[0] for row in result]
+              print(f"Applied migrations: {', '.join(versions)}")
+          EOF
 
       - name: Run database migrations
         env:
@@ -98,22 +112,71 @@ jobs:
           echo "📊 Current revision before migration:"
           python3 -m alembic current || echo "⚠️ No current revision"
           echo ""
-          echo "🚀 Executing migrations..."
-          python3 -m alembic upgrade head 2>&1 | tee /tmp/migration_output.log
-          MIGRATION_EXIT_CODE=${PIPESTATUS[0]}
-          if [ $MIGRATION_EXIT_CODE -eq 0 ]; then
-            echo "✅ Migrations completed successfully"
-            echo ""
-            echo "📊 Current revision after migration:"
-            python3 -m alembic current || echo "⚠️ Could not get current revision"
+          echo "🔍 Checking if automated content tables migration needs to be applied:"
+          python3 << 'PYEOF'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, str(Path('.').resolve()))
+          from sqlalchemy import inspect, text
+          from database import engine
+          
+          # Check alembic_version
+          with engine.connect() as conn:
+              result = conn.execute(text("SELECT version_num FROM alembic_version"))
+              versions = [row[0] for row in result]
+              print(f"Current alembic versions: {', '.join(versions)}")
+              
+              # Check if tables exist
+              inspector = inspect(engine)
+              tables = inspector.get_table_names()
+              required_tables = ['source_data', 'trend_data', 'automated_contents', 'content_generation_logs']
+              missing = [t for t in required_tables if t not in tables]
+              
+              if missing and '4741adeef488' not in versions:
+                  print(f"⚠️ Migration 4741adeef488 not applied and tables missing: {', '.join(missing)}")
+                  print("Will attempt to apply migration...")
+                  sys.exit(0)  # Continue to run migration
+              elif missing and '4741adeef488' in versions:
+                  print(f"⚠️ Migration 4741adeef488 is recorded but tables are missing: {', '.join(missing)}")
+                  print("This indicates the migration DDL was not executed.")
+                  print("Attempting to re-apply by downgrading and upgrading...")
+                  sys.exit(2)  # Special exit code for re-apply
+              elif not missing:
+                  print("✅ All required tables exist, migration already applied")
+                  sys.exit(3)  # Skip migration
+          PYEOF
+          PRE_CHECK_EXIT=$?
+          
+          if [ $PRE_CHECK_EXIT -eq 3 ]; then
+            echo "✅ Tables already exist, skipping migration"
+          elif [ $PRE_CHECK_EXIT -eq 2 ]; then
+            echo "⚠️ Migration recorded but tables missing, attempting to re-apply..."
+            echo "Downgrading to before 4741adeef488..."
+            python3 -m alembic downgrade 223a0ac841bb || echo "⚠️ Downgrade failed, continuing..."
+            echo "Upgrading to head..."
+            python3 -m alembic upgrade head 2>&1 | tee /tmp/migration_output.log
+            MIGRATION_EXIT_CODE=${PIPESTATUS[0]}
           else
-            echo "❌ Migration failed with exit code $MIGRATION_EXIT_CODE"
-            echo "📋 Migration output:"
-            cat /tmp/migration_output.log
-            echo ""
-            echo "📋 Checking migration history again:"
-            python3 -m alembic history | head -20
-            exit 1
+            echo "🚀 Executing migrations..."
+            python3 -m alembic upgrade head 2>&1 | tee /tmp/migration_output.log
+            MIGRATION_EXIT_CODE=${PIPESTATUS[0]}
+          fi
+          
+          if [ $PRE_CHECK_EXIT -ne 3 ]; then
+            if [ $MIGRATION_EXIT_CODE -eq 0 ]; then
+              echo "✅ Migrations completed successfully"
+              echo ""
+              echo "📊 Current revision after migration:"
+              python3 -m alembic current || echo "⚠️ Could not get current revision"
+            else
+              echo "❌ Migration failed with exit code $MIGRATION_EXIT_CODE"
+              echo "📋 Migration output:"
+              cat /tmp/migration_output.log
+              echo ""
+              echo "📋 Checking migration history again:"
+              python3 -m alembic history | head -20
+              exit 1
+            fi
           fi
 
       - name: Verify tables exist
@@ -147,14 +210,33 @@ jobs:
           tables = inspector.get_table_names()
           print(f"Found {len(tables)} tables: {', '.join(sorted(tables))}")
           
+          print("\n🔍 Checking alembic_version table:")
+          with engine.connect() as conn:
+              try:
+                  result = conn.execute(text("SELECT version_num FROM alembic_version"))
+                  versions = [row[0] for row in result]
+                  print(f"Applied migration versions: {', '.join(versions)}")
+                  
+                  # Check if 4741adeef488 is in the list
+                  if '4741adeef488' not in versions:
+                      print("\n⚠️ WARNING: Migration 4741adeef488 (create automated content tables) is NOT recorded!")
+                      print("This means the migration was never applied, even though alembic current shows head.")
+                      print("This is likely why the tables don't exist.")
+              except Exception as e:
+                  print(f"⚠️ Could not check alembic_version: {e}")
+          
           required_tables = ['source_data', 'trend_data', 'automated_contents', 'content_generation_logs']
           missing = [t for t in required_tables if t not in tables]
           
           if missing:
               print(f"\n❌ Missing tables: {', '.join(missing)}")
-              print("\n💡 If migrations ran successfully but tables are missing:")
-              print("   1. Check if DATABASE_URL uses 'Session pooler' (not 'Transaction pooler')")
-              print("   2. Verify migrations were applied: alembic current")
+              print("\n💡 Possible solutions:")
+              print("   1. If 4741adeef488 is not in alembic_version:")
+              print("      - Manually stamp the migration: alembic stamp 4741adeef488")
+              print("      - Then run: alembic upgrade head")
+              print("   2. If 4741adeef488 is in alembic_version but tables are missing:")
+              print("      - Create tables manually in Supabase Dashboard SQL Editor")
+              print("      - Or reset alembic_version and re-run migrations")
               print("   3. Check Supabase dashboard for table creation errors")
               sys.exit(1)
           else:
