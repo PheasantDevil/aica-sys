@@ -22,7 +22,7 @@ try:
         # Check which tables exist
         inspector = inspect(engine)
         existing_tables = inspector.get_table_names()
-        
+
         # Drop conflicting tables if they exist
         dropped_tables = []
         for table in TABLES_TO_DROP:
@@ -32,20 +32,22 @@ try:
                 for index in indexes:
                     if index["name"].startswith("ix_"):
                         try:
-                            conn.execute(text(f'DROP INDEX IF EXISTS "{index["name"]}"'))
+                            conn.execute(
+                                text(f'DROP INDEX IF EXISTS "{index["name"]}"')
+                            )
                         except Exception:
                             pass  # Index might not exist or already dropped
-                
+
                 # Drop table
                 conn.execute(text(f'DROP TABLE IF EXISTS "{table}" CASCADE'))
                 dropped_tables.append(table)
                 print(f"✅ Dropped table: {table}")
-        
+
         if dropped_tables:
             print(f"✅ Dropped {len(dropped_tables)} conflicting tables")
         else:
             print("ℹ️  No conflicting tables to drop")
-        
+
         # Remove all existing versions
         conn.execute(text("DELETE FROM alembic_version"))
         # Stamp to 223a0ac841bb (the base migration that already has tables)
@@ -59,4 +61,3 @@ except Exception as e:
 
     traceback.print_exc()
     sys.exit(1)
-
