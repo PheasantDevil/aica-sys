@@ -211,7 +211,9 @@ class SourceAggregatorService:
 
         except Exception as e:
             # Reddit API may block requests - log as warning instead of error
-            logger.warning(f"Failed to collect from Reddit (API may require authentication): {e}")
+            logger.warning(
+                f"Failed to collect from Reddit (API may require authentication): {e}"
+            )
             return []
 
     def _collect_tech_crunch(self) -> List[Dict[str, Any]]:
