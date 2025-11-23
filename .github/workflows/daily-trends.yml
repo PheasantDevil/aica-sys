@@ -78,8 +78,24 @@ jobs:
           fi
           cd backend
           echo "⬆️ Running migrations..."
-          python3 -m alembic upgrade head
-          echo "✅ Migrations completed"
+          echo "📋 Migration history:"
+          python3 -m alembic history || echo "⚠️ Could not get migration history"
+          echo ""
+          echo "📊 Current revision before migration:"
+          python3 -m alembic current || echo "⚠️ No current revision"
+          echo ""
+          echo "🚀 Executing migrations..."
+          if python3 -m alembic upgrade head; then
+            echo "✅ Migrations completed successfully"
+            echo ""
+            echo "📊 Current revision after migration:"
+            python3 -m alembic current || echo "⚠️ Could not get current revision"
+          else
+            echo "❌ Migration failed!"
+            echo "📋 Checking migration history again:"
+            python3 -m alembic history | head -20
+            exit 1
+          fi
 
       - name: Verify tables exist
         env:
@@ -97,17 +113,33 @@ jobs:
           from sqlalchemy import inspect, text
           from database import engine
           
+          print("🔍 Checking database connection...")
+          try:
+              with engine.connect() as conn:
+                  result = conn.execute(text("SELECT version();"))
+                  version = result.fetchone()[0]
+                  print(f"✅ Connected to: {version[:50]}...")
+          except Exception as e:
+              print(f"❌ Database connection error: {e}")
+              sys.exit(1)
+          
+          print("\n📋 Listing all tables in database...")
           inspector = inspect(engine)
           tables = inspector.get_table_names()
+          print(f"Found {len(tables)} tables: {', '.join(sorted(tables))}")
           
           required_tables = ['source_data', 'trend_data', 'automated_contents', 'content_generation_logs']
           missing = [t for t in required_tables if t not in tables]
           
           if missing:
-              print(f"❌ Missing tables: {', '.join(missing)}")
+              print(f"\n❌ Missing tables: {', '.join(missing)}")
+              print("\n💡 If migrations ran successfully but tables are missing:")
+              print("   1. Check if DATABASE_URL uses 'Session pooler' (not 'Transaction pooler')")
+              print("   2. Verify migrations were applied: alembic current")
+              print("   3. Check Supabase dashboard for table creation errors")
               sys.exit(1)
           else:
-              print(f"✅ All required tables exist: {', '.join(required_tables)}")
+              print(f"\n✅ All required tables exist: {', '.join(required_tables)}")
           EOF
 
       - name: Verify scripts exist
