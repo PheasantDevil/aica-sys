@@ -99,122 +99,22 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          set -e  # Exit on error
+          set -e
           if [ -z "$DATABASE_URL" ]; then
             echo "⚠️ DATABASE_URL not set, skipping migrations"
             exit 0
           fi
           cd backend
           echo "⬆️ Running migrations..."
-          echo "📋 Migration history:"
           python3 -m alembic history || echo "⚠️ Could not get migration history"
           echo ""
-          echo "📊 Current revision before migration:"
+          echo "📊 Current revision:"
           python3 -m alembic current || echo "⚠️ No current revision"
           echo ""
-          echo "🔍 Checking if automated content tables migration needs to be applied:"
-          cat > /tmp/check_migration.py << 'SCRIPT_END'
-from pathlib import Path
-import sys
-sys.path.insert(0, str(Path('.').resolve()))
-from sqlalchemy import inspect, text
-from database import engine
-
-# Check alembic_version
-with engine.connect() as conn:
-    result = conn.execute(text("SELECT version_num FROM alembic_version"))
-    versions = [row[0] for row in result]
-    print(f"Current alembic versions: {', '.join(versions)}")
-    
-    # Check if tables exist
-    inspector = inspect(engine)
-    tables = inspector.get_table_names()
-    required_tables = ['source_data', 'trend_data', 'automated_contents', 'content_generation_logs']
-    missing = [t for t in required_tables if t not in tables]
-    
-    if missing and '4741adeef488' not in versions:
-        print(f"⚠️ Migration 4741adeef488 not applied and tables missing: {', '.join(missing)}")
-        print("Will attempt to apply migration...")
-        sys.exit(0)  # Continue to run migration
-    elif missing and '4741adeef488' in versions:
-        print(f"⚠️ Migration 4741adeef488 is recorded but tables are missing: {', '.join(missing)}")
-        print("This indicates the migration DDL was not executed.")
-        print("Attempting to re-apply by downgrading and upgrading...")
-        sys.exit(2)  # Special exit code for re-apply
-    elif not missing:
-        print("✅ All required tables exist, migration already applied")
-        sys.exit(3)  # Skip migration
-SCRIPT_END
-          python3 /tmp/check_migration.py
-          PRE_CHECK_EXIT=$?
-          
-          if [ $PRE_CHECK_EXIT -eq 3 ]; then
-            echo "✅ Tables already exist, skipping migration"
-          elif [ $PRE_CHECK_EXIT -eq 2 ]; then
-            echo "⚠️ Migration recorded but tables missing, attempting to re-apply..."
-            echo "Downgrading to before 4741adeef488..."
-            python3 -m alembic downgrade 223a0ac841bb || echo "⚠️ Downgrade failed, continuing..."
-            echo "Upgrading to head..."
-            python3 -m alembic upgrade head 2>&1 | tee /tmp/migration_output.log
-            MIGRATION_EXIT_CODE=${PIPESTATUS[0]}
-          else
-            echo "🚀 Migration 4741adeef488 not recorded, applying it manually..."
-            echo "Current revision before fix:"
-            python3 -m alembic current || echo "⚠️ No current revision"
-            echo ""
-            echo "Step 1: Temporarily removing 2a3b4c5d6e7f from alembic_version to allow applying 4741adeef488..."
-            cat > /tmp/remove_versions.py << 'SCRIPT_END'
-from pathlib import Path
-import sys
-sys.path.insert(0, str(Path('.').resolve()))
-from sqlalchemy import inspect, text
-from database import engine
-
-with engine.begin() as conn:
-    # Remove 2a3b4c5d6e7f if it exists
-    conn.execute(text("DELETE FROM alembic_version WHERE version_num = '2a3b4c5d6e7f'"))
-    print("✅ Removed 2a3b4c5d6e7f from alembic_version")
-    
-    # Also remove 1cf2ab5a8998 if it exists (it depends on 4741adeef488)
-    conn.execute(text("DELETE FROM alembic_version WHERE version_num = '1cf2ab5a8998'"))
-    print("✅ Removed 1cf2ab5a8998 from alembic_version")
-SCRIPT_END
-            python3 /tmp/remove_versions.py
-            echo ""
-            echo "Step 2: Applying migration 4741adeef488..."
-            python3 -m alembic upgrade 4741adeef488 2>&1 | tee /tmp/migration_4741.log
-            UPGRADE_4741_EXIT=${PIPESTATUS[0]}
-            
-            if [ $UPGRADE_4741_EXIT -eq 0 ]; then
-              echo "✅ Migration 4741adeef488 applied successfully"
-              echo ""
-              echo "Step 3: Applying remaining migrations (1cf2ab5a8998, 2a3b4c5d6e7f)..."
-              python3 -m alembic upgrade head 2>&1 | tee /tmp/migration_output.log
-              MIGRATION_EXIT_CODE=${PIPESTATUS[0]}
-            else
-              echo "❌ Failed to apply migration 4741adeef488"
-              echo "Migration output:"
-              cat /tmp/migration_4741.log
-              MIGRATION_EXIT_CODE=1
-            fi
-          fi
-          
-          if [ $PRE_CHECK_EXIT -ne 3 ]; then
-            if [ $MIGRATION_EXIT_CODE -eq 0 ]; then
-              echo "✅ Migrations completed successfully"
-              echo ""
-              echo "📊 Current revision after migration:"
-              python3 -m alembic current || echo "⚠️ Could not get current revision"
-            else
-              echo "❌ Migration failed with exit code $MIGRATION_EXIT_CODE"
-              echo "📋 Migration output:"
-              cat /tmp/migration_output.log
-              echo ""
-              echo "📋 Checking migration history again:"
-              python3 -m alembic history | head -20
-              exit 1
-            fi
-          fi
+          echo "🚀 Applying migrations..."
+          python3 -m alembic upgrade head
+          echo "✅ Migrations completed"
+          python3 -m alembic current
 
       - name: Verify tables exist
         env:
