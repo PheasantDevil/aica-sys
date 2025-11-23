@@ -112,15 +112,54 @@ jobs:
           python3 -m alembic current || echo "⚠️ No current revision"
           echo ""
           echo "🔍 Checking if migration 4741adeef488 needs to be applied..."
-          python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('.').resolve())); from sqlalchemy import text; from database import engine; conn = engine.connect(); result = conn.execute(text('SELECT version_num FROM alembic_version')); versions = [row[0] for row in result]; conn.close(); sys.exit(0 if '4741adeef488' in versions else 1)"
-          NEEDS_4741=$?
+          cat > /tmp/check_migration.py << 'ENDOFFILE'
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path('.').resolve()))
+from sqlalchemy import text
+from database import engine
+
+try:
+    with engine.connect() as conn:
+        result = conn.execute(text("SELECT version_num FROM alembic_version"))
+        versions = [row[0] for row in result]
+        if '4741adeef488' in versions:
+            print("✅ Migration 4741adeef488 already recorded")
+            sys.exit(0)
+        else:
+            print("⚠️ Migration 4741adeef488 not recorded")
+            sys.exit(1)
+except Exception as e:
+    print(f"❌ Error: {e}")
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
+ENDOFFILE
+          python3 /tmp/check_migration.py || NEEDS_4741=1
+          NEEDS_4741=${NEEDS_4741:-0}
           if [ $NEEDS_4741 -ne 0 ]; then
-            echo "⚠️ Migration 4741adeef488 not recorded, fixing migration chain..."
-            python3 -c "from pathlib import Path; import sys; sys.path.insert(0, str(Path('.').resolve())); from sqlalchemy import text; from database import engine; conn = engine.begin(); conn.execute(text(\"DELETE FROM alembic_version WHERE version_num IN ('2a3b4c5d6e7f', '1cf2ab5a8998')\")); conn.commit(); print('✅ Removed later migrations from alembic_version'); conn.close()"
-            echo "🚀 Applying migrations from 223a0ac841bb..."
+            echo "Fixing migration chain..."
+            cat > /tmp/fix_migration.py << 'ENDOFFILE'
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path('.').resolve()))
+from sqlalchemy import text
+from database import engine
+
+try:
+    with engine.begin() as conn:
+        conn.execute(text("DELETE FROM alembic_version WHERE version_num IN ('2a3b4c5d6e7f', '1cf2ab5a8998')"))
+        print("✅ Removed later migrations from alembic_version")
+except Exception as e:
+    print(f"❌ Error: {e}")
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
+ENDOFFILE
+            python3 /tmp/fix_migration.py
+            echo "🚀 Applying migrations..."
             python3 -m alembic upgrade head
           else
-            echo "✅ Migration 4741adeef488 already recorded"
             echo "🚀 Applying any pending migrations..."
             python3 -m alembic upgrade head
           fi
