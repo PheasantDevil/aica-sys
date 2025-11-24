@@ -10,6 +10,13 @@ from typing import Any, Dict, Optional
 
 try:
     import tweepy
+    
+    # Log tweepy version for debugging
+    try:
+        tweepy_version = tweepy.__version__
+        logging.debug(f"tweepy version: {tweepy_version}")
+    except AttributeError:
+        logging.debug("tweepy version: unknown")
 
     TWEEPY_AVAILABLE = True
 except ImportError:
@@ -98,12 +105,35 @@ class TwitterClient:
                         "Please check your environment variable."
                     )
                 
-                logger.debug(f"Initializing Twitter client with Bearer Token (length: {len(bearer_token)})")
-                self.client = tweepy.Client(
-                    bearer_token=bearer_token,
-                    wait_on_rate_limit=True,
-                )
-                logger.info("Twitter client initialized with Bearer Token (OAuth 2.0)")
+                logger.info(f"Initializing Twitter client with Bearer Token (length: {len(bearer_token)})")
+                try:
+                    # Initialize with bearer_token only (OAuth 2.0)
+                    # Do not pass any OAuth 1.0a parameters when using bearer_token
+                    # Some versions of tweepy may require explicit None for OAuth 1.0a params
+                    # when using bearer_token
+                    try:
+                        self.client = tweepy.Client(
+                            bearer_token=bearer_token,
+                            wait_on_rate_limit=True,
+                        )
+                    except TypeError as type_error:
+                        # If TypeError occurs, try with explicit None for OAuth 1.0a params
+                        logger.warning(f"Initial attempt failed with TypeError: {type_error}")
+                        logger.info("Retrying with explicit None for OAuth 1.0a parameters")
+                        self.client = tweepy.Client(
+                            bearer_token=bearer_token,
+                            consumer_key=None,
+                            consumer_secret=None,
+                            access_token=None,
+                            access_token_secret=None,
+                            wait_on_rate_limit=True,
+                        )
+                    logger.info("Twitter client initialized with Bearer Token (OAuth 2.0)")
+                except Exception as init_error:
+                    logger.error(f"Failed to initialize tweepy.Client with bearer_token: {init_error}")
+                    logger.error(f"Error type: {type(init_error).__name__}")
+                    logger.error(f"Bearer token length: {len(bearer_token)}, first 10 chars: {bearer_token[:10]}...")
+                    raise
             else:
                 # Use OAuth 1.0a (API Key + Secret + Access Token)
                 # Validate all OAuth 1.0a credentials are present and not empty
@@ -151,6 +181,14 @@ class TwitterClient:
             raise
         except Exception as e:
             logger.error(f"Failed to initialize Twitter client: {e}")
+            logger.error(f"Error type: {type(e).__name__}")
+            logger.error(f"Error details: {str(e)}")
+            # Log credential status for debugging (without exposing values)
+            logger.error(
+                f"Credential status - bearer_token: {bool(self.bearer_token)}, "
+                f"api_key: {bool(self.api_key)}, api_secret: {bool(self.api_secret)}, "
+                f"access_token: {bool(self.access_token)}, access_token_secret: {bool(self.access_token_secret)}"
+            )
             raise
 
     def post_tweet(self, text: str, media_ids: Optional[list] = None) -> Dict[str, Any]:
@@ -201,7 +239,21 @@ class TwitterClient:
             logger.error("Twitter API forbidden. Check permissions.")
             raise Exception("Twitter API forbidden. Check account permissions.")
         except Exception as e:
-            logger.error(f"Failed to post tweet: {e}")
+            error_msg = str(e)
+            error_type = type(e).__name__
+            logger.error(f"Failed to post tweet: {error_msg}")
+            logger.error(f"Error type: {error_type}")
+            
+            # Check if client is properly initialized
+            if not self.client:
+                logger.error("Twitter client is None - initialization may have failed")
+            else:
+                logger.debug(f"Twitter client type: {type(self.client)}")
+                # Check client attributes (without exposing sensitive data)
+                client_attrs = dir(self.client)
+                logger.debug(f"Client has bearer_token attribute: {'bearer_token' in client_attrs}")
+                logger.debug(f"Client has consumer_key attribute: {'consumer_key' in client_attrs}")
+            
             raise
 
     def upload_media(self, file_path: str) -> Optional[str]:
