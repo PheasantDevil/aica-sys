@@ -60,14 +60,27 @@ Twitter API forbidden. Check account permissions.
 
 ### Step 4: 認証情報を再生成
 
+**重要**: OAuth 2.0 Client ID and Client Secret を変更した場合の対応
+
 1. 「Keys and tokens」タブを開く
-2. **Bearer Token**を再生成（必要に応じて）
-   - 「Bearer Token」セクションで「Regenerate」をクリック
+
+2. **Bearer Token の確認・再生成**
+   - OAuth 2.0 Client ID/Secret を変更した場合、**Bearer Token は再生成が必要な場合があります**
+   - 「Bearer Token」セクションで、既存の Bearer Token が有効か確認
+   - エラーが発生する場合は「Regenerate」をクリックして再生成
    - 新しい Bearer Token をコピー
-3. **OAuth 1.0a 認証情報**を確認
+
+3. **OAuth 1.0a 認証情報の確認**
+   - **API Key (Consumer Key) と API Secret (Consumer Secret)** は、OAuth 2.0 Client ID/Secret とは**独立している**ため、通常は再生成不要
+   - ただし、アプリの設定を大幅に変更した場合は、再生成が必要な場合があります
    - 「API Key and Secret」セクションで、API Key と Secret を確認
    - 「Access Token and Secret」セクションで、Access Token と Secret を確認
-   - 必要に応じて再生成
+   - エラーが発生する場合は再生成
+
+4. **推奨手順**:
+   - まず既存の認証情報で動作確認
+   - エラーが発生する場合のみ、順次再生成
+   - Bearer Token → API Key/Secret → Access Token/Secret の順で確認
 
 ### Step 5: GitHub Secrets を更新
 
@@ -121,6 +134,35 @@ Twitter Developer Portalで「Read and Write」権限を有効にするには、
 3. 「Callback URI / Redirect URL」フィールドに上記のいずれかを入力
 4. 「Website URL」フィールドにも `https://aica-sys.vercel.app` を入力（必要に応じて）
 5. 設定を保存
+
+## 認証情報の関係性について
+
+### OAuth 2.0 Client ID/Secret と Bearer Token の関係
+
+- **OAuth 2.0 Client ID/Secret**: 新しいOAuth 2.0認証方式で使用される認証情報
+- **Bearer Token**: OAuth 2.0で使用される認証トークン（Client ID/Secretから生成される場合がある）
+- **API Key/Secret (OAuth 1.0a)**: 従来のOAuth 1.0a認証方式で使用される認証情報（Client ID/Secretとは独立）
+
+### 設定変更後の対応
+
+**OAuth 2.0 Client ID/Secret を変更した場合**:
+
+1. **Bearer Token**: 再生成が必要な場合があります
+   - 既存の Bearer Token でエラーが発生する場合は再生成
+   - 動作する場合はそのまま使用可能
+
+2. **API Key/Secret (OAuth 1.0a)**: 通常は再生成不要
+   - OAuth 2.0 Client ID/Secret とは独立しているため
+   - ただし、アプリの設定を大幅に変更した場合は再生成が必要な場合があります
+
+3. **Access Token/Secret**: 通常は再生成不要
+   - API Key/Secret と同様に、OAuth 2.0 Client ID/Secret とは独立
+
+### 安全な対応方法
+
+1. まず既存の認証情報で動作確認
+2. エラーが発生する場合のみ、順次再生成
+3. 再生成した認証情報は、すぐにGitHub Secretsに更新
 
 ## トラブルシューティング
 
