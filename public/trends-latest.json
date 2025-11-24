@@ -1,0 +1,204 @@
+{
+  "date": "2025-11-24T02:55:25.718135",
+  "top_trends": [
+    [
+      "with",
+      {
+        "score": 400,
+        "count": 20,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "after",
+      {
+        "score": 180,
+        "count": 9,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "just",
+      {
+        "score": 180,
+        "count": 9,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 160,
+        "count": 8,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "from",
+      {
+        "score": 140,
+        "count": 7,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 140,
+        "count": 7,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "built",
+      {
+        "score": 120,
+        "count": 12,
+        "sources": [
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "meta",
+      {
+        "score": 120,
+        "count": 6,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "court",
+      {
+        "score": 120,
+        "count": 6,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "tool",
+      {
+        "score": 120,
+        "count": 6,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ]
+  ],
+  "rising_trends": [
+    {
+      "keyword": "with",
+      "score": 400,
+      "growth_rate": "+852.4%",
+      "is_new": false
+    },
+    {
+      "keyword": "after",
+      "score": 180,
+      "growth_rate": "+1900.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "just",
+      "score": 180,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "that",
+      "score": 160,
+      "growth_rate": "+900.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "from",
+      "score": 140,
+      "growth_rate": "+1455.6%",
+      "is_new": false
+    },
+    {
+      "keyword": "your",
+      "score": 140,
+      "growth_rate": "+1066.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "built",
+      "score": 120,
+      "growth_rate": "+650.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "meta",
+      "score": 120,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "court",
+      "score": 120,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "tool",
+      "score": 120,
+      "growth_rate": "NEW",
+      "is_new": true
+    }
+  ],
+  "categories": {
+    "DevOps": 24,
+    "AI": 29,
+    "Web": 9,
+    "Security": 2,
+    "Database": 2
+  },
+  "total_sources": 179
+}
