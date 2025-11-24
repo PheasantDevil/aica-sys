@@ -107,28 +107,49 @@ class TwitterClient:
                 
                 logger.info(f"Initializing Twitter client with Bearer Token (length: {len(bearer_token)})")
                 try:
-                    # Initialize with bearer_token only (OAuth 2.0)
-                    # Do not pass any OAuth 1.0a parameters when using bearer_token
-                    # Some versions of tweepy may require explicit None for OAuth 1.0a params
-                    # when using bearer_token
-                    try:
+                    # Some versions of tweepy require OAuth 1.0a credentials even when using bearer_token
+                    # for certain operations like create_tweet. If OAuth 1.0a credentials are available,
+                    # provide them along with bearer_token.
+                    if all([self.api_key, self.api_secret, self.access_token, self.access_token_secret]):
+                        # Both bearer_token and OAuth 1.0a credentials available
+                        # Provide both for maximum compatibility
+                        logger.debug("Initializing with both bearer_token and OAuth 1.0a credentials")
+                        api_key = self.api_key.strip()
+                        api_secret = self.api_secret.strip()
+                        access_token = self.access_token.strip()
+                        access_token_secret = self.access_token_secret.strip()
+                        
                         self.client = tweepy.Client(
                             bearer_token=bearer_token,
+                            consumer_key=api_key,
+                            consumer_secret=api_secret,
+                            access_token=access_token,
+                            access_token_secret=access_token_secret,
                             wait_on_rate_limit=True,
                         )
-                    except TypeError as type_error:
-                        # If TypeError occurs, try with explicit None for OAuth 1.0a params
-                        logger.warning(f"Initial attempt failed with TypeError: {type_error}")
-                        logger.info("Retrying with explicit None for OAuth 1.0a parameters")
-                        self.client = tweepy.Client(
-                            bearer_token=bearer_token,
-                            consumer_key=None,
-                            consumer_secret=None,
-                            access_token=None,
-                            access_token_secret=None,
-                            wait_on_rate_limit=True,
-                        )
-                    logger.info("Twitter client initialized with Bearer Token (OAuth 2.0)")
+                        logger.info("Twitter client initialized with Bearer Token and OAuth 1.0a credentials")
+                    else:
+                        # Only bearer_token available, try initialization with bearer_token only
+                        logger.debug("Initializing with bearer_token only")
+                        try:
+                            self.client = tweepy.Client(
+                                bearer_token=bearer_token,
+                                wait_on_rate_limit=True,
+                            )
+                            logger.info("Twitter client initialized with Bearer Token only (OAuth 2.0)")
+                        except TypeError as type_error:
+                            # If TypeError occurs, try with explicit None for OAuth 1.0a params
+                            logger.warning(f"Initial attempt failed with TypeError: {type_error}")
+                            logger.info("Retrying with explicit None for OAuth 1.0a parameters")
+                            self.client = tweepy.Client(
+                                bearer_token=bearer_token,
+                                consumer_key=None,
+                                consumer_secret=None,
+                                access_token=None,
+                                access_token_secret=None,
+                                wait_on_rate_limit=True,
+                            )
+                            logger.info("Twitter client initialized with Bearer Token (OAuth 2.0)")
                 except Exception as init_error:
                     logger.error(f"Failed to initialize tweepy.Client with bearer_token: {init_error}")
                     logger.error(f"Error type: {type(init_error).__name__}")
