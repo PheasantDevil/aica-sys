@@ -256,9 +256,30 @@ class TwitterClient:
         except tweepy.Unauthorized:
             logger.error("Twitter API unauthorized. Check credentials.")
             raise Exception("Twitter API unauthorized. Check API credentials.")
-        except tweepy.Forbidden:
-            logger.error("Twitter API forbidden. Check permissions.")
-            raise Exception("Twitter API forbidden. Check account permissions.")
+        except tweepy.Forbidden as forbidden_error:
+            error_msg = str(forbidden_error)
+            logger.error(f"Twitter API forbidden. Check permissions. Error: {error_msg}")
+            logger.error(
+                "This error typically indicates one of the following issues:\n"
+                "1. The Twitter app doesn't have 'Read and Write' permissions enabled\n"
+                "2. The Bearer Token or OAuth credentials are invalid or expired\n"
+                "3. The Twitter account associated with the credentials is restricted\n"
+                "4. The Twitter app is in 'Read-only' mode instead of 'Read and Write'\n"
+                "5. The Twitter Developer account needs to be upgraded to a paid tier\n"
+                "\n"
+                "To fix this:\n"
+                "1. Go to https://developer.twitter.com/en/portal/dashboard\n"
+                "2. Select your app\n"
+                "3. Go to 'Settings' > 'User authentication settings'\n"
+                "4. Ensure 'Read and write' permissions are enabled\n"
+                "5. Regenerate Bearer Token and OAuth credentials if needed\n"
+                "6. Check if your Twitter Developer account has the necessary access level"
+            )
+            raise Exception(
+                f"Twitter API forbidden. Check permissions. "
+                f"This usually means the app doesn't have 'Read and Write' permissions. "
+                f"Please check your Twitter Developer Portal settings. Error details: {error_msg}"
+            )
         except Exception as e:
             error_msg = str(e)
             error_type = type(e).__name__
@@ -371,6 +392,7 @@ class TwitterClient:
             True if credentials are valid, False otherwise
         """
         if not self.client:
+            logger.error("Twitter client not initialized - cannot verify credentials")
             return False
 
         try:
@@ -379,7 +401,17 @@ class TwitterClient:
             if me.data:
                 logger.info(f"Twitter credentials verified. User: @{me.data.username}")
                 return True
+            logger.warning("Twitter credentials verification returned no user data")
+            return False
+        except tweepy.Unauthorized as e:
+            logger.error(f"Twitter credentials verification failed: Unauthorized - {e}")
+            logger.error("This usually means the Bearer Token or OAuth credentials are invalid or expired")
+            return False
+        except tweepy.Forbidden as e:
+            logger.error(f"Twitter credentials verification failed: Forbidden - {e}")
+            logger.error("This usually means the app doesn't have the required permissions")
             return False
         except Exception as e:
             logger.error(f"Twitter credentials verification failed: {e}")
+            logger.error(f"Error type: {type(e).__name__}")
             return False
