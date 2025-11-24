@@ -90,20 +90,34 @@ def main():
     
     # 環境変数の確認（デバッグ用）
     twitter_vars = {
-        "TWITTER_BEARER_TOKEN": bool(os.getenv("TWITTER_BEARER_TOKEN")),
-        "TWITTER_API_KEY": bool(os.getenv("TWITTER_API_KEY")),
-        "TWITTER_API_SECRET": bool(os.getenv("TWITTER_API_SECRET")),
-        "TWITTER_ACCESS_TOKEN": bool(os.getenv("TWITTER_ACCESS_TOKEN")),
-        "TWITTER_ACCESS_TOKEN_SECRET": bool(os.getenv("TWITTER_ACCESS_TOKEN_SECRET")),
+        "TWITTER_BEARER_TOKEN": os.getenv("TWITTER_BEARER_TOKEN"),
+        "TWITTER_API_KEY": os.getenv("TWITTER_API_KEY"),
+        "TWITTER_API_SECRET": os.getenv("TWITTER_API_SECRET"),
+        "TWITTER_ACCESS_TOKEN": os.getenv("TWITTER_ACCESS_TOKEN"),
+        "TWITTER_ACCESS_TOKEN_SECRET": os.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
     }
-    if not any(twitter_vars.values()):
+    
+    # Check if values are set and not empty
+    twitter_vars_status = {
+        key: bool(value and value.strip()) for key, value in twitter_vars.items()
+    }
+    
+    if not any(twitter_vars_status.values()):
         print("⚠️  Warning: No Twitter credentials found in environment variables")
         print("   Set TWITTER_BEARER_TOKEN or TWITTER_API_KEY/SECRET/ACCESS_TOKEN/SECRET")
     else:
         print("✅ Twitter credentials found in environment")
-        for key, value in twitter_vars.items():
-            if value:
-                print(f"   - {key}: set")
+        for key, is_set in twitter_vars_status.items():
+            if is_set:
+                value = twitter_vars[key]
+                # Show length but not the actual value for security
+                print(f"   - {key}: set (length: {len(value)})")
+            else:
+                value = twitter_vars[key]
+                if value is None:
+                    print(f"   - {key}: not set")
+                else:
+                    print(f"   - {key}: empty or whitespace only")
     
     db_session = get_db_session()
     service = SocialMediaService(db_session=db_session)
