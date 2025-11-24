@@ -39,9 +39,9 @@ Twitter API forbidden. Check account permissions.
 1. アプリのダッシュボードで「Settings」をクリック
 2. 「User authentication settings」セクションを開く
 3. **Callback URI / Redirect URL** を設定
-   - このプロジェクトでは自動投稿用のスクリプトを使用しているため、実際のOAuth認証フローは使用しません
+   - このプロジェクトでは自動投稿用のスクリプトを使用しているため、実際の OAuth 認証フローは使用しません
    - 以下のいずれかを設定してください：
-     - `https://aica-sys.vercel.app` （プロジェクトのベースURL）
+     - `https://aica-sys.vercel.app` （プロジェクトのベース URL）
      - `http://localhost:3000` （ローカル開発用、テスト目的）
      - `https://aica-sys.vercel.app/api/auth/callback/twitter` （将来の拡張用）
    - **推奨**: `https://aica-sys.vercel.app` を設定
@@ -65,12 +65,14 @@ Twitter API forbidden. Check account permissions.
 1. 「Keys and tokens」タブを開く
 
 2. **Bearer Token の確認・再生成**
+
    - OAuth 2.0 Client ID/Secret を変更した場合、**Bearer Token は再生成が必要な場合があります**
    - 「Bearer Token」セクションで、既存の Bearer Token が有効か確認
    - エラーが発生する場合は「Regenerate」をクリックして再生成
    - 新しい Bearer Token をコピー
 
 3. **OAuth 1.0a 認証情報の確認**
+
    - **API Key (Consumer Key) と API Secret (Consumer Secret)** は、OAuth 2.0 Client ID/Secret とは**独立している**ため、通常は再生成不要
    - ただし、アプリの設定を大幅に変更した場合は、再生成が必要な場合があります
    - 「API Key and Secret」セクションで、API Key と Secret を確認
@@ -115,13 +117,13 @@ Twitter API forbidden. Check account permissions.
 
 ### なぜ Callback URI が必要なのか
 
-Twitter Developer Portalで「Read and Write」権限を有効にするには、Callback URIの設定が必要です。これは、OAuth認証フローで使用されるリダイレクトURIです。
+Twitter Developer Portal で「Read and Write」権限を有効にするには、Callback URI の設定が必要です。これは、OAuth 認証フローで使用されるリダイレクト URI です。
 
 ### このプロジェクトでの Callback URI の使い方
 
-このプロジェクトでは、自動投稿用のスクリプトを使用しているため、実際のOAuth認証フロー（ユーザーがブラウザで認証する）は使用していません。代わりに、事前に生成されたAccess TokenとSecretを使用しています。
+このプロジェクトでは、自動投稿用のスクリプトを使用しているため、実際の OAuth 認証フロー（ユーザーがブラウザで認証する）は使用していません。代わりに、事前に生成された Access Token と Secret を使用しています。
 
-しかし、Twitter Developer Portalで「Read and Write」権限を有効にするには、Callback URIの設定が必要です。以下のいずれかを設定してください：
+しかし、Twitter Developer Portal で「Read and Write」権限を有効にするには、Callback URI の設定が必要です。以下のいずれかを設定してください：
 
 - **推奨**: `https://aica-sys.vercel.app`
 - **代替**: `http://localhost:3000` （ローカル開発用）
@@ -129,7 +131,7 @@ Twitter Developer Portalで「Read and Write」権限を有効にするには、
 
 ### Callback URI の設定方法
 
-1. Twitter Developer Portalでアプリを選択
+1. Twitter Developer Portal でアプリを選択
 2. 「Settings」→「User authentication settings」を開く
 3. 「Callback URI / Redirect URL」フィールドに上記のいずれかを入力
 4. 「Website URL」フィールドにも `https://aica-sys.vercel.app` を入力（必要に応じて）
@@ -139,19 +141,21 @@ Twitter Developer Portalで「Read and Write」権限を有効にするには、
 
 ### OAuth 2.0 Client ID/Secret と Bearer Token の関係
 
-- **OAuth 2.0 Client ID/Secret**: 新しいOAuth 2.0認証方式で使用される認証情報
-- **Bearer Token**: OAuth 2.0で使用される認証トークン（Client ID/Secretから生成される場合がある）
-- **API Key/Secret (OAuth 1.0a)**: 従来のOAuth 1.0a認証方式で使用される認証情報（Client ID/Secretとは独立）
+- **OAuth 2.0 Client ID/Secret**: 新しい OAuth 2.0 認証方式で使用される認証情報
+- **Bearer Token**: OAuth 2.0 で使用される認証トークン（Client ID/Secret から生成される場合がある）
+- **API Key/Secret (OAuth 1.0a)**: 従来の OAuth 1.0a 認証方式で使用される認証情報（Client ID/Secret とは独立）
 
 ### 設定変更後の対応
 
 **OAuth 2.0 Client ID/Secret を変更した場合**:
 
 1. **Bearer Token**: 再生成が必要な場合があります
+
    - 既存の Bearer Token でエラーが発生する場合は再生成
    - 動作する場合はそのまま使用可能
 
 2. **API Key/Secret (OAuth 1.0a)**: 通常は再生成不要
+
    - OAuth 2.0 Client ID/Secret とは独立しているため
    - ただし、アプリの設定を大幅に変更した場合は再生成が必要な場合があります
 
@@ -162,15 +166,16 @@ Twitter Developer Portalで「Read and Write」権限を有効にするには、
 
 1. まず既存の認証情報で動作確認
 2. エラーが発生する場合のみ、順次再生成
-3. 再生成した認証情報は、すぐにGitHub Secretsに更新
+3. 再生成した認証情報は、すぐに GitHub Secrets に更新
 
 ## トラブルシューティング
 
 ### 問題: Callback URI の設定が求められる
 
-**原因**: Twitter Developer Portalで「Read and Write」権限を有効にするには、Callback URIの設定が必要です。
+**原因**: Twitter Developer Portal で「Read and Write」権限を有効にするには、Callback URI の設定が必要です。
 
 **対処法**:
+
 1. 上記の「Callback URI について」セクションを参照
 2. `https://aica-sys.vercel.app` を設定
 3. 設定を保存してから、再度権限設定を確認

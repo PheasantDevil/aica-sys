@@ -10,7 +10,7 @@ from typing import Any, Dict, Optional
 
 try:
     import tweepy
-    
+
     # Log tweepy version for debugging
     try:
         tweepy_version = tweepy.__version__
@@ -242,12 +242,29 @@ class TwitterClient:
                 response = self.client.create_tweet(text=text)
 
             tweet_data = response.data
-            logger.info(f"Tweet posted successfully: {tweet_data.id}")
+            tweet_id = None
+            tweet_text = None
+
+            if tweet_data:
+                if isinstance(tweet_data, dict):
+                    tweet_id = tweet_data.get("id")
+                    tweet_text = tweet_data.get("text")
+                else:
+                    tweet_id = getattr(tweet_data, "id", None)
+                    tweet_text = getattr(tweet_data, "text", None)
+
+            if not tweet_id:
+                logger.warning(
+                    "Tweet posted but response did not include an ID. Raw response: %s",
+                    tweet_data,
+                )
+
+            logger.info(f"Tweet posted successfully: {tweet_id}")
 
             return {
                 "success": True,
-                "tweet_id": tweet_data.id,
-                "text": tweet_data.text,
+                "tweet_id": tweet_id,
+                "text": tweet_text,
                 "created_at": datetime.now().isoformat(),
             }
         except tweepy.TooManyRequests:
