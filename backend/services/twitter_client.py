@@ -336,7 +336,7 @@ class TwitterClient:
                 f"Twitter API forbidden. Check permissions. "
                 f"This usually means the app doesn't have 'Read and Write' permissions. "
                 f"Please check your Twitter Developer Portal settings. Error details: {error_msg}"
-            )
+            ) from forbidden_error
         except Exception as e:
             error_msg = str(e)
             error_type = type(e).__name__
@@ -346,16 +346,6 @@ class TwitterClient:
             # Check if client is properly initialized
             if not self.client:
                 logger.error("Twitter client is None - initialization may have failed")
-            else:
-                logger.debug(f"Twitter client type: {type(self.client)}")
-                # Check client attributes (without exposing sensitive data)
-                client_attrs = dir(self.client)
-                logger.debug(
-                    f"Client has bearer_token attribute: {'bearer_token' in client_attrs}"
-                )
-                logger.debug(
-                    f"Client has consumer_key attribute: {'consumer_key' in client_attrs}"
-                )
 
             raise
 

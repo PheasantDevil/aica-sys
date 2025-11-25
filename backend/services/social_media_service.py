@@ -432,4 +432,6 @@ class SocialMediaService:
                     self.db.rollback()
             except Exception:
                 pass
-            logger.warning(f"Unexpected error logging social post analytics: {exc}")
+            logger.warning(
+                f"Unexpected error logging social post analytics ({type(exc).__name__}): {exc}"
+            )

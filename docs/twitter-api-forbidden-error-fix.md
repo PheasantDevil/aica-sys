@@ -2,7 +2,7 @@
 
 ## エラー内容
 
-```
+```text
 Twitter API forbidden. Check account permissions.
 ```
 
@@ -221,7 +221,7 @@ python3 scripts/test_twitter_connection.py
 
 正常に動作する場合、以下のメッセージが表示されます：
 
-```
+```text
 ✅ Twitter API connection successful!
 ```
 
