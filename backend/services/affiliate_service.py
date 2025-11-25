@@ -8,7 +8,7 @@ import secrets
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from sqlalchemy import func
+from sqlalchemy import case, func
 from sqlalchemy.orm import Session
 
 from models.affiliate import (
@@ -338,6 +338,7 @@ class AffiliateService:
         fixed_amount: Optional[float] = None,
         percentage: Optional[float] = None,
         min_threshold: Optional[float] = None,
+        configuration: Optional[Dict[str, Any]] = None,
     ) -> CommissionRuleDB:
         """報酬ルールを作成"""
         rule = CommissionRuleDB(
@@ -346,6 +347,7 @@ class AffiliateService:
             fixed_amount=fixed_amount,
             percentage=percentage,
             min_threshold=min_threshold,
+            configuration=configuration,
         )
         self.db.add(rule)
         self.db.commit()
@@ -523,6 +525,213 @@ class AffiliateService:
 
         return query.limit(limit).all()
 
+    async def list_conversions(
+        self,
+        affiliate_id: Optional[int] = None,
+        status: Optional[str] = None,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+        limit: int = 200,
+    ) -> List[ConversionDB]:
+        """コンバージョン一覧を取得"""
+        start, end = self._normalize_period(start_date, end_date)
+        query = self.db.query(ConversionDB).filter(
+            ConversionDB.converted_at >= start, ConversionDB.converted_at <= end
+        )
+
+        if affiliate_id:
+            query = query.filter(ConversionDB.affiliate_id == affiliate_id)
+        if status:
+            query = query.filter(ConversionDB.status == status)
+
+        return query.order_by(ConversionDB.converted_at.desc()).limit(limit).all()
+
+    async def get_commission_report(
+        self,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+        affiliate_id: Optional[int] = None,
+    ) -> Dict[str, Any]:
+        """コミッションレポートを取得"""
+        start, end = self._normalize_period(start_date, end_date)
+        filters = [
+            ConversionDB.converted_at >= start,
+            ConversionDB.converted_at <= end,
+        ]
+        if affiliate_id:
+            filters.append(ConversionDB.affiliate_id == affiliate_id)
+
+        totals = (
+            self.db.query(
+                func.count(ConversionDB.id),
+                func.coalesce(func.sum(ConversionDB.commission_amount), 0.0),
+                func.coalesce(
+                    func.sum(
+                        case(
+                            (ConversionDB.status == ConversionStatus.PENDING, 1),
+                            else_=0,
+                        )
+                    ),
+                    0,
+                ),
+                func.coalesce(
+                    func.sum(
+                        case(
+                            (ConversionDB.status == ConversionStatus.APPROVED, 1),
+                            else_=0,
+                        )
+                    ),
+                    0,
+                ),
+                func.coalesce(
+                    func.sum(
+                        case(
+                            (
+                                ConversionDB.status == ConversionStatus.PENDING,
+                                ConversionDB.commission_amount,
+                            ),
+                            else_=0.0,
+                        )
+                    ),
+                    0.0,
+                ),
+                func.coalesce(
+                    func.sum(
+                        case(
+                            (
+                                ConversionDB.status == ConversionStatus.APPROVED,
+                                ConversionDB.commission_amount,
+                            ),
+                            else_=0.0,
+                        )
+                    ),
+                    0.0,
+                ),
+            )
+            .filter(*filters)
+            .one()
+        )
+
+        (
+            total_conversions,
+            total_commission,
+            pending_conversions,
+            approved_conversions,
+            pending_commission,
+            approved_commission,
+        ) = totals
+
+        breakdown = (
+            self.db.query(
+                ConversionDB.affiliate_id,
+                AffiliateDB.affiliate_code,
+                AffiliateDB.tier,
+                func.count(ConversionDB.id).label("conversion_count"),
+                func.sum(ConversionDB.commission_amount).label("total_commission"),
+                func.sum(
+                    case(
+                        (
+                            ConversionDB.status == ConversionStatus.PENDING,
+                            ConversionDB.commission_amount,
+                        ),
+                        else_=0.0,
+                    )
+                ).label("pending_commission"),
+                func.sum(
+                    case(
+                        (
+                            ConversionDB.status == ConversionStatus.APPROVED,
+                            ConversionDB.commission_amount,
+                        ),
+                        else_=0.0,
+                    )
+                ).label("approved_commission"),
+                func.sum(
+                    case(
+                        (ConversionDB.status == ConversionStatus.PENDING, 1),
+                        else_=0,
+                    )
+                ).label("pending_conversions"),
+                func.sum(
+                    case(
+                        (ConversionDB.status == ConversionStatus.APPROVED, 1),
+                        else_=0,
+                    )
+                ).label("approved_conversions"),
+                func.max(ConversionDB.converted_at).label("last_conversion_at"),
+            )
+            .join(AffiliateDB, AffiliateDB.id == ConversionDB.affiliate_id)
+            .filter(*filters)
+            .group_by(
+                ConversionDB.affiliate_id,
+                AffiliateDB.affiliate_code,
+                AffiliateDB.tier,
+            )
+            .all()
+        )
+
+        breakdown_payload = [
+            {
+                "affiliate_id": row.affiliate_id,
+                "affiliate_code": row.affiliate_code,
+                "tier": row.tier,
+                "conversion_count": int(row.conversion_count or 0),
+                "total_commission": float(row.total_commission or 0.0),
+                "pending_commission": float(row.pending_commission or 0.0),
+                "approved_commission": float(row.approved_commission or 0.0),
+                "pending_conversions": int(row.pending_conversions or 0),
+                "approved_conversions": int(row.approved_conversions or 0),
+                "last_conversion_at": (
+                    row.last_conversion_at.isoformat()
+                    if row.last_conversion_at
+                    else None
+                ),
+            }
+            for row in breakdown
+        ]
+
+        return {
+            "period": {"start": start.isoformat(), "end": end.isoformat()},
+            "summary": {
+                "total_conversions": int(total_conversions or 0),
+                "total_commission": float(total_commission or 0.0),
+                "pending_conversions": int(pending_conversions or 0),
+                "approved_conversions": int(approved_conversions or 0),
+                "pending_commission": float(pending_commission or 0.0),
+                "approved_commission": float(approved_commission or 0.0),
+            },
+            "breakdown": breakdown_payload,
+        }
+
+    async def settle_commissions(
+        self,
+        min_balance: float = 5000.0,
+        payment_method: str = "bank_transfer",
+    ) -> List[PayoutDB]:
+        """一定額以上の残高を自動的に支払いリクエストへ変換"""
+        affiliates = (
+            self.db.query(AffiliateDB).filter(AffiliateDB.balance >= min_balance).all()
+        )
+
+        payouts: List[PayoutDB] = []
+        for affiliate in affiliates:
+            payout = PayoutDB(
+                affiliate_id=affiliate.id,
+                amount=round(affiliate.balance, 2),
+                payment_method=payment_method,
+                status=PayoutStatus.PENDING,
+            )
+            affiliate.balance = 0.0
+            self.db.add(payout)
+            payouts.append(payout)
+
+        self.db.commit()
+        for payout in payouts:
+            self.db.refresh(payout)
+
+        logger.info(f"Auto settled payouts: {len(payouts)}")
+        return payouts
+
     # 内部メソッド
     def _generate_affiliate_code(self) -> str:
         """アフィリエイトコードを生成"""
@@ -535,6 +744,18 @@ class AffiliateService:
             )
             if not existing:
                 return code
+
+    def _normalize_period(
+        self,
+        start_date: Optional[datetime],
+        end_date: Optional[datetime],
+    ) -> tuple[datetime, datetime]:
+        """開始・終了日時を正規化"""
+        end = end_date or datetime.utcnow()
+        start = start_date or (end - timedelta(days=30))
+        if start > end:
+            start, end = end, start
+        return start, end
 
     def _generate_link_code(self) -> str:
         """リンクコードを生成"""
@@ -564,7 +785,6 @@ class AffiliateService:
         self, tier: str, conversion_value: float
     ) -> tuple[float, float]:
         """報酬を計算"""
-        # ティア別のルールを取得
         rule = (
             self.db.query(CommissionRuleDB)
             .filter(CommissionRuleDB.tier == tier, CommissionRuleDB.is_active == True)
@@ -572,18 +792,38 @@ class AffiliateService:
         )
 
         if not rule:
-            # デフォルト: 10%
             commission_rate = 10.0
             commission_amount = conversion_value * 0.1
-        elif rule.reward_type == RewardType.FIXED:
-            commission_rate = 0.0
+            return commission_rate, round(commission_amount, 2)
+
+        if rule.min_threshold and conversion_value < rule.min_threshold:
+            return 0.0, 0.0
+
+        if rule.reward_type == RewardType.FIXED:
             commission_amount = rule.fixed_amount or 0.0
+            commission_rate = (
+                round((commission_amount / conversion_value) * 100, 2)
+                if conversion_value
+                else 0.0
+            )
         elif rule.reward_type == RewardType.PERCENTAGE:
             commission_rate = rule.percentage or 10.0
             commission_amount = conversion_value * (commission_rate / 100)
         else:  # TIERED
-            # 段階制の実装（簡略版）
-            commission_rate = rule.percentage or 10.0
-            commission_amount = conversion_value * (commission_rate / 100)
+            percentage = rule.percentage or 10.0
+            config = rule.configuration or {}
+            tiers = config.get("tiers", [])
 
-        return commission_rate, commission_amount
+            for tier_config in tiers:
+                min_value = tier_config.get("min", 0)
+                max_value = tier_config.get("max")
+                if conversion_value < min_value:
+                    continue
+                if max_value is None or conversion_value < max_value:
+                    percentage = tier_config.get("percentage", percentage)
+                    break
+
+            commission_rate = percentage
+            commission_amount = conversion_value * (percentage / 100)
+
+        return round(commission_rate, 2), round(commission_amount, 2)

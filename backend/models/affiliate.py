@@ -9,6 +9,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 from sqlalchemy import (
+    JSON,
     Boolean,
     Column,
     DateTime,
@@ -137,6 +138,7 @@ class CommissionRuleDB(Base):
     fixed_amount = Column(Float, nullable=True)
     percentage = Column(Float, nullable=True)
     min_threshold = Column(Float, nullable=True)  # 最小金額
+    configuration = Column(JSON, nullable=True)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
@@ -257,6 +259,7 @@ class CommissionRule(BaseModel):
     fixed_amount: Optional[float] = None
     percentage: Optional[float] = None
     min_threshold: Optional[float] = None
+    configuration: Optional[dict] = None
     is_active: bool
     created_at: datetime
 
@@ -294,6 +297,24 @@ class AffiliateCoupon(BaseModel):
     valid_until: Optional[datetime] = None
     is_active: bool
     created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class CommissionSummary(BaseModel):
+    """コミッション集計モデル"""
+
+    affiliate_id: Optional[int] = None
+    affiliate_code: Optional[str] = None
+    tier: Optional[str] = None
+    total_commission: float = 0.0
+    pending_commission: float = 0.0
+    approved_commission: float = 0.0
+    conversion_count: int = 0
+    pending_conversions: int = 0
+    approved_conversions: int = 0
+    last_conversion_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True

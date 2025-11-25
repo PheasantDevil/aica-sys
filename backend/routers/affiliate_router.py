@@ -5,7 +5,7 @@ Phase 9-4: Affiliate system
 
 import logging
 from datetime import datetime
-from typing import Optional
+from typing import Any, Dict, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -17,6 +17,17 @@ from services.affiliate_service import AffiliateService
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/affiliate", tags=["affiliate"])
+
+
+def _parse_datetime(value: Optional[str]) -> Optional[datetime]:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400, detail="Invalid datetime format. Use ISO 8601."
+        ) from exc
 
 
 # Request Models
@@ -62,6 +73,7 @@ class CommissionRuleCreateRequest(BaseModel):
     fixed_amount: Optional[float] = None
     percentage: Optional[float] = None
     min_threshold: Optional[float] = None
+    configuration: Optional[Dict[str, Any]] = None
 
 
 class PayoutRequest(BaseModel):
@@ -69,6 +81,13 @@ class PayoutRequest(BaseModel):
 
     affiliate_id: int
     amount: Optional[float] = None
+    payment_method: str = "bank_transfer"
+
+
+class CommissionSettleRequest(BaseModel):
+    """コミッション自動支払いリクエスト"""
+
+    min_balance: float = 5000.0
     payment_method: str = "bank_transfer"
 
 
@@ -210,6 +229,31 @@ async def record_conversion(
         raise HTTPException(status_code=500, detail="記録に失敗しました")
 
 
+@router.get("/conversions")
+async def list_conversions(
+    affiliate_id: Optional[int] = None,
+    status: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    limit: int = 200,
+    db: Session = Depends(get_db),
+):
+    """コンバージョン一覧を取得"""
+    try:
+        service = AffiliateService(db)
+        conversions = await service.list_conversions(
+            affiliate_id=affiliate_id,
+            status=status,
+            start_date=_parse_datetime(start_date),
+            end_date=_parse_datetime(end_date),
+            limit=limit,
+        )
+        return {"success": True, "conversions": conversions, "count": len(conversions)}
+    except Exception as e:
+        logger.error(f"List conversions error: {e}")
+        raise HTTPException(status_code=500, detail="取得に失敗しました")
+
+
 @router.put("/conversions/{conversion_id}/approve")
 async def approve_conversion(conversion_id: int, db: Session = Depends(get_db)):
     """コンバージョンを承認"""
@@ -238,6 +282,7 @@ async def create_commission_rule(
             fixed_amount=request.fixed_amount,
             percentage=request.percentage,
             min_threshold=request.min_threshold,
+            configuration=request.configuration,
         )
         return {"success": True, "rule": rule}
     except Exception as e:
@@ -308,6 +353,23 @@ async def get_payouts(
         raise HTTPException(status_code=500, detail="取得に失敗しました")
 
 
+@router.post("/payouts/settle")
+async def settle_commissions(
+    request: CommissionSettleRequest, db: Session = Depends(get_db)
+):
+    """特定の閾値を超えたコミッションを自動支払いリクエスト化"""
+    try:
+        service = AffiliateService(db)
+        payouts = await service.settle_commissions(
+            min_balance=request.min_balance,
+            payment_method=request.payment_method,
+        )
+        return {"success": True, "payouts": payouts, "count": len(payouts)}
+    except Exception as e:
+        logger.error(f"Settle commissions error: {e}")
+        raise HTTPException(status_code=500, detail="処理に失敗しました")
+
+
 # Affiliate Coupon Endpoints
 @router.post("/coupons")
 async def create_affiliate_coupon(
@@ -341,6 +403,27 @@ async def get_affiliate_stats(affiliate_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Get affiliate stats error: {e}")
+        raise HTTPException(status_code=500, detail="取得に失敗しました")
+
+
+@router.get("/commission-report")
+async def get_commission_report(
+    affiliate_id: Optional[int] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    db: Session = Depends(get_db),
+):
+    """コミッションレポートを取得"""
+    try:
+        service = AffiliateService(db)
+        report = await service.get_commission_report(
+            start_date=_parse_datetime(start_date),
+            end_date=_parse_datetime(end_date),
+            affiliate_id=affiliate_id,
+        )
+        return {"success": True, "report": report}
+    except Exception as e:
+        logger.error(f"Get commission report error: {e}")
         raise HTTPException(status_code=500, detail="取得に失敗しました")
 
 

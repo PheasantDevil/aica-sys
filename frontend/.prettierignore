@@ -1,18 +1,16 @@
-# Dependencies
-node_modules
+# Build artifacts
 .next
+.next/**
+.next/standalone
+node_modules
+dist
 out
 build
-dist
 
-# Generated files
-*.min.js
-*.min.css
-
-# Logs
+# Logs and coverage
 *.log
+coverage
 
-# OS files
-.DS_Store
-Thumbs.db
+# Generated configs
+package-lock.json
 
