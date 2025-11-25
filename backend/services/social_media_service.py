@@ -412,5 +412,26 @@ class SocialMediaService:
             self.db.add(log)
             self.db.commit()
         except SQLAlchemyError as exc:
-            self.db.rollback()
-            logger.warning(f"Failed to log social post analytics: {exc}")
+            # Rollback and log warning, but don't fail the entire operation
+            try:
+                self.db.rollback()
+            except Exception:
+                pass  # Ignore rollback errors
+            # Check if it's a table not found error (common in CI/CD environments)
+            error_str = str(exc).lower()
+            if "no such table" in error_str or "does not exist" in error_str:
+                logger.debug(
+                    f"Social post log table not found (migrations may not have run): {exc}"
+                )
+            else:
+                logger.warning(f"Failed to log social post analytics: {exc}")
+        except Exception as exc:
+            # Catch any other unexpected errors
+            try:
+                if self.db:
+                    self.db.rollback()
+            except Exception:
+                pass
+            logger.warning(
+                f"Unexpected error logging social post analytics ({type(exc).__name__}): {exc}"
+            )

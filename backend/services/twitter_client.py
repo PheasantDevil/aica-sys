@@ -11,6 +11,13 @@ from typing import Any, Dict, Optional
 try:
     import tweepy
 
+    # Log tweepy version for debugging
+    try:
+        tweepy_version = tweepy.__version__
+        logging.debug(f"tweepy version: {tweepy_version}")
+    except AttributeError:
+        logging.debug("tweepy version: unknown")
+
     TWEEPY_AVAILABLE = True
 except ImportError:
     TWEEPY_AVAILABLE = False
@@ -34,14 +41,54 @@ class TwitterClient:
         self.api_secret = os.getenv("TWITTER_API_SECRET")
         self.access_token = os.getenv("TWITTER_ACCESS_TOKEN")
         self.access_token_secret = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
-        self.bearer_token = os.getenv("TWITTER_BEARER_TOKEN")
+        bearer_token_raw = os.getenv("TWITTER_BEARER_TOKEN")
+
+        # Clean and validate bearer token (strip whitespace, remove empty strings)
+        if bearer_token_raw:
+            self.bearer_token = bearer_token_raw.strip()
+            if not self.bearer_token:  # Empty string after stripping
+                self.bearer_token = None
+        else:
+            self.bearer_token = None
+
+        # Debug: Log which credentials are available (without exposing values)
+        has_bearer = bool(self.bearer_token)
+        has_oauth1 = all(
+            [self.api_key, self.api_secret, self.access_token, self.access_token_secret]
+        )
+        logger.debug(
+            f"Twitter credentials check: bearer_token={has_bearer} (length={len(self.bearer_token) if self.bearer_token else 0}), "
+            f"oauth1_complete={has_oauth1}"
+        )
 
         # Validate credentials
         if not self.bearer_token and not all(
             [self.api_key, self.api_secret, self.access_token, self.access_token_secret]
         ):
+            missing = []
+            if not self.bearer_token:
+                missing.append("TWITTER_BEARER_TOKEN")
+            if not all(
+                [
+                    self.api_key,
+                    self.api_secret,
+                    self.access_token,
+                    self.access_token_secret,
+                ]
+            ):
+                oauth1_missing = []
+                if not self.api_key:
+                    oauth1_missing.append("TWITTER_API_KEY")
+                if not self.api_secret:
+                    oauth1_missing.append("TWITTER_API_SECRET")
+                if not self.access_token:
+                    oauth1_missing.append("TWITTER_ACCESS_TOKEN")
+                if not self.access_token_secret:
+                    oauth1_missing.append("TWITTER_ACCESS_TOKEN_SECRET")
+                if oauth1_missing:
+                    missing.extend(oauth1_missing)
             raise ValueError(
-                "Twitter API credentials not set. "
+                f"Twitter API credentials not set. Missing: {', '.join(missing)}. "
                 "Set TWITTER_BEARER_TOKEN or TWITTER_API_KEY/SECRET/ACCESS_TOKEN/SECRET"
             )
 
@@ -52,33 +99,155 @@ class TwitterClient:
     def _initialize_client(self):
         """Initialize tweepy v2 client"""
         try:
-            if self.bearer_token:
+            # Validate bearer_token is not empty or whitespace only
+            if self.bearer_token and self.bearer_token.strip():
                 # Use Bearer Token (OAuth 2.0) - Recommended for v2 API
-                self.client = tweepy.Client(
-                    bearer_token=self.bearer_token,
-                    wait_on_rate_limit=True,
+                # Strip "Bearer " prefix if present
+                bearer_token = self.bearer_token.strip()
+                if bearer_token.startswith("Bearer "):
+                    bearer_token = bearer_token[7:].strip()
+
+                # Final validation: bearer_token must not be empty
+                if not bearer_token:
+                    raise ValueError(
+                        "TWITTER_BEARER_TOKEN is set but empty or invalid. "
+                        "Please check your environment variable."
+                    )
+
+                logger.info(
+                    f"Initializing Twitter client with Bearer Token (length: {len(bearer_token)})"
                 )
-                logger.info("Twitter client initialized with Bearer Token (OAuth 2.0)")
+                try:
+                    # Some versions of tweepy require OAuth 1.0a credentials even when using bearer_token
+                    # for certain operations like create_tweet. If OAuth 1.0a credentials are available,
+                    # provide them along with bearer_token.
+                    if all(
+                        [
+                            self.api_key,
+                            self.api_secret,
+                            self.access_token,
+                            self.access_token_secret,
+                        ]
+                    ):
+                        # Both bearer_token and OAuth 1.0a credentials available
+                        # Provide both for maximum compatibility
+                        logger.debug(
+                            "Initializing with both bearer_token and OAuth 1.0a credentials"
+                        )
+                        api_key = self.api_key.strip()
+                        api_secret = self.api_secret.strip()
+                        access_token = self.access_token.strip()
+                        access_token_secret = self.access_token_secret.strip()
+
+                        self.client = tweepy.Client(
+                            bearer_token=bearer_token,
+                            consumer_key=api_key,
+                            consumer_secret=api_secret,
+                            access_token=access_token,
+                            access_token_secret=access_token_secret,
+                            wait_on_rate_limit=True,
+                        )
+                        logger.info(
+                            "Twitter client initialized with Bearer Token and OAuth 1.0a credentials"
+                        )
+                    else:
+                        # Only bearer_token available, try initialization with bearer_token only
+                        logger.debug("Initializing with bearer_token only")
+                        try:
+                            self.client = tweepy.Client(
+                                bearer_token=bearer_token,
+                                wait_on_rate_limit=True,
+                            )
+                            logger.info(
+                                "Twitter client initialized with Bearer Token only (OAuth 2.0)"
+                            )
+                        except TypeError as type_error:
+                            # If TypeError occurs, try with explicit None for OAuth 1.0a params
+                            logger.warning(
+                                f"Initial attempt failed with TypeError: {type_error}"
+                            )
+                            logger.info(
+                                "Retrying with explicit None for OAuth 1.0a parameters"
+                            )
+                            self.client = tweepy.Client(
+                                bearer_token=bearer_token,
+                                consumer_key=None,
+                                consumer_secret=None,
+                                access_token=None,
+                                access_token_secret=None,
+                                wait_on_rate_limit=True,
+                            )
+                            logger.info(
+                                "Twitter client initialized with Bearer Token (OAuth 2.0)"
+                            )
+                except Exception as init_error:
+                    logger.error(
+                        f"Failed to initialize tweepy.Client with bearer_token: {init_error}"
+                    )
+                    logger.error(f"Error type: {type(init_error).__name__}")
+                    logger.error(
+                        f"Bearer token length: {len(bearer_token)}, first 10 chars: {bearer_token[:10]}..."
+                    )
+                    raise
             else:
                 # Use OAuth 1.0a (API Key + Secret + Access Token)
+                # Validate all OAuth 1.0a credentials are present and not empty
+                oauth1_creds = {
+                    "TWITTER_API_KEY": self.api_key,
+                    "TWITTER_API_SECRET": self.api_secret,
+                    "TWITTER_ACCESS_TOKEN": self.access_token,
+                    "TWITTER_ACCESS_TOKEN_SECRET": self.access_token_secret,
+                }
+
+                # Check if all credentials are present and not empty
+                missing = [
+                    key
+                    for key, value in oauth1_creds.items()
+                    if not value or not value.strip()
+                ]
+                if missing:
+                    raise ValueError(
+                        f"OAuth 1.0a credentials incomplete. Missing or empty: {', '.join(missing)}. "
+                        "All of TWITTER_API_KEY, TWITTER_API_SECRET, "
+                        "TWITTER_ACCESS_TOKEN, and TWITTER_ACCESS_TOKEN_SECRET are required."
+                    )
+
+                # Strip whitespace from all OAuth 1.0a credentials
+                api_key = self.api_key.strip()
+                api_secret = self.api_secret.strip()
+                access_token = self.access_token.strip()
+                access_token_secret = self.access_token_secret.strip()
+
+                logger.debug("Initializing Twitter client with OAuth 1.0a")
                 auth = tweepy.OAuth1UserHandler(
-                    self.api_key,
-                    self.api_secret,
-                    self.access_token,
-                    self.access_token_secret,
+                    api_key,
+                    api_secret,
+                    access_token,
+                    access_token_secret,
                 )
                 api = tweepy.API(auth, wait_on_rate_limit=True)
                 # For v2 API, we still use Client but with OAuth 1.0a
                 self.client = tweepy.Client(
-                    consumer_key=self.api_key,
-                    consumer_secret=self.api_secret,
-                    access_token=self.access_token,
-                    access_token_secret=self.access_token_secret,
+                    consumer_key=api_key,
+                    consumer_secret=api_secret,
+                    access_token=access_token,
+                    access_token_secret=access_token_secret,
                     wait_on_rate_limit=True,
                 )
                 logger.info("Twitter client initialized with OAuth 1.0a")
+        except ValueError as e:
+            logger.error(f"Twitter client configuration error: {e}")
+            raise
         except Exception as e:
             logger.error(f"Failed to initialize Twitter client: {e}")
+            logger.error(f"Error type: {type(e).__name__}")
+            logger.error(f"Error details: {str(e)}")
+            # Log credential status for debugging (without exposing values)
+            logger.error(
+                f"Credential status - bearer_token: {bool(self.bearer_token)}, "
+                f"api_key: {bool(self.api_key)}, api_secret: {bool(self.api_secret)}, "
+                f"access_token: {bool(self.access_token)}, access_token_secret: {bool(self.access_token_secret)}"
+            )
             raise
 
     def post_tweet(self, text: str, media_ids: Optional[list] = None) -> Dict[str, Any]:
@@ -111,12 +280,29 @@ class TwitterClient:
                 response = self.client.create_tweet(text=text)
 
             tweet_data = response.data
-            logger.info(f"Tweet posted successfully: {tweet_data.id}")
+            tweet_id = None
+            tweet_text = None
+
+            if tweet_data:
+                if isinstance(tweet_data, dict):
+                    tweet_id = tweet_data.get("id")
+                    tweet_text = tweet_data.get("text")
+                else:
+                    tweet_id = getattr(tweet_data, "id", None)
+                    tweet_text = getattr(tweet_data, "text", None)
+
+            if not tweet_id:
+                logger.warning(
+                    "Tweet posted but response did not include an ID. Raw response: %s",
+                    tweet_data,
+                )
+
+            logger.info(f"Tweet posted successfully: {tweet_id}")
 
             return {
                 "success": True,
-                "tweet_id": tweet_data.id,
-                "text": tweet_data.text,
+                "tweet_id": tweet_id,
+                "text": tweet_text,
                 "created_at": datetime.now().isoformat(),
             }
         except tweepy.TooManyRequests:
@@ -125,11 +311,42 @@ class TwitterClient:
         except tweepy.Unauthorized:
             logger.error("Twitter API unauthorized. Check credentials.")
             raise Exception("Twitter API unauthorized. Check API credentials.")
-        except tweepy.Forbidden:
-            logger.error("Twitter API forbidden. Check permissions.")
-            raise Exception("Twitter API forbidden. Check account permissions.")
+        except tweepy.Forbidden as forbidden_error:
+            error_msg = str(forbidden_error)
+            logger.error(
+                f"Twitter API forbidden. Check permissions. Error: {error_msg}"
+            )
+            logger.error(
+                "This error typically indicates one of the following issues:\n"
+                "1. The Twitter app doesn't have 'Read and Write' permissions enabled\n"
+                "2. The Bearer Token or OAuth credentials are invalid or expired\n"
+                "3. The Twitter account associated with the credentials is restricted\n"
+                "4. The Twitter app is in 'Read-only' mode instead of 'Read and Write'\n"
+                "5. The Twitter Developer account needs to be upgraded to a paid tier\n"
+                "\n"
+                "To fix this:\n"
+                "1. Go to https://developer.twitter.com/en/portal/dashboard\n"
+                "2. Select your app\n"
+                "3. Go to 'Settings' > 'User authentication settings'\n"
+                "4. Ensure 'Read and write' permissions are enabled\n"
+                "5. Regenerate Bearer Token and OAuth credentials if needed\n"
+                "6. Check if your Twitter Developer account has the necessary access level"
+            )
+            raise Exception(
+                f"Twitter API forbidden. Check permissions. "
+                f"This usually means the app doesn't have 'Read and Write' permissions. "
+                f"Please check your Twitter Developer Portal settings. Error details: {error_msg}"
+            ) from forbidden_error
         except Exception as e:
-            logger.error(f"Failed to post tweet: {e}")
+            error_msg = str(e)
+            error_type = type(e).__name__
+            logger.error(f"Failed to post tweet: {error_msg}")
+            logger.error(f"Error type: {error_type}")
+
+            # Check if client is properly initialized
+            if not self.client:
+                logger.error("Twitter client is None - initialization may have failed")
+
             raise
 
     def upload_media(self, file_path: str) -> Optional[str]:
@@ -226,6 +443,7 @@ class TwitterClient:
             True if credentials are valid, False otherwise
         """
         if not self.client:
+            logger.error("Twitter client not initialized - cannot verify credentials")
             return False
 
         try:
@@ -234,7 +452,21 @@ class TwitterClient:
             if me.data:
                 logger.info(f"Twitter credentials verified. User: @{me.data.username}")
                 return True
+            logger.warning("Twitter credentials verification returned no user data")
+            return False
+        except tweepy.Unauthorized as e:
+            logger.error(f"Twitter credentials verification failed: Unauthorized - {e}")
+            logger.error(
+                "This usually means the Bearer Token or OAuth credentials are invalid or expired"
+            )
+            return False
+        except tweepy.Forbidden as e:
+            logger.error(f"Twitter credentials verification failed: Forbidden - {e}")
+            logger.error(
+                "This usually means the app doesn't have the required permissions"
+            )
             return False
         except Exception as e:
             logger.error(f"Twitter credentials verification failed: {e}")
+            logger.error(f"Error type: {type(e).__name__}")
             return False
