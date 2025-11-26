@@ -8,8 +8,9 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from models.collection import AnalysisResult, Sentiment
 from sqlalchemy.orm import Session
+
+from models.collection import AnalysisResult, Sentiment
 from utils.ai_client import AIClient, AnalysisRequest
 
 logger = logging.getLogger(__name__)

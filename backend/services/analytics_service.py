@@ -7,6 +7,9 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from sqlalchemy import func
+from sqlalchemy.orm import Session
+
 from models.analytics import (
     AnalyticsEventDB,
     DashboardDB,
@@ -16,8 +19,6 @@ from models.analytics import (
     ScheduledReportDB,
     UserSegmentDB,
 )
-from sqlalchemy import func
-from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
 

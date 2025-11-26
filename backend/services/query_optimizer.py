@@ -8,13 +8,14 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Union
 
-from models.content import Article, Newsletter, Trend
-from models.subscription import Subscription
-from models.user import User
 from sqlalchemy import and_, func, or_, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import contains_eager, joinedload, selectinload
+
+from models.content import Article, Newsletter, Trend
+from models.subscription import Subscription
+from models.user import User
 from utils.cache_decorators import cache_api_response, cache_result
 
 logger = logging.getLogger(__name__)

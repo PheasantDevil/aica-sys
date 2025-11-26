@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy.orm import Session
+
+from database import get_db
 from models.audit import AuditEvent, AuditEventType
 from services.audit_service import AuditService, get_audit_service
-from sqlalchemy.orm import Session
 from utils.logging import get_logger
 
 logger = get_logger(__name__)

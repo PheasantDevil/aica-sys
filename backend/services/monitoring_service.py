@@ -11,10 +11,11 @@ from typing import Any, Dict, List, Optional, Union
 import aiohttp
 import asyncpg
 import psutil
-from database import get_db
 from fastapi import Depends
-from models.user import User
 from sqlalchemy.orm import Session
+
+from database import get_db
+from models.user import User
 from utils.logging import get_logger
 
 logger = get_logger(__name__)

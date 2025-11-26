@@ -3,9 +3,10 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
+from sqlalchemy.orm import Session
+
 from database import get_db
 from models.user import User
-from sqlalchemy.orm import Session
 from utils.logging import get_logger
 
 logger = get_logger(__name__)

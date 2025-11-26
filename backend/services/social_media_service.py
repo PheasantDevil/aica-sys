@@ -7,9 +7,10 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from services.twitter_client import TwitterClient
 from sqlalchemy.exc import InvalidRequestError, SQLAlchemyError
 from sqlalchemy.orm import Session
+
+from services.twitter_client import TwitterClient
 
 logger = logging.getLogger(__name__)
 

@@ -2,11 +2,12 @@ import json
 from typing import Any, Callable, Dict, List, Optional
 
 from fastapi import Request, Response
+from starlette.middleware.base import BaseHTTPMiddleware
+
 from services.data_classification import (
     DataClassificationService,
     get_data_classification_service,
 )
-from starlette.middleware.base import BaseHTTPMiddleware
 from utils.logging import get_logger
 
 logger = get_logger(__name__)

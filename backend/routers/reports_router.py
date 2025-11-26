@@ -9,15 +9,16 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 
 import stripe
-from database import get_db
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
+from database import get_db
 from models.content import Article, Newsletter, Trend
 from models.subscription import Subscription
 from models.user import User
 from security.auth_middleware import get_current_user
 from services.ai_analyzer import AIAnalyzer
 from services.content_generator import ContentGenerator
-from sqlalchemy.orm import Session
 from utils.logging import get_logger
 
 router = APIRouter(prefix="/api/reports", tags=["reports"])

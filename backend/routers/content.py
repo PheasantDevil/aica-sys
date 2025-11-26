@@ -4,11 +4,12 @@ Content API router for AICA-SyS
 
 from typing import List, Optional
 
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
+
+from database import get_db
 from models.collection import AnalysisResult
 from models.content import Article, Newsletter, Trend
-from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/api/content", tags=["content"])
 

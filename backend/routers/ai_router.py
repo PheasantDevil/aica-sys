@@ -7,8 +7,10 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
-from database import get_db
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from database import get_db
 from models.ai_models import (
     AnalysisResult,
     CollectedContent,
@@ -24,7 +26,6 @@ from services.ai_analyzer import AnalysisResult as ARAnalysisResult
 from services.content_generator import ContentGenerator, ContentType
 from services.content_generator import GeneratedContent as GCGeneratedContent
 from services.data_collector import ContentItem, DataCollector
-from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
 

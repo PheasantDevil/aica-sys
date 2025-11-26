@@ -5,8 +5,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 
-from database import engine
 from sqlalchemy import text
+
+from database import engine
 
 try:
     with engine.connect() as conn:

@@ -6,11 +6,12 @@ Phase 9-2: User engagement enhancement
 import logging
 from typing import Optional
 
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from services.engagement_service import EngagementService
 from sqlalchemy.orm import Session
+
+from database import get_db
+from services.engagement_service import EngagementService
 
 logger = logging.getLogger(__name__)
 

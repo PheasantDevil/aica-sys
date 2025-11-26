@@ -8,8 +8,9 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from models.content import Article, Newsletter, Trend, TrendCategory, TrendImpact
 from sqlalchemy.orm import Session
+
+from models.content import Article, Newsletter, Trend, TrendCategory, TrendImpact
 from utils.ai_client import (
     AIClient,
     ContentGenerationRequest,

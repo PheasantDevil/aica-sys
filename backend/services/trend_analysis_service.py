@@ -8,10 +8,11 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta
 from typing import Any, Dict, List
 
-from models.automated_content import SourceDataDB, TrendDataDB
 from sqlalchemy import func
 from sqlalchemy.exc import OperationalError, ProgrammingError, SQLAlchemyError
 from sqlalchemy.orm import Session
+
+from models.automated_content import SourceDataDB, TrendDataDB
 
 logger = logging.getLogger(__name__)
 

@@ -7,7 +7,6 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from database import Base
 from pydantic import BaseModel
 from sqlalchemy import (
     Boolean,
@@ -19,6 +18,8 @@ from sqlalchemy import (
     String,
     Text,
 )
+
+from database import Base
 
 
 class AffiliateStatus(str, Enum):

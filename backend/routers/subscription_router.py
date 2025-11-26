@@ -8,12 +8,13 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 
 import stripe
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from sqlalchemy.orm import Session
+
+from database import get_db
 from models.subscription import Subscription, SubscriptionPlan
 from models.user import User
 from security.auth_middleware import get_current_user
-from sqlalchemy.orm import Session
 from utils.logging import get_logger
 
 router = APIRouter(prefix="/api/subscriptions", tags=["subscriptions"])

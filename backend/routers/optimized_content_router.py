@@ -7,11 +7,12 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from database import get_db
 from middleware.performance_middleware import performance_metrics
 from services.query_optimizer import QueryOptimizer
-from sqlalchemy.ext.asyncio import AsyncSession
 from utils.response_optimizer import (
     create_conditional_response,
     create_error_response,

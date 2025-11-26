@@ -7,13 +7,14 @@ import os
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel, EmailStr
+from sqlalchemy.orm import Session
+
+from database import get_db
 from models.subscription import Subscription
 from models.user import User
-from pydantic import BaseModel, EmailStr
 from security.auth_middleware import get_current_user
-from sqlalchemy.orm import Session
 from utils.logging import get_logger
 
 router = APIRouter(prefix="/api/users", tags=["users"])

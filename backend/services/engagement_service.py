@@ -7,6 +7,8 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from sqlalchemy.orm import Session
+
 from models.engagement import (
     BadgeDB,
     CommentDB,
@@ -18,7 +20,6 @@ from models.engagement import (
     UserBadgeDB,
     UserPointDB,
 )
-from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
 

@@ -6,11 +6,13 @@ Handles user authentication, registration, and token management
 from datetime import datetime, timedelta
 from typing import Optional
 
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPBearer
-from models.user import User
 from pydantic import BaseModel, EmailStr
+from sqlalchemy.orm import Session
+
+from database import get_db
+from models.user import User
 from security.auth_middleware import (
     SecurityConfig,
     create_access_token,
@@ -19,7 +21,6 @@ from security.auth_middleware import (
     get_current_user,
     verify_token,
 )
-from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/api/auth", tags=["authentication"])
 security = HTTPBearer()

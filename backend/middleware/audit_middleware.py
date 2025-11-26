@@ -3,8 +3,9 @@ import time
 from typing import Any, Callable, Dict, Optional
 
 from fastapi import Request, Response
-from services.audit_service import AuditEventType, AuditService, get_audit_service
 from starlette.middleware.base import BaseHTTPMiddleware
+
+from services.audit_service import AuditEventType, AuditService, get_audit_service
 from utils.logging import get_logger
 
 logger = get_logger(__name__)

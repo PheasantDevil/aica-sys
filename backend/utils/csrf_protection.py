@@ -7,6 +7,7 @@ from typing import Any, Dict, Optional
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+
 from utils.cache import CACHE_TTL, cache_manager
 from utils.jwt_auth import User, get_current_user
 

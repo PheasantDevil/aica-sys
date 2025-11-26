@@ -14,8 +14,9 @@ import feedparser
 import requests
 from bs4 import BeautifulSoup
 from github import Github
-from models.collection import CollectionJob, CollectionType, JobStatus
 from sqlalchemy.orm import Session
+
+from models.collection import CollectionJob, CollectionType, JobStatus
 from utils.github_client import GitHubClient
 from utils.rss_parser import RSSParser
 from utils.web_scraper import WebScraper

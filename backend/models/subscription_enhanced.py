@@ -7,7 +7,6 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional
 
-from database import Base
 from pydantic import BaseModel
 from sqlalchemy import (
     JSON,
@@ -20,6 +19,8 @@ from sqlalchemy import (
     String,
     Text,
 )
+
+from database import Base
 
 
 class PlanType(str, Enum):

@@ -7,11 +7,12 @@ import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from services.analytics_service import AnalyticsService
 from sqlalchemy.orm import Session
+
+from database import get_db
+from services.analytics_service import AnalyticsService
 
 logger = logging.getLogger(__name__)
 

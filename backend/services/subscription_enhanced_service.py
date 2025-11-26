@@ -8,6 +8,9 @@ import secrets
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from sqlalchemy import func
+from sqlalchemy.orm import Session
+
 from models.subscription_enhanced import (
     CouponDB,
     CouponType,
@@ -18,8 +21,6 @@ from models.subscription_enhanced import (
     SubscriptionPlanDB,
     UserSubscriptionDB,
 )
-from sqlalchemy import func
-from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
 

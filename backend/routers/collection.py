@@ -4,11 +4,12 @@ Collection API router for AICA-SyS
 
 from typing import List, Optional
 
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
+
 from agents.collection_agent import CollectionAgent
 from database import get_db
-from fastapi import APIRouter, Depends, HTTPException, Query
 from models.collection import AnalysisResult, CollectionJob
-from sqlalchemy.orm import Session
 from utils.ai_client import AIClient
 
 router = APIRouter(prefix="/api/collection", tags=["collection"])

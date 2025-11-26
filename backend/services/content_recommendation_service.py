@@ -9,9 +9,10 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from sqlalchemy.orm import Session
+
 from models.ai_models import UserInteraction
 from models.automated_content import AutomatedContentDB
-from sqlalchemy.orm import Session
 
 logger = logging.getLogger(__name__)
 

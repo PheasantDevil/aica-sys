@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta
 from typing import List, Optional
 
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
-from models.user import User
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
+from database import get_db
+from models.user import User
 from security.auth_middleware import get_current_user
 from services.monitoring_service import (
     AlertLevel,
@@ -13,7 +15,6 @@ from services.monitoring_service import (
     MonitoringService,
     get_monitoring_service,
 )
-from sqlalchemy.orm import Session
 from utils.logging import get_logger
 
 logger = get_logger(__name__)

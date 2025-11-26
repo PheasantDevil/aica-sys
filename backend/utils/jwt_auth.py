@@ -7,9 +7,10 @@ import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import PyJWTError
-from models.user import User
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
+
+from models.user import User
 from utils.database import get_db
 
 logger = logging.getLogger(__name__)

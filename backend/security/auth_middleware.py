@@ -12,12 +12,13 @@ from typing import Any, Dict, List, Optional
 
 import bcrypt
 import jwt
-from database import get_db
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt import PyJWTError
-from models.user import User
 from sqlalchemy.orm import Session
+
+from database import get_db
+from models.user import User
 
 logger = logging.getLogger(__name__)
 

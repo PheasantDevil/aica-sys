@@ -10,6 +10,7 @@ from enum import Enum
 from typing import Any, Dict, List, Optional
 
 import aiohttp
+
 from utils.logging import get_logger
 
 logger = get_logger(__name__)

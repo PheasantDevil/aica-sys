@@ -6,9 +6,10 @@ Phase 9-1: Content quality improvement
 import logging
 from typing import Optional
 
-from database import get_db
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+
+from database import get_db
 from services.content_quality_service import content_quality_service
 from services.content_recommendation_service import ContentRecommendationService
 

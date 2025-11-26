@@ -10,8 +10,9 @@ from dotenv import load_dotenv
 env_path = Path(__file__).parent.parent / ".env.local"
 load_dotenv(env_path)
 
-from alembic import context
 from sqlalchemy import create_engine, engine_from_config, pool
+
+from alembic import context
 
 # Add the backend directory to the Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

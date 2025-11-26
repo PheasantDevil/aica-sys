@@ -4,11 +4,12 @@ Analysis API router for AICA-SyS
 
 from typing import List, Optional
 
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
+
 from agents.analysis_agent import AnalysisAgent
 from database import get_db
-from fastapi import APIRouter, Depends, HTTPException, Query
 from models.collection import AnalysisResult
-from sqlalchemy.orm import Session
 from utils.ai_client import AIClient
 
 router = APIRouter(prefix="/api/analysis", tags=["analysis"])

@@ -7,9 +7,10 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Optional
 
-from database import Base
 from pydantic import BaseModel
 from sqlalchemy import JSON, Boolean, Column, DateTime, Float, Integer, String, Text
+
+from database import Base
 
 
 class ReportType(str, Enum):
