@@ -150,4 +150,3 @@ def downgrade() -> None:
     ]:
         if _has_table(inspector, table):
             op.drop_table(table)
-

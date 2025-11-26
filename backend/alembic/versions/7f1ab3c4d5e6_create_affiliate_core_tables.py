@@ -79,7 +79,9 @@ def upgrade() -> None:
         op.create_table(
             "click_tracking",
             sa.Column("id", sa.Integer(), primary_key=True),
-            sa.Column("referral_link_id", sa.Integer(), sa.ForeignKey("referral_links.id")),
+            sa.Column(
+                "referral_link_id", sa.Integer(), sa.ForeignKey("referral_links.id")
+            ),
             sa.Column("affiliate_id", sa.Integer(), sa.ForeignKey("affiliates.id")),
             sa.Column("ip_address", sa.String(), nullable=True),
             sa.Column("user_agent", sa.String(), nullable=True),
@@ -98,7 +100,9 @@ def upgrade() -> None:
             "conversions",
             sa.Column("id", sa.Integer(), primary_key=True),
             sa.Column("affiliate_id", sa.Integer(), sa.ForeignKey("affiliates.id")),
-            sa.Column("referral_link_id", sa.Integer(), sa.ForeignKey("referral_links.id")),
+            sa.Column(
+                "referral_link_id", sa.Integer(), sa.ForeignKey("referral_links.id")
+            ),
             sa.Column("referred_user_id", sa.String(), index=True),
             sa.Column("subscription_id", sa.Integer(), nullable=True),
             sa.Column("conversion_value", sa.Float(), nullable=False),
@@ -189,4 +193,3 @@ def downgrade() -> None:
     ]:
         if _has_table(inspector, table):
             op.drop_table(table)
-

@@ -34,7 +34,12 @@ def upgrade() -> None:
             sa.Column("percentage", sa.Float(), nullable=True),
             sa.Column("min_threshold", sa.Float(), nullable=True),
             sa.Column("configuration", sa.JSON(), nullable=True),
-            sa.Column("is_active", sa.Boolean(), nullable=False, server_default=sa.text("true")),
+            sa.Column(
+                "is_active",
+                sa.Boolean(),
+                nullable=False,
+                server_default=sa.text("true"),
+            ),
             sa.Column(
                 "created_at",
                 sa.DateTime(),
@@ -62,4 +67,3 @@ def downgrade() -> None:
             op.drop_column("commission_rules", "configuration")
         elif len(columns) == 1 and "configuration" in columns:
             op.drop_table("commission_rules")
-
