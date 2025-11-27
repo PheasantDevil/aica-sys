@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { apiClient } from "@/lib/api-client";
 import { useApiCall } from "@/hooks/use-api";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface AffiliateDashboardContentProps {
   user: {
@@ -77,9 +78,9 @@ export function AffiliateDashboardContent({ user }: AffiliateDashboardContentPro
       <Card>
         <CardContent className="py-12 text-center">
           <p className="text-gray-600 mb-4">アフィリエイト情報を取得できませんでした。</p>
-          <a href="/affiliate/register" className="text-blue-600 hover:underline font-medium">
+          <Link href="/affiliate/register" className="text-blue-600 hover:underline font-medium">
             アフィリエイトプログラムに登録する
-          </a>
+          </Link>
         </CardContent>
       </Card>
     );
