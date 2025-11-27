@@ -267,6 +267,55 @@ export class ApiClient {
       }),
     });
   }
+
+  // Affiliate API methods
+  async registerAffiliate(
+    userId: string,
+  ): Promise<ApiResponse<{ success: boolean; affiliate: any }>> {
+    return this.request("/api/affiliate/register", {
+      method: "POST",
+      body: JSON.stringify({ user_id: userId }),
+    });
+  }
+
+  async getAffiliateProfile(
+    userId: string,
+  ): Promise<ApiResponse<{ success: boolean; affiliate: any; stats: any }>> {
+    return this.request(`/api/affiliate/profile/${userId}`);
+  }
+
+  async getReferralLinks(
+    affiliateId: number,
+    activeOnly: boolean = true,
+  ): Promise<ApiResponse<{ success: boolean; links: any[]; count: number }>> {
+    const query = `?active_only=${activeOnly}`;
+    return this.request(`/api/affiliate/referral-links/${affiliateId}${query}`);
+  }
+
+  async createReferralLink(data: {
+    affiliate_id: number;
+    destination_url: string;
+    campaign_name?: string;
+    valid_until?: string;
+  }): Promise<ApiResponse<{ success: boolean; link: any }>> {
+    return this.request("/api/affiliate/referral-links", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getAffiliateStats(
+    affiliateId: number,
+  ): Promise<ApiResponse<{ success: boolean; stats: any }>> {
+    return this.request(`/api/affiliate/stats/${affiliateId}`);
+  }
+
+  async getPayouts(
+    affiliateId: number,
+    limit: number = 50,
+  ): Promise<ApiResponse<{ success: boolean; payouts: any[]; count: number }>> {
+    return this.request(`/api/affiliate/payouts/${affiliateId}?limit=${limit}`);
+  }
 }
 
 // Singleton instance
