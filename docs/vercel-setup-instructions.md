@@ -3,11 +3,13 @@
 ## 問題と解決策
 
 ### 問題
+
 ```
 Error: No Next.js version detected. Make sure your package.json has "next" in either "dependencies" or "devDependencies".
 ```
 
 ### 原因
+
 - Vercelがルートディレクトリの`package.json`を見ている
 - Next.jsは`frontend/package.json`にある
 - Root Directoryの設定が必要
@@ -43,16 +45,19 @@ Framework Preset: Next.js
 ### 4. Build & Development Settings
 
 #### Build Command（自動検出）
+
 ```
 npm run build
 ```
 
 #### Output Directory（自動検出）
+
 ```
 .next
 ```
 
 #### Install Command（自動検出）
+
 ```
 npm install
 ```
@@ -66,6 +71,7 @@ npm install
 ### Vercel Dashboard → Settings → Environment Variables
 
 #### Production
+
 ```bash
 NEXTAUTH_URL=https://aica-sys.vercel.app
 NEXT_PUBLIC_BASE_URL=https://aica-sys.vercel.app
@@ -77,6 +83,7 @@ GOOGLE_CLIENT_SECRET=（Google OAuth設定）
 ```
 
 #### Preview（オプション）
+
 ```bash
 NEXTAUTH_URL=https://aica-sys-git-[branch].vercel.app
 NEXT_PUBLIC_API_URL=https://aica-sys-backend.onrender.com
@@ -88,17 +95,21 @@ ENVIRONMENT=preview
 ## 再デプロイ
 
 ### 方法1: Git Push（推奨）
+
 ```bash
 git push origin main
 ```
+
 → 自動デプロイ
 
 ### 方法2: Vercel Dashboard
+
 1. Deployments タブ
 2. 最新デプロイの "..." メニュー
 3. "Redeploy"
 
 ### 方法3: Vercel CLI
+
 ```bash
 cd frontend
 vercel --prod
@@ -141,7 +152,8 @@ vercel --prod
 ### エラー: "Build timeout"
 
 **原因**: ビルド時間が制限を超過
-**解決**: 
+**解決**:
+
 - 不要な依存関係を削除
 - `.vercelignore`で不要ファイルを除外（実装済み）
 
@@ -150,6 +162,7 @@ vercel --prod
 ## 確認方法
 
 ### ビルド成功
+
 ```
 ✓ Compiled successfully
 ✓ Linting and checking validity of types
@@ -163,6 +176,7 @@ Route (app)                 Size     First Load JS
 ```
 
 ### デプロイ成功
+
 ```
 https://aica-sys.vercel.app
 Status: Ready
@@ -173,15 +187,16 @@ Status: Ready
 ## まとめ
 
 ### 必須設定
+
 1. ✅ **Root Directory**: `frontend`（Dashboard設定）
 2. ✅ **環境変数**: NEXTAUTH_URL等（Dashboard設定）
 3. ✅ **vercel.json**: 最小構成（env設定のみ）
 
 ### 自動検出される
+
 - Framework: Next.js
 - Build Command
 - Output Directory
 - Install Command
 
 **Root Directory設定後、すぐにデプロイ成功するはずです** ✅
-

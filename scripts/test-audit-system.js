@@ -1,24 +1,24 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config({
-  path: path.resolve(__dirname, '../.env.production.example'),
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env.production.example"),
 });
 
 // Configuration
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
-const PRODUCTION_URL = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const PRODUCTION_URL = process.env.NEXTAUTH_URL || "http://localhost:3000";
 
 // Colors for console output
 const colors = {
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  reset: '\x1b[0m',
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  reset: "\x1b[0m",
 };
 
-function log(message, color = 'reset') {
+function log(message, color = "reset") {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
@@ -33,25 +33,25 @@ class AuditSystemTester {
   }
 
   async runTest(testName, testFunction) {
-    log(`🧪 Running test: ${testName}`, 'blue');
+    log(`🧪 Running test: ${testName}`, "blue");
     try {
       const result = await testFunction();
       this.results.passed++;
       this.results.tests.push({
         name: testName,
-        status: 'PASSED',
+        status: "PASSED",
         result: result,
       });
-      log(`✅ ${testName}: PASSED`, 'green');
+      log(`✅ ${testName}: PASSED`, "green");
       return result;
     } catch (error) {
       this.results.failed++;
       this.results.tests.push({
         name: testName,
-        status: 'FAILED',
+        status: "FAILED",
         error: error.message,
       });
-      log(`❌ ${testName}: FAILED - ${error.message}`, 'red');
+      log(`❌ ${testName}: FAILED - ${error.message}`, "red");
       throw error;
     }
   }
@@ -59,11 +59,11 @@ class AuditSystemTester {
   async adminLogin() {
     try {
       const response = await axios.post(`${API_URL}/api/auth/login`, {
-        email: process.env.ADMIN_EMAIL || 'admin@example.com',
-        password: process.env.ADMIN_PASSWORD || 'admin123',
+        email: process.env.ADMIN_EMAIL || "admin@example.com",
+        password: process.env.ADMIN_PASSWORD || "admin123",
       });
       this.adminToken = response.data.access_token;
-      return { success: true, message: 'Admin logged in successfully.' };
+      return { success: true, message: "Admin logged in successfully." };
     } catch (error) {
       throw new Error(`Admin login failed: ${error.message}`);
     }
@@ -75,9 +75,7 @@ class AuditSystemTester {
       timeout: 5000,
     });
     if (response.status !== 200 || !Array.isArray(response.data)) {
-      throw new Error(
-        `Audit events endpoint failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`Audit events endpoint failed: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -88,9 +86,7 @@ class AuditSystemTester {
       timeout: 5000,
     });
     if (response.status !== 200) {
-      throw new Error(
-        `Audit stats endpoint failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`Audit stats endpoint failed: ${JSON.stringify(response.data)}`);
     }
     // Accept empty stats for now (no audit events in database yet)
     return response.data;
@@ -102,9 +98,7 @@ class AuditSystemTester {
       timeout: 10000,
     });
     if (response.status !== 200) {
-      throw new Error(
-        `Audit dashboard endpoint failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`Audit dashboard endpoint failed: ${JSON.stringify(response.data)}`);
     }
     // Accept dashboard data even if empty (no audit events in database yet)
     return response.data;
@@ -113,19 +107,13 @@ class AuditSystemTester {
   async testAuditEventSearch() {
     if (!this.adminToken) await this.adminLogin();
 
-    const response = await axios.post(
-      `${API_URL}/api/audit/events/search`,
-      null,
-      {
-        headers: { Authorization: `Bearer ${this.adminToken}` },
-        params: { search_query: 'test' },
-        timeout: 5000,
-      }
-    );
+    const response = await axios.post(`${API_URL}/api/audit/events/search`, null, {
+      headers: { Authorization: `Bearer ${this.adminToken}` },
+      params: { search_query: "test" },
+      timeout: 5000,
+    });
     if (response.status !== 200 || !Array.isArray(response.data)) {
-      throw new Error(
-        `Audit event search failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`Audit event search failed: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -133,19 +121,13 @@ class AuditSystemTester {
   async testAuditEventExport() {
     if (!this.adminToken) await this.adminLogin();
 
-    const response = await axios.post(
-      `${API_URL}/api/audit/events/export`,
-      null,
-      {
-        headers: { Authorization: `Bearer ${this.adminToken}` },
-        params: { format: 'json' },
-        timeout: 10000,
-      }
-    );
+    const response = await axios.post(`${API_URL}/api/audit/events/export`, null, {
+      headers: { Authorization: `Bearer ${this.adminToken}` },
+      params: { format: "json" },
+      timeout: 10000,
+    });
     if (response.status !== 200 || !response.data.export_data) {
-      throw new Error(
-        `Audit event export failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`Audit event export failed: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -153,17 +135,12 @@ class AuditSystemTester {
   async testUserAuditEvents() {
     if (!this.adminToken) await this.adminLogin();
 
-    const response = await axios.get(
-      `${API_URL}/api/audit/events/user/test-user`,
-      {
-        headers: { Authorization: `Bearer ${this.adminToken}` },
-        timeout: 5000,
-      }
-    );
+    const response = await axios.get(`${API_URL}/api/audit/events/user/test-user`, {
+      headers: { Authorization: `Bearer ${this.adminToken}` },
+      timeout: 5000,
+    });
     if (response.status !== 200 || !Array.isArray(response.data)) {
-      throw new Error(
-        `User audit events endpoint failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`User audit events endpoint failed: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -171,19 +148,12 @@ class AuditSystemTester {
   async testResourceAuditEvents() {
     if (!this.adminToken) await this.adminLogin();
 
-    const response = await axios.get(
-      `${API_URL}/api/audit/events/resource/users/test-resource`,
-      {
-        headers: { Authorization: `Bearer ${this.adminToken}` },
-        timeout: 5000,
-      }
-    );
+    const response = await axios.get(`${API_URL}/api/audit/events/resource/users/test-resource`, {
+      headers: { Authorization: `Bearer ${this.adminToken}` },
+      timeout: 5000,
+    });
     if (response.status !== 200 || !Array.isArray(response.data)) {
-      throw new Error(
-        `Resource audit events endpoint failed: ${JSON.stringify(
-          response.data
-        )}`
-      );
+      throw new Error(`Resource audit events endpoint failed: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -196,9 +166,7 @@ class AuditSystemTester {
       timeout: 5000,
     });
     if (response.status !== 200 || !response.data.events_by_type) {
-      throw new Error(
-        `Event type stats endpoint failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`Event type stats endpoint failed: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -211,9 +179,7 @@ class AuditSystemTester {
       timeout: 5000,
     });
     if (response.status !== 200 || !response.data.top_users) {
-      throw new Error(
-        `User activity stats endpoint failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`User activity stats endpoint failed: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -226,11 +192,7 @@ class AuditSystemTester {
       timeout: 5000,
     });
     if (response.status !== 200 || !response.data.top_resources) {
-      throw new Error(
-        `Resource activity stats endpoint failed: ${JSON.stringify(
-          response.data
-        )}`
-      );
+      throw new Error(`Resource activity stats endpoint failed: ${JSON.stringify(response.data)}`);
     }
     return response.data;
   }
@@ -238,16 +200,16 @@ class AuditSystemTester {
   async testFrontendAuditPage() {
     const response = await axios.get(`${PRODUCTION_URL}/audit`, {
       timeout: 15000,
-      validateStatus: status => status < 500, // Accept redirects and client errors
+      validateStatus: (status) => status < 500, // Accept redirects and client errors
     });
-    if (response.status !== 200 || !response.data.includes('Audit Dashboard')) {
+    if (response.status !== 200 || !response.data.includes("Audit Dashboard")) {
       throw new Error(
-        `Frontend audit page failed to load or content missing: Status ${response.status}`
+        `Frontend audit page failed to load or content missing: Status ${response.status}`,
       );
     }
     return {
       status: response.status,
-      content_preview: response.data.substring(0, 200) + '...',
+      content_preview: response.data.substring(0, 200) + "...",
     };
   }
 
@@ -266,7 +228,7 @@ class AuditSystemTester {
     }
 
     // Wait a moment for audit event to be processed
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Check if audit event was created
     const auditResponse = await axios.get(`${API_URL}/api/audit/events`, {
@@ -277,9 +239,7 @@ class AuditSystemTester {
 
     if (auditResponse.status !== 200 || !Array.isArray(auditResponse.data)) {
       throw new Error(
-        `Failed to verify audit event creation: ${JSON.stringify(
-          auditResponse.data
-        )}`
+        `Failed to verify audit event creation: ${JSON.stringify(auditResponse.data)}`,
       );
     }
 
@@ -295,27 +255,23 @@ class AuditSystemTester {
     // Test filtering by event type
     const response = await axios.get(`${API_URL}/api/audit/events`, {
       headers: { Authorization: `Bearer ${this.adminToken}` },
-      params: { event_type: 'DATA_ACCESS' },
+      params: { event_type: "DATA_ACCESS" },
       timeout: 5000,
     });
 
     if (response.status !== 200 || !Array.isArray(response.data)) {
-      throw new Error(
-        `Event type filtering failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`Event type filtering failed: ${JSON.stringify(response.data)}`);
     }
 
     // Test filtering by user ID
     const userResponse = await axios.get(`${API_URL}/api/audit/events`, {
       headers: { Authorization: `Bearer ${this.adminToken}` },
-      params: { user_id: 'test-user' },
+      params: { user_id: "test-user" },
       timeout: 5000,
     });
 
     if (userResponse.status !== 200 || !Array.isArray(userResponse.data)) {
-      throw new Error(
-        `User ID filtering failed: ${JSON.stringify(userResponse.data)}`
-      );
+      throw new Error(`User ID filtering failed: ${JSON.stringify(userResponse.data)}`);
     }
 
     return {
@@ -335,9 +291,7 @@ class AuditSystemTester {
     });
 
     if (response.status !== 200 || !Array.isArray(response.data)) {
-      throw new Error(
-        `Pagination test failed: ${JSON.stringify(response.data)}`
-      );
+      throw new Error(`Pagination test failed: ${JSON.stringify(response.data)}`);
     }
 
     return {
@@ -348,39 +302,25 @@ class AuditSystemTester {
 
   generateReport() {
     const totalTests = this.results.passed + this.results.failed;
-    const successRate =
-      totalTests > 0
-        ? ((this.results.passed / totalTests) * 100).toFixed(1)
-        : 0;
+    const successRate = totalTests > 0 ? ((this.results.passed / totalTests) * 100).toFixed(1) : 0;
 
-    log('\n📊 Test Results Summary:', 'blue');
-    log(`Total Tests: ${totalTests}`, 'reset');
-    log(`Passed: ${this.results.passed}`, 'green');
-    log(`Failed: ${this.results.failed}`, 'red');
-    log(
-      `Success Rate: ${successRate}%`,
-      successRate >= 80 ? 'green' : 'yellow'
-    );
+    log("\n📊 Test Results Summary:", "blue");
+    log(`Total Tests: ${totalTests}`, "reset");
+    log(`Passed: ${this.results.passed}`, "green");
+    log(`Failed: ${this.results.failed}`, "red");
+    log(`Success Rate: ${successRate}%`, successRate >= 80 ? "green" : "yellow");
 
-    log('\n📋 Detailed Results:', 'blue');
-    this.results.tests.forEach(test => {
-      const status = test.status === 'PASSED' ? '✅' : '❌';
-      log(
-        `${status} ${test.name}: ${test.status}`,
-        test.status === 'PASSED' ? 'green' : 'red'
-      );
+    log("\n📋 Detailed Results:", "blue");
+    this.results.tests.forEach((test) => {
+      const status = test.status === "PASSED" ? "✅" : "❌";
+      log(`${status} ${test.name}: ${test.status}`, test.status === "PASSED" ? "green" : "red");
       if (test.error) {
-        log(`   Error: ${test.error}`, 'red');
+        log(`   Error: ${test.error}`, "red");
       }
     });
 
     // Save detailed report
-    const reportPath = path.join(
-      __dirname,
-      '..',
-      'docs',
-      'audit-system-test-report.json'
-    );
+    const reportPath = path.join(__dirname, "..", "docs", "audit-system-test-report.json");
     fs.mkdirSync(path.dirname(reportPath), { recursive: true });
     fs.writeFileSync(
       reportPath,
@@ -396,21 +336,21 @@ class AuditSystemTester {
           tests: this.results.tests,
         },
         null,
-        2
-      )
+        2,
+      ),
     );
 
-    log(`\n📄 Detailed report saved to: ${reportPath}`, 'blue');
+    log(`\n📄 Detailed report saved to: ${reportPath}`, "blue");
 
     return successRate >= 80;
   }
 }
 
 async function main() {
-  log('🚀 Starting Audit System Tests...', 'blue');
-  log(`Testing production URL: ${PRODUCTION_URL}`, 'yellow');
-  log(`Testing API URL: ${API_URL}`, 'yellow');
-  log('');
+  log("🚀 Starting Audit System Tests...", "blue");
+  log(`Testing production URL: ${PRODUCTION_URL}`, "yellow");
+  log(`Testing API URL: ${API_URL}`, "yellow");
+  log("");
 
   const tester = new AuditSystemTester();
 
@@ -419,15 +359,9 @@ async function main() {
     // await tester.runTest('Admin Login', () => tester.adminLogin());
 
     // Backend API tests (without authentication)
-    await tester.runTest('Audit Events Endpoint', () =>
-      tester.testAuditEventsEndpoint()
-    );
-    await tester.runTest('Audit Stats Endpoint', () =>
-      tester.testAuditStatsEndpoint()
-    );
-    await tester.runTest('Audit Dashboard Endpoint', () =>
-      tester.testAuditDashboardEndpoint()
-    );
+    await tester.runTest("Audit Events Endpoint", () => tester.testAuditEventsEndpoint());
+    await tester.runTest("Audit Stats Endpoint", () => tester.testAuditStatsEndpoint());
+    await tester.runTest("Audit Dashboard Endpoint", () => tester.testAuditDashboardEndpoint());
 
     // Skip authentication-required tests for now
     // await tester.runTest('Audit Event Search', () =>
@@ -462,31 +396,29 @@ async function main() {
     // );
 
     // Frontend display test
-    await tester.runTest('Frontend Audit Page Display', () =>
-      tester.testFrontendAuditPage()
-    );
+    await tester.runTest("Frontend Audit Page Display", () => tester.testFrontendAuditPage());
 
     // Generate final report
     const success = tester.generateReport();
 
     if (success) {
-      log('\n🎉 Audit system tests completed successfully!', 'green');
-      log('The audit system is functioning as expected.', 'green');
+      log("\n🎉 Audit system tests completed successfully!", "green");
+      log("The audit system is functioning as expected.", "green");
       return 0;
     } else {
-      log('\n⚠️  Audit system tests completed with issues.', 'yellow');
-      log('Please review the failed tests and fix the issues.', 'yellow');
+      log("\n⚠️  Audit system tests completed with issues.", "yellow");
+      log("Please review the failed tests and fix the issues.", "yellow");
       return 1;
     }
   } catch (error) {
-    log(`\n❌ Test suite failed: ${error.message}`, 'red');
+    log(`\n❌ Test suite failed: ${error.message}`, "red");
     return 1;
   }
 }
 
 // Run the tests
 if (require.main === module) {
-  main().then(exitCode => {
+  main().then((exitCode) => {
     process.exit(exitCode);
   });
 }

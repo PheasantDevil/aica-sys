@@ -5,24 +5,24 @@
  * Tests the content generation and delivery system
  */
 
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
 
 // Configuration
-const API_URL = 'http://127.0.0.1:8000';
-const PRODUCTION_URL = 'https://aica-sys.vercel.app';
+const API_URL = "http://127.0.0.1:8000";
+const PRODUCTION_URL = "https://aica-sys.vercel.app";
 
 // Colors for console output
 const colors = {
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  reset: '\x1b[0m',
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  reset: "\x1b[0m",
 };
 
-function log(message, color = 'reset') {
+function log(message, color = "reset") {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
@@ -36,35 +36,31 @@ class ContentDeliveryTester {
   }
 
   async runTest(testName, testFunction) {
-    log(`🧪 Running test: ${testName}`, 'blue');
+    log(`🧪 Running test: ${testName}`, "blue");
     try {
       const result = await testFunction();
       this.results.passed++;
       this.results.tests.push({
         name: testName,
-        status: 'PASSED',
+        status: "PASSED",
         result: result,
       });
-      log(`✅ ${testName}: PASSED`, 'green');
+      log(`✅ ${testName}: PASSED`, "green");
       return result;
     } catch (error) {
       this.results.failed++;
       this.results.tests.push({
         name: testName,
-        status: 'FAILED',
+        status: "FAILED",
         error: error.message,
       });
-      log(`❌ ${testName}: FAILED - ${error.message}`, 'red');
+      log(`❌ ${testName}: FAILED - ${error.message}`, "red");
       throw error;
     }
   }
 
   async testContentEndpoints() {
-    const endpoints = [
-      '/api/content/articles',
-      '/api/content/newsletters',
-      '/api/content/trends',
-    ];
+    const endpoints = ["/api/content/articles", "/api/content/newsletters", "/api/content/trends"];
 
     const results = {};
 
@@ -93,9 +89,9 @@ class ContentDeliveryTester {
 
   async testContentManagementEndpoints() {
     const endpoints = [
-      '/api/content-management/content',
-      '/api/content-management/schedules',
-      '/api/content-management/schedules/status',
+      "/api/content-management/content",
+      "/api/content-management/schedules",
+      "/api/content-management/schedules/status",
     ];
 
     const results = {};
@@ -104,7 +100,7 @@ class ContentDeliveryTester {
       try {
         const response = await axios.get(`${API_URL}${endpoint}`, {
           timeout: 10000,
-          validateStatus: status => status < 500,
+          validateStatus: (status) => status < 500,
         });
         results[endpoint] = {
           status: response.status,
@@ -113,8 +109,7 @@ class ContentDeliveryTester {
       } catch (error) {
         results[endpoint] = {
           error: error.message,
-          requiresAuth:
-            error.response?.status === 401 || error.response?.status === 403,
+          requiresAuth: error.response?.status === 401 || error.response?.status === 403,
         };
       }
     }
@@ -126,25 +121,20 @@ class ContentDeliveryTester {
     try {
       // テスト用のコンテンツ作成リクエスト
       const testContent = {
-        title: 'Test Article - TypeScript 5.0新機能',
-        content:
-          'これはテスト用の記事です。TypeScript 5.0の新機能について説明します。',
-        summary: 'TypeScript 5.0の新機能をテスト用に説明',
-        tags: ['typescript', 'test', 'new-features'],
-        content_type: 'article',
-        target_audience: 'developers',
-        tone: 'professional',
+        title: "Test Article - TypeScript 5.0新機能",
+        content: "これはテスト用の記事です。TypeScript 5.0の新機能について説明します。",
+        summary: "TypeScript 5.0の新機能をテスト用に説明",
+        tags: ["typescript", "test", "new-features"],
+        content_type: "article",
+        target_audience: "developers",
+        tone: "professional",
         auto_generate: false,
       };
 
-      const response = await axios.post(
-        `${API_URL}/api/content-management/content`,
-        testContent,
-        {
-          timeout: 15000,
-          validateStatus: status => status < 500,
-        }
-      );
+      const response = await axios.post(`${API_URL}/api/content-management/content`, testContent, {
+        timeout: 15000,
+        validateStatus: (status) => status < 500,
+      });
 
       return {
         status: response.status,
@@ -160,11 +150,11 @@ class ContentDeliveryTester {
     try {
       // スケジュール作成テスト
       const testSchedule = {
-        name: 'Test Daily Schedule',
-        schedule_type: 'daily',
-        content_type: 'article',
-        target_audience: 'developers',
-        tone: 'professional',
+        name: "Test Daily Schedule",
+        schedule_type: "daily",
+        content_type: "article",
+        target_audience: "developers",
+        tone: "professional",
         enabled: true,
       };
 
@@ -173,8 +163,8 @@ class ContentDeliveryTester {
         testSchedule,
         {
           timeout: 15000,
-          validateStatus: status => status < 500,
-        }
+          validateStatus: (status) => status < 500,
+        },
       );
 
       return {
@@ -188,7 +178,7 @@ class ContentDeliveryTester {
   }
 
   async testFrontendContentPages() {
-    const pages = ['/articles', '/newsletters', '/trends', '/dashboard'];
+    const pages = ["/articles", "/newsletters", "/trends", "/dashboard"];
 
     const results = {};
 
@@ -196,16 +186,15 @@ class ContentDeliveryTester {
       try {
         const response = await axios.get(`${PRODUCTION_URL}${page}`, {
           timeout: 15000,
-          validateStatus: status => status < 500,
+          validateStatus: (status) => status < 500,
         });
         results[page] = {
           status: response.status,
-          title:
-            response.data.match(/<title>(.*?)<\/title>/)?.[1] || 'No title',
+          title: response.data.match(/<title>(.*?)<\/title>/)?.[1] || "No title",
           hasContent:
-            response.data.includes('article') ||
-            response.data.includes('newsletter') ||
-            response.data.includes('trend'),
+            response.data.includes("article") ||
+            response.data.includes("newsletter") ||
+            response.data.includes("trend"),
         };
       } catch (error) {
         results[page] = {
@@ -220,13 +209,10 @@ class ContentDeliveryTester {
   async testContentAPIProxy() {
     try {
       // フロントエンドのAPIプロキシをテスト
-      const response = await axios.get(
-        `${PRODUCTION_URL}/api/content/articles`,
-        {
-          timeout: 15000,
-          validateStatus: status => status < 500,
-        }
-      );
+      const response = await axios.get(`${PRODUCTION_URL}/api/content/articles`, {
+        timeout: 15000,
+        validateStatus: (status) => status < 500,
+      });
 
       return {
         status: response.status,
@@ -243,22 +229,22 @@ class ContentDeliveryTester {
       // AIコンテンツ生成のテスト（モック）
       const mockAnalysisResults = [
         {
-          content_id: 'test_1',
+          content_id: "test_1",
           importance_score: 0.8,
-          category: 'framework',
-          subcategory: 'react',
+          category: "framework",
+          subcategory: "react",
           trend_score: 0.7,
-          sentiment: 'positive',
-          key_topics: ['react', 'typescript', 'hooks'],
-          summary: 'React 18の新機能について',
-          recommendations: ['最新版にアップデート', '新機能を試す'],
+          sentiment: "positive",
+          key_topics: ["react", "typescript", "hooks"],
+          summary: "React 18の新機能について",
+          recommendations: ["最新版にアップデート", "新機能を試す"],
         },
       ];
 
       // 実際のAI生成は時間がかかるため、エンドポイントの存在確認のみ
       const response = await axios.get(`${API_URL}/api/ai/generate`, {
         timeout: 10000,
-        validateStatus: status => status < 500,
+        validateStatus: (status) => status < 500,
       });
 
       return {
@@ -270,7 +256,7 @@ class ContentDeliveryTester {
       return {
         status: error.response?.status || 404,
         endpointExists: false,
-        note: 'AI generation endpoint may not be implemented yet',
+        note: "AI generation endpoint may not be implemented yet",
       };
     }
   }
@@ -279,9 +265,9 @@ class ContentDeliveryTester {
     try {
       // コンテンツ品質チェックのテスト
       const testContent = {
-        title: 'TypeScript 5.0の新機能',
-        content: 'TypeScript 5.0では多くの新機能が追加されました。',
-        tags: ['typescript', 'javascript'],
+        title: "TypeScript 5.0の新機能",
+        content: "TypeScript 5.0では多くの新機能が追加されました。",
+        tags: ["typescript", "javascript"],
       };
 
       // 基本的な品質チェック
@@ -294,8 +280,7 @@ class ContentDeliveryTester {
       };
 
       const qualityScore =
-        Object.values(qualityChecks).filter(Boolean).length /
-        Object.keys(qualityChecks).length;
+        Object.values(qualityChecks).filter(Boolean).length / Object.keys(qualityChecks).length;
 
       return {
         qualityChecks,
@@ -309,39 +294,25 @@ class ContentDeliveryTester {
 
   generateReport() {
     const totalTests = this.results.passed + this.results.failed;
-    const successRate =
-      totalTests > 0
-        ? ((this.results.passed / totalTests) * 100).toFixed(1)
-        : 0;
+    const successRate = totalTests > 0 ? ((this.results.passed / totalTests) * 100).toFixed(1) : 0;
 
-    log('\n📊 Content Delivery Test Results:', 'blue');
-    log(`Total Tests: ${totalTests}`, 'reset');
-    log(`Passed: ${this.results.passed}`, 'green');
-    log(`Failed: ${this.results.failed}`, 'red');
-    log(
-      `Success Rate: ${successRate}%`,
-      successRate >= 80 ? 'green' : 'yellow'
-    );
+    log("\n📊 Content Delivery Test Results:", "blue");
+    log(`Total Tests: ${totalTests}`, "reset");
+    log(`Passed: ${this.results.passed}`, "green");
+    log(`Failed: ${this.results.failed}`, "red");
+    log(`Success Rate: ${successRate}%`, successRate >= 80 ? "green" : "yellow");
 
-    log('\n📋 Detailed Results:', 'blue');
-    this.results.tests.forEach(test => {
-      const status = test.status === 'PASSED' ? '✅' : '❌';
-      log(
-        `${status} ${test.name}: ${test.status}`,
-        test.status === 'PASSED' ? 'green' : 'red'
-      );
+    log("\n📋 Detailed Results:", "blue");
+    this.results.tests.forEach((test) => {
+      const status = test.status === "PASSED" ? "✅" : "❌";
+      log(`${status} ${test.name}: ${test.status}`, test.status === "PASSED" ? "green" : "red");
       if (test.error) {
-        log(`   Error: ${test.error}`, 'red');
+        log(`   Error: ${test.error}`, "red");
       }
     });
 
     // Save detailed report
-    const reportPath = path.join(
-      __dirname,
-      '..',
-      'docs',
-      'content-delivery-test-report.json'
-    );
+    const reportPath = path.join(__dirname, "..", "docs", "content-delivery-test-report.json");
     fs.mkdirSync(path.dirname(reportPath), { recursive: true });
     fs.writeFileSync(
       reportPath,
@@ -357,77 +328,62 @@ class ContentDeliveryTester {
           tests: this.results.tests,
         },
         null,
-        2
-      )
+        2,
+      ),
     );
 
-    log(`\n📄 Detailed report saved to: ${reportPath}`, 'blue');
+    log(`\n📄 Detailed report saved to: ${reportPath}`, "blue");
 
     return successRate >= 80;
   }
 }
 
 async function main() {
-  log('🚀 Starting Content Delivery Tests...', 'blue');
-  log(`Testing API URL: ${API_URL}`, 'yellow');
-  log(`Testing Production URL: ${PRODUCTION_URL}`, 'yellow');
-  log('');
+  log("🚀 Starting Content Delivery Tests...", "blue");
+  log(`Testing API URL: ${API_URL}`, "yellow");
+  log(`Testing Production URL: ${PRODUCTION_URL}`, "yellow");
+  log("");
 
   const tester = new ContentDeliveryTester();
 
   try {
     // Core content tests
-    await tester.runTest('Content Endpoints', () =>
-      tester.testContentEndpoints()
+    await tester.runTest("Content Endpoints", () => tester.testContentEndpoints());
+    await tester.runTest("Content Management Endpoints", () =>
+      tester.testContentManagementEndpoints(),
     );
-    await tester.runTest('Content Management Endpoints', () =>
-      tester.testContentManagementEndpoints()
-    );
-    await tester.runTest('Content Creation', () =>
-      tester.testContentCreation()
-    );
-    await tester.runTest('Schedule Management', () =>
-      tester.testScheduleManagement()
-    );
+    await tester.runTest("Content Creation", () => tester.testContentCreation());
+    await tester.runTest("Schedule Management", () => tester.testScheduleManagement());
 
     // Frontend tests
-    await tester.runTest('Frontend Content Pages', () =>
-      tester.testFrontendContentPages()
-    );
-    await tester.runTest('Content API Proxy', () =>
-      tester.testContentAPIProxy()
-    );
+    await tester.runTest("Frontend Content Pages", () => tester.testFrontendContentPages());
+    await tester.runTest("Content API Proxy", () => tester.testContentAPIProxy());
 
     // AI and quality tests
-    await tester.runTest('Content Generation', () =>
-      tester.testContentGeneration()
-    );
-    await tester.runTest('Content Quality', () => tester.testContentQuality());
+    await tester.runTest("Content Generation", () => tester.testContentGeneration());
+    await tester.runTest("Content Quality", () => tester.testContentQuality());
 
     // Generate final report
     const success = tester.generateReport();
 
     if (success) {
-      log('\n🎉 Content delivery tests completed successfully!', 'green');
-      log(
-        'The content generation and delivery system is working properly.',
-        'green'
-      );
+      log("\n🎉 Content delivery tests completed successfully!", "green");
+      log("The content generation and delivery system is working properly.", "green");
       return 0;
     } else {
-      log('\n⚠️  Content delivery tests completed with issues.', 'yellow');
-      log('Please review the failed tests and fix the issues.', 'yellow');
+      log("\n⚠️  Content delivery tests completed with issues.", "yellow");
+      log("Please review the failed tests and fix the issues.", "yellow");
       return 1;
     }
   } catch (error) {
-    log(`\n❌ Test suite failed: ${error.message}`, 'red');
+    log(`\n❌ Test suite failed: ${error.message}`, "red");
     return 1;
   }
 }
 
 // Run the tests
 if (require.main === module) {
-  main().then(exitCode => {
+  main().then((exitCode) => {
     process.exit(exitCode);
   });
 }

@@ -70,11 +70,11 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'backend/**'
+      - "backend/**"
   pull_request:
     branches: [main]
     paths:
-      - 'backend/**'
+      - "backend/**"
 
 jobs:
   test:
@@ -86,8 +86,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13'
-          cache: 'pip'
+          python-version: "3.13"
+          cache: "pip"
 
       - name: Install dependencies
         run: |
@@ -171,11 +171,11 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'frontend/**'
+      - "frontend/**"
   pull_request:
     branches: [main]
     paths:
-      - 'frontend/**'
+      - "frontend/**"
 
 jobs:
   test:
@@ -187,8 +187,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
@@ -235,7 +235,7 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+          vercel-args: "--prod"
 ```
 
 ### 3. 統合テストワークフロー

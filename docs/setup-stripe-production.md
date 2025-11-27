@@ -23,12 +23,14 @@ AICA-SySの収益化のため、Stripe決済を本番環境で設定します。
 
 1. 「Products」→「Add product」をクリック
 2. 以下を入力：
+
    ```
    Name: AICA-SyS Premium
    Description: TypeScriptエコシステム特化型AI自動コンテンツ配信 - プレミアムプラン
    ```
 
 3. Pricing設定：
+
    ```
    Model: Recurring
    Price: ¥1,980
@@ -43,12 +45,14 @@ AICA-SySの収益化のため、Stripe決済を本番環境で設定します。
 
 1. 「Products」→「Add product」をクリック
 2. 以下を入力：
+
    ```
    Name: AICA-SyS Enterprise
    Description: TypeScriptエコシステム特化型AI自動コンテンツ配信 - エンタープライズプラン
    ```
 
 3. Pricing設定：
+
    ```
    Model: Recurring
    Price: カスタム（または¥19,800）
@@ -139,6 +143,7 @@ NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID=price_[YOUR_PRICE_ID]
 ### ステップ1: WebhookエンドポイントURL確認
 
 本番URL:
+
 ```
 https://aica-sys.vercel.app/api/webhooks/stripe
 ```
@@ -235,6 +240,7 @@ for sub in subs:
 **原因**: APIキーが間違っているか、テストモードと本番モードが混在
 
 **解決**:
+
 1. Stripeダッシュボードで本番モードになっているか確認
 2. `pk_live_`と`sk_live_`のキーを使用しているか確認
 3. 環境変数が正しく設定されているか確認
@@ -244,6 +250,7 @@ for sub in subs:
 **原因**: Webhook秘密鍵が間違っている
 
 **解決**:
+
 1. Stripeダッシュボードで正しい`whsec_`キーを取得
 2. 環境変数`STRIPE_WEBHOOK_SECRET`を更新
 3. サービスを再デプロイ
@@ -253,6 +260,7 @@ for sub in subs:
 **原因**: 価格IDが間違っているか、存在しない
 
 **解決**:
+
 1. Stripe「Products」で価格IDを確認
 2. 環境変数`NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID`を更新
 3. フロントエンドを再デプロイ
@@ -260,6 +268,7 @@ for sub in subs:
 ### 決済が完了しない
 
 **チェックリスト**:
+
 - [ ] Webhook URLが正しい
 - [ ] Webhookイベントが正しく選択されている
 - [ ] Webhook秘密鍵が設定されている
@@ -294,6 +303,7 @@ Developers → Webhooks → エンドポイント → Events
 ### APIキー管理
 
 1. **絶対にコミットしない**
+
    ```bash
    # .gitignoreに含まれていることを確認
    .env
@@ -319,12 +329,8 @@ Developers → Webhooks → エンドポイント → Events
 
 ```typescript
 // frontend/src/app/api/webhooks/stripe/route.ts
-const signature = headers.get('stripe-signature');
-const event = stripe.webhooks.constructEvent(
-  body,
-  signature,
-  process.env.STRIPE_WEBHOOK_SECRET
-);
+const signature = headers.get("stripe-signature");
+const event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET);
 ```
 
 ### PCI DSS準拠
@@ -383,6 +389,6 @@ Stripe Dashboard → Reports → Revenue
 ## 連絡先
 
 問題が発生した場合：
+
 - Stripeサポート: support@stripe.com
 - AICA-SyS開発チーム: [GitHub Issues](https://github.com/your-repo/aica-sys/issues)
-

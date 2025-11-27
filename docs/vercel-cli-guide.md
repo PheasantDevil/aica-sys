@@ -207,10 +207,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Install Vercel CLI
         run: npm install -g vercel
-      
+
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -295,4 +295,3 @@ vercel projects list
 - [CLI Reference](https://vercel.com/docs/cli/commands)
 - [環境変数ガイド](https://vercel.com/docs/environment-variables)
 - [デプロイ設定](https://vercel.com/docs/deployments/overview)
-

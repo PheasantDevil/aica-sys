@@ -9,7 +9,8 @@ import path from "node:path";
 const args = process.argv.slice(2);
 const options = {
   title: "AICA-SyS 最新記事",
-  description: "TypeScriptエコシステムの最新トレンドと自動化ノウハウを厳選してお届けします。",
+  description:
+    "TypeScriptエコシステムの最新トレンドと自動化ノウハウを厳選してお届けします。",
   slug: "sample-article",
   tags: "TypeScript,AI自動生成,Next.js",
   theme: "dark",
@@ -40,7 +41,9 @@ console.log(`Fetching OGP image from ${targetUrl}`);
 const response = await fetch(targetUrl);
 
 if (!response.ok) {
-  console.error(`Failed to fetch OGP image: ${response.status} ${response.statusText}`);
+  console.error(
+    `Failed to fetch OGP image: ${response.status} ${response.statusText}`,
+  );
   process.exit(1);
 }
 
@@ -51,9 +54,11 @@ const outputDir = path.resolve(process.cwd(), options.out);
 await mkdir(outputDir, { recursive: true });
 
 const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-const outputPath = path.join(outputDir, `${options.slug || "preview"}-${timestamp}.png`);
+const outputPath = path.join(
+  outputDir,
+  `${options.slug || "preview"}-${timestamp}.png`,
+);
 
 await writeFile(outputPath, buffer);
 console.log(`OGP image saved to ${outputPath}`);
 console.log("※ ローカル確認後に Vercel デプロイで自動反映されます。");
-

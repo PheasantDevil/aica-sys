@@ -1,21 +1,13 @@
 "use client";
 
-import { type ComponentType, useEffect, useMemo, useState } from "react";
-import {
-  CartesianGrid,
-  Legend,
-  Line,
-  LineChart,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 import { format } from "date-fns";
 import { TrendingUp } from "lucide-react";
+import { type ComponentType, useEffect, useMemo, useState } from "react";
+import { CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useApiCall } from "@/hooks/use-api";
 import { apiClient } from "@/lib/api-client";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface PerformanceChartProps {
   affiliateId: number;

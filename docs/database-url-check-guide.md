@@ -136,12 +136,10 @@ ls -la backend/aica_sys.db
 ### よくある問題
 
 1. **DATABASE_URL が空の場合**
-
    - デフォルトの SQLite が使用されます
    - ワークフローでは接続チェックをスキップします
 
 2. **接続エラーの場合**
-
    - URL の形式を確認: `postgresql://user:password@host:port/dbname`
    - ネットワーク接続を確認
    - 認証情報を確認

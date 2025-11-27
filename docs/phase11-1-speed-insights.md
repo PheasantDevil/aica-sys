@@ -18,6 +18,7 @@ Vercel Speed Insightsを導入し、Core Web Vitalsに基づいたパフォー�
 ## Speed Insights とは
 
 Vercel公式のパフォーマンス測定ツールで、以下の機能を提供：
+
 - Core Web Vitals の自動測定
 - Vercelダッシュボードでの可視化
 - デバイス別・環境別・地域別分析
@@ -63,10 +64,12 @@ export default function RootLayout({ children }) {
 ### 既存: カスタムWeb Vitals（Phase 7-4）
 
 **ファイル**:
+
 - `frontend/src/lib/web-vitals.ts`
 - `frontend/src/components/web-vitals-reporter.tsx`
 
 **機能**:
+
 - 詳細なログ記録
 - バックエンドへの送信
 - 長期データ保存
@@ -75,6 +78,7 @@ export default function RootLayout({ children }) {
 ### 新規: Speed Insights
 
 **機能**:
+
 - Vercelダッシュボード統合
 - 地理的分布マップ
 - パーセンタイル分析（P75/P90/P95/P99）
@@ -82,14 +86,14 @@ export default function RootLayout({ children }) {
 
 ### 役割分担
 
-| 機能 | 既存Web Vitals | Speed Insights |
-|------|---------------|----------------|
-| **測定** | ✅ カスタム実装 | ✅ Vercel統合 |
-| **保存** | ✅ 自社DB（無制限） | ⚠️ 7-90日（プラン依存） |
-| **可視化** | ⚠️ カスタム実装必要 | ✅ Vercel Dashboard |
-| **地理分析** | ❌ なし | ✅ あり |
-| **SEO連携** | ⚠️ 手動 | ✅ 自動 |
-| **コスト** | 無料 | 無料 |
+| 機能         | 既存Web Vitals      | Speed Insights          |
+| ------------ | ------------------- | ----------------------- |
+| **測定**     | ✅ カスタム実装     | ✅ Vercel統合           |
+| **保存**     | ✅ 自社DB（無制限） | ⚠️ 7-90日（プラン依存） |
+| **可視化**   | ⚠️ カスタム実装必要 | ✅ Vercel Dashboard     |
+| **地理分析** | ❌ なし             | ✅ あり                 |
+| **SEO連携**  | ⚠️ 手動             | ✅ 自動                 |
+| **コスト**   | 無料                | 無料                    |
 
 **結論**: 両方を併用して相互補完
 
@@ -121,6 +125,7 @@ Speed Insights (Vercel Dashboard)
 Speed Insightsはユーザーデータを収集するため、プライバシーポリシーを更新：
 
 **追加する内容**:
+
 - Vercel Speed Insightsによるパフォーマンスデータ収集
 - 匿名化されたメトリクスの送信
 - オプトアウト方法
@@ -128,11 +133,13 @@ Speed Insightsはユーザーデータを収集するため、プライバシー
 ## 実装後の確認
 
 ### Vercel Dashboard
+
 1. プロジェクトを選択
 2. "Speed Insights" タブをクリック
 3. メトリクスが表示されることを確認
 
 ### フロントエンド
+
 1. ページアクセス
 2. ネットワークタブで `/_vercel/speed-insights` を確認
 3. データ送信を確認
@@ -150,4 +157,3 @@ Speed Insightsはユーザーデータを収集するため、プライバシー
 - [Vercel Speed Insights Documentation](https://vercel.com/docs/speed-insights)
 - [Core Web Vitals](https://web.dev/vitals/)
 - [Google Page Experience](https://developers.google.com/search/docs/appearance/page-experience)
-

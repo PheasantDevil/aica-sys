@@ -15,17 +15,19 @@ AICA-SyS (AI-driven Content Curation & Automated Sales System) のAPI仕様書�
 
 ```typescript
 // 認証が必要なエンドポイント
-Authorization: Bearer <access_token>
+Authorization: Bearer<access_token>;
 ```
 
 ### 認証フロー
 
 1. **Google OAuth ログイン**
+
    ```http
    GET /api/auth/signin
    ```
 
 2. **セッション取得**
+
    ```http
    GET /api/auth/session
    ```
@@ -40,16 +42,19 @@ Authorization: Bearer <access_token>
 ### 認証関連
 
 #### ログイン
+
 ```http
 GET /api/auth/signin
 ```
 
 #### セッション取得
+
 ```http
 GET /api/auth/session
 ```
 
 **レスポンス:**
+
 ```json
 {
   "user": {
@@ -65,11 +70,13 @@ GET /api/auth/session
 ### サブスクリプション管理
 
 #### サブスクリプション情報取得
+
 ```http
 GET /api/subscription
 ```
 
 **レスポンス:**
+
 ```json
 {
   "subscription": {
@@ -84,11 +91,13 @@ GET /api/subscription
 ```
 
 #### 支払い履歴取得
+
 ```http
 GET /api/subscription/payment-history
 ```
 
 **レスポンス:**
+
 ```json
 {
   "payments": [
@@ -104,11 +113,13 @@ GET /api/subscription/payment-history
 ```
 
 #### 使用量取得
+
 ```http
 GET /api/subscription/usage
 ```
 
 **レスポンス:**
+
 ```json
 {
   "usage": {
@@ -129,11 +140,13 @@ GET /api/subscription/usage
 ### Stripe 決済
 
 #### チェックアウトセッション作成
+
 ```http
 POST /api/stripe/create-checkout-session
 ```
 
 **リクエスト:**
+
 ```json
 {
   "priceId": "string",
@@ -143,6 +156,7 @@ POST /api/stripe/create-checkout-session
 ```
 
 **レスポンス:**
+
 ```json
 {
   "url": "string"
@@ -150,11 +164,13 @@ POST /api/stripe/create-checkout-session
 ```
 
 #### カスタマーポータルセッション作成
+
 ```http
 POST /api/stripe/create-portal-session
 ```
 
 **リクエスト:**
+
 ```json
 {
   "returnUrl": "string"
@@ -162,6 +178,7 @@ POST /api/stripe/create-portal-session
 ```
 
 **レスポンス:**
+
 ```json
 {
   "url": "string"
@@ -169,11 +186,13 @@ POST /api/stripe/create-portal-session
 ```
 
 #### Webhook
+
 ```http
 POST /api/stripe/webhook
 ```
 
 **イベント:**
+
 - `checkout.session.completed`
 - `customer.subscription.created`
 - `customer.subscription.updated`
@@ -184,11 +203,13 @@ POST /api/stripe/webhook
 ### メール送信
 
 #### メール送信
+
 ```http
 POST /api/email/send
 ```
 
 **リクエスト:**
+
 ```json
 {
   "type": "welcome|newsletter|subscription_confirmation|password_reset",
@@ -204,6 +225,7 @@ POST /api/email/send
 ```
 
 **レスポンス:**
+
 ```json
 {
   "success": "boolean",
@@ -214,11 +236,13 @@ POST /api/email/send
 ### CSRF 保護
 
 #### CSRF トークン取得
+
 ```http
 GET /api/csrf/token
 ```
 
 **レスポンス:**
+
 ```json
 {
   "token": "string"
@@ -228,6 +252,7 @@ GET /api/csrf/token
 ## エラーレスポンス
 
 ### 400 Bad Request
+
 ```json
 {
   "error": "string",
@@ -236,6 +261,7 @@ GET /api/csrf/token
 ```
 
 ### 401 Unauthorized
+
 ```json
 {
   "error": "Unauthorized",
@@ -244,6 +270,7 @@ GET /api/csrf/token
 ```
 
 ### 403 Forbidden
+
 ```json
 {
   "error": "Forbidden",
@@ -252,6 +279,7 @@ GET /api/csrf/token
 ```
 
 ### 404 Not Found
+
 ```json
 {
   "error": "Not Found",
@@ -260,6 +288,7 @@ GET /api/csrf/token
 ```
 
 ### 429 Too Many Requests
+
 ```json
 {
   "error": "Rate Limited",
@@ -269,6 +298,7 @@ GET /api/csrf/token
 ```
 
 ### 500 Internal Server Error
+
 ```json
 {
   "error": "Internal Server Error",
@@ -318,8 +348,8 @@ interface User {
 interface Subscription {
   id: string;
   userId: string;
-  status: 'active' | 'inactive' | 'cancelled';
-  plan: 'free' | 'premium' | 'enterprise';
+  status: "active" | "inactive" | "cancelled";
+  plan: "free" | "premium" | "enterprise";
   currentPeriodStart: string;
   currentPeriodEnd: string;
   cancelAtPeriodEnd: boolean;
@@ -336,7 +366,7 @@ interface Article {
   tags: string[];
   publishedAt: string;
   updatedAt: string;
-  status: 'draft' | 'published' | 'archived';
+  status: "draft" | "published" | "archived";
 }
 
 interface Newsletter {
@@ -348,7 +378,7 @@ interface Newsletter {
   tags: string[];
   publishedAt: string;
   updatedAt: string;
-  status: 'draft' | 'published' | 'archived';
+  status: "draft" | "published" | "archived";
 }
 ```
 
@@ -358,23 +388,23 @@ interface Newsletter {
 
 ```typescript
 // 1. ログイン
-const response = await fetch('/api/auth/signin', {
-  method: 'GET',
+const response = await fetch("/api/auth/signin", {
+  method: "GET",
 });
 
 // 2. セッション取得
-const session = await fetch('/api/auth/session', {
-  method: 'GET',
+const session = await fetch("/api/auth/session", {
+  method: "GET",
   headers: {
-    'Authorization': `Bearer ${accessToken}`,
+    Authorization: `Bearer ${accessToken}`,
   },
 });
 
 // 3. サブスクリプション情報取得
-const subscription = await fetch('/api/subscription', {
-  method: 'GET',
+const subscription = await fetch("/api/subscription", {
+  method: "GET",
   headers: {
-    'Authorization': `Bearer ${accessToken}`,
+    Authorization: `Bearer ${accessToken}`,
   },
 });
 ```
@@ -383,16 +413,16 @@ const subscription = await fetch('/api/subscription', {
 
 ```typescript
 // 1. チェックアウトセッション作成
-const checkoutSession = await fetch('/api/stripe/create-checkout-session', {
-  method: 'POST',
+const checkoutSession = await fetch("/api/stripe/create-checkout-session", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
   },
   body: JSON.stringify({
-    priceId: 'price_1234567890',
-    successUrl: 'https://aica-sys.com/dashboard?success=true',
-    cancelUrl: 'https://aica-sys.com/pricing?cancelled=true',
+    priceId: "price_1234567890",
+    successUrl: "https://aica-sys.com/dashboard?success=true",
+    cancelUrl: "https://aica-sys.com/pricing?cancelled=true",
   }),
 });
 
@@ -405,17 +435,17 @@ window.location.href = url;
 
 ```typescript
 // ウェルカムメール送信
-const emailResponse = await fetch('/api/email/send', {
-  method: 'POST',
+const emailResponse = await fetch("/api/email/send", {
+  method: "POST",
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
   },
   body: JSON.stringify({
-    type: 'welcome',
+    type: "welcome",
     data: {
-      email: 'user@example.com',
-      name: 'John Doe',
+      email: "user@example.com",
+      name: "John Doe",
     },
   }),
 });

@@ -259,8 +259,7 @@ export class ApiClient {
     const searchParams = new URLSearchParams();
     if (params?.startDate) searchParams.append("start_date", params.startDate);
     if (params?.endDate) searchParams.append("end_date", params.endDate);
-    if (params?.affiliateId)
-      searchParams.append("affiliate_id", params.affiliateId.toString());
+    if (params?.affiliateId) searchParams.append("affiliate_id", params.affiliateId.toString());
 
     const suffix = searchParams.toString() ? `?${searchParams.toString()}` : "";
     return this.request(`/api/analytics/user-behavior${suffix}`);

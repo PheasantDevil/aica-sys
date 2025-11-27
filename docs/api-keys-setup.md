@@ -7,12 +7,10 @@ AICA-SyS に必要な API キーの取得と設定手順
 ### 取得手順
 
 1. **Google AI Studio** にアクセス
-
    - URL: https://aistudio.google.com/
    - Google アカウントでログイン
 
 2. **API Key の作成**
-
    - 左サイドバーの「Get API key」をクリック
    - 「Create API key」をクリック
    - プロジェクトを選択（または新規作成）
@@ -39,12 +37,10 @@ python3 -c "import google.generativeai as genai; genai.configure(api_key='$GOOGL
 ### 取得手順
 
 1. **OpenAI Platform** にアクセス
-
    - URL: https://platform.openai.com/
    - アカウント作成またはログイン
 
 2. **API Key の作成**
-
    - 左サイドバーの「API keys」をクリック
    - 「Create new secret key」をクリック
    - キー名を入力（例: "AICA-SyS"）
@@ -68,11 +64,9 @@ python3 -c "import openai; openai.api_key='$OPENAI_API_KEY'; print('✅ OpenAI A
 ### 取得手順
 
 1. **GitHub Settings** にアクセス
-
    - GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
 
 2. **Token の作成**
-
    - 「Generate new token」→「Generate new token (classic)」
    - Note: "AICA-SyS Data Collection"
    - Expiration: 90 days（推奨）
@@ -108,7 +102,6 @@ DATABASE_URL="sqlite:///./aica_sys.db"
 #### B. PostgreSQL (本番用)
 
 1. **Supabase** (無料プランあり)
-
    - URL: https://supabase.com/
    - プロジェクト作成
    - Settings → Database → Connection string をコピー

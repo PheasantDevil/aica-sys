@@ -14,9 +14,9 @@ export interface User {
 }
 
 export enum SubscriptionStatus {
-  FREE = 'free',
-  PREMIUM = 'premium',
-  CANCELLED = 'cancelled',
+  FREE = "free",
+  PREMIUM = "premium",
+  CANCELLED = "cancelled",
 }
 
 // Content types
@@ -54,18 +54,18 @@ export interface Trend {
 }
 
 export enum TrendCategory {
-  FRAMEWORK = 'framework',
-  LIBRARY = 'library',
-  TOOL = 'tool',
-  LANGUAGE = 'language',
-  ECOSYSTEM = 'ecosystem',
+  FRAMEWORK = "framework",
+  LIBRARY = "library",
+  TOOL = "tool",
+  LANGUAGE = "language",
+  ECOSYSTEM = "ecosystem",
 }
 
 export enum TrendImpact {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical',
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+  CRITICAL = "critical",
 }
 
 // AI Agent types
@@ -81,17 +81,17 @@ export interface CollectionJob {
 }
 
 export enum CollectionType {
-  GITHUB = 'github',
-  RSS = 'rss',
-  WEB_SCRAPING = 'web_scraping',
-  API = 'api',
+  GITHUB = "github",
+  RSS = "rss",
+  WEB_SCRAPING = "web_scraping",
+  API = "api",
 }
 
 export enum JobStatus {
-  PENDING = 'pending',
-  RUNNING = 'running',
-  COMPLETED = 'completed',
-  FAILED = 'failed',
+  PENDING = "pending",
+  RUNNING = "running",
+  COMPLETED = "completed",
+  FAILED = "failed",
 }
 
 export interface AnalysisResult {
@@ -106,9 +106,9 @@ export interface AnalysisResult {
 }
 
 export enum Sentiment {
-  POSITIVE = 'positive',
-  NEUTRAL = 'neutral',
-  NEGATIVE = 'negative',
+  POSITIVE = "positive",
+  NEUTRAL = "neutral",
+  NEGATIVE = "negative",
 }
 
 // Payment types
@@ -124,9 +124,9 @@ export interface Subscription {
 }
 
 export enum SubscriptionPlan {
-  FREE = 'free',
-  PREMIUM_MONTHLY = 'premium_monthly',
-  PREMIUM_YEARLY = 'premium_yearly',
+  FREE = "free",
+  PREMIUM_MONTHLY = "premium_monthly",
+  PREMIUM_YEARLY = "premium_yearly",
 }
 
 // API Response types
@@ -158,5 +158,5 @@ export interface SearchFilters {
 
 export interface SortOptions {
   field: string;
-  direction: 'asc' | 'desc';
+  direction: "asc" | "desc";
 }

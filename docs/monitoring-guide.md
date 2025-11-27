@@ -111,11 +111,11 @@ open http://localhost:9090
 ```yaml
 # monitoring/alertmanager.yml
 receivers:
-  - name: 'critical'
+  - name: "critical"
     slack_configs:
-      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
-        channel: '#aica-sys-critical'
-        title: '🚨 CRITICAL ALERT'
+      - api_url: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+        channel: "#aica-sys-critical"
+        title: "🚨 CRITICAL ALERT"
         text: '{{ range .Alerts }}{{ .Annotations.description }}\n{{ end }}'
 ```
 
@@ -123,13 +123,13 @@ receivers:
 
 ```yaml
 receivers:
-  - name: 'critical'
+  - name: "critical"
     email_configs:
-      - to: 'ops@aica-sys.com'
-        from: 'alerts@aica-sys.com'
-        smarthost: 'smtp.gmail.com:587'
-        auth_username: 'alerts@aica-sys.com'
-        auth_password: 'APP_PASSWORD'
+      - to: "ops@aica-sys.com"
+        from: "alerts@aica-sys.com"
+        smarthost: "smtp.gmail.com:587"
+        auth_username: "alerts@aica-sys.com"
+        auth_password: "APP_PASSWORD"
 ```
 
 ### アラートルール
@@ -227,9 +227,9 @@ async def example():
 ```typescript
 // Web Vitals を Prometheus 形式で送信
 export function sendMetricsToPrometheus(metric: Metric) {
-  fetch('/api/metrics', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  fetch("/api/metrics", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       name: metric.name,
       value: metric.value,

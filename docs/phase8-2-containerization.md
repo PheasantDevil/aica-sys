@@ -25,20 +25,27 @@ Stage 2: Runtime      → 最小限の実行環境
 ### 1. Dockerファイル
 
 #### バックエンド（FastAPI）
+
 #### フロントエンド（Next.js）
+
 #### Nginx（リバースプロキシ）
 
 ### 2. Docker Compose
 
 #### 開発環境
+
 #### 本番環境
 
 ### 3. Kubernetes設定
 
 #### デプロイメント
+
 #### サービス
+
 #### Ingress
+
 #### ConfigMap & Secret
+
 #### HPA（水平Pod自動スケーリング）
 
 ## 期待される効果

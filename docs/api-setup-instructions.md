@@ -43,15 +43,15 @@ GITHUB_TOKEN=ghp_*** (実際の値に置き換え)
 
 #### 以下の Secrets を追加
 
-| Name                | Value                                                                                                                                                                  | 説明                      |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| `GOOGLE_AI_API_KEY` | `AIzaSyDE1_kHCNUlGItZ4CxuWH9yxRFIw___pkw` | Google AI API             |
-| `OPENAI_API_KEY`    | `sk-proj-***` (実際の値に置き換え)         | OpenAI API                |
-| `GITHUBPA_TOKEN`    | `ghp_***` (実際の値に置き換え)             | GitHub API (命名制約対応) |
-| `DATABASE_URL`      | `sqlite:///./aica_sys.db`                                                                                                                                              | データベース              |
-| `JWT_SECRET_KEY`    | `lSruCv7yiOnixpKnW36V82uZ76gbjY6GB02J/fOn4xc=`                                                                                                                         | JWT 認証                  |
-| `ENCRYPTION_KEY`    | `kOafjcTCRw8pH3ODidAZiCqOGhPgUzfmbxfiycGcEs0=`                                                                                                                         | データ暗号化              |
-| `NEXTAUTH_SECRET`   | `UJizZfOoGEEOgyHymka0/gzKLKE0Ia730pUhBUfKx6Q=`                                                                                                                         | NextAuth.js               |
+| Name                | Value                                          | 説明                      |
+| ------------------- | ---------------------------------------------- | ------------------------- |
+| `GOOGLE_AI_API_KEY` | `AIzaSyDE1_kHCNUlGItZ4CxuWH9yxRFIw___pkw`      | Google AI API             |
+| `OPENAI_API_KEY`    | `sk-proj-***` (実際の値に置き換え)             | OpenAI API                |
+| `GITHUBPA_TOKEN`    | `ghp_***` (実際の値に置き換え)                 | GitHub API (命名制約対応) |
+| `DATABASE_URL`      | `sqlite:///./aica_sys.db`                      | データベース              |
+| `JWT_SECRET_KEY`    | `lSruCv7yiOnixpKnW36V82uZ76gbjY6GB02J/fOn4xc=` | JWT 認証                  |
+| `ENCRYPTION_KEY`    | `kOafjcTCRw8pH3ODidAZiCqOGhPgUzfmbxfiycGcEs0=` | データ暗号化              |
+| `NEXTAUTH_SECRET`   | `UJizZfOoGEEOgyHymka0/gzKLKE0Ia730pUhBUfKx6Q=` | NextAuth.js               |
 
 ### 3. 設定確認
 
@@ -125,7 +125,6 @@ curl "http://localhost:8000/ai/stats"
    ```
 
 2. **API 接続エラー**
-
    - API キーが正しく設定されているか確認
    - ネットワーク接続を確認
 

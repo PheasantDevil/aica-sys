@@ -49,6 +49,7 @@
   - 未ログインユーザーへのログイン誘導
 
 **技術実装**:
+
 - `frontend/src/app/affiliate/register/page.tsx`
 - `frontend/src/components/affiliate/RegisterForm.tsx`
 - API: `POST /api/affiliate/register` (既存)
@@ -70,6 +71,7 @@
   - トップパフォーマンスリンクの表示
 
 **技術実装**:
+
 - `frontend/src/app/affiliate/dashboard/page.tsx`
 - `frontend/src/components/affiliate/DashboardStats.tsx`
 - `frontend/src/components/affiliate/ReferralLinkManager.tsx`
@@ -90,6 +92,7 @@
   - 支払いステータス表示
 
 **技術実装**:
+
 - `frontend/src/components/affiliate/CommissionHistory.tsx`
 - `frontend/src/components/affiliate/PayoutManagement.tsx`
 - API: `GET /api/affiliate/conversions` (既存)
@@ -97,6 +100,7 @@
 - API: `POST /api/affiliate/payouts` (既存)
 
 **理由**:
+
 - バックエンドAPIは既に実装済み
 - ユーザーが実際にアフィリエイトプログラムを利用できるようにする
 - 収益化の実現に直結
@@ -122,6 +126,7 @@
   - セグメント別分析
 
 **技術実装**:
+
 - `frontend/src/app/admin/affiliates/page.tsx`
 - `frontend/src/components/admin/AffiliateList.tsx`
 - `frontend/src/components/admin/AffiliateDetail.tsx`
@@ -137,6 +142,7 @@
   - リンク別パフォーマンス表示
 
 **技術実装**:
+
 - `frontend/src/app/admin/affiliate-links/page.tsx`
 - `frontend/src/components/admin/LinkManagement.tsx`
 - API: `GET /api/affiliate/admin/referral-links` (既存)
@@ -150,11 +156,13 @@
   - 時系列グラフ表示
 
 **技術実装**:
+
 - `frontend/src/app/admin/affiliate-analytics/page.tsx`
 - `frontend/src/components/admin/AffiliateAnalytics.tsx`
 - API: `GET /api/affiliate/admin/click-statistics` (既存)
 
 **理由**:
+
 - アフィリエイトプログラムの運用管理
 - 不正検出・パフォーマンス分析
 - パートナーサポート
@@ -187,6 +195,7 @@
   - セグメント別のコンバージョン率
 
 **技術実装**:
+
 - `backend/models/analytics.py` の拡張
 - `backend/services/analytics_service.py` に分析メソッド追加
 - フロントエンド: 分析ダッシュボードの拡張
@@ -209,6 +218,7 @@
   - トップパフォーマンス記事の特定
 
 **技術実装**:
+
 - `backend/routers/analytics_router.py` にエンドポイント追加
 - フロントエンド: 記事別パフォーマンスページ
 
@@ -229,6 +239,7 @@
   - LTV/CAC比率分析
 
 **技術実装**:
+
 - `backend/services/analytics_service.py` に計算ロジック追加
 - フロントエンド: 収益レポートダッシュボード
 
@@ -241,10 +252,12 @@
 - [ ] 予測分析（機械学習ベース）
 
 **技術実装**:
+
 - フロントエンド: 統合ダッシュボード
 - バックエンド: 集計API
 
 **理由**:
+
 - データドリブンな意思決定
 - ビジネス成長の可視化
 - KPI追跡
@@ -255,28 +268,28 @@
 
 ### Week 1: パートナーポータル実装（5日）
 
-| 日 | タスク | 所要時間 | 優先度 |
-| --- | --- | --- | --- |
-| Day 1 | パートナー登録・認証画面 | 6時間 | ★★★★★ |
-| Day 2-3 | パートナーダッシュボード | 16時間 | ★★★★★ |
-| Day 4 | コミッション・支払い管理 | 8時間 | ★★★★★ |
-| Day 5 | テスト・バグ修正 | 8時間 | ★★★★★ |
+| 日      | タスク                   | 所要時間 | 優先度 |
+| ------- | ------------------------ | -------- | ------ |
+| Day 1   | パートナー登録・認証画面 | 6時間    | ★★★★★  |
+| Day 2-3 | パートナーダッシュボード | 16時間   | ★★★★★  |
+| Day 4   | コミッション・支払い管理 | 8時間    | ★★★★★  |
+| Day 5   | テスト・バグ修正         | 8時間    | ★★★★★  |
 
 ### Week 2: 管理画面実装（3日）
 
-| 日 | タスク | 所要時間 | 優先度 |
-| --- | --- | --- | --- |
-| Day 6-7 | パートナー管理画面 | 12時間 | ★★★★☆ |
-| Day 8 | リンク管理・統計画面 | 8時間 | ★★★★☆ |
+| 日      | タスク               | 所要時間 | 優先度 |
+| ------- | -------------------- | -------- | ------ |
+| Day 6-7 | パートナー管理画面   | 12時間   | ★★★★☆  |
+| Day 8   | リンク管理・統計画面 | 8時間    | ★★★★☆  |
 
 ### Week 3-4: 分析・レポート機能（16日）
 
-| 日 | タスク | 所要時間 | 優先度 |
-| --- | --- | --- | --- |
-| Day 9-12 | ユーザー行動分析の詳細化 | 32時間 | ★★★★☆ |
-| Day 13-15 | コンテンツパフォーマンス分析 | 24時間 | ★★★★☆ |
-| Day 16-19 | 収益レポート | 32時間 | ★★★★☆ |
-| Day 20-24 | ビジネスインサイトダッシュボード | 40時間 | ★★★★☆ |
+| 日        | タスク                           | 所要時間 | 優先度 |
+| --------- | -------------------------------- | -------- | ------ |
+| Day 9-12  | ユーザー行動分析の詳細化         | 32時間   | ★★★★☆  |
+| Day 13-15 | コンテンツパフォーマンス分析     | 24時間   | ★★★★☆  |
+| Day 16-19 | 収益レポート                     | 32時間   | ★★★★☆  |
+| Day 20-24 | ビジネスインサイトダッシュボード | 40時間   | ★★★★☆  |
 
 **合計**: 約24営業日（約5週間）
 
@@ -339,4 +352,3 @@
 3. **コードレビュー**
    - 各機能実装後にPRを作成
    - CodeRabbitレビューを活用
-

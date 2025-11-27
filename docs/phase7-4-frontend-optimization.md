@@ -88,8 +88,8 @@
 module.exports = {
   // 画像最適化
   images: {
-    domains: ['example.com'],
-    formats: ['image/webp', 'image/avif'],
+    domains: ["example.com"],
+    formats: ["image/webp", "image/avif"],
   },
 
   // 圧縮
@@ -101,7 +101,7 @@ module.exports = {
   // 実験的機能
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['@mui/material', '@mui/icons-material'],
+    optimizePackageImports: ["@mui/material", "@mui/icons-material"],
   },
 };
 ```
@@ -172,9 +172,9 @@ function VirtualizedList({ items }) {
 ```typescript
 export function reportWebVitals(metric) {
   // Google Analyticsに送信
-  if (metric.label === 'web-vital') {
-    ga('send', 'event', {
-      eventCategory: 'Web Vitals',
+  if (metric.label === "web-vital") {
+    ga("send", "event", {
+      eventCategory: "Web Vitals",
       eventAction: metric.name,
       eventValue: Math.round(metric.value),
       eventLabel: metric.id,

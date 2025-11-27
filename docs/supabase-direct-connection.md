@@ -22,6 +22,7 @@ Project REF: ndetbklyymekcifheqaj
 ### 接続文字列（Connection String）
 
 #### Pooler接続（推奨 - 本番環境）
+
 ```
 Host: aws-0-ap-northeast-1.pooler.supabase.com
 Database: postgres
@@ -34,6 +35,7 @@ postgresql://postgres.ndetbklyymekcifheqaj:[PASSWORD]@aws-0-ap-northeast-1.poole
 ```
 
 #### Direct接続（低レイテンシー - 開発環境）
+
 ```
 Host: db.ndetbklyymekcifheqaj.supabase.co
 Database: postgres
@@ -140,7 +142,7 @@ with engine.connect() as conn:
     version = result.fetchone()[0]
     print(f'✅ PostgreSQL接続成功!')
     print(f'Version: {version[:50]}...')
-    
+
     result = conn.execute(text(
         \"SELECT tablename FROM pg_tables WHERE schemaname='public' ORDER BY tablename\"
     ))
@@ -273,6 +275,7 @@ if is_postgresql:
 **原因**: パスワードが間違っている、またはネットワークの問題
 
 **解決**:
+
 ```bash
 # パスワードを再確認
 # Supabase Dashboard → Settings → Database → Reset Password
@@ -286,6 +289,7 @@ psql "postgresql://postgres:[PASSWORD]@db.ndetbklyymekcifheqaj.supabase.co:5432/
 **原因**: PostgreSQLドライバーがインストールされていない
 
 **解決**:
+
 ```bash
 pip install psycopg2-binary==2.9.9
 ```
@@ -295,6 +299,7 @@ pip install psycopg2-binary==2.9.9
 **原因**: Supabaseは常にSSL接続を要求
 
 **解決**:
+
 ```bash
 # DATABASE_URLに?sslmode=requireを追加
 DATABASE_URL=postgresql://postgres:[PASSWORD]@db.ndetbklyymekcifheqaj.supabase.co:5432/postgres?sslmode=require
@@ -304,10 +309,10 @@ DATABASE_URL=postgresql://postgres:[PASSWORD]@db.ndetbklyymekcifheqaj.supabase.c
 
 ### Pooler vs Direct接続
 
-| 接続タイプ | 推奨用途 | メリット | デメリット |
-|----------|---------|---------|----------|
+| 接続タイプ | 推奨用途 | メリット                       | デメリット         |
+| ---------- | -------- | ------------------------------ | ------------------ |
 | **Pooler** | 本番環境 | 自動スケーリング、接続制限なし | やや高レイテンシー |
-| **Direct** | 開発環境 | 低レイテンシー | 60接続制限 |
+| **Direct** | 開発環境 | 低レイテンシー                 | 60接続制限         |
 
 ### 推奨設定
 
@@ -412,6 +417,7 @@ python3 scripts/generate_daily_article.py
 ### Q: SQLiteからSupabaseに切り替えるメリットは？
 
 **A:**
+
 - ✅ 本番環境と同じデータベース
 - ✅ RLS（Row Level Security）テスト可能
 - ✅ リアルタイム機能使用可能
@@ -421,6 +427,7 @@ python3 scripts/generate_daily_article.py
 ### Q: ローカルでもSupabaseを使うとコストは？
 
 **A:**
+
 - ✅ Free tierは無料
 - ✅ 500MB までのデータベース
 - ✅ 50,000 月間アクティブユーザー
@@ -430,6 +437,7 @@ python3 scripts/generate_daily_article.py
 ### Q: Docker不要で本当に問題ない？
 
 **A:**
+
 - ✅ 問題なし
 - ✅ Supabase直接接続で十分
 - ✅ Docker は以下の場合のみ必要:
@@ -442,4 +450,3 @@ python3 scripts/generate_daily_article.py
 - [Supabase Database接続](https://supabase.com/docs/guides/database/connecting-to-postgres)
 - [SQLAlchemy + Supabase](https://supabase.com/docs/guides/integrations/sqlalchemy)
 - [Supabase.js](https://supabase.com/docs/reference/javascript/introduction)
-

@@ -120,12 +120,11 @@ const queryClient = new QueryClient({
 
 ```typescript
 const queryKeys = {
-  articles: ['articles'] as const,
-  article: (id: string) => ['articles', id] as const,
-  articlesList: (page: number, limit: number) =>
-    ['articles', 'list', page, limit] as const,
-  trends: ['trends'] as const,
-  newsletters: ['newsletters'] as const,
+  articles: ["articles"] as const,
+  article: (id: string) => ["articles", id] as const,
+  articlesList: (page: number, limit: number) => ["articles", "list", page, limit] as const,
+  trends: ["trends"] as const,
+  newsletters: ["newsletters"] as const,
 };
 ```
 

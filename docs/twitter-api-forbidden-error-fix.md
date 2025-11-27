@@ -13,15 +13,12 @@ Twitter API forbidden. Check account permissions.
 以下のいずれかが原因です：
 
 1. **アプリの権限が「Read-only」になっている**
-
    - Twitter Developer Portal でアプリの権限が「Read and Write」に設定されていない
 
 2. **Bearer Token または OAuth 認証情報が無効**
-
    - 認証情報が期限切れまたは無効になっている
 
 3. **Twitter アカウントが制限されている**
-
    - アカウントが一時的に制限されている、または凍結されている
 
 4. **Twitter Developer アカウントのアクセスレベルが不足**
@@ -65,14 +62,12 @@ Twitter API forbidden. Check account permissions.
 1. 「Keys and tokens」タブを開く
 
 2. **Bearer Token の確認・再生成**
-
    - OAuth 2.0 Client ID/Secret を変更した場合、**Bearer Token は再生成が必要な場合があります**
    - 「Bearer Token」セクションで、既存の Bearer Token が有効か確認
    - エラーが発生する場合は「Regenerate」をクリックして再生成
    - 新しい Bearer Token をコピー
 
 3. **OAuth 1.0a 認証情報の確認**
-
    - **API Key (Consumer Key) と API Secret (Consumer Secret)** は、OAuth 2.0 Client ID/Secret とは**独立している**ため、通常は再生成不要
    - ただし、アプリの設定を大幅に変更した場合は、再生成が必要な場合があります
    - 「API Key and Secret」セクションで、API Key と Secret を確認
@@ -150,12 +145,10 @@ Twitter Developer Portal で「Read and Write」権限を有効にするには�
 **OAuth 2.0 Client ID/Secret を変更した場合**:
 
 1. **Bearer Token**: 再生成が必要な場合があります
-
    - 既存の Bearer Token でエラーが発生する場合は再生成
    - 動作する場合はそのまま使用可能
 
 2. **API Key/Secret (OAuth 1.0a)**: 通常は再生成不要
-
    - OAuth 2.0 Client ID/Secret とは独立しているため
    - ただし、アプリの設定を大幅に変更した場合は再生成が必要な場合があります
 

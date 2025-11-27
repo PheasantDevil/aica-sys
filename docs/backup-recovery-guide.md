@@ -129,6 +129,7 @@ ls -la
 **症状**: `backups/` ディレクトリが空
 
 **解決策**:
+
 ```bash
 # 手動でバックアップを作成
 ./scripts/backup.sh
@@ -142,6 +143,7 @@ ls -la
 **症状**: `database is locked` エラー
 
 **解決策**:
+
 ```bash
 # WALファイルを削除
 rm -f backend/aica_sys.db-wal backend/aica_sys.db-shm
@@ -156,6 +158,7 @@ cd backend && python3 -m uvicorn main:app --reload
 **症状**: バックエンドが起動しない
 
 **解決策**:
+
 ```bash
 # データベースの初期化
 cd backend

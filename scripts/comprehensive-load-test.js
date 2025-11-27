@@ -1,26 +1,26 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-const { performance } = require('perf_hooks');
-require('dotenv').config({
-  path: path.resolve(__dirname, '../.env.production.example'),
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+const { performance } = require("perf_hooks");
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env.production.example"),
 });
 
 // Configuration
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 // Colors for console output
 const colors = {
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  magenta: '\x1b[35m',
-  cyan: '\x1b[36m',
-  reset: '\x1b[0m',
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  magenta: "\x1b[35m",
+  cyan: "\x1b[36m",
+  reset: "\x1b[0m",
 };
 
-function log(message, color = 'reset') {
+function log(message, color = "reset") {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
@@ -39,12 +39,12 @@ class ComprehensiveLoadTester {
   }
 
   async runLoadTest(config) {
-    log('\n🚀 Starting Comprehensive Load Test', 'blue');
-    log(`Target: ${API_URL}`, 'cyan');
-    log(`Duration: ${config.duration}s`, 'cyan');
-    log(`Concurrent Users: ${config.users}`, 'cyan');
-    log(`Requests per User: ${config.requestsPerUser}`, 'cyan');
-    log('');
+    log("\n🚀 Starting Comprehensive Load Test", "blue");
+    log(`Target: ${API_URL}`, "cyan");
+    log(`Duration: ${config.duration}s`, "cyan");
+    log(`Concurrent Users: ${config.users}`, "cyan");
+    log(`Requests per User: ${config.requestsPerUser}`, "cyan");
+    log("");
 
     const startTime = performance.now();
     const endTime = startTime + config.duration * 1000;
@@ -59,18 +59,18 @@ class ComprehensiveLoadTester {
     await Promise.all(userPromises);
 
     this.results.endTime = new Date();
-    
+
     return this.generateReport();
   }
 
   async simulateUser(userId, endTime, requestsPerUser) {
     const endpoints = [
-      { url: '/api/content/articles', weight: 40, name: 'articles' },
-      { url: '/api/content/trends', weight: 30, name: 'trends' },
-      { url: '/api/content/newsletters', weight: 20, name: 'newsletters' },
-      { url: '/api/optimized/articles', weight: 15, name: 'optimized_articles' },
-      { url: '/api/optimized/dashboard', weight: 10, name: 'optimized_dashboard' },
-      { url: '/health', weight: 5, name: 'health' },
+      { url: "/api/content/articles", weight: 40, name: "articles" },
+      { url: "/api/content/trends", weight: 30, name: "trends" },
+      { url: "/api/content/newsletters", weight: 20, name: "newsletters" },
+      { url: "/api/optimized/articles", weight: 15, name: "optimized_articles" },
+      { url: "/api/optimized/dashboard", weight: 10, name: "optimized_dashboard" },
+      { url: "/health", weight: 5, name: "health" },
     ];
 
     let requestCount = 0;
@@ -79,7 +79,7 @@ class ComprehensiveLoadTester {
       try {
         // ランダムにエンドポイントを選択
         const endpoint = this.selectEndpoint(endpoints);
-        
+
         const requestStart = performance.now();
         const response = await axios.get(`${API_URL}${endpoint.url}`, {
           timeout: 10000,
@@ -94,7 +94,6 @@ class ComprehensiveLoadTester {
 
         // ランダムな待機時間（0.5-2秒）
         await this.sleep(Math.random() * 1500 + 500);
-
       } catch (error) {
         this.recordError(error.message);
       }
@@ -157,7 +156,7 @@ class ComprehensiveLoadTester {
   }
 
   sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   calculatePercentile(values, percentile) {
@@ -168,24 +167,22 @@ class ComprehensiveLoadTester {
   }
 
   generateReport() {
-    const durationSeconds =
-      (this.results.endTime - this.results.startTime) / 1000;
+    const durationSeconds = (this.results.endTime - this.results.startTime) / 1000;
 
     const responseTimes = this.results.responseTimes;
 
     const report = {
       test_id: `load-test-${this.results.startTime.toISOString()}`,
-      test_type: 'comprehensive_load_test',
+      test_type: "comprehensive_load_test",
       start_time: this.results.startTime.toISOString(),
       end_time: this.results.endTime.toISOString(),
       duration_seconds: durationSeconds,
-      
+
       summary: {
         total_requests: this.results.totalRequests,
         successful_requests: this.results.successfulRequests,
         failed_requests: this.results.failedRequests,
-        success_rate:
-          (this.results.successfulRequests / this.results.totalRequests) * 100,
+        success_rate: (this.results.successfulRequests / this.results.totalRequests) * 100,
         requests_per_second: this.results.totalRequests / durationSeconds,
       },
 
@@ -223,37 +220,34 @@ class ComprehensiveLoadTester {
   }
 
   displayReport(report) {
-    log('\n' + '='.repeat(80), 'blue');
-    log('📊 Load Test Results Summary', 'blue');
-    log('='.repeat(80), 'blue');
+    log("\n" + "=".repeat(80), "blue");
+    log("📊 Load Test Results Summary", "blue");
+    log("=".repeat(80), "blue");
 
-    log(`\nTest Duration: ${report.duration_seconds.toFixed(2)}s`, 'cyan');
-    log(`Total Requests: ${report.summary.total_requests}`, 'cyan');
+    log(`\nTest Duration: ${report.duration_seconds.toFixed(2)}s`, "cyan");
+    log(`Total Requests: ${report.summary.total_requests}`, "cyan");
     log(
       `Success Rate: ${report.summary.success_rate.toFixed(2)}%`,
-      report.summary.success_rate >= 99 ? 'green' : 'yellow'
+      report.summary.success_rate >= 99 ? "green" : "yellow",
     );
-    log(
-      `Requests/sec: ${report.summary.requests_per_second.toFixed(2)}`,
-      'cyan'
-    );
+    log(`Requests/sec: ${report.summary.requests_per_second.toFixed(2)}`, "cyan");
 
-    log(`\n⏱️  Response Times:`, 'blue');
+    log(`\n⏱️  Response Times:`, "blue");
     log(`  Average: ${report.response_times.average.toFixed(2)}ms`);
     log(`  Min: ${report.response_times.min.toFixed(2)}ms`);
     log(`  Max: ${report.response_times.max.toFixed(2)}ms`);
     log(`  P50: ${report.response_times.p50.toFixed(2)}ms`);
     log(
       `  P95: ${report.response_times.p95.toFixed(2)}ms`,
-      report.response_times.p95 < 500 ? 'green' : 'yellow'
+      report.response_times.p95 < 500 ? "green" : "yellow",
     );
     log(
       `  P99: ${report.response_times.p99.toFixed(2)}ms`,
-      report.response_times.p99 < 1000 ? 'green' : 'yellow'
+      report.response_times.p99 < 1000 ? "green" : "yellow",
     );
 
-    log(`\n🎯 Endpoint Performance:`, 'blue');
-    report.endpoints.forEach(endpoint => {
+    log(`\n🎯 Endpoint Performance:`, "blue");
+    report.endpoints.forEach((endpoint) => {
       log(`  ${endpoint.name}:`);
       log(`    Requests: ${endpoint.count}`);
       log(`    Success Rate: ${endpoint.success_rate.toFixed(2)}%`);
@@ -262,46 +256,41 @@ class ComprehensiveLoadTester {
     });
 
     if (report.errors.length > 0) {
-      log(`\n❌ Errors (showing first 10):`, 'red');
+      log(`\n❌ Errors (showing first 10):`, "red");
       report.errors.slice(0, 10).forEach((error, i) => {
-        log(`  ${i + 1}. ${error.message}`, 'red');
+        log(`  ${i + 1}. ${error.message}`, "red");
       });
     }
 
-    log('\n' + '='.repeat(80), 'blue');
+    log("\n" + "=".repeat(80), "blue");
   }
 
   saveReport(report) {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const filename = path.join(
-      __dirname,
-      '..',
-      'docs',
-      `load-test-report-${timestamp}.json`
-    );
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const filename = path.join(__dirname, "..", "docs", `load-test-report-${timestamp}.json`);
 
     fs.mkdirSync(path.dirname(filename), { recursive: true });
     fs.writeFileSync(filename, JSON.stringify(report, null, 2));
 
-    log(`\n💾 Detailed report saved to: ${filename}`, 'green');
+    log(`\n💾 Detailed report saved to: ${filename}`, "green");
   }
 }
 
 async function main() {
   // テスト設定
   const config = {
-    duration: 60,           // 60秒間のテスト
-    users: 50,              // 50同時ユーザー
-    requestsPerUser: 100,   // ユーザーあたり100リクエスト
+    duration: 60, // 60秒間のテスト
+    users: 50, // 50同時ユーザー
+    requestsPerUser: 100, // ユーザーあたり100リクエスト
   };
 
   // コマンドライン引数から設定を上書き
   const args = process.argv.slice(2);
-  args.forEach(arg => {
-    const [key, value] = arg.split('=');
-    if (key === '--duration') config.duration = parseInt(value);
-    if (key === '--users') config.users = parseInt(value);
-    if (key === '--requests') config.requestsPerUser = parseInt(value);
+  args.forEach((arg) => {
+    const [key, value] = arg.split("=");
+    if (key === "--duration") config.duration = parseInt(value);
+    if (key === "--users") config.users = parseInt(value);
+    if (key === "--requests") config.requestsPerUser = parseInt(value);
   });
 
   const tester = new ComprehensiveLoadTester();
@@ -314,11 +303,11 @@ async function main() {
     report.response_times.p99 < 1000;
 
   if (meetsThresholds) {
-    log('\n✅ Load test PASSED - All thresholds met!', 'green');
+    log("\n✅ Load test PASSED - All thresholds met!", "green");
     return 0;
   } else {
-    log('\n⚠️  Load test completed with warnings', 'yellow');
-    log('Some thresholds were not met. Please review the results.', 'yellow');
+    log("\n⚠️  Load test completed with warnings", "yellow");
+    log("Some thresholds were not met. Please review the results.", "yellow");
     return 1;
   }
 }
@@ -326,11 +315,11 @@ async function main() {
 // 実行
 if (require.main === module) {
   main()
-    .then(exitCode => {
+    .then((exitCode) => {
       process.exit(exitCode);
     })
-    .catch(error => {
-      log(`\n❌ Test failed: ${error.message}`, 'red');
+    .catch((error) => {
+      log(`\n❌ Test failed: ${error.message}`, "red");
       console.error(error);
       process.exit(1);
     });
