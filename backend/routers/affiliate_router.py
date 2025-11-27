@@ -92,9 +92,15 @@ async def register_affiliate(
         service = AffiliateService(db)
         affiliate = await service.register_affiliate(request.user_id)
         return {"success": True, "affiliate": affiliate}
+    except HTTPException:
+        raise
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Affiliate registration error: {e}")
-        raise HTTPException(status_code=500, detail="登録に失敗しました")
+        logger.exception("Affiliate registration error")
+        raise HTTPException(status_code=500, detail="登録に失敗しました") from e
 
 
 @router.get("/profile/{user_id}")
@@ -112,9 +118,13 @@ async def get_affiliate_profile(user_id: str, db: Session = Depends(get_db)):
         return {"success": True, "affiliate": affiliate, "stats": stats}
     except HTTPException:
         raise
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Get affiliate profile error: {e}")
-        raise HTTPException(status_code=500, detail="取得に失敗しました")
+        logger.exception("Get affiliate profile error")
+        raise HTTPException(status_code=500, detail="取得に失敗しました") from e
 
 
 @router.put("/{affiliate_id}/tier")
@@ -126,11 +136,21 @@ async def update_affiliate_tier(
         service = AffiliateService(db)
         affiliate = await service.update_affiliate_tier(affiliate_id, new_tier)
         return {"success": True, "affiliate": affiliate}
+    except HTTPException:
+        raise
+    except HTTPException:
+
+        raise
+
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Update tier error: {e}")
-        raise HTTPException(status_code=500, detail="更新に失敗しました")
+        logger.exception("Update tier error")
+        raise HTTPException(status_code=500, detail="更新に失敗しました") from e
 
 
 # Referral Link Endpoints
@@ -148,9 +168,15 @@ async def create_referral_link(
             valid_until=request.valid_until,
         )
         return {"success": True, "link": link}
+    except HTTPException:
+        raise
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Create referral link error: {e}")
-        raise HTTPException(status_code=500, detail="作成に失敗しました")
+        logger.exception("Create referral link error")
+        raise HTTPException(status_code=500, detail="作成に失敗しました") from e
 
 
 @router.get("/referral-links/{affiliate_id}")
@@ -162,9 +188,15 @@ async def get_referral_links(
         service = AffiliateService(db)
         links = await service.get_referral_links(affiliate_id, active_only)
         return {"success": True, "links": links, "count": len(links)}
+    except HTTPException:
+        raise
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Get referral links error: {e}")
-        raise HTTPException(status_code=500, detail="取得に失敗しました")
+        logger.exception("Get referral links error")
+        raise HTTPException(status_code=500, detail="取得に失敗しました") from e
 
 
 # Click Tracking Endpoints
@@ -181,11 +213,21 @@ async def track_click(request: ClickTrackRequest, db: Session = Depends(get_db))
             session_id=request.session_id,
         )
         return {"success": True, "click": click}
+    except HTTPException:
+        raise
+    except HTTPException:
+
+        raise
+
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Track click error: {e}")
-        raise HTTPException(status_code=500, detail="追跡に失敗しました")
+        logger.exception("Track click error")
+        raise HTTPException(status_code=500, detail="追跡に失敗しました") from e
 
 
 # Conversion Endpoints
@@ -203,11 +245,19 @@ async def record_conversion(
             subscription_id=request.subscription_id,
         )
         return {"success": True, "conversion": conversion}
+    except HTTPException:
+
+        raise
+
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Record conversion error: {e}")
-        raise HTTPException(status_code=500, detail="記録に失敗しました")
+        logger.exception("Record conversion error")
+        raise HTTPException(status_code=500, detail="記録に失敗しました") from e
 
 
 @router.put("/conversions/{conversion_id}/approve")
@@ -217,11 +267,21 @@ async def approve_conversion(conversion_id: int, db: Session = Depends(get_db)):
         service = AffiliateService(db)
         conversion = await service.approve_conversion(conversion_id)
         return {"success": True, "conversion": conversion}
+    except HTTPException:
+        raise
+    except HTTPException:
+
+        raise
+
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Approve conversion error: {e}")
-        raise HTTPException(status_code=500, detail="承認に失敗しました")
+        logger.exception("Approve conversion error")
+        raise HTTPException(status_code=500, detail="承認に失敗しました") from e
 
 
 # Commission Rule Endpoints
@@ -240,9 +300,13 @@ async def create_commission_rule(
             min_threshold=request.min_threshold,
         )
         return {"success": True, "rule": rule}
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Create commission rule error: {e}")
-        raise HTTPException(status_code=500, detail="作成に失敗しました")
+        logger.exception("Create commission rule error")
+        raise HTTPException(status_code=500, detail="作成に失敗しました") from e
 
 
 @router.get("/commission-rules")
@@ -254,9 +318,13 @@ async def get_commission_rules(
         service = AffiliateService(db)
         rules = await service.get_commission_rules(tier, active_only)
         return {"success": True, "rules": rules, "count": len(rules)}
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Get commission rules error: {e}")
-        raise HTTPException(status_code=500, detail="取得に失敗しました")
+        logger.exception("Get commission rules error")
+        raise HTTPException(status_code=500, detail="取得に失敗しました") from e
 
 
 # Payout Endpoints
@@ -271,11 +339,19 @@ async def request_payout(request: PayoutRequest, db: Session = Depends(get_db)):
             payment_method=request.payment_method,
         )
         return {"success": True, "payout": payout}
+    except HTTPException:
+
+        raise
+
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Request payout error: {e}")
-        raise HTTPException(status_code=500, detail="リクエストに失敗しました")
+        logger.exception("Request payout error")
+        raise HTTPException(status_code=500, detail="リクエストに失敗しました") from e
 
 
 @router.put("/payouts/{payout_id}/complete")
@@ -287,11 +363,19 @@ async def complete_payout(
         service = AffiliateService(db)
         payout = await service.complete_payout(payout_id, transaction_id)
         return {"success": True, "payout": payout}
+    except HTTPException:
+
+        raise
+
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Complete payout error: {e}")
-        raise HTTPException(status_code=500, detail="完了に失敗しました")
+        logger.exception("Complete payout error")
+        raise HTTPException(status_code=500, detail="完了に失敗しました") from e
 
 
 @router.get("/payouts/{affiliate_id}")
@@ -303,9 +387,13 @@ async def get_payouts(
         service = AffiliateService(db)
         payouts = await service.get_payouts(affiliate_id, limit)
         return {"success": True, "payouts": payouts, "count": len(payouts)}
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Get payouts error: {e}")
-        raise HTTPException(status_code=500, detail="取得に失敗しました")
+        logger.exception("Get payouts error")
+        raise HTTPException(status_code=500, detail="取得に失敗しました") from e
 
 
 # Affiliate Coupon Endpoints
@@ -324,9 +412,13 @@ async def create_affiliate_coupon(
             valid_until=request.valid_until,
         )
         return {"success": True, "coupon": coupon}
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Create affiliate coupon error: {e}")
-        raise HTTPException(status_code=500, detail="作成に失敗しました")
+        logger.exception("Create affiliate coupon error")
+        raise HTTPException(status_code=500, detail="作成に失敗しました") from e
 
 
 # Analytics Endpoints
@@ -337,11 +429,19 @@ async def get_affiliate_stats(affiliate_id: int, db: Session = Depends(get_db)):
         service = AffiliateService(db)
         stats = await service.get_affiliate_stats(affiliate_id)
         return {"success": True, "stats": stats}
+    except HTTPException:
+
+        raise
+
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Get affiliate stats error: {e}")
-        raise HTTPException(status_code=500, detail="取得に失敗しました")
+        logger.exception("Get affiliate stats error")
+        raise HTTPException(status_code=500, detail="取得に失敗しました") from e
 
 
 @router.get("/top-affiliates")
@@ -353,9 +453,13 @@ async def get_top_affiliates(
         service = AffiliateService(db)
         affiliates = await service.get_top_affiliates(limit, order_by)
         return {"success": True, "affiliates": affiliates, "count": len(affiliates)}
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Get top affiliates error: {e}")
-        raise HTTPException(status_code=500, detail="取得に失敗しました")
+        logger.exception("Get top affiliates error")
+        raise HTTPException(status_code=500, detail="取得に失敗しました") from e
 
 
 # Admin Endpoints
@@ -381,11 +485,19 @@ async def update_referral_link(
             valid_until=request.valid_until,
         )
         return {"success": True, "link": link}
+    except HTTPException:
+
+        raise
+
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Update referral link error: {e}")
-        raise HTTPException(status_code=500, detail="更新に失敗しました")
+        logger.exception("Update referral link error")
+        raise HTTPException(status_code=500, detail="更新に失敗しました") from e
 
 
 @router.get("/admin/referral-links")
@@ -399,9 +511,13 @@ async def get_all_referral_links(
         service = AffiliateService(db)
         links = await service.get_all_referral_links(active_only, limit)
         return {"success": True, "links": links, "count": len(links)}
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Get all referral links error: {e}")
-        raise HTTPException(status_code=500, detail="取得に失敗しました")
+        logger.exception("Get all referral links error")
+        raise HTTPException(status_code=500, detail="取得に失敗しました") from e
 
 
 @router.get("/admin/click-statistics")
@@ -415,6 +531,10 @@ async def get_click_statistics(
         service = AffiliateService(db)
         stats = await service.get_click_statistics(affiliate_id, link_id)
         return {"success": True, "statistics": stats}
+    except HTTPException:
+
+        raise
+
     except Exception as e:
-        logger.error(f"Get click statistics error: {e}")
-        raise HTTPException(status_code=500, detail="取得に失敗しました")
+        logger.exception("Get click statistics error")
+        raise HTTPException(status_code=500, detail="取得に失敗しました") from e

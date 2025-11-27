@@ -583,11 +583,19 @@ class AffiliateService:
             commission_rate = 0.0
             commission_amount = rule.fixed_amount or 0.0
         elif rule.reward_type == RewardType.PERCENTAGE:
-            commission_rate = rule.percentage or DEFAULT_COMMISSION_RATE
+            commission_rate = (
+                rule.percentage
+                if rule.percentage is not None
+                else DEFAULT_COMMISSION_RATE
+            )
             commission_amount = conversion_value * (commission_rate / 100)
         else:  # TIERED
             # 段階制の実装（簡略版）
-            commission_rate = rule.percentage or DEFAULT_COMMISSION_RATE
+            commission_rate = (
+                rule.percentage
+                if rule.percentage is not None
+                else DEFAULT_COMMISSION_RATE
+            )
             commission_amount = conversion_value * (commission_rate / 100)
 
         return round(commission_rate, 2), round(commission_amount, 2)
