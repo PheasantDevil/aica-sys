@@ -349,28 +349,6 @@ class AnalyticsService:
         logger.info(f"Social post report stored: {report.id}")
         return report
 
-    async def save_affiliate_commission_report(
-        self,
-        title: str,
-        summary: Dict[str, Any],
-        created_by: Optional[str] = None,
-    ) -> ReportDB:
-        """アフィリエイトコミッションレポートを保存"""
-        report = ReportDB(
-            report_type=ReportType.AFFILIATE.value,
-            title=title,
-            description="Affiliate commission summary",
-            parameters={"period": summary.get("period")},
-            data=summary,
-            format="json",
-            created_by=created_by,
-        )
-        self.db.add(report)
-        self.db.commit()
-        self.db.refresh(report)
-        logger.info(f"Affiliate commission report stored: {report.id}")
-        return report
-
     # スケジュールレポート
     async def create_scheduled_report(
         self,

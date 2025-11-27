@@ -18,13 +18,6 @@
 - 支払い管理
 - 報酬履歴
 
-**実装メモ**
-
-- `commission_rules` に JSON ベースの `configuration` を追加し、段階制報酬を柔軟に表現
-- `AffiliateService.get_commission_report()` で期間指定の集計を提供
-- `POST /api/affiliate/payouts/settle` により残高閾値を超えたパートナーを自動的に支払いリクエスト化
-- `scripts/generate_affiliate_commission_report.py` で定期レポートを `AnalyticsService` に保存可能
-
 ### 3. パートナー管理
 - パートナーダッシュボード
 - パフォーマンス分析
