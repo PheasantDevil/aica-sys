@@ -316,6 +316,43 @@ export class ApiClient {
   ): Promise<ApiResponse<{ success: boolean; payouts: any[]; count: number }>> {
     return this.request(`/api/affiliate/payouts/${affiliateId}?limit=${limit}`);
   }
+
+  async getTopAffiliates(
+    limit: number = 20,
+    orderBy: string = "total_revenue",
+  ): Promise<ApiResponse<{ success: boolean; affiliates: any[]; count: number }>> {
+    const query = `?limit=${limit}&order_by=${orderBy}`;
+    return this.request(`/api/affiliate/top-affiliates${query}`);
+  }
+
+  async getAllReferralLinks(
+    activeOnly: boolean = true,
+    limit: number = 100,
+  ): Promise<ApiResponse<{ success: boolean; links: any[]; count: number }>> {
+    const query = `?active_only=${activeOnly}&limit=${limit}`;
+    return this.request(`/api/affiliate/admin/referral-links${query}`);
+  }
+
+  async updateReferralLink(
+    linkId: number,
+    data: { is_active?: boolean; valid_until?: string },
+  ): Promise<ApiResponse<{ success: boolean; link: any }>> {
+    return this.request(`/api/affiliate/referral-links/${linkId}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getClickStatistics(params: {
+    affiliate_id?: number;
+    link_id?: number;
+  }): Promise<ApiResponse<{ success: boolean; statistics: any }>> {
+    const query = new URLSearchParams();
+    if (params.affiliate_id) query.set("affiliate_id", params.affiliate_id.toString());
+    if (params.link_id) query.set("link_id", params.link_id.toString());
+    const suffix = query.toString() ? `?${query.toString()}` : "";
+    return this.request(`/api/affiliate/admin/click-statistics${suffix}`);
+  }
 }
 
 // Singleton instance
