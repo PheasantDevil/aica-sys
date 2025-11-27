@@ -94,9 +94,6 @@ async def register_affiliate(
         return {"success": True, "affiliate": affiliate}
     except HTTPException:
         raise
-    except HTTPException:
-
-        raise
 
     except Exception as e:
         logger.exception("Affiliate registration error")
@@ -118,9 +115,6 @@ async def get_affiliate_profile(user_id: str, db: Session = Depends(get_db)):
         return {"success": True, "affiliate": affiliate, "stats": stats}
     except HTTPException:
         raise
-    except HTTPException:
-
-        raise
 
     except Exception as e:
         logger.exception("Get affiliate profile error")
@@ -137,9 +131,6 @@ async def update_affiliate_tier(
         affiliate = await service.update_affiliate_tier(affiliate_id, new_tier)
         return {"success": True, "affiliate": affiliate}
     except HTTPException:
-        raise
-    except HTTPException:
-
         raise
 
     except ValueError as e:
@@ -170,9 +161,6 @@ async def create_referral_link(
         return {"success": True, "link": link}
     except HTTPException:
         raise
-    except HTTPException:
-
-        raise
 
     except Exception as e:
         logger.exception("Create referral link error")
@@ -189,9 +177,6 @@ async def get_referral_links(
         links = await service.get_referral_links(affiliate_id, active_only)
         return {"success": True, "links": links, "count": len(links)}
     except HTTPException:
-        raise
-    except HTTPException:
-
         raise
 
     except Exception as e:
@@ -214,9 +199,6 @@ async def track_click(request: ClickTrackRequest, db: Session = Depends(get_db))
         )
         return {"success": True, "click": click}
     except HTTPException:
-        raise
-    except HTTPException:
-
         raise
 
     except ValueError as e:
@@ -268,9 +250,6 @@ async def approve_conversion(conversion_id: int, db: Session = Depends(get_db)):
         conversion = await service.approve_conversion(conversion_id)
         return {"success": True, "conversion": conversion}
     except HTTPException:
-        raise
-    except HTTPException:
-
         raise
 
     except ValueError as e:
