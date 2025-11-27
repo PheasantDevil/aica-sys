@@ -4,11 +4,11 @@ import { AffiliateStatsCards } from "@/components/affiliate/affiliate-stats-card
 import { CommissionHistory } from "@/components/affiliate/commission-history";
 import { PerformanceChart } from "@/components/affiliate/performance-chart";
 import { ReferralLinkManager } from "@/components/affiliate/referral-link-manager";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { apiClient } from "@/lib/api-client";
+import { Card, CardContent } from "@/components/ui/card";
 import { useApiCall } from "@/hooks/use-api";
-import { useEffect, useState } from "react";
+import { apiClient } from "@/lib/api-client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface AffiliateDashboardContentProps {
   user: {
@@ -48,9 +48,11 @@ export function AffiliateDashboardContent({ user }: AffiliateDashboardContentPro
   useEffect(() => {
     if (!user.id) return;
 
+    let isMounted = true;
+
     const loadData = async () => {
       const response = await execute(() => apiClient.getAffiliateProfile(user.id!));
-      if (response) {
+      if (response && isMounted) {
         setAffiliateData({
           affiliate: response.affiliate,
           stats: response.stats,
@@ -59,8 +61,11 @@ export function AffiliateDashboardContent({ user }: AffiliateDashboardContentPro
     };
 
     loadData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.id]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [execute, user.id]);
 
   if (loading) {
     return (

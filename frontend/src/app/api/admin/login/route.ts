@@ -10,12 +10,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "アクセスキーを入力してください" }, { status: 400 });
     }
 
-    const expectedPasscode =
-      process.env.ADMIN_ACCESS_CODE || process.env.NEXT_PUBLIC_ADMIN_ACCESS_CODE;
+    const expectedPasscode = process.env.ADMIN_ACCESS_CODE;
 
     if (!expectedPasscode) {
       return NextResponse.json(
-        { error: "管理者アクセスキーが設定されていません" },
+        {
+          error:
+            "管理者アクセスキーが設定されていません。サーバー環境変数 ADMIN_ACCESS_CODE を設定してください。",
+        },
         { status: 500 },
       );
     }

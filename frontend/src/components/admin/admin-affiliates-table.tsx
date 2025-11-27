@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useApiCall } from "@/hooks/use-api";
 import { apiClient } from "@/lib/api-client";
 import { Crown } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 interface AffiliateSummary {
@@ -27,18 +27,18 @@ export function AdminAffiliatesTable() {
   const [search, setSearch] = useState("");
   const { loading, execute } = useApiCall<{ affiliates: AffiliateSummary[]; count: number }>();
 
-  useEffect(() => {
-    loadAffiliates();
-  }, []);
-
-  const loadAffiliates = async () => {
+  const loadAffiliates = useCallback(async () => {
     const response = await execute(() => apiClient.getTopAffiliates(50, "total_revenue"));
     if (response?.affiliates) {
       setAffiliates(response.affiliates);
-    } else if (response?.error) {
-      toast.error(response.error);
+    } else if (!response) {
+      toast.error("パートナー情報の取得に失敗しました");
     }
-  };
+  }, [execute]);
+
+  useEffect(() => {
+    loadAffiliates();
+  }, [loadAffiliates]);
 
   const filtered = useMemo(() => {
     if (!search) return affiliates;

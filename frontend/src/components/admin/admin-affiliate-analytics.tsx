@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useApiCall } from "@/hooks/use-api";
 import { apiClient } from "@/lib/api-client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface ClickStats {
   total_clicks: number;
@@ -18,11 +18,7 @@ export function AdminAffiliateAnalytics() {
   const [linkId, setLinkId] = useState<string>("");
   const { loading, execute } = useApiCall<{ statistics: ClickStats }>();
 
-  useEffect(() => {
-    loadStats();
-  }, []);
-
-  const loadStats = async () => {
+  const loadStats = useCallback(async () => {
     const response = await execute(() =>
       apiClient.getClickStatistics({
         affiliate_id: affiliateId ? Number(affiliateId) : undefined,
@@ -32,7 +28,11 @@ export function AdminAffiliateAnalytics() {
     if (response?.statistics) {
       setStats(response.statistics);
     }
-  };
+  }, [affiliateId, execute, linkId]);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
 
   const StatCard = ({ label, value }: { label: string; value: number | string }) => (
     <div className="rounded-lg border border-slate-800 bg-slate-900 p-4">

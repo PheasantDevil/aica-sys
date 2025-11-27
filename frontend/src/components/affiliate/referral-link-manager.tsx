@@ -5,10 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { apiClient } from "@/lib/api-client";
 import { useApiCall } from "@/hooks/use-api";
-import { Copy, ExternalLink, Plus, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { apiClient } from "@/lib/api-client";
+import { Copy, ExternalLink, Plus } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface ReferralLink {
@@ -40,16 +40,16 @@ export function ReferralLinkManager({ affiliateId }: ReferralLinkManagerProps) {
   const { loading, execute } = useApiCall<{ links: ReferralLink[]; count: number }>();
   const { loading: creating, execute: createLink } = useApiCall<{ link: ReferralLink }>();
 
-  useEffect(() => {
-    loadLinks();
-  }, [affiliateId, activeOnly]);
-
-  const loadLinks = async () => {
+  const loadLinks = useCallback(async () => {
     const result = await execute(() => apiClient.getReferralLinks(affiliateId, activeOnly));
     if (result) {
       setLinks(result.links || []);
     }
-  };
+  }, [activeOnly, affiliateId, execute]);
+
+  useEffect(() => {
+    loadLinks();
+  }, [loadLinks]);
 
   const handleCreateLink = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,11 +1,11 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { apiClient } from "@/lib/api-client";
-import { useApiCall } from "@/hooks/use-api";
-import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useApiCall } from "@/hooks/use-api";
+import { apiClient } from "@/lib/api-client";
 import { Wallet } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 
 interface Payout {
   id: number;
@@ -25,16 +25,16 @@ export function CommissionHistory({ affiliateId }: CommissionHistoryProps) {
   const [payouts, setPayouts] = useState<Payout[]>([]);
   const { loading, execute } = useApiCall<{ payouts: Payout[]; count: number }>();
 
-  useEffect(() => {
-    loadPayouts();
-  }, [affiliateId]);
-
-  const loadPayouts = async () => {
+  const loadPayouts = useCallback(async () => {
     const result = await execute(() => apiClient.getPayouts(affiliateId, 10));
     if (result) {
       setPayouts(result.payouts || []);
     }
-  };
+  }, [affiliateId, execute]);
+
+  useEffect(() => {
+    loadPayouts();
+  }, [loadPayouts]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("ja-JP", {
