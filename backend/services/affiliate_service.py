@@ -27,6 +27,10 @@ from models.affiliate import (
 
 logger = logging.getLogger(__name__)
 
+# デフォルトコミッション設定
+DEFAULT_COMMISSION_RATE = 10.0
+DEFAULT_COMMISSION_PERCENTAGE = 0.1
+
 
 class AffiliateService:
     """アフィリエイトサービス"""
@@ -573,17 +577,25 @@ class AffiliateService:
 
         if not rule:
             # デフォルト: 10%
-            commission_rate = 10.0
-            commission_amount = conversion_value * 0.1
+            commission_rate = DEFAULT_COMMISSION_RATE
+            commission_amount = conversion_value * DEFAULT_COMMISSION_PERCENTAGE
         elif rule.reward_type == RewardType.FIXED:
             commission_rate = 0.0
             commission_amount = rule.fixed_amount or 0.0
         elif rule.reward_type == RewardType.PERCENTAGE:
-            commission_rate = rule.percentage or 10.0
+            commission_rate = (
+                rule.percentage
+                if rule.percentage is not None
+                else DEFAULT_COMMISSION_RATE
+            )
             commission_amount = conversion_value * (commission_rate / 100)
         else:  # TIERED
             # 段階制の実装（簡略版）
-            commission_rate = rule.percentage or 10.0
+            commission_rate = (
+                rule.percentage
+                if rule.percentage is not None
+                else DEFAULT_COMMISSION_RATE
+            )
             commission_amount = conversion_value * (commission_rate / 100)
 
-        return commission_rate, commission_amount
+        return round(commission_rate, 2), round(commission_amount, 2)
