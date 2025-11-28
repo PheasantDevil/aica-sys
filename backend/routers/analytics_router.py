@@ -184,8 +184,10 @@ async def get_revenue_report(
         report = await service.get_revenue_report(resolved_start, resolved_end)
         return {"success": True, "report": report}
     except Exception as e:
-        logger.error(f"Get revenue report error: {e}")
-        raise HTTPException(status_code=500, detail="収益レポートの取得に失敗しました")
+        logger.exception("Get revenue report error")
+        raise HTTPException(
+            status_code=500, detail="収益レポートの取得に失敗しました"
+        ) from e
 
 
 @router.get("/user-growth")

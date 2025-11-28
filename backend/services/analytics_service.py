@@ -153,7 +153,7 @@ class AnalyticsService:
     async def get_revenue_report(
         self, start_date: datetime, end_date: datetime
     ) -> Dict[str, Any]:
-        """収益レポート（MRR/ARR/LTV/CACなど）を取得"""
+        """収益レポート (MRR/ARR/LTV/CACなど) を取得"""
         from models.affiliate import PayoutDB, PayoutStatus
         from models.subscription_enhanced import (
             InvoiceDB,
