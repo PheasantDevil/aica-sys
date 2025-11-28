@@ -177,7 +177,7 @@ git revert [commit-hash]
 
 ### 3. 環境変数を変更
 
-```
+```text
 GROQ_API_KEY → GOOGLE_API_KEY
 ```
 

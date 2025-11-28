@@ -8,7 +8,7 @@ AICA-SySでSupabase CLIのローカル開発環境を使用するため、Docker
 
 ### 症状
 
-```
+```text
 Error: docker-desktop: Failure while executing; `/usr/bin/sudo ...` exited with 1.
 sudo: a terminal is required to read the password
 ```

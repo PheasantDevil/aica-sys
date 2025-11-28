@@ -4,7 +4,7 @@
 
 ### 問題
 
-```
+```text
 Error: No Next.js version detected. Make sure your package.json has "next" in either "dependencies" or "devDependencies".
 ```
 
@@ -30,7 +30,7 @@ Vercel Dashboardで**Root Directory**を設定する。
 
 ### 2. Root Directory 設定
 
-```
+```text
 Root Directory: frontend
 ```
 
@@ -38,7 +38,7 @@ Root Directory: frontend
 
 ### 3. Framework Preset（自動検出されるはず）
 
-```
+```text
 Framework Preset: Next.js
 ```
 
@@ -46,13 +46,13 @@ Framework Preset: Next.js
 
 #### Build Command（自動検出）
 
-```
+```text
 npm run build
 ```
 
 #### Output Directory（自動検出）
 
-```
+```text
 .next
 ```
 
