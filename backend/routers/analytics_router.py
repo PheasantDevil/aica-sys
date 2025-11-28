@@ -5,7 +5,7 @@ Phase 9-5: Analytics and reports
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -15,6 +15,8 @@ from database import get_db
 from services.analytics_service import AnalyticsService
 
 logger = logging.getLogger(__name__)
+
+SortByOption = Literal["page_views", "engagement", "conversions"]
 
 router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 
