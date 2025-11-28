@@ -170,6 +170,24 @@ async def get_revenue_analytics(
         raise HTTPException(status_code=500, detail="分析取得に失敗しました")
 
 
+@router.get("/revenue-report")
+async def get_revenue_report(
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    db: Session = Depends(get_db),
+):
+    """収益レポートを取得"""
+    try:
+        service = AnalyticsService(db)
+        resolved_end = end_date or datetime.utcnow()
+        resolved_start = start_date or (resolved_end - timedelta(days=90))
+        report = await service.get_revenue_report(resolved_start, resolved_end)
+        return {"success": True, "report": report}
+    except Exception as e:
+        logger.error(f"Get revenue report error: {e}")
+        raise HTTPException(status_code=500, detail="収益レポートの取得に失敗しました")
+
+
 @router.get("/user-growth")
 async def get_user_growth_analytics(
     start_date: datetime, end_date: datetime, db: Session = Depends(get_db)
