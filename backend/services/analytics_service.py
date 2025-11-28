@@ -150,6 +150,217 @@ class AnalyticsService:
             "period": {"start": start_date.isoformat(), "end": end_date.isoformat()},
         }
 
+    async def get_revenue_report(
+        self, start_date: datetime, end_date: datetime
+    ) -> Dict[str, Any]:
+        """収益レポート (MRR/ARR/LTV/CACなど) を取得"""
+        from models.affiliate import PayoutDB, PayoutStatus
+        from models.subscription_enhanced import (
+            InvoiceDB,
+            SubscriptionEventDB,
+            SubscriptionPlanDB,
+            UserSubscriptionDB,
+        )
+
+        def fetch_active_subscriptions(
+            period_start: datetime, period_end: datetime
+        ) -> List[Any]:
+            return (
+                self.db.query(UserSubscriptionDB, SubscriptionPlanDB)
+                .join(
+                    SubscriptionPlanDB,
+                    UserSubscriptionDB.plan_id == SubscriptionPlanDB.id,
+                )
+                .filter(
+                    UserSubscriptionDB.current_period_start <= period_end,
+                    UserSubscriptionDB.current_period_end >= period_start,
+                    UserSubscriptionDB.status == "active",
+                )
+                .all()
+            )
+
+        subscriptions = fetch_active_subscriptions(start_date, end_date)
+
+        def normalized_monthly_amount(subscription: Any, plan: Any) -> float:
+            monthly_price = plan.monthly_price or 0.0
+            if (
+                subscription.billing_cycle
+                and subscription.billing_cycle.lower() == "yearly"
+            ):
+                if plan.yearly_price:
+                    return plan.yearly_price / 12
+                if monthly_price:
+                    return monthly_price
+            if monthly_price == 0 and plan.yearly_price:
+                return plan.yearly_price / 12
+            return monthly_price
+
+        plan_breakdown = defaultdict(float)
+        mrr_total = 0.0
+        mrr_trend_map: Dict[str, float] = defaultdict(float)
+
+        for subscription, plan in subscriptions:
+            monthly_value = normalized_monthly_amount(subscription, plan)
+            mrr_total += monthly_value
+            plan_key = plan.plan_type or plan.name or "unknown"
+            plan_breakdown[plan_key] += monthly_value
+            period_key = (
+                subscription.current_period_start.replace(day=1).date().isoformat()
+                if subscription.current_period_start
+                else start_date.replace(day=1).date().isoformat()
+            )
+            mrr_trend_map[period_key] += monthly_value
+
+        plan_breakdown_list = [
+            {"plan": key, "mrr": round(value, 2)}
+            for key, value in plan_breakdown.items()
+        ]
+
+        mrr_trend = [
+            {"period": key, "mrr": round(value, 2)}
+            for key, value in sorted(mrr_trend_map.items())
+        ]
+
+        previous_period_end = start_date - timedelta(days=1)
+        previous_period_start = previous_period_end - (end_date - start_date)
+        previous_subscriptions = fetch_active_subscriptions(
+            previous_period_start, previous_period_end
+        )
+        previous_mrr = sum(
+            normalized_monthly_amount(subscription, plan)
+            for subscription, plan in previous_subscriptions
+        )
+
+        arr_value = mrr_total * 12
+        previous_arr = previous_mrr * 12
+        arr_growth_rate = (
+            ((arr_value - previous_arr) / previous_arr) * 100 if previous_arr else 0.0
+        )
+
+        invoice_total = (
+            self.db.query(func.coalesce(func.sum(InvoiceDB.total_amount), 0.0))
+            .filter(
+                InvoiceDB.status == "paid",
+                InvoiceDB.paid_at.isnot(None),
+                InvoiceDB.paid_at >= start_date,
+                InvoiceDB.paid_at <= end_date,
+            )
+            .scalar()
+            or 0.0
+        )
+
+        invoice_count = (
+            self.db.query(func.count(InvoiceDB.id))
+            .filter(
+                InvoiceDB.status == "paid",
+                InvoiceDB.paid_at.isnot(None),
+                InvoiceDB.paid_at >= start_date,
+                InvoiceDB.paid_at <= end_date,
+            )
+            .scalar()
+            or 0
+        )
+
+        average_order_value = (
+            invoice_total / invoice_count if invoice_count else invoice_total
+        )
+
+        active_customers = len(
+            {subscription.user_id for subscription, _ in subscriptions}
+        )
+        average_revenue_per_user = (
+            invoice_total / active_customers if active_customers else 0.0
+        )
+
+        cancellations = (
+            self.db.query(func.count(SubscriptionEventDB.id))
+            .filter(
+                SubscriptionEventDB.event_type == "canceled",
+                SubscriptionEventDB.created_at >= start_date,
+                SubscriptionEventDB.created_at <= end_date,
+            )
+            .scalar()
+            or 0
+        )
+
+        churn_rate = (
+            cancellations / active_customers
+            if cancellations and active_customers
+            else 0.0
+        )
+        fallback_churn = 0.05
+        churn_for_ltv = churn_rate if churn_rate > 0 else fallback_churn
+        ltv = average_revenue_per_user / churn_for_ltv if churn_for_ltv else 0.0
+
+        new_customers = (
+            self.db.query(func.count(UserSubscriptionDB.id))
+            .filter(
+                UserSubscriptionDB.created_at >= start_date,
+                UserSubscriptionDB.created_at <= end_date,
+            )
+            .scalar()
+            or 0
+        )
+
+        marketing_spend = (
+            self.db.query(func.coalesce(func.sum(PayoutDB.amount), 0.0))
+            .filter(
+                PayoutDB.status == PayoutStatus.COMPLETED,
+                PayoutDB.completed_at.isnot(None),
+                PayoutDB.completed_at >= start_date,
+                PayoutDB.completed_at <= end_date,
+            )
+            .scalar()
+            or 0.0
+        )
+
+        cac = marketing_spend / new_customers if new_customers else marketing_spend
+        ltv_cac_ratio = ltv / cac if cac > 0 else None
+
+        alerts: List[str] = []
+        if churn_rate > 0.05:
+            alerts.append(
+                "直近期間のチャーン率が 5% を超えています。解約理由の分析を検討してください。"
+            )
+        if ltv_cac_ratio is not None and ltv_cac_ratio < 3:
+            alerts.append(
+                "LTV/CAC 比率が 3 未満です。獲得効率の改善が必要かもしれません。"
+            )
+        if arr_growth_rate < 0:
+            alerts.append(
+                "ARR が減少しています。価格やプラン構成の見直しを検討してください。"
+            )
+
+        return {
+            "period": {
+                "start": start_date.isoformat(),
+                "end": end_date.isoformat(),
+            },
+            "summary": {
+                "total_revenue": round(invoice_total, 2),
+                "mrr": round(mrr_total, 2),
+                "arr": round(arr_value, 2),
+                "arr_growth_rate": round(arr_growth_rate, 2),
+                "active_customers": active_customers,
+                "invoice_count": invoice_count,
+                "average_order_value": round(average_order_value, 2),
+            },
+            "plan_breakdown": plan_breakdown_list,
+            "mrr_trend": mrr_trend,
+            "ltv": {
+                "ltv": round(ltv, 2),
+                "average_revenue_per_user": round(average_revenue_per_user, 2),
+                "churn_rate": round(churn_rate * 100, 2),
+            },
+            "acquisition": {
+                "new_customers": new_customers,
+                "marketing_spend": round(marketing_spend, 2),
+                "cac": round(cac, 2),
+                "ltv_to_cac": round(ltv_cac_ratio, 2) if ltv_cac_ratio else None,
+            },
+            "alerts": alerts,
+        }
+
     async def get_user_growth_analytics(
         self, start_date: datetime, end_date: datetime
     ) -> Dict[str, Any]:
