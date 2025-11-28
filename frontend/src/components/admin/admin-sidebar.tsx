@@ -41,6 +41,11 @@ const navItems = [
     label: "収益レポート",
     icon: BarChart3,
   },
+  {
+    href: "/admin/business-insights",
+    label: "ビジネスインサイト",
+    icon: LineChart,
+  },
 ];
 
 export function AdminSidebar({ user }: AdminSidebarProps) {
