@@ -264,13 +264,11 @@ curl https://your-project.vercel.app/api/health
 ## 🔒 セキュリティ注意事項
 
 1. **Service Role Key は絶対に公開しない**
-
    - フロントエンドコードに含めない
    - GitHub にコミットしない
    - 環境変数でのみ管理
 
 2. **Anon Key は公開可能だが制限付き**
-
    - フロントエンドで使用可能
    - Row Level Security (RLS)で保護
 
@@ -291,12 +289,10 @@ curl https://your-project.vercel.app/api/health
 ### 接続エラーが発生する場合
 
 1. **URL 形式を確認**
-
    - Pooler 接続: `postgres.[REF]@pooler.supabase.com`
    - Direct 接続: `postgres@db.[REF].supabase.co`
 
 2. **パスワードを確認**
-
    - Supabase Dashboard → Settings → Database → Reset password
 
 3. **ネットワークを確認**
@@ -312,7 +308,6 @@ curl https://your-project.vercel.app/api/health
    ```
 
 2. **環境変数のプレフィックス確認**
-
    - フロントエンド用: `NEXT_PUBLIC_` が必要
    - バックエンド用: プレフィックス不要
 

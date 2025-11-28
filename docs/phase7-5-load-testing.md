@@ -9,21 +9,25 @@
 ### 1. テストの種類
 
 #### 1.1 ロードテスト
+
 - **目的**: 通常の負荷下でのシステム性能を測定
 - **指標**: レスポンス時間、スループット、エラー率
 - **期間**: 30分〜1時間
 
 #### 1.2 ストレステスト
+
 - **目的**: 限界まで負荷をかけてシステムの耐久性を確認
 - **指標**: 最大同時接続数、破綻点、回復時間
 - **期間**: 15分〜30分
 
 #### 1.3 スパイクテスト
+
 - **目的**: 急激な負荷増加への対応を確認
 - **指標**: レスポンス時間の変動、エラー率、自動スケーリング
 - **期間**: 5分〜10分
 
 #### 1.4 耐久テスト（ソークテスト）
+
 - **目的**: 長時間稼働時のメモリリークや性能劣化を検出
 - **指標**: メモリ使用量、CPU使用率、レスポンス時間の推移
 - **期間**: 4時間〜8時間
@@ -31,6 +35,7 @@
 ### 2. テストシナリオ
 
 #### 2.1 APIエンドポイントテスト
+
 ```
 シナリオ1: コンテンツ取得
 - GET /api/content/articles
@@ -53,6 +58,7 @@
 ```
 
 #### 2.2 同時接続数パターン
+
 ```
 パターン1: 段階的増加
 - 10 → 50 → 100 → 500 → 1000 ユーザー
@@ -69,55 +75,57 @@
 ### 1. 負荷テストツールの選定と実装
 
 #### 1.1 k6を使用した負荷テスト
+
 ```javascript
-import http from 'k6/http';
-import { check, sleep } from 'k6';
+import http from "k6/http";
+import { check, sleep } from "k6";
 
 export const options = {
   stages: [
-    { duration: '2m', target: 100 },  // 100ユーザーまで増加
-    { duration: '5m', target: 100 },  // 100ユーザーを維持
-    { duration: '2m', target: 200 },  // 200ユーザーまで増加
-    { duration: '5m', target: 200 },  // 200ユーザーを維持
-    { duration: '2m', target: 0 },    // 0まで減少
+    { duration: "2m", target: 100 }, // 100ユーザーまで増加
+    { duration: "5m", target: 100 }, // 100ユーザーを維持
+    { duration: "2m", target: 200 }, // 200ユーザーまで増加
+    { duration: "5m", target: 200 }, // 200ユーザーを維持
+    { duration: "2m", target: 0 }, // 0まで減少
   ],
   thresholds: {
-    http_req_duration: ['p(95)<500'], // 95%のリクエストが500ms以下
-    http_req_failed: ['rate<0.01'],   // エラー率1%未満
+    http_req_duration: ["p(95)<500"], // 95%のリクエストが500ms以下
+    http_req_failed: ["rate<0.01"], // エラー率1%未満
   },
 };
 
 export default function () {
-  const res = http.get('http://localhost:8000/api/content/articles');
-  
+  const res = http.get("http://localhost:8000/api/content/articles");
+
   check(res, {
-    'status is 200': (r) => r.status === 200,
-    'response time < 500ms': (r) => r.timings.duration < 500,
+    "status is 200": (r) => r.status === 200,
+    "response time < 500ms": (r) => r.timings.duration < 500,
   });
-  
+
   sleep(1);
 }
 ```
 
 #### 1.2 Locustを使用した負荷テスト
+
 ```python
 from locust import HttpUser, task, between
 
 class WebsiteUser(HttpUser):
     wait_time = between(1, 3)
-    
+
     @task(3)
     def get_articles(self):
         self.client.get("/api/content/articles")
-    
+
     @task(2)
     def get_trends(self):
         self.client.get("/api/content/trends")
-    
+
     @task(1)
     def get_newsletters(self):
         self.client.get("/api/content/newsletters")
-    
+
     @task(1)
     def get_optimized_dashboard(self):
         self.client.get("/api/optimized/dashboard")
@@ -126,6 +134,7 @@ class WebsiteUser(HttpUser):
 ### 2. パフォーマンス監視の実装
 
 #### 2.1 システムメトリクス収集
+
 ```python
 import psutil
 import time
@@ -141,6 +150,7 @@ def collect_system_metrics():
 ```
 
 #### 2.2 アプリケーションメトリクス
+
 ```python
 from prometheus_client import Counter, Histogram, Gauge
 
@@ -152,6 +162,7 @@ active_connections = Gauge('active_connections', 'Active connections')
 ### 3. テストレポートの自動生成
 
 #### 3.1 レポート構造
+
 ```json
 {
   "test_id": "load-test-2024-01-01",
@@ -191,6 +202,7 @@ active_connections = Gauge('active_connections', 'Active connections')
 ## 目標値
 
 ### パフォーマンス目標
+
 - **平均レスポンス時間**: 200ms以下
 - **95パーセンタイルレスポンス時間**: 500ms以下
 - **99パーセンタイルレスポンス時間**: 1000ms以下
@@ -198,6 +210,7 @@ active_connections = Gauge('active_connections', 'Active connections')
 - **スループット**: 50 req/s以上
 
 ### スケーラビリティ目標
+
 - **同時接続数**: 1000ユーザー対応
 - **1日あたりのリクエスト数**: 100万リクエスト対応
 - **データベース接続**: 100接続まで対応
@@ -206,6 +219,7 @@ active_connections = Gauge('active_connections', 'Active connections')
 ## 監視指標
 
 ### システムメトリクス
+
 - CPU使用率
 - メモリ使用率
 - ディスクI/O
@@ -213,6 +227,7 @@ active_connections = Gauge('active_connections', 'Active connections')
 - アクティブ接続数
 
 ### アプリケーションメトリクス
+
 - リクエスト数
 - レスポンス時間
 - エラー率
@@ -220,6 +235,7 @@ active_connections = Gauge('active_connections', 'Active connections')
 - データベースクエリ時間
 
 ### ビジネスメトリクス
+
 - ユーザーあたりのリクエスト数
 - ページビュー
 - API使用率
@@ -228,11 +244,13 @@ active_connections = Gauge('active_connections', 'Active connections')
 ## テスト環境
 
 ### ハードウェア要件
+
 - CPU: 4コア以上
 - メモリ: 8GB以上
 - ディスク: SSD推奨
 
 ### ソフトウェア要件
+
 - Python 3.13
 - Node.js 18以上
 - k6またはLocust

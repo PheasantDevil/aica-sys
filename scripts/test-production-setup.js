@@ -5,24 +5,24 @@
  * This script tests the production setup including database, Stripe, and API endpoints
  */
 
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
 
 // Configuration
-const PRODUCTION_URL = 'https://aica-sys.vercel.app';
+const PRODUCTION_URL = "https://aica-sys.vercel.app";
 const API_URL = `${PRODUCTION_URL}/api`;
 
 // Colors for console output
 const colors = {
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  reset: '\x1b[0m',
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  reset: "\x1b[0m",
 };
 
-function log(message, color = 'reset') {
+function log(message, color = "reset") {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
@@ -36,25 +36,25 @@ class ProductionTester {
   }
 
   async runTest(testName, testFunction) {
-    log(`🧪 Running test: ${testName}`, 'blue');
+    log(`🧪 Running test: ${testName}`, "blue");
     try {
       const result = await testFunction();
       this.results.passed++;
       this.results.tests.push({
         name: testName,
-        status: 'PASSED',
+        status: "PASSED",
         result: result,
       });
-      log(`✅ ${testName}: PASSED`, 'green');
+      log(`✅ ${testName}: PASSED`, "green");
       return result;
     } catch (error) {
       this.results.failed++;
       this.results.tests.push({
         name: testName,
-        status: 'FAILED',
+        status: "FAILED",
         error: error.message,
       });
-      log(`❌ ${testName}: FAILED - ${error.message}`, 'red');
+      log(`❌ ${testName}: FAILED - ${error.message}`, "red");
       throw error;
     }
   }
@@ -72,11 +72,7 @@ class ProductionTester {
   }
 
   async testContentEndpoints() {
-    const endpoints = [
-      '/content/articles',
-      '/content/trends',
-      '/content/newsletters',
-    ];
+    const endpoints = ["/content/articles", "/content/trends", "/content/newsletters"];
 
     const results = {};
 
@@ -100,7 +96,7 @@ class ProductionTester {
   }
 
   async testSubscriptionEndpoints() {
-    const endpoints = ['/subscriptions/plans'];
+    const endpoints = ["/subscriptions/plans"];
 
     const results = {};
 
@@ -124,7 +120,7 @@ class ProductionTester {
   }
 
   async testReportsEndpoints() {
-    const endpoints = ['/reports/available'];
+    const endpoints = ["/reports/available"];
 
     const results = {};
 
@@ -148,7 +144,7 @@ class ProductionTester {
   }
 
   async testFrontendPages() {
-    const pages = ['/', '/pricing', '/articles', '/newsletters', '/trends'];
+    const pages = ["/", "/pricing", "/articles", "/newsletters", "/trends"];
 
     const results = {};
 
@@ -156,12 +152,11 @@ class ProductionTester {
       try {
         const response = await axios.get(`${PRODUCTION_URL}${page}`, {
           timeout: 15000,
-          validateStatus: status => status < 500, // Accept redirects and client errors
+          validateStatus: (status) => status < 500, // Accept redirects and client errors
         });
         results[page] = {
           status: response.status,
-          title:
-            response.data.match(/<title>(.*?)<\/title>/)?.[1] || 'No title',
+          title: response.data.match(/<title>(.*?)<\/title>/)?.[1] || "No title",
         };
       } catch (error) {
         results[page] = {
@@ -195,15 +190,15 @@ class ProductionTester {
       });
 
       const securityHeaders = [
-        'x-content-type-options',
-        'x-frame-options',
-        'x-xss-protection',
-        'strict-transport-security',
-        'content-security-policy',
+        "x-content-type-options",
+        "x-frame-options",
+        "x-xss-protection",
+        "strict-transport-security",
+        "content-security-policy",
       ];
 
       const foundHeaders = {};
-      securityHeaders.forEach(header => {
+      securityHeaders.forEach((header) => {
         if (response.headers[header]) {
           foundHeaders[header] = response.headers[header];
         }
@@ -221,22 +216,17 @@ class ProductionTester {
   async testStripeConfiguration() {
     // Test if Stripe configuration is properly set up
     // This would typically check environment variables or configuration files
-    const configPath = path.join(
-      __dirname,
-      '..',
-      'config',
-      'stripe-production.json'
-    );
+    const configPath = path.join(__dirname, "..", "config", "stripe-production.json");
 
     if (fs.existsSync(configPath)) {
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
       return {
         configured: true,
         products: Object.keys(config.products || {}),
         configPath: configPath,
       };
     } else {
-      throw new Error('Stripe production configuration not found');
+      throw new Error("Stripe production configuration not found");
     }
   }
 
@@ -258,39 +248,25 @@ class ProductionTester {
 
   generateReport() {
     const totalTests = this.results.passed + this.results.failed;
-    const successRate =
-      totalTests > 0
-        ? ((this.results.passed / totalTests) * 100).toFixed(1)
-        : 0;
+    const successRate = totalTests > 0 ? ((this.results.passed / totalTests) * 100).toFixed(1) : 0;
 
-    log('\n📊 Test Results Summary:', 'blue');
-    log(`Total Tests: ${totalTests}`, 'reset');
-    log(`Passed: ${this.results.passed}`, 'green');
-    log(`Failed: ${this.results.failed}`, 'red');
-    log(
-      `Success Rate: ${successRate}%`,
-      successRate >= 80 ? 'green' : 'yellow'
-    );
+    log("\n📊 Test Results Summary:", "blue");
+    log(`Total Tests: ${totalTests}`, "reset");
+    log(`Passed: ${this.results.passed}`, "green");
+    log(`Failed: ${this.results.failed}`, "red");
+    log(`Success Rate: ${successRate}%`, successRate >= 80 ? "green" : "yellow");
 
-    log('\n📋 Detailed Results:', 'blue');
-    this.results.tests.forEach(test => {
-      const status = test.status === 'PASSED' ? '✅' : '❌';
-      log(
-        `${status} ${test.name}: ${test.status}`,
-        test.status === 'PASSED' ? 'green' : 'red'
-      );
+    log("\n📋 Detailed Results:", "blue");
+    this.results.tests.forEach((test) => {
+      const status = test.status === "PASSED" ? "✅" : "❌";
+      log(`${status} ${test.name}: ${test.status}`, test.status === "PASSED" ? "green" : "red");
       if (test.error) {
-        log(`   Error: ${test.error}`, 'red');
+        log(`   Error: ${test.error}`, "red");
       }
     });
 
     // Save detailed report
-    const reportPath = path.join(
-      __dirname,
-      '..',
-      'docs',
-      'production-test-report.json'
-    );
+    const reportPath = path.join(__dirname, "..", "docs", "production-test-report.json");
     fs.mkdirSync(path.dirname(reportPath), { recursive: true });
     fs.writeFileSync(
       reportPath,
@@ -306,77 +282,63 @@ class ProductionTester {
           tests: this.results.tests,
         },
         null,
-        2
-      )
+        2,
+      ),
     );
 
-    log(`\n📄 Detailed report saved to: ${reportPath}`, 'blue');
+    log(`\n📄 Detailed report saved to: ${reportPath}`, "blue");
 
     return successRate >= 80;
   }
 }
 
 async function main() {
-  log('🚀 Starting Production Setup Tests...', 'blue');
-  log(`Testing production URL: ${PRODUCTION_URL}`, 'yellow');
-  log(`Testing API URL: ${API_URL}`, 'yellow');
-  log('');
+  log("🚀 Starting Production Setup Tests...", "blue");
+  log(`Testing production URL: ${PRODUCTION_URL}`, "yellow");
+  log(`Testing API URL: ${API_URL}`, "yellow");
+  log("");
 
   const tester = new ProductionTester();
 
   try {
     // Core functionality tests
-    await tester.runTest('Health Endpoint', () => tester.testHealthEndpoint());
-    await tester.runTest('Content Endpoints', () =>
-      tester.testContentEndpoints()
-    );
-    await tester.runTest('Subscription Endpoints', () =>
-      tester.testSubscriptionEndpoints()
-    );
-    await tester.runTest('Reports Endpoints', () =>
-      tester.testReportsEndpoints()
-    );
+    await tester.runTest("Health Endpoint", () => tester.testHealthEndpoint());
+    await tester.runTest("Content Endpoints", () => tester.testContentEndpoints());
+    await tester.runTest("Subscription Endpoints", () => tester.testSubscriptionEndpoints());
+    await tester.runTest("Reports Endpoints", () => tester.testReportsEndpoints());
 
     // Frontend tests
-    await tester.runTest('Frontend Pages', () => tester.testFrontendPages());
+    await tester.runTest("Frontend Pages", () => tester.testFrontendPages());
 
     // Performance and security tests
-    await tester.runTest('Performance Metrics', () =>
-      tester.testPerformanceMetrics()
-    );
-    await tester.runTest('Security Headers', () =>
-      tester.testSecurityHeaders()
-    );
+    await tester.runTest("Performance Metrics", () => tester.testPerformanceMetrics());
+    await tester.runTest("Security Headers", () => tester.testSecurityHeaders());
 
     // Configuration tests
-    await tester.runTest('Stripe Configuration', () =>
-      tester.testStripeConfiguration()
-    );
-    await tester.runTest('Database Connection', () =>
-      tester.testDatabaseConnection()
-    );
+    await tester.runTest("Stripe Configuration", () => tester.testStripeConfiguration());
+    await tester.runTest("Database Connection", () => tester.testDatabaseConnection());
 
     // Generate final report
     const success = tester.generateReport();
 
     if (success) {
-      log('\n🎉 Production setup tests completed successfully!', 'green');
-      log('The system is ready for production deployment.', 'green');
+      log("\n🎉 Production setup tests completed successfully!", "green");
+      log("The system is ready for production deployment.", "green");
       return 0;
     } else {
-      log('\n⚠️  Production setup tests completed with issues.', 'yellow');
-      log('Please review the failed tests and fix the issues.', 'yellow');
+      log("\n⚠️  Production setup tests completed with issues.", "yellow");
+      log("Please review the failed tests and fix the issues.", "yellow");
       return 1;
     }
   } catch (error) {
-    log(`\n❌ Test suite failed: ${error.message}`, 'red');
+    log(`\n❌ Test suite failed: ${error.message}`, "red");
     return 1;
   }
 }
 
 // Run the tests
 if (require.main === module) {
-  main().then(exitCode => {
+  main().then((exitCode) => {
     process.exit(exitCode);
   });
 }

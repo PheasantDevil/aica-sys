@@ -33,17 +33,17 @@ GitHub Actions でデプロイを自動化するために、以下の Secrets �
 
 ### 2.3 バックエンド用 Secrets
 
-| Secret 名           | 説明                         | 例                    |
-| ------------------- | ---------------------------- | --------------------- |
-| `GOOGLE_AI_API_KEY` | Google AI Studio API キー    | `AIza...`             |
-| `OPENAI_API_KEY`    | OpenAI API キー              | `sk-...`              |
-| `GITHUB_TOKEN`      | GitHub Personal Access Token | `ghp_...`             |
-| `DATABASE_URL`      | データベース接続文字列        | `postgresql://...`    |
-| `REDIS_URL`         | Redis 接続文字列             | `redis://...`         |
+| Secret 名           | 説明                         | 例                      |
+| ------------------- | ---------------------------- | ----------------------- |
+| `GOOGLE_AI_API_KEY` | Google AI Studio API キー    | `AIza...`               |
+| `OPENAI_API_KEY`    | OpenAI API キー              | `sk-...`                |
+| `GITHUB_TOKEN`      | GitHub Personal Access Token | `ghp_...`               |
+| `DATABASE_URL`      | データベース接続文字列       | `postgresql://...`      |
+| `REDIS_URL`         | Redis 接続文字列             | `redis://...`           |
 | `QDRANT_URL`        | Qdrant 接続 URL              | `http://localhost:6333` |
-| `QDRANT_API_KEY`    | Qdrant API キー              | `your-qdrant-key`     |
-| `JWT_SECRET_KEY`    | JWT 署名用シークレット        | ランダムな 32 文字    |
-| `ENCRYPTION_KEY`    | データ暗号化用キー            | ランダムな 32 文字    |
+| `QDRANT_API_KEY`    | Qdrant API キー              | `your-qdrant-key`       |
+| `JWT_SECRET_KEY`    | JWT 署名用シークレット       | ランダムな 32 文字      |
+| `ENCRYPTION_KEY`    | データ暗号化用キー           | ランダムな 32 文字      |
 
 ### 2.4 GCP 用 Secrets
 
@@ -54,11 +54,11 @@ GitHub Actions でデプロイを自動化するために、以下の Secrets �
 
 ### 2.5 ソーシャル連携用 Secrets (オプション)
 
-| Secret 名              | 説明                    | 例        |
-| ---------------------- | ----------------------- | --------- |
-| `TWITTER_API_KEY`      | Twitter API キー         | `your-...` |
-| `TWITTER_API_SECRET`   | Twitter API シークレット | `your-...` |
-| `LINKEDIN_CLIENT_ID`   | LinkedIn クライアント ID | `your-...` |
+| Secret 名                | 説明                              | 例         |
+| ------------------------ | --------------------------------- | ---------- |
+| `TWITTER_API_KEY`        | Twitter API キー                  | `your-...` |
+| `TWITTER_API_SECRET`     | Twitter API シークレット          | `your-...` |
+| `LINKEDIN_CLIENT_ID`     | LinkedIn クライアント ID          | `your-...` |
 | `LINKEDIN_CLIENT_SECRET` | LinkedIn クライアントシークレット | `your-...` |
 
 ### 2.6 セキュリティ用 Secrets (オプション)
@@ -129,12 +129,10 @@ gh secret get SECRET_NAME
 ### よくある問題
 
 1. **Vercel デプロイが失敗する**
-
    - `VERCEL_TOKEN` が正しく設定されているか確認
    - Vercel プロジェクトが正しくリンクされているか確認
 
 2. **GCP デプロイが失敗する**
-
    - `GCP_SA_KEY` の JSON 形式が正しいか確認
    - サービスアカウントに必要な権限があるか確認
 

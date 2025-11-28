@@ -45,6 +45,7 @@ AICA-SyS (AI-driven Content Curation & Automated Sales System) の開発者向�
 ### 技術スタック
 
 #### Frontend
+
 - **フレームワーク**: Next.js 14 (App Router)
 - **言語**: TypeScript
 - **スタイリング**: Tailwind CSS
@@ -55,6 +56,7 @@ AICA-SyS (AI-driven Content Curation & Automated Sales System) の開発者向�
 - **テスト**: Jest, React Testing Library, Playwright
 
 #### Backend
+
 - **フレームワーク**: FastAPI
 - **言語**: Python 3.11
 - **ORM**: SQLAlchemy
@@ -64,6 +66,7 @@ AICA-SyS (AI-driven Content Curation & Automated Sales System) の開発者向�
 - **AI**: Google AI Studio (Gemini Pro), OpenAI API
 
 #### Infrastructure
+
 - **フロントエンド**: Vercel
 - **バックエンド**: GCP Cloud Functions
 - **データベース**: PostgreSQL (本番), SQLite (開発)
@@ -228,17 +231,20 @@ aica-sys/
 ### Git フロー
 
 1. **feature ブランチの作成**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 2. **開発とコミット**
+
    ```bash
    git add .
    git commit -m "feat: your feature description"
    ```
 
 3. **プッシュ**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -545,7 +551,7 @@ export const authOptions: NextAuthOptions = {
 ```typescript
 // CSRF トークン生成
 export function generateCSRFToken(): string {
-  return crypto.randomBytes(32).toString('hex');
+  return crypto.randomBytes(32).toString("hex");
 }
 
 // CSRF トークン検証
@@ -578,11 +584,11 @@ export function validateArticle(data: unknown) {
 ```typescript
 // セキュリティヘッダー設定
 export const securityHeaders = {
-  'X-Frame-Options': 'DENY',
-  'X-Content-Type-Options': 'nosniff',
-  'X-XSS-Protection': '1; mode=block',
-  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline';",
+  "X-Frame-Options": "DENY",
+  "X-Content-Type-Options": "nosniff",
+  "X-XSS-Protection": "1; mode=block",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline';",
 };
 ```
 
@@ -691,8 +697,8 @@ logging.basicConfig(
 ```typescript
 // パフォーマンスメトリクス
 export function trackPerformance(metric: string, value: number) {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', 'timing_complete', {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", "timing_complete", {
       name: metric,
       value: value,
     });
@@ -705,11 +711,11 @@ export function trackPerformance(metric: string, value: number) {
 ```typescript
 // エラー追跡
 export function trackError(error: Error, context?: string) {
-  console.error('Error:', error, 'Context:', context);
-  
+  console.error("Error:", error, "Context:", context);
+
   // エラー監視サービスに送信
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', 'exception', {
+  if (typeof window !== "undefined" && window.gtag) {
+    window.gtag("event", "exception", {
       description: error.message,
       fatal: false,
     });
@@ -726,6 +732,7 @@ export function trackError(error: Error, context?: string) {
    - ラベルを適切に設定
 
 2. **Fork とブランチ作成**
+
    ```bash
    git fork https://github.com/aica-sys/aica-sys.git
    git checkout -b feature/your-feature-name
@@ -798,13 +805,13 @@ export function processData(data: Data[]): ProcessedData[] {
 
 ```typescript
 // デバッグログ
-console.log('Debug:', { data, context });
+console.log("Debug:", { data, context });
 
 // エラーハンドリング
 try {
   // 処理
 } catch (error) {
-  console.error('Error:', error);
+  console.error("Error:", error);
   // エラー処理
 }
 ```

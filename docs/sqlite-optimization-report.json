@@ -28,61 +28,39 @@
       "indexes": [
         {
           "name": "idx_articles_likes",
-          "columns": [
-            "likes"
-          ]
+          "columns": ["likes"]
         },
         {
           "name": "idx_articles_views",
-          "columns": [
-            "views"
-          ]
+          "columns": ["views"]
         },
         {
           "name": "idx_articles_is_premium",
-          "columns": [
-            "is_premium"
-          ]
+          "columns": ["is_premium"]
         },
         {
           "name": "idx_articles_published_at",
-          "columns": [
-            "published_at"
-          ]
+          "columns": ["published_at"]
         },
         {
           "name": "idx_articles_premium",
-          "columns": [
-            "published_at"
-          ]
+          "columns": ["published_at"]
         },
         {
           "name": "idx_articles_popularity",
-          "columns": [
-            "views",
-            "likes",
-            "published_at"
-          ]
+          "columns": ["views", "likes", "published_at"]
         },
         {
           "name": "idx_articles_author_published",
-          "columns": [
-            "author",
-            "published_at"
-          ]
+          "columns": ["author", "published_at"]
         },
         {
           "name": "idx_articles_published_premium",
-          "columns": [
-            "published_at",
-            "is_premium"
-          ]
+          "columns": ["published_at", "is_premium"]
         },
         {
           "name": "sqlite_autoindex_articles_1",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       ],
       "index_count": 9
@@ -106,22 +84,15 @@
       "indexes": [
         {
           "name": "idx_newsletters_subscribers",
-          "columns": [
-            "subscribers",
-            "published_at"
-          ]
+          "columns": ["subscribers", "published_at"]
         },
         {
           "name": "idx_newsletters_published",
-          "columns": [
-            "published_at"
-          ]
+          "columns": ["published_at"]
         },
         {
           "name": "sqlite_autoindex_newsletters_1",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       ],
       "index_count": 3
@@ -145,37 +116,23 @@
       "indexes": [
         {
           "name": "idx_trends_created_at",
-          "columns": [
-            "created_at"
-          ]
+          "columns": ["created_at"]
         },
         {
           "name": "idx_trends_category_impact",
-          "columns": [
-            "category",
-            "impact",
-            "created_at"
-          ]
+          "columns": ["category", "impact", "created_at"]
         },
         {
           "name": "idx_trends_impact_created",
-          "columns": [
-            "impact",
-            "created_at"
-          ]
+          "columns": ["impact", "created_at"]
         },
         {
           "name": "idx_trends_category_created",
-          "columns": [
-            "category",
-            "created_at"
-          ]
+          "columns": ["category", "created_at"]
         },
         {
           "name": "sqlite_autoindex_trends_1",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       ],
       "index_count": 5
@@ -202,45 +159,27 @@
       "indexes": [
         {
           "name": "idx_subscriptions_active",
-          "columns": [
-            "user_id",
-            "plan"
-          ]
+          "columns": ["user_id", "plan"]
         },
         {
           "name": "idx_subscriptions_expiring",
-          "columns": [
-            "current_period_end",
-            "status"
-          ]
+          "columns": ["current_period_end", "status"]
         },
         {
           "name": "idx_subscriptions_plan_status",
-          "columns": [
-            "plan",
-            "status",
-            "created_at"
-          ]
+          "columns": ["plan", "status", "created_at"]
         },
         {
           "name": "idx_subscriptions_user_status",
-          "columns": [
-            "user_id",
-            "status",
-            "current_period_end"
-          ]
+          "columns": ["user_id", "status", "current_period_end"]
         },
         {
           "name": "ix_subscriptions_user_id",
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         },
         {
           "name": "sqlite_autoindex_subscriptions_1",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       ],
       "index_count": 6
@@ -270,93 +209,59 @@
       "indexes": [
         {
           "name": "idx_audit_events_timestamp",
-          "columns": [
-            "timestamp"
-          ]
+          "columns": ["timestamp"]
         },
         {
           "name": "idx_audit_events_result_timestamp",
-          "columns": [
-            "result",
-            "timestamp"
-          ]
+          "columns": ["result", "timestamp"]
         },
         {
           "name": "idx_audit_events_session_timestamp",
-          "columns": [
-            "session_id",
-            "timestamp"
-          ]
+          "columns": ["session_id", "timestamp"]
         },
         {
           "name": "idx_audit_events_resource_timestamp",
-          "columns": [
-            "resource_type",
-            "resource_id",
-            "timestamp"
-          ]
+          "columns": ["resource_type", "resource_id", "timestamp"]
         },
         {
           "name": "idx_audit_events_type_timestamp",
-          "columns": [
-            "event_type",
-            "timestamp"
-          ]
+          "columns": ["event_type", "timestamp"]
         },
         {
           "name": "idx_audit_events_user_timestamp",
-          "columns": [
-            "user_id",
-            "timestamp"
-          ]
+          "columns": ["user_id", "timestamp"]
         },
         {
           "name": "ix_audit_events_resource_type",
-          "columns": [
-            "resource_type"
-          ]
+          "columns": ["resource_type"]
         },
         {
           "name": "ix_audit_events_user_id",
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         },
         {
           "name": "ix_audit_events_timestamp",
-          "columns": [
-            "timestamp"
-          ]
+          "columns": ["timestamp"]
         },
         {
           "name": "ix_audit_events_session_id",
-          "columns": [
-            "session_id"
-          ]
+          "columns": ["session_id"]
         },
         {
           "name": "ix_audit_events_resource_id",
-          "columns": [
-            "resource_id"
-          ]
+          "columns": ["resource_id"]
         },
         {
           "name": "ix_audit_events_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         },
         {
           "name": "ix_audit_events_event_type",
-          "columns": [
-            "event_type"
-          ]
+          "columns": ["event_type"]
         },
         {
           "name": "sqlite_autoindex_audit_events_1",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       ],
       "index_count": 14
@@ -380,34 +285,23 @@
       "indexes": [
         {
           "name": "idx_users_email",
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         {
           "name": "idx_users_subscription_status",
-          "columns": [
-            "subscription_status",
-            "created_at"
-          ]
+          "columns": ["subscription_status", "created_at"]
         },
         {
           "name": "idx_users_active",
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         {
           "name": "ix_users_email",
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         {
           "name": "sqlite_autoindex_users_1",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       ],
       "index_count": 5

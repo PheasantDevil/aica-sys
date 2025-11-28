@@ -8,25 +8,25 @@ metadata:
 data:
   # Redis configuration
   redis-url: "redis://aica-sys-redis-service:6379"
-  
+
   # Application configuration
   environment: "production"
   log-level: "info"
-  
+
   # API configuration
   api-version: "v1.0.0"
   api-timeout: "30"
-  
+
   # Cache configuration
-  cache-ttl-short: "300"      # 5 minutes
-  cache-ttl-medium: "1800"    # 30 minutes
-  cache-ttl-long: "86400"     # 24 hours
-  
+  cache-ttl-short: "300" # 5 minutes
+  cache-ttl-medium: "1800" # 30 minutes
+  cache-ttl-long: "86400" # 24 hours
+
   # Performance configuration
   max-workers: "4"
   worker-timeout: "30"
   keep-alive: "5"
-  
+
   # Feature flags
   enable-cache: "true"
   enable-monitoring: "true"

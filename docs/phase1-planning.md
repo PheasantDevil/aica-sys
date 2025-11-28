@@ -293,7 +293,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
       - run: cd frontend && npm ci
       - run: cd frontend && npm run lint
       - run: cd frontend && npm run type-check
@@ -305,7 +305,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: "3.11"
       - run: cd backend && pip install -r requirements.txt
       - run: cd backend && python -m pytest
 

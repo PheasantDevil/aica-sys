@@ -4,6 +4,7 @@ Phase 9-5: Analytics and reports
 """
 
 import logging
+from collections import defaultdict
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
@@ -195,6 +196,246 @@ class AnalyticsService:
             "net_growth": new_users - churned_users,
             "growth_rate": round(growth_rate, 2),
             "period": {"start": start_date.isoformat(), "end": end_date.isoformat()},
+        }
+
+    async def get_user_behavior_analytics(
+        self,
+        start_date: datetime,
+        end_date: datetime,
+        affiliate_id: Optional[int] = None,
+    ) -> Dict[str, Any]:
+        """ユーザー行動分析を取得"""
+        events = (
+            self.db.query(AnalyticsEventDB)
+            .filter(AnalyticsEventDB.created_at >= start_date)
+            .filter(AnalyticsEventDB.created_at <= end_date)
+            .order_by(AnalyticsEventDB.created_at.asc())
+            .all()
+        )
+
+        filtered_events: List[AnalyticsEventDB] = []
+        for event in events:
+            props = event.properties or {}
+            if affiliate_id is not None:
+                prop_aff = props.get("affiliate_id") or props.get("affiliateId")
+                if prop_aff is None or str(prop_aff) != str(affiliate_id):
+                    continue
+            filtered_events.append(event)
+
+        if not filtered_events:
+            return {
+                "period": {
+                    "start": start_date.isoformat(),
+                    "end": end_date.isoformat(),
+                },
+                "overview": {
+                    "total_page_views": 0,
+                    "unique_users": 0,
+                    "total_sessions": 0,
+                    "conversion_rate": 0.0,
+                },
+                "page_metrics": {
+                    "average_time_on_page": 0.0,
+                    "average_scroll_depth": 0.0,
+                },
+                "session_metrics": {
+                    "average_session_duration": 0.0,
+                    "bounce_rate": 0.0,
+                },
+                "conversion_metrics": {
+                    "total_conversions": 0,
+                    "conversion_value": 0.0,
+                },
+                "engagement": {
+                    "scroll_distribution": {
+                        "0-25%": 0,
+                        "25-50%": 0,
+                        "50-75%": 0,
+                        "75-100%": 0,
+                    }
+                },
+                "trend": [],
+            }
+
+        page_view_events = [
+            event
+            for event in filtered_events
+            if event.event_type in ("page_view", "content_view")
+        ]
+        conversion_events = [
+            event for event in filtered_events if event.event_type == "conversion"
+        ]
+        unique_users = {
+            event.user_id for event in filtered_events if event.user_id is not None
+        }
+
+        session_map: Dict[str, Dict[str, Any]] = {}
+        scroll_values: List[float] = []
+        dwell_values: List[float] = []
+        session_lengths: List[float] = []
+        trend_map: Dict[str, Dict[str, Any]] = defaultdict(
+            lambda: {
+                "date": "",
+                "page_views": 0,
+                "conversions": 0,
+                "scroll_sum": 0.0,
+                "scroll_count": 0,
+            }
+        )
+
+        for event in filtered_events:
+            props = event.properties or {}
+            session_id = event.session_id
+            if session_id:
+                info = session_map.setdefault(
+                    session_id,
+                    {
+                        "first": event.created_at,
+                        "last": event.created_at,
+                        "page_views": 0,
+                    },
+                )
+                if event.created_at < info["first"]:
+                    info["first"] = event.created_at
+                if event.created_at > info["last"]:
+                    info["last"] = event.created_at
+                if event.event_type in ("page_view", "content_view"):
+                    info["page_views"] += 1
+
+            if event.event_type in ("page_view", "content_view"):
+                duration = props.get("duration")
+                if duration is not None:
+                    try:
+                        dwell_values.append(float(duration))
+                    except (TypeError, ValueError):
+                        pass
+                scroll_depth = props.get("scroll_depth")
+                if scroll_depth is not None:
+                    try:
+                        value = float(scroll_depth)
+                        if value <= 1:
+                            value *= 100
+                        scroll_values.append(value)
+                    except (TypeError, ValueError):
+                        pass
+
+            day_key = event.created_at.date().isoformat()
+            bucket = trend_map[day_key]
+            bucket["date"] = day_key
+            if event.event_type in ("page_view", "content_view"):
+                bucket["page_views"] += 1
+            if event.event_type == "conversion":
+                bucket["conversions"] += 1
+            if "scroll_depth" in props:
+                try:
+                    sd = float(props["scroll_depth"])
+                    if sd <= 1:
+                        sd *= 100
+                    bucket["scroll_sum"] += sd
+                    bucket["scroll_count"] += 1
+                except (TypeError, ValueError):
+                    pass
+
+        for session in session_map.values():
+            duration = (session["last"] - session["first"]).total_seconds()
+            if duration >= 0:
+                session_lengths.append(duration)
+
+        total_sessions = len(session_map)
+        bounce_sessions = sum(
+            1 for session in session_map.values() if session["page_views"] <= 1
+        )
+        average_session_duration = (
+            sum(session_lengths) / len(session_lengths) if session_lengths else 0.0
+        )
+        average_time_on_page = (
+            sum(dwell_values) / len(dwell_values) if dwell_values else 0.0
+        )
+        average_scroll_depth = (
+            sum(scroll_values) / len(scroll_values) if scroll_values else 0.0
+        )
+        total_conversions = len(conversion_events)
+        conversion_value = sum(
+            float((event.properties or {}).get("value", 0))
+            for event in conversion_events
+        )
+        conversion_rate = (
+            (total_conversions / len(page_view_events) * 100)
+            if page_view_events
+            else 0.0
+        )
+
+        scroll_distribution = {
+            "0-25%": 0,
+            "25-50%": 0,
+            "50-75%": 0,
+            "75-100%": 0,
+        }
+        for value in scroll_values:
+            if value < 25:
+                scroll_distribution["0-25%"] += 1
+            elif value < 50:
+                scroll_distribution["25-50%"] += 1
+            elif value < 75:
+                scroll_distribution["50-75%"] += 1
+            else:
+                scroll_distribution["75-100%"] += 1
+
+        trend_list: List[Dict[str, Any]] = []
+        current = start_date.date()
+        end_date_only = end_date.date()
+        while current <= end_date_only:
+            key = current.isoformat()
+            bucket = trend_map.get(
+                key,
+                {
+                    "date": key,
+                    "page_views": 0,
+                    "conversions": 0,
+                    "scroll_sum": 0.0,
+                    "scroll_count": 0,
+                },
+            )
+            avg_scroll = (
+                bucket["scroll_sum"] / bucket["scroll_count"]
+                if bucket["scroll_count"]
+                else 0.0
+            )
+            trend_list.append(
+                {
+                    "date": key,
+                    "page_views": bucket["page_views"],
+                    "conversions": bucket["conversions"],
+                    "avg_scroll_depth": round(avg_scroll, 2),
+                }
+            )
+            current += timedelta(days=1)
+
+        return {
+            "period": {"start": start_date.isoformat(), "end": end_date.isoformat()},
+            "overview": {
+                "total_page_views": len(page_view_events),
+                "unique_users": len(unique_users),
+                "total_sessions": total_sessions,
+                "conversion_rate": round(conversion_rate, 2),
+            },
+            "page_metrics": {
+                "average_time_on_page": round(average_time_on_page, 2),
+                "average_scroll_depth": round(average_scroll_depth, 2),
+            },
+            "session_metrics": {
+                "average_session_duration": round(average_session_duration, 2),
+                "bounce_rate": round(
+                    (bounce_sessions / total_sessions * 100) if total_sessions else 0.0,
+                    2,
+                ),
+            },
+            "conversion_metrics": {
+                "total_conversions": total_conversions,
+                "conversion_value": round(conversion_value, 2),
+            },
+            "engagement": {"scroll_distribution": scroll_distribution},
+            "trend": trend_list,
         }
 
     async def get_content_performance(

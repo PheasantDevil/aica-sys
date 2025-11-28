@@ -4,7 +4,7 @@ Phase 9-5: Analytics and reports
 """
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -179,6 +179,27 @@ async def get_user_growth_analytics(
         return {"success": True, "analytics": analytics}
     except Exception as e:
         logger.error(f"Get user growth analytics error: {e}")
+        raise HTTPException(status_code=500, detail="分析取得に失敗しました")
+
+
+@router.get("/user-behavior")
+async def get_user_behavior_analytics(
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    affiliate_id: Optional[int] = None,
+    db: Session = Depends(get_db),
+):
+    """ユーザー行動分析を取得"""
+    try:
+        service = AnalyticsService(db)
+        resolved_end = end_date or datetime.utcnow()
+        resolved_start = start_date or (resolved_end - timedelta(days=14))
+        analytics = await service.get_user_behavior_analytics(
+            resolved_start, resolved_end, affiliate_id=affiliate_id
+        )
+        return {"success": True, "analytics": analytics}
+    except Exception as e:
+        logger.error(f"Get user behavior analytics error: {e}")
         raise HTTPException(status_code=500, detail="分析取得に失敗しました")
 
 

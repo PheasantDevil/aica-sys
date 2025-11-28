@@ -7,12 +7,14 @@ AICA-SySでSupabase CLIのローカル開発環境を使用するため、Docker
 ## 問題: Docker再インストールエラー
 
 ### 症状
-```
+
+```text
 Error: docker-desktop: Failure while executing; `/usr/bin/sudo ...` exited with 1.
 sudo: a terminal is required to read the password
 ```
 
 ### 原因
+
 - Docker Desktop の残ファイルが存在
 - 特権ヘルパーツール（PrivilegedHelperTools）が削除できていない
 - sudoパスワードが必要だが対話的に入力できない
@@ -176,6 +178,7 @@ supabase db push
 **原因**: Docker Desktopが起動していない
 
 **解決**:
+
 ```bash
 # Docker Desktopを起動
 open -a Docker
@@ -192,6 +195,7 @@ docker ps
 **原因**: ポートが他のサービスで使用中
 
 **解決**:
+
 ```bash
 # 使用中のポートを確認
 lsof -i :54321
@@ -210,6 +214,7 @@ kill -9 <PID>
 **原因**: macOSバージョンが古い
 
 **解決**:
+
 1. macOSをアップデート
 2. または、古いバージョンのDocker Desktopをインストール
 
@@ -218,6 +223,7 @@ kill -9 <PID>
 **原因**: Homebrewがインストールされていない、またはPATHが設定されていない
 
 **解決**:
+
 ```bash
 # Homebrewインストール
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -290,12 +296,14 @@ supabase start
 ### Docker使用ケース
 
 1. **Supabaseローカル開発環境**
+
    ```bash
    supabase start
    # ローカルでDBテスト、マイグレーション検証
    ```
 
 2. **コンテナ化されたバックエンド**
+
    ```bash
    docker compose up -d
    # backend, PostgreSQL, Redis, Qdrantを起動
@@ -321,11 +329,13 @@ supabase start
 ## まとめ
 
 ### Docker必要な場合
+
 - ✅ Supabaseローカル環境使用
 - ✅ 完全な統合テスト実行
 - ✅ コンテナ化検証
 
 ### Docker不要な場合
+
 - ✅ リモートSupabaseのみ使用
 - ✅ SQLiteでローカル開発
 - ✅ シンプルな開発・テスト
@@ -337,4 +347,3 @@ supabase start
 - [Docker Desktop for Mac](https://docs.docker.com/desktop/install/mac-install/)
 - [Homebrew Docker](https://formulae.brew.sh/cask/docker)
 - [Supabase CLI + Docker](https://supabase.com/docs/guides/cli/local-development)
-

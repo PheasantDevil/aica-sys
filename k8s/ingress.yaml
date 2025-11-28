@@ -15,31 +15,31 @@ metadata:
     nginx.ingress.kubernetes.io/limit-rps: "10"
 spec:
   tls:
-  - hosts:
-    - aica-sys.com
-    - api.aica-sys.com
-    secretName: aica-sys-tls
+    - hosts:
+        - aica-sys.com
+        - api.aica-sys.com
+      secretName: aica-sys-tls
   rules:
-  # Frontend
-  - host: aica-sys.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: aica-sys-frontend-service
-            port:
-              number: 3000
-  
-  # Backend API
-  - host: api.aica-sys.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: aica-sys-backend-service
-            port:
-              number: 8000
+    # Frontend
+    - host: aica-sys.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aica-sys-frontend-service
+                port:
+                  number: 3000
+
+    # Backend API
+    - host: api.aica-sys.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aica-sys-backend-service
+                port:
+                  number: 8000

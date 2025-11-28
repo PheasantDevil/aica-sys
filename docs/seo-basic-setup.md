@@ -30,12 +30,12 @@
 
 `.env.local` または Vercel/Render/GitHub Secrets に以下を設定してください。
 
-| 変数名 | 用途 |
-| --- | --- |
-| `NEXT_PUBLIC_BASE_URL` | Canonical URL / OGP 生成用 |
-| `NEXT_PUBLIC_API_URL` | フロントエンドからの API 参照先 |
+| 変数名                                 | 用途                                |
+| -------------------------------------- | ----------------------------------- |
+| `NEXT_PUBLIC_BASE_URL`                 | Canonical URL / OGP 生成用          |
+| `NEXT_PUBLIC_API_URL`                  | フロントエンドからの API 参照先     |
 | `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | Search Console 用のサイト検証コード |
-| `NEXT_PUBLIC_GA_ID` | GA4 測定ID (形式: `G-XXXXXXXXXX`) |
+| `NEXT_PUBLIC_GA_ID`                    | GA4 測定ID (形式: `G-XXXXXXXXXX`)   |
 
 > 参考: `backend/env.example` にサンプルが記載されています。
 
@@ -43,10 +43,10 @@
 
 ## 📈 Google Analytics 4 設定手順
 
-1. [GA4 プロパティ](https://analytics.google.com/) を作成  
-2. 測定ID（`G-XXXXXXXXXX`）を取得  
-3. Vercel / Render / GitHub Secrets に `NEXT_PUBLIC_GA_ID` を設定  
-4. デプロイ後、GA4 のリアルタイムビューでイベント受信を確認  
+1. [GA4 プロパティ](https://analytics.google.com/) を作成
+2. 測定ID（`G-XXXXXXXXXX`）を取得
+3. Vercel / Render / GitHub Secrets に `NEXT_PUBLIC_GA_ID` を設定
+4. デプロイ後、GA4 のリアルタイムビューでイベント受信を確認
 
 ### ローカルでの確認
 
@@ -59,11 +59,11 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX npm run dev
 
 ## 🔍 Google Search Console 設定手順
 
-1. [Search Console](https://search.google.com/search-console) にログイン  
-2. プロパティタイプ「ドメイン」または「URL プレフィックス」を選択  
-3. 「HTML タグ（メタタグ）」の検証コードを取得  
-4. `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION="google-site-verification=xxxx"` を設定  
-5. デプロイ後、Search Console で「確認」を実行  
+1. [Search Console](https://search.google.com/search-console) にログイン
+2. プロパティタイプ「ドメイン」または「URL プレフィックス」を選択
+3. 「HTML タグ（メタタグ）」の検証コードを取得
+4. `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION="google-site-verification=xxxx"` を設定
+5. デプロイ後、Search Console で「確認」を実行
 
 > `app/layout.tsx` がメタタグを自動出力するため、追加作業は不要です。
 
@@ -94,16 +94,16 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX npm run dev
    - 各記事ページ (`app/articles/[slug]/page.tsx`) は `SEOUtils.generateOGImageUrl` を使用し、記事本文に合わせた OGP を生成
 
 3. **プレビュー検証手順**
-   - 端末1: フロントエンド開発サーバーを起動  
+   - 端末1: フロントエンド開発サーバーを起動
      ```bash
      cd frontend
      npm run dev
      ```
-   - 端末2: ルートディレクトリで OGP プレビューを取得  
+   - 端末2: ルートディレクトリで OGP プレビューを取得
      ```bash
      npm run og:preview -- --title="TypeScript 2025 新機能" --description="AST最適化と型安全性が向上" --slug="typescript-2025" --tags="TypeScript,AI自動生成,Next.js"
      ```
-   - 生成された PNG は `tmp/og-previews/` に保存されます。  
+   - 生成された PNG は `tmp/og-previews/` に保存されます。
    - **手作業が必要な項目**: ブラウザで `http://localhost:3000/api/og?title=...` を直接開き、SNS プレビュー（Twitter Card Validator 等）で見た目を最終確認。
 
 > 本番環境では Vercel Edge Runtime で自動生成されるため追加設定は不要です。
@@ -112,16 +112,16 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX npm run dev
 
 ## 🔄 運用フロー
 
-1. **新しいページ追加時**:  
-   - `SEOUtils.generateMetadata` を利用してページ固有のメタ情報を定義  
+1. **新しいページ追加時**:
+   - `SEOUtils.generateMetadata` を利用してページ固有のメタ情報を定義
    - 必要に応じて構造化データを追加
 
-2. **Search Console**  
-   - カバレッジ / Core Web Vitals / インデックス状況を週次確認  
+2. **Search Console**
+   - カバレッジ / Core Web Vitals / インデックス状況を週次確認
    - サイトマップ送信状況をモニタリング
 
-3. **Analytics**  
-   - GA4 のリアルタイム / イベント / コンバージョンをモニタリング  
+3. **Analytics**
+   - GA4 のリアルタイム / イベント / コンバージョンをモニタリング
    - 将来的に BigQuery 連携や Looker Studio ダッシュボード化を検討
 
 ---
@@ -136,4 +136,3 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX npm run dev
 ---
 
 これで SEO 基本設定の初期セットアップは完了です。追加のモニタリングや分析ツールを導入する場合は、このドキュメントに追記してください。
-

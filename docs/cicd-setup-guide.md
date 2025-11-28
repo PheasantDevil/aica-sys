@@ -17,27 +17,33 @@ Phase 8-1: CI/CDパイプライン構築
 ```
 
 #### Vercel関連
+
 - `VERCEL_TOKEN` - Vercel デプロイメントトークン
 - `VERCEL_ORG_ID` - Vercel 組織ID
 - `VERCEL_PROJECT_ID` - Vercel プロジェクトID
 
 #### データベース
+
 - `DATABASE_URL` - 本番データベースURL（例: `postgresql://user:pass@host:5432/db`）
 
 #### Redis
+
 - `REDIS_URL` - Redis接続URL（例: `redis://host:6379`）
 
 #### API Keys
+
 - `OPENAI_API_KEY` - OpenAI APIキー
 - `GOOGLE_AI_STUDIO_API_KEY` - Google AI Studio APIキー
 - `STRIPE_SECRET_KEY` - Stripe シークレットキー
 
 #### Supabase
+
 - `SUPABASE_URL` - Supabase プロジェクトURL
 - `SUPABASE_ANON_KEY` - Supabase 匿名キー
 - `SUPABASE_SERVICE_ROLE_KEY` - Supabase サービスロールキー
 
 #### その他
+
 - `NEXTAUTH_SECRET` - NextAuth シークレット
 - `NEXTAUTH_URL` - NextAuth URL
 - `SNYK_TOKEN` - Snyk セキュリティスキャントークン（オプション）
@@ -45,6 +51,7 @@ Phase 8-1: CI/CDパイプライン構築
 ### シークレットの取得方法
 
 #### Vercelトークンの取得
+
 ```bash
 # Vercel CLIを使用
 npx vercel login
@@ -56,6 +63,7 @@ npx vercel project ls
 ```
 
 #### Supabaseキーの取得
+
 ```bash
 # Supabase Dashboard
 # Project Settings > API > Project API keys
@@ -66,10 +74,12 @@ npx vercel project ls
 ### 1. Backend CI/CD (`backend-ci-cd.yml`)
 
 **トリガー**:
+
 - `main` または `develop` ブランチへのプッシュ
 - `backend/` ディレクトリの変更を含むPR
 
 **ジョブ**:
+
 1. **lint-and-format**: コード品質チェック（Black, isort, Flake8）
 2. **type-check**: 型チェック（mypy）
 3. **test**: ユニットテスト実行とカバレッジ測定
@@ -81,10 +91,12 @@ npx vercel project ls
 ### 2. Frontend CI/CD (`frontend-ci-cd.yml`)
 
 **トリガー**:
+
 - `main` または `develop` ブランチへのプッシュ
 - `frontend/` ディレクトリの変更を含むPR
 
 **ジョブ**:
+
 1. **lint-and-format**: ESLintとPrettierチェック
 2. **type-check**: TypeScript型チェック
 3. **test**: テスト実行とカバレッジ測定
@@ -97,20 +109,24 @@ npx vercel project ls
 ### 3. Integration Tests (`integration-tests.yml`)
 
 **トリガー**:
+
 - `main` または `develop` ブランチへのプッシュ
 - PR作成
 - スケジュール実行（毎日午前3時JST）
 
 **ジョブ**:
+
 1. **integration-test**: バックエンドとフロントエンドの統合テスト
 2. **e2e-test**: Playwrightによるエンドツーエンドテスト
 
 ### 4. PR Checks (`pr-checks.yml`)
 
 **トリガー**:
+
 - プルリクエスト作成・更新
 
 **ジョブ**:
+
 1. **pr-validation**: PRタイトルの検証（Conventional Commits）
 2. **changed-files**: 変更ファイルの検出
 3. **size-check**: バンドルサイズチェック
@@ -132,6 +148,7 @@ hotfix/*    → 緊急修正ブランチ
 ### ブランチ保護ルール
 
 #### mainブランチ
+
 - ✅ Require pull request before merging
 - ✅ Require approvals: 1
 - ✅ Require status checks to pass
@@ -142,6 +159,7 @@ hotfix/*    → 緊急修正ブランチ
 - ✅ Include administrators
 
 #### developブランチ
+
 - ✅ Require pull request before merging
 - ✅ Require status checks to pass
 - ✅ Require branches to be up to date
@@ -263,6 +281,7 @@ npm audit
 **症状**: CI/CDワークフローが赤くなる
 
 **確認事項**:
+
 1. ログを確認（Actions タブ）
 2. ローカルで同じコマンドを実行
 3. 依存関係の問題をチェック
@@ -272,6 +291,7 @@ npm audit
 **症状**: デプロイジョブが失敗する
 
 **確認事項**:
+
 1. GitHub Secretsが正しく設定されているか
 2. デプロイ先のサービスが稼働しているか
 3. ネットワーク接続の問題がないか
@@ -281,6 +301,7 @@ npm audit
 **症状**: テストジョブが30分でタイムアウト
 
 **対策**:
+
 1. テストを並列化
 2. 不要なテストをスキップ
 3. タイムアウト時間を延長
@@ -306,6 +327,7 @@ ci: CI/CD関連の変更
 ### PRレビュー
 
 チェックリスト：
+
 - [ ] コードレビュー完了
 - [ ] 全てのCIチェックが成功
 - [ ] テストカバレッジが維持されている

@@ -6,11 +6,7 @@
       {
         "score": 210,
         "count": 7,
-        "sources": [
-          "hacker_news",
-          "dev_to",
-          "tech_crunch"
-        ],
+        "sources": ["hacker_news", "dev_to", "tech_crunch"],
         "related_keywords": [],
         "related_topics": []
       }
@@ -20,10 +16,7 @@
       {
         "score": 100,
         "count": 5,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
+        "sources": ["hacker_news", "dev_to"],
         "related_keywords": [],
         "related_topics": []
       }
@@ -33,11 +26,7 @@
       {
         "score": 90,
         "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to",
-          "tech_crunch"
-        ],
+        "sources": ["hacker_news", "dev_to", "tech_crunch"],
         "related_keywords": [],
         "related_topics": []
       }
@@ -47,10 +36,7 @@
       {
         "score": 80,
         "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
+        "sources": ["hacker_news", "dev_to"],
         "related_keywords": [],
         "related_topics": []
       }
@@ -60,10 +46,7 @@
       {
         "score": 80,
         "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
+        "sources": ["hacker_news", "dev_to"],
         "related_keywords": [],
         "related_topics": []
       }
@@ -73,10 +56,7 @@
       {
         "score": 60,
         "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
+        "sources": ["hacker_news", "dev_to"],
         "related_keywords": [],
         "related_topics": []
       }
@@ -86,10 +66,7 @@
       {
         "score": 40,
         "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
+        "sources": ["hacker_news", "tech_crunch"],
         "related_keywords": [],
         "related_topics": []
       }
@@ -99,10 +76,7 @@
       {
         "score": 40,
         "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
+        "sources": ["hacker_news", "dev_to"],
         "related_keywords": [],
         "related_topics": []
       }
@@ -112,10 +86,7 @@
       {
         "score": 40,
         "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
+        "sources": ["hacker_news", "dev_to"],
         "related_keywords": [],
         "related_topics": []
       }
@@ -125,10 +96,7 @@
       {
         "score": 40,
         "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
+        "sources": ["hacker_news", "dev_to"],
         "related_keywords": [],
         "related_topics": []
       }

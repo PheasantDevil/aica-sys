@@ -14,7 +14,6 @@ AICA-SyS の Twitter API 統合により、記事公開時の自動投稿や定�
 ### 実装済み機能
 
 1. **TwitterClient** (`backend/services/twitter_client.py`)
-
    - Twitter API v2 統合
    - OAuth 2.0 (Bearer Token) サポート
    - OAuth 1.0a サポート（メディアアップロード用）
@@ -23,7 +22,6 @@ AICA-SyS の Twitter API 統合により、記事公開時の自動投稿や定�
    - 認証確認機能
 
 2. **SocialMediaService** (`backend/services/social_media_service.py`)
-
    - 記事投稿機能
    - サービス紹介投稿機能
    - トレンド情報投稿機能
@@ -209,13 +207,11 @@ python3 scripts/generate_daily_article.py --skip-social-post  # 投稿せずに�
 ## 🔒 セキュリティ注意事項
 
 1. **認証情報の管理**
-
    - API キーは絶対に公開しない
    - GitHub にコミットしない（`.env.local`は`.gitignore`に含まれている）
    - 環境変数として安全に管理
 
 2. **レート制限**
-
    - Twitter API にはレート制限がある
    - `wait_on_rate_limit=True`が設定されているため、自動的に待機する
 

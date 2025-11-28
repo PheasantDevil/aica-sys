@@ -1,4 +1,5 @@
 # AI駆動型システム開発のロードマップ
+
 _Exported on 2025/9/9 at 21:49:42 JST from Cursor (1.5.9)_
 
 ---
@@ -95,10 +96,10 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 
 このプロジェクトは非常に興味深いAI駆動型コンテンツ自動販売システムですね。まず、詳細なロードマップを作成し、その後作業を開始いたします。
 
-
 # AI駆動型 ニッチ情報キュレーション＆自動販売システム (AICA-SyS) 実装ロードマップ
 
 ## プロジェクト概要
+
 - **プロジェクト名**: AICA-SyS (AI-driven Content Curation & Automated Sales System)
 - **目標**: TypeScriptエコシステム特化型のAI自動コンテンツ生成・販売システム
 - **収益目標**: 3-6ヶ月で月額1万円以上の収益化
@@ -109,6 +110,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 ### Phase 1: 企画・設計・基盤構築 (2-3週間)
 
 #### 1.1 ニッチ市場分析と収益モデル設計 (1週間)
+
 - **TypeScriptエコシステム市場調査**
   - フレームワーク動向分析 (Next.js, SvelteKit, Solid.js等)
   - ライブラリトレンド調査 (React Query, Zustand, Prisma等)
@@ -123,6 +125,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
   - 技術リード・アーキテクト
 
 #### 1.2 システムアーキテクチャ設計 (1週間)
+
 - **全体アーキテクチャ**
   - フロントエンド: Next.js 14 (App Router)
   - バックエンド: Next.js API Routes + Python FastAPI
@@ -136,6 +139,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
   - 認証: NextAuth.js + JWT
 
 #### 1.3 開発環境構築 (1週間)
+
 - **プロジェクト構造**
   ```
   aica-sys/
@@ -153,6 +157,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 ### Phase 2: AIエージェントロジック開発 (3-4週間)
 
 #### 2.1 情報収集エージェント (1週間)
+
 - **収集対象**
   - GitHub Trending (TypeScript関連)
   - 技術ブログ (Dev.to, Medium, Zenn)
@@ -168,6 +173,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
   - 重複排除ロジック
 
 #### 2.2 情報分析・要約エージェント (1.5週間)
+
 - **Gemini API活用**
   - 重要情報抽出
   - トレンド分析
@@ -180,6 +186,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
   - 人間による検証フロー
 
 #### 2.3 コンテンツ自動生成エージェント (1.5週間)
+
 - **生成コンテンツ**
   - 週刊レポート (2,000-3,000文字)
   - 月間トレンド分析 (5,000-8,000文字)
@@ -194,6 +201,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 ### Phase 3: プラットフォーム構築と販売システム (2-3週間)
 
 #### 3.1 コンテンツ公開システム (1週間)
+
 - **フロントエンド**
   - レスポンシブデザイン
   - 記事一覧・詳細表示
@@ -204,6 +212,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
   - 購読者管理
 
 #### 3.2 決済・サブスクリプションシステム (1週間)
+
 - **Stripe連携**
   - 月額サブスクリプション
   - 一回払い商品販売
@@ -214,6 +223,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
   - ダッシュボード
 
 #### 3.3 モニタリング・通知システム (0.5週間)
+
 - **ログ・監視**
   - システムログ収集
   - エラー通知 (Slack/Email)
@@ -226,6 +236,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 ### Phase 4: テスト・改善・マーケティング (継続)
 
 #### 4.1 システムテスト・品質改善 (継続)
+
 - **テスト自動化**
   - ユニットテスト
   - 統合テスト
@@ -236,6 +247,7 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
   - 継続的改善
 
 #### 4.2 マーケティング・拡散 (継続)
+
 - **初期マーケティング**
   - ランディングページ作成
   - SNS戦略
@@ -248,25 +260,30 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 ## 技術選定理由
 
 ### フロントエンド: Next.js 14
+
 - App Routerによる最新のルーティング
 - サーバーサイドレンダリング
 - Vercelとの親和性
 
 ### バックエンド: Python FastAPI
+
 - AI/MLライブラリとの親和性
 - 高速なAPI開発
 - 自動ドキュメント生成
 
 ### AI: Google AI Studio (Gemini)
+
 - 高品質なテキスト生成
 - 多言語対応
 - コスト効率
 
 ### データベース: PostgreSQL + Qdrant
+
 - PostgreSQL: 構造化データ
 - Qdrant: ベクトル検索・RAG
 
 ### インフラ: Vercel + GCP
+
 - Vercel: フロントエンド・API
 - GCP Cloud Functions: AI処理
 - サーバーレス・スケーラブル
@@ -274,11 +291,13 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 ## 収益化戦略
 
 ### 段階的収益化
+
 1. **Phase 1-2**: 無料コンテンツでユーザー獲得
 2. **Phase 3**: 月額サブスクリプション開始 (¥1,980)
 3. **Phase 4**: プレミアムコンテンツ追加 (¥4,980)
 
 ### 収益目標
+
 - **3ヶ月目**: 月額¥5,000 (5名の購読者)
 - **6ヶ月目**: 月額¥15,000 (15名の購読者)
 - **12ヶ月目**: 月額¥50,000 (50名の購読者)
@@ -286,11 +305,13 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 ## リスク管理
 
 ### 技術リスク
+
 - AI生成コンテンツの品質管理
 - API制限・コスト管理
 - スケーラビリティ対応
 
 ### ビジネスリスク
+
 - 競合他社の参入
 - 市場需要の変化
 - 法的・規制リスク
@@ -298,7 +319,6 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 ---
 
 このロードマップで問題ございませんでしょうか？承認いただけましたら、すぐにプロジェクトの初期化とPhase 1の作業を開始いたします。
-
 
 ```plaintext
   aica-sys/
@@ -321,7 +341,6 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 
 了解いたします！プロジェクトの初期化とPhase 1の作業を開始いたします。
 
-
 ```markdown
 # AICA-SyS (AI-driven Content Curation & Automated Sales System)
 
@@ -330,11 +349,13 @@ TypeScript と Python の連携: 両言語の強みを活かしたモジュー�
 AI駆動型 ニッチ情報キュレーション＆自動販売システム (AICA-SyS) は、TypeScriptエコシステム特化型のAI自動コンテンツ生成・販売システムです。
 
 ### 目標
+
 - 3-6ヶ月で月額1万円以上の収益化
 - TypeScriptエコシステムの最新動向を自動収集・分析・要約
 - 高品質なコンテンツ（ブログ記事、ニュースレター、電子書籍）の自動生成・販売
 
 ### 技術スタック
+
 - **フロントエンド**: Next.js 14 (TypeScript)
 - **バックエンド**: Python FastAPI + Next.js API Routes
 - **AI**: Google AI Studio (Gemini Pro)
@@ -342,15 +363,16 @@ AI駆動型 ニッチ情報キュレーション＆自動販売システム (AIC
 - **インフラ**: Vercel + GCP Cloud Functions
 
 ## プロジェクト構造
-
 ```
+
 aica-sys/
-├── frontend/          # Next.js アプリケーション
-├── backend/           # Python AI エージェント
-├── shared/            # 共通型定義・ユーティリティ
-├── docs/              # ドキュメント
-├── scripts/           # デプロイ・管理スクリプト
+├── frontend/ # Next.js アプリケーション
+├── backend/ # Python AI エージェント
+├── shared/ # 共通型定義・ユーティリティ
+├── docs/ # ドキュメント
+├── scripts/ # デプロイ・管理スクリプト
 └── README.md
+
 ```
 
 ## 開発フェーズ
@@ -529,8 +551,7 @@ temp/
 
 それでは、Phase 1の作業を開始いたします。まず、Phase 1の詳細計画を作成し、その後実装に移ります。
 
-
-```markdown
+````markdown
 # Phase 1: 企画・設計・基盤構築
 
 ## 1.1 ニッチ市場分析と収益モデル設計
@@ -538,6 +559,7 @@ temp/
 ### TypeScriptエコシステム市場調査
 
 #### 主要フレームワーク動向
+
 - **Next.js**: App Router、Server Components、Turbopack
 - **SvelteKit**: 軽量性とパフォーマンス
 - **Solid.js**: リアクティブプログラミング
@@ -545,6 +567,7 @@ temp/
 - **Remix**: データローディング最適化
 
 #### ライブラリトレンド
+
 - **状態管理**: Zustand、Jotai、Valtio
 - **データフェッチ**: TanStack Query、SWR
 - **フォーム**: React Hook Form、Formik
@@ -552,6 +575,7 @@ temp/
 - **スタイリング**: Tailwind CSS、Styled Components
 
 #### ツールチェーン進化
+
 - **ビルドツール**: Turbopack、Vite、esbuild
 - **ランタイム**: Bun、Deno
 - **リンター**: Biome、ESLint
@@ -561,18 +585,21 @@ temp/
 ### 収益モデル設計
 
 #### 月額サブスクリプション (¥1,980/月)
+
 - 週刊TypeScriptトレンドレポート
 - 月間フレームワーク比較分析
 - 新機能・ライブラリの詳細解説
 - コミュニティアクセス
 
 #### プレミアムレポート販売 (¥4,980/冊)
+
 - 年次TypeScriptエコシステム総括
 - フレームワーク移行ガイド
 - パフォーマンス最適化完全ガイド
 - 企業導入事例研究
 
 #### アフィリエイト収益
+
 - 開発ツール (Vercel、Netlify、Railway)
 - 書籍 (O'Reilly、Manning)
 - オンラインコース (Udemy、Pluralsight)
@@ -581,6 +608,7 @@ temp/
 ### ターゲットペルソナ
 
 #### プライマリペルソナ: TypeScript開発者 (中級〜上級)
+
 - **年齢**: 25-40歳
 - **職種**: フロントエンドエンジニア、フルスタックエンジニア
 - **経験**: 3-10年の開発経験
@@ -588,6 +616,7 @@ temp/
 - **ニーズ**: 効率的な学習、実践的な情報
 
 #### セカンダリペルソナ: 技術リード・アーキテクト
+
 - **年齢**: 30-45歳
 - **職種**: テックリード、アーキテクト、CTO
 - **経験**: 5-15年の開発経験
@@ -603,26 +632,26 @@ graph TB
     subgraph "Frontend Layer"
         A[Next.js 14 App] --> B[Vercel Hosting]
     end
-    
+
     subgraph "API Layer"
         C[Next.js API Routes] --> D[Python FastAPI]
     end
-    
+
     subgraph "AI Processing Layer"
         E[Information Collection Agent] --> F[Analysis & Summary Agent]
         F --> G[Content Generation Agent]
     end
-    
+
     subgraph "Data Layer"
         H[PostgreSQL] --> I[Qdrant Vector DB]
         J[Redis Cache] --> K[File Storage]
     end
-    
+
     subgraph "External Services"
         L[Google AI Studio] --> M[Stripe Payment]
         N[GitHub API] --> O[RSS Feeds]
     end
-    
+
     A --> C
     C --> E
     E --> H
@@ -630,10 +659,12 @@ graph TB
     G --> A
     M --> C
 ```
+````
 
 ### 技術スタック詳細
 
 #### フロントエンド
+
 - **Next.js 14**: App Router、Server Components
 - **TypeScript**: 型安全性
 - **Tailwind CSS**: スタイリング
@@ -642,6 +673,7 @@ graph TB
 - **NextAuth.js**: 認証
 
 #### バックエンド
+
 - **Next.js API Routes**: フロントエンド連携
 - **Python FastAPI**: AI処理・重い計算
 - **PostgreSQL**: 構造化データ
@@ -649,12 +681,14 @@ graph TB
 - **Redis**: キャッシュ・セッション
 
 #### AI・ML
+
 - **Google AI Studio (Gemini Pro)**: テキスト生成
 - **OpenAI API**: バックアップ・比較
 - **Stable Diffusion**: 画像生成
 - **Sentence Transformers**: 埋め込み生成
 
 #### インフラ
+
 - **Vercel**: フロントエンド・API
 - **GCP Cloud Functions**: Python処理
 - **Cloud Storage**: ファイル保存
@@ -664,28 +698,33 @@ graph TB
 ### データフロー設計
 
 #### 1. 情報収集フロー
-```
+
+```text
 外部ソース → 収集エージェント → データ正規化 → PostgreSQL → ベクトル化 → Qdrant
 ```
 
 #### 2. 分析・要約フロー
-```
+
+```text
 Qdrant → RAG検索 → Gemini API → 分析結果 → PostgreSQL
 ```
 
 #### 3. コンテンツ生成フロー
-```
+
+```text
 分析結果 → プロンプト生成 → Gemini API → コンテンツ → 画像生成 → 公開
 ```
 
 #### 4. 販売フロー
-```
+
+```text
 ユーザー → 認証 → 決済 → アクセス権限 → コンテンツ表示
 ```
 
 ### API設計
 
 #### RESTful API
+
 ```
 GET    /api/content/articles          # 記事一覧
 GET    /api/content/articles/:id      # 記事詳細
@@ -696,6 +735,7 @@ GET    /api/user/profile              # ユーザー情報
 ```
 
 #### GraphQL (将来拡張)
+
 ```graphql
 type Article {
   id: ID!
@@ -714,6 +754,7 @@ type Query {
 ## 1.3 開発環境構築
 
 ### プロジェクト構造
+
 ```
 aica-sys/
 ├── frontend/                 # Next.js アプリケーション
@@ -743,6 +784,7 @@ aica-sys/
 ### 開発環境設定
 
 #### フロントエンド (Next.js)
+
 ```json
 {
   "name": "aica-sys-frontend",
@@ -768,6 +810,7 @@ aica-sys/
 ```
 
 #### バックエンド (Python)
+
 ```txt
 fastapi==0.104.0
 uvicorn==0.24.0
@@ -788,6 +831,7 @@ sentence-transformers==2.2.0
 ### CI/CD設定
 
 #### GitHub Actions
+
 ```yaml
 name: CI/CD Pipeline
 
@@ -804,7 +848,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
       - run: cd frontend && npm ci
       - run: cd frontend && npm run lint
       - run: cd frontend && npm run type-check
@@ -816,7 +860,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: "3.11"
       - run: cd backend && pip install -r requirements.txt
       - run: cd backend && python -m pytest
 
@@ -836,7 +880,8 @@ jobs:
 3. データベース設計・構築
 4. 基本的なAPI実装
 5. 認証システム実装
-```
+
+````
 
 ```json
 {
@@ -883,7 +928,7 @@ jobs:
     "prettier-plugin-tailwindcss": "0.5.0"
   }
 }
-```
+````
 
 ```javascript
 /** @type {import('next').NextConfig} */
@@ -892,7 +937,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['images.unsplash.com', 'via.placeholder.com'],
+    domains: ["images.unsplash.com", "via.placeholder.com"],
   },
   env: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -902,9 +947,9 @@ const nextConfig = {
     STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
 ```
 
 ```jsonc
@@ -925,8 +970,8 @@ module.exports = nextConfig
     "incremental": true,
     "plugins": [
       {
-        "name": "next"
-      }
+        "name": "next",
+      },
     ],
     "baseUrl": ".",
     "paths": {
@@ -934,11 +979,11 @@ module.exports = nextConfig
       "@/components/*": ["./src/components/*"],
       "@/lib/*": ["./src/lib/*"],
       "@/types/*": ["./src/types/*"],
-      "@/utils/*": ["./src/utils/*"]
-    }
+      "@/utils/*": ["./src/utils/*"],
+    },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
 ```
 
@@ -946,12 +991,7 @@ module.exports = nextConfig
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-  ],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   theme: {
     container: {
       center: true,
@@ -1018,7 +1058,7 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
 ```
 
 ```javascript
@@ -1027,7 +1067,7 @@ module.exports = {
     tailwindcss: {},
     autoprefixer: {},
   },
-}
+};
 ```
 
 ```pip-requirements
@@ -1171,9 +1211,9 @@ export interface User {
 }
 
 export enum SubscriptionStatus {
-  FREE = 'free',
-  PREMIUM = 'premium',
-  CANCELLED = 'cancelled'
+  FREE = "free",
+  PREMIUM = "premium",
+  CANCELLED = "cancelled",
 }
 
 // Content types
@@ -1211,18 +1251,18 @@ export interface Trend {
 }
 
 export enum TrendCategory {
-  FRAMEWORK = 'framework',
-  LIBRARY = 'library',
-  TOOL = 'tool',
-  LANGUAGE = 'language',
-  ECOSYSTEM = 'ecosystem'
+  FRAMEWORK = "framework",
+  LIBRARY = "library",
+  TOOL = "tool",
+  LANGUAGE = "language",
+  ECOSYSTEM = "ecosystem",
 }
 
 export enum TrendImpact {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical'
+  LOW = "low",
+  MEDIUM = "medium",
+  HIGH = "high",
+  CRITICAL = "critical",
 }
 
 // AI Agent types
@@ -1238,17 +1278,17 @@ export interface CollectionJob {
 }
 
 export enum CollectionType {
-  GITHUB = 'github',
-  RSS = 'rss',
-  WEB_SCRAPING = 'web_scraping',
-  API = 'api'
+  GITHUB = "github",
+  RSS = "rss",
+  WEB_SCRAPING = "web_scraping",
+  API = "api",
 }
 
 export enum JobStatus {
-  PENDING = 'pending',
-  RUNNING = 'running',
-  COMPLETED = 'completed',
-  FAILED = 'failed'
+  PENDING = "pending",
+  RUNNING = "running",
+  COMPLETED = "completed",
+  FAILED = "failed",
 }
 
 export interface AnalysisResult {
@@ -1263,9 +1303,9 @@ export interface AnalysisResult {
 }
 
 export enum Sentiment {
-  POSITIVE = 'positive',
-  NEUTRAL = 'neutral',
-  NEGATIVE = 'negative'
+  POSITIVE = "positive",
+  NEUTRAL = "neutral",
+  NEGATIVE = "negative",
 }
 
 // Payment types
@@ -1281,9 +1321,9 @@ export interface Subscription {
 }
 
 export enum SubscriptionPlan {
-  FREE = 'free',
-  PREMIUM_MONTHLY = 'premium_monthly',
-  PREMIUM_YEARLY = 'premium_yearly'
+  FREE = "free",
+  PREMIUM_MONTHLY = "premium_monthly",
+  PREMIUM_YEARLY = "premium_yearly",
 }
 
 // API Response types
@@ -1315,7 +1355,7 @@ export interface SearchFilters {
 
 export interface SortOptions {
   field: string;
-  direction: 'asc' | 'desc';
+  direction: "asc" | "desc";
 }
 ```
 
@@ -1338,30 +1378,30 @@ jobs:
     defaults:
       run:
         working-directory: ./frontend
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run linting
         run: npm run lint
-      
+
       - name: Run type checking
         run: npm run type-check
-      
+
       - name: Build application
         run: npm run build
-      
+
       - name: Run tests (when available)
         run: npm test --if-present
 
@@ -1370,16 +1410,16 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      
+
       - name: Cache pip dependencies
         uses: actions/cache@v3
         with:
@@ -1387,21 +1427,21 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('backend/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-      
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      
+
       - name: Run linting
         run: |
           flake8 .
           black --check .
           isort --check-only .
-      
+
       - name: Run type checking
         run: mypy .
-      
+
       - name: Run tests
         run: pytest
 
@@ -1410,7 +1450,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -1418,7 +1458,7 @@ jobs:
           scan-ref: '.'
           format: 'sarif'
           output: 'trivy-results.sarif'
-      
+
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         if: always()
@@ -1430,11 +1470,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     environment: staging
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Deploy to staging
         run: |
           echo "Deploying to staging environment..."
@@ -1445,11 +1485,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Deploy to production
         run: |
           echo "Deploying to production environment..."
@@ -1665,27 +1705,27 @@ echo "🚀 Setting up AICA-SyS development environment..."
 # Check if required tools are installed
 check_requirements() {
     echo "📋 Checking requirements..."
-    
+
     if ! command -v node &> /dev/null; then
         echo "❌ Node.js is not installed. Please install Node.js 18+ first."
         exit 1
     fi
-    
+
     if ! command -v python3 &> /dev/null; then
         echo "❌ Python 3 is not installed. Please install Python 3.11+ first."
         exit 1
     fi
-    
+
     if ! command -v docker &> /dev/null; then
         echo "❌ Docker is not installed. Please install Docker first."
         exit 1
     fi
-    
+
     if ! command -v docker-compose &> /dev/null; then
         echo "❌ Docker Compose is not installed. Please install Docker Compose first."
         exit 1
     fi
-    
+
     echo "✅ All requirements are satisfied."
 }
 
@@ -1693,14 +1733,14 @@ check_requirements() {
 setup_frontend() {
     echo "🎨 Setting up frontend..."
     cd frontend
-    
+
     if [ ! -d "node_modules" ]; then
         echo "📦 Installing frontend dependencies..."
         npm install
     else
         echo "✅ Frontend dependencies already installed."
     fi
-    
+
     cd ..
 }
 
@@ -1708,24 +1748,24 @@ setup_frontend() {
 setup_backend() {
     echo "🐍 Setting up backend..."
     cd backend
-    
+
     if [ ! -d "venv" ]; then
         echo "📦 Creating Python virtual environment..."
         python3 -m venv venv
     fi
-    
+
     echo "📦 Activating virtual environment and installing dependencies..."
     source venv/bin/activate
     pip install --upgrade pip
     pip install -r requirements.txt
-    
+
     cd ..
 }
 
 # Setup environment files
 setup_env() {
     echo "🔧 Setting up environment files..."
-    
+
     # Frontend .env.local
     if [ ! -f "frontend/.env.local" ]; then
         cat > frontend/.env.local << EOF
@@ -1744,7 +1784,7 @@ STRIPE_SECRET_KEY=your-stripe-secret-key
 EOF
         echo "✅ Created frontend/.env.local"
     fi
-    
+
     # Backend .env
     if [ ! -f "backend/.env" ]; then
         cat > backend/.env << EOF
@@ -1772,13 +1812,13 @@ EOF
 # Start development services
 start_services() {
     echo "🐳 Starting development services..."
-    
+
     # Start databases
     docker-compose up -d postgres redis qdrant
-    
+
     echo "⏳ Waiting for services to be ready..."
     sleep 10
-    
+
     echo "✅ Development services are running!"
     echo "📊 Services status:"
     echo "  - PostgreSQL: localhost:5432"
@@ -1790,13 +1830,13 @@ start_services() {
 main() {
     echo "🎯 AICA-SyS Development Environment Setup"
     echo "========================================"
-    
+
     check_requirements
     setup_frontend
     setup_backend
     setup_env
     start_services
-    
+
     echo ""
     echo "🎉 Setup completed successfully!"
     echo ""
@@ -1857,9 +1897,9 @@ main "$@"
 **Phase 2: AIエージェントロジック開発** に進む準備が整いました。
 
 Phase 2では以下の作業を行います：
+
 1. 情報収集エージェント（GitHub API、RSS、Webスクレイピング）
 2. 情報分析・要約エージェント（Gemini API活用）
 3. コンテンツ自動生成エージェント（ブログ記事、ニュースレター）
 
 Phase 2の作業を開始しますか？それとも、Phase 1の内容について何か確認や修正が必要でしょうか？
-

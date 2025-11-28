@@ -1,24 +1,24 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config({
-  path: path.resolve(__dirname, '../.env.production.example'),
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env.production.example"),
 });
 
 // Configuration
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 const OPTIMIZED_API_URL = `${API_URL}/api/optimized`;
 
 // Colors for console output
 const colors = {
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  reset: '\x1b[0m',
+  red: "\x1b[31m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  reset: "\x1b[0m",
 };
 
-function log(message, color = 'reset') {
+function log(message, color = "reset") {
   console.log(`${colors[color]}${message}${colors.reset}`);
 }
 
@@ -38,7 +38,7 @@ class APIOptimizationTester {
   }
 
   async runTest(testName, testFunction) {
-    log(`🧪 Running test: ${testName}`, 'blue');
+    log(`🧪 Running test: ${testName}`, "blue");
     const startTime = Date.now();
 
     try {
@@ -48,14 +48,14 @@ class APIOptimizationTester {
       this.results.passed++;
       this.results.tests.push({
         name: testName,
-        status: 'PASSED',
+        status: "PASSED",
         duration: duration,
         result: result,
       });
 
       this.performanceMetrics.responseTimes.push(duration);
 
-      log(`✅ ${testName}: PASSED (${duration}ms)`, 'green');
+      log(`✅ ${testName}: PASSED (${duration}ms)`, "green");
       return result;
     } catch (error) {
       const duration = Date.now() - startTime;
@@ -63,14 +63,14 @@ class APIOptimizationTester {
       this.results.failed++;
       this.results.tests.push({
         name: testName,
-        status: 'FAILED',
+        status: "FAILED",
         duration: duration,
         error: error.message,
       });
 
       this.performanceMetrics.errorRates.push(1);
 
-      log(`❌ ${testName}: FAILED - ${error.message} (${duration}ms)`, 'red');
+      log(`❌ ${testName}: FAILED - ${error.message} (${duration}ms)`, "red");
       throw error;
     }
   }
@@ -89,10 +89,10 @@ class APIOptimizationTester {
 
   async testOptimizedEndpoints() {
     const endpoints = [
-      { name: 'Articles', url: `${OPTIMIZED_API_URL}/articles` },
-      { name: 'Trends', url: `${OPTIMIZED_API_URL}/trends` },
-      { name: 'Newsletters', url: `${OPTIMIZED_API_URL}/newsletters` },
-      { name: 'Dashboard', url: `${OPTIMIZED_API_URL}/dashboard` },
+      { name: "Articles", url: `${OPTIMIZED_API_URL}/articles` },
+      { name: "Trends", url: `${OPTIMIZED_API_URL}/trends` },
+      { name: "Newsletters", url: `${OPTIMIZED_API_URL}/newsletters` },
+      { name: "Dashboard", url: `${OPTIMIZED_API_URL}/dashboard` },
     ];
 
     const results = {};
@@ -102,16 +102,14 @@ class APIOptimizationTester {
         const response = await axios.get(endpoint.url, { timeout: 10000 });
 
         if (response.status !== 200) {
-          throw new Error(
-            `${endpoint.name} endpoint failed: ${response.status}`
-          );
+          throw new Error(`${endpoint.name} endpoint failed: ${response.status}`);
         }
 
         // レスポンス時間を記録
-        const responseTime = response.headers['x-response-time'] || 'unknown';
-        const requestId = response.headers['x-request-id'] || 'unknown';
-        const etag = response.headers['etag'] || 'none';
-        const contentEncoding = response.headers['content-encoding'] || 'none';
+        const responseTime = response.headers["x-response-time"] || "unknown";
+        const requestId = response.headers["x-request-id"] || "unknown";
+        const etag = response.headers["etag"] || "none";
+        const contentEncoding = response.headers["content-encoding"] || "none";
 
         results[endpoint.name] = {
           status: response.status,
@@ -123,23 +121,19 @@ class APIOptimizationTester {
           hasOptimizationHeaders: !!(responseTime && requestId),
         };
 
-        this.performanceMetrics.responseTimes.push(
-          parseFloat(responseTime) || 0
-        );
-        this.performanceMetrics.compressionRatios.push(
-          contentEncoding === 'gzip' ? 1 : 0
-        );
+        this.performanceMetrics.responseTimes.push(parseFloat(responseTime) || 0);
+        this.performanceMetrics.compressionRatios.push(contentEncoding === "gzip" ? 1 : 0);
 
         log(
           `  📊 ${endpoint.name}: ${response.status} (${responseTime}ms, ${contentEncoding})`,
-          'reset'
+          "reset",
         );
       } catch (error) {
         results[endpoint.name] = {
           error: error.message,
-          status: 'failed',
+          status: "failed",
         };
-        log(`  ❌ ${endpoint.name}: ${error.message}`, 'red');
+        log(`  ❌ ${endpoint.name}: ${error.message}`, "red");
       }
     }
 
@@ -153,17 +147,15 @@ class APIOptimizationTester {
       const response = await axios.get(testUrl, {
         timeout: 10000,
         headers: {
-          'Accept-Encoding': 'gzip, deflate',
+          "Accept-Encoding": "gzip, deflate",
         },
       });
 
-      const contentEncoding = response.headers['content-encoding'];
-      const contentLength = response.headers['content-length'];
+      const contentEncoding = response.headers["content-encoding"];
+      const contentLength = response.headers["content-length"];
       const dataSize = JSON.stringify(response.data).length;
 
-      const compressionRatio = contentLength
-        ? (dataSize / parseInt(contentLength)) * 100
-        : 0;
+      const compressionRatio = contentLength ? (dataSize / parseInt(contentLength)) * 100 : 0;
 
       return {
         status: response.status,
@@ -171,7 +163,7 @@ class APIOptimizationTester {
         originalSize: dataSize,
         compressedSize: parseInt(contentLength) || dataSize,
         compressionRatio: compressionRatio,
-        isCompressed: contentEncoding === 'gzip',
+        isCompressed: contentEncoding === "gzip",
       };
     } catch (error) {
       throw new Error(`Compression test failed: ${error.message}`);
@@ -184,9 +176,9 @@ class APIOptimizationTester {
     try {
       const response = await axios.get(testUrl, { timeout: 10000 });
 
-      const cacheControl = response.headers['cache-control'];
-      const etag = response.headers['etag'];
-      const lastModified = response.headers['last-modified'];
+      const cacheControl = response.headers["cache-control"];
+      const etag = response.headers["etag"];
+      const lastModified = response.headers["last-modified"];
 
       return {
         status: response.status,
@@ -194,7 +186,7 @@ class APIOptimizationTester {
         etag: etag,
         lastModified: lastModified,
         hasCacheHeaders: !!(cacheControl || etag),
-        cacheStrategy: cacheControl ? 'configured' : 'none',
+        cacheStrategy: cacheControl ? "configured" : "none",
       };
     } catch (error) {
       throw new Error(`Cache headers test failed: ${error.message}`);
@@ -207,17 +199,17 @@ class APIOptimizationTester {
     try {
       // 最初のリクエスト
       const firstResponse = await axios.get(testUrl, { timeout: 10000 });
-      const etag = firstResponse.headers['etag'];
+      const etag = firstResponse.headers["etag"];
 
       if (!etag) {
-        throw new Error('No ETag header found');
+        throw new Error("No ETag header found");
       }
 
       // 条件付きリクエスト
       const conditionalResponse = await axios.get(testUrl, {
         timeout: 10000,
         headers: {
-          'If-None-Match': etag,
+          "If-None-Match": etag,
         },
       });
 
@@ -251,31 +243,31 @@ class APIOptimizationTester {
       requestPromises.push(
         axios
           .get(testUrl, { timeout: 15000 })
-          .then(response => ({
+          .then((response) => ({
             success: true,
             duration: Date.now() - startTime,
             status: response.status,
-            responseTime: response.headers['x-response-time'],
-            requestId: response.headers['x-request-id'],
+            responseTime: response.headers["x-response-time"],
+            requestId: response.headers["x-request-id"],
           }))
-          .catch(error => ({
+          .catch((error) => ({
             success: false,
             duration: Date.now() - startTime,
             error: error.message,
-          }))
+          })),
       );
     }
 
     const results = await Promise.all(requestPromises);
     const totalDuration = Date.now() - startTime;
 
-    const successCount = results.filter(r => r.success).length;
-    const failureCount = results.filter(r => !r.success).length;
+    const successCount = results.filter((r) => r.success).length;
+    const failureCount = results.filter((r) => !r.success).length;
     const averageResponseTime =
       results
-        .filter(r => r.success && r.responseTime)
+        .filter((r) => r.success && r.responseTime)
         .reduce((sum, r) => sum + parseFloat(r.responseTime), 0) /
-        results.filter(r => r.success && r.responseTime).length || 0;
+        results.filter((r) => r.success && r.responseTime).length || 0;
 
     return {
       totalRequests: concurrentRequests,
@@ -290,24 +282,19 @@ class APIOptimizationTester {
 
   async testPerformanceStats() {
     try {
-      const response = await axios.get(
-        `${OPTIMIZED_API_URL}/performance/stats`,
-        {
-          timeout: 5000,
-        }
-      );
+      const response = await axios.get(`${OPTIMIZED_API_URL}/performance/stats`, {
+        timeout: 5000,
+      });
 
       if (response.status !== 200) {
-        throw new Error(
-          `Performance stats endpoint failed: ${response.status}`
-        );
+        throw new Error(`Performance stats endpoint failed: ${response.status}`);
       }
 
       return response.data;
     } catch (error) {
       // パフォーマンス統計エンドポイントが存在しない場合
       return {
-        status: 'not_implemented',
+        status: "not_implemented",
         error: error.message,
       };
     }
@@ -316,17 +303,17 @@ class APIOptimizationTester {
   async testErrorHandling() {
     const errorTests = [
       {
-        name: 'Invalid endpoint',
+        name: "Invalid endpoint",
         url: `${OPTIMIZED_API_URL}/invalid`,
         expectedStatus: 404,
       },
       {
-        name: 'Invalid parameters',
+        name: "Invalid parameters",
         url: `${OPTIMIZED_API_URL}/articles?limit=invalid`,
         expectedStatus: 422,
       },
       {
-        name: 'Large request',
+        name: "Large request",
         url: `${OPTIMIZED_API_URL}/articles?limit=1000`,
         expectedStatus: 400,
       },
@@ -347,7 +334,7 @@ class APIOptimizationTester {
       } catch (error) {
         results[test.name] = {
           error: error.message,
-          status: error.response?.status || 'unknown',
+          status: error.response?.status || "unknown",
           expectedStatus: test.expectedStatus,
         };
       }
@@ -374,82 +361,55 @@ class APIOptimizationTester {
 
     return {
       averageResponseTime:
-        responseTimes.reduce((sum, time) => sum + time, 0) /
-        responseTimes.length,
+        responseTimes.reduce((sum, time) => sum + time, 0) / responseTimes.length,
       minResponseTime: Math.min(...responseTimes),
       maxResponseTime: Math.max(...responseTimes),
       averageCompressionRatio:
         compressionRatios.length > 0
-          ? (compressionRatios.reduce((sum, ratio) => sum + ratio, 0) /
-              compressionRatios.length) *
+          ? (compressionRatios.reduce((sum, ratio) => sum + ratio, 0) / compressionRatios.length) *
             100
           : 0,
       totalErrors: errorRates.length,
-      errorRate:
-        (errorRates.length / (responseTimes.length + errorRates.length)) * 100,
+      errorRate: (errorRates.length / (responseTimes.length + errorRates.length)) * 100,
     };
   }
 
   generateReport() {
     const totalTests = this.results.passed + this.results.failed;
-    const successRate =
-      totalTests > 0
-        ? ((this.results.passed / totalTests) * 100).toFixed(1)
-        : 0;
+    const successRate = totalTests > 0 ? ((this.results.passed / totalTests) * 100).toFixed(1) : 0;
     const performanceMetrics = this.calculatePerformanceMetrics();
 
-    log('\n📊 API Optimization Test Results:', 'blue');
-    log(`Total Tests: ${totalTests}`, 'reset');
-    log(`Passed: ${this.results.passed}`, 'green');
-    log(`Failed: ${this.results.failed}`, 'red');
-    log(
-      `Success Rate: ${successRate}%`,
-      successRate >= 80 ? 'green' : 'yellow'
-    );
+    log("\n📊 API Optimization Test Results:", "blue");
+    log(`Total Tests: ${totalTests}`, "reset");
+    log(`Passed: ${this.results.passed}`, "green");
+    log(`Failed: ${this.results.failed}`, "red");
+    log(`Success Rate: ${successRate}%`, successRate >= 80 ? "green" : "yellow");
 
-    log('\n⚡ Performance Metrics:', 'blue');
+    log("\n⚡ Performance Metrics:", "blue");
+    log(`Average Response Time: ${performanceMetrics.averageResponseTime.toFixed(2)}ms`, "reset");
+    log(`Min Response Time: ${performanceMetrics.minResponseTime.toFixed(2)}ms`, "reset");
+    log(`Max Response Time: ${performanceMetrics.maxResponseTime.toFixed(2)}ms`, "reset");
     log(
-      `Average Response Time: ${performanceMetrics.averageResponseTime.toFixed(
-        2
-      )}ms`,
-      'reset'
+      `Average Compression Ratio: ${performanceMetrics.averageCompressionRatio.toFixed(2)}%`,
+      "reset",
     );
-    log(
-      `Min Response Time: ${performanceMetrics.minResponseTime.toFixed(2)}ms`,
-      'reset'
-    );
-    log(
-      `Max Response Time: ${performanceMetrics.maxResponseTime.toFixed(2)}ms`,
-      'reset'
-    );
-    log(
-      `Average Compression Ratio: ${performanceMetrics.averageCompressionRatio.toFixed(
-        2
-      )}%`,
-      'reset'
-    );
-    log(`Error Rate: ${performanceMetrics.errorRate.toFixed(2)}%`, 'reset');
+    log(`Error Rate: ${performanceMetrics.errorRate.toFixed(2)}%`, "reset");
 
-    log('\n📋 Detailed Results:', 'blue');
-    this.results.tests.forEach(test => {
-      const status = test.status === 'PASSED' ? '✅' : '❌';
-      const duration = test.duration ? `(${test.duration}ms)` : '';
+    log("\n📋 Detailed Results:", "blue");
+    this.results.tests.forEach((test) => {
+      const status = test.status === "PASSED" ? "✅" : "❌";
+      const duration = test.duration ? `(${test.duration}ms)` : "";
       log(
         `${status} ${test.name}: ${test.status} ${duration}`,
-        test.status === 'PASSED' ? 'green' : 'red'
+        test.status === "PASSED" ? "green" : "red",
       );
       if (test.error) {
-        log(`   Error: ${test.error}`, 'red');
+        log(`   Error: ${test.error}`, "red");
       }
     });
 
     // Save detailed report
-    const reportPath = path.join(
-      __dirname,
-      '..',
-      'docs',
-      'api-optimization-test-report.json'
-    );
+    const reportPath = path.join(__dirname, "..", "docs", "api-optimization-test-report.json");
     fs.mkdirSync(path.dirname(reportPath), { recursive: true });
     fs.writeFileSync(
       reportPath,
@@ -466,82 +426,70 @@ class APIOptimizationTester {
           tests: this.results.tests,
         },
         null,
-        2
-      )
+        2,
+      ),
     );
 
-    log(`\n📄 Detailed report saved to: ${reportPath}`, 'blue');
+    log(`\n📄 Detailed report saved to: ${reportPath}`, "blue");
 
     return successRate >= 80;
   }
 }
 
 async function main() {
-  log('🚀 Starting API Optimization Tests...', 'blue');
-  log(`Testing API URL: ${API_URL}`, 'yellow');
-  log(`Testing Optimized API URL: ${OPTIMIZED_API_URL}`, 'yellow');
-  log('');
+  log("🚀 Starting API Optimization Tests...", "blue");
+  log(`Testing API URL: ${API_URL}`, "yellow");
+  log(`Testing Optimized API URL: ${OPTIMIZED_API_URL}`, "yellow");
+  log("");
 
   const tester = new APIOptimizationTester();
 
   try {
     // Basic connectivity tests
-    await tester.runTest('API Health Check', () => tester.testAPIHealth());
+    await tester.runTest("API Health Check", () => tester.testAPIHealth());
 
     // Optimized endpoints tests
-    await tester.runTest('Optimized Endpoints Test', () =>
-      tester.testOptimizedEndpoints()
-    );
+    await tester.runTest("Optimized Endpoints Test", () => tester.testOptimizedEndpoints());
 
     // Response compression tests
-    await tester.runTest('Response Compression Test', () =>
-      tester.testResponseCompression()
-    );
+    await tester.runTest("Response Compression Test", () => tester.testResponseCompression());
 
     // Cache headers tests
-    await tester.runTest('Cache Headers Test', () => tester.testCacheHeaders());
+    await tester.runTest("Cache Headers Test", () => tester.testCacheHeaders());
 
     // Conditional requests tests
-    await tester.runTest('Conditional Requests Test', () =>
-      tester.testConditionalRequests()
-    );
+    await tester.runTest("Conditional Requests Test", () => tester.testConditionalRequests());
 
     // Concurrent requests tests
-    await tester.runTest('Concurrent Requests Test', () =>
-      tester.testConcurrentRequests()
-    );
+    await tester.runTest("Concurrent Requests Test", () => tester.testConcurrentRequests());
 
     // Performance stats tests
-    await tester.runTest('Performance Stats Test', () =>
-      tester.testPerformanceStats()
-    );
+    await tester.runTest("Performance Stats Test", () => tester.testPerformanceStats());
 
     // Error handling tests
-    await tester.runTest('Error Handling Test', () =>
-      tester.testErrorHandling()
-    );
+    await tester.runTest("Error Handling Test", () => tester.testErrorHandling());
 
     // Generate final report
     const success = tester.generateReport();
 
     if (success) {
-      log('\n🎉 API optimization tests completed successfully!', 'green');
-      log('The API optimization is functioning as expected.', 'green');
+      log("\n🎉 API optimization tests completed successfully!", "green");
+      log("The API optimization is functioning as expected.", "green");
       return 0;
     } else {
-      log('\n⚠️  API optimization tests completed with issues.', 'yellow');
-      log('Please review the failed tests and optimize accordingly.', 'yellow');
+      log("\n⚠️  API optimization tests completed with issues.", "yellow");
+      log("Please review the failed tests and optimize accordingly.", "yellow");
       return 1;
     }
   } catch (error) {
-    log(`\n❌ Test suite failed: ${error.message}`, 'red');
+    log(`\n❌ Test suite failed: ${error.message}`, "red");
     return 1;
   }
 }
 
 // Run the tests
 if (require.main === module) {
-  main().then(exitCode => {
+  main().then((exitCode) => {
     process.exit(exitCode);
   });
 }
