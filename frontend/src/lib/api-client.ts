@@ -275,7 +275,9 @@ export class ApiClient {
     if (params.endDate) searchParams.append("end_date", params.endDate);
 
     const suffix = searchParams.toString() ? `?${searchParams.toString()}` : "";
-    return this.request(`/api/analytics/article-performance/${params.articleId}${suffix}`);
+    return this.request(
+      `/api/analytics/article-performance/${encodeURIComponent(params.articleId)}${suffix}`,
+    );
   }
 
   async getArticleRankings(params?: {

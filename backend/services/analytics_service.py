@@ -550,7 +550,7 @@ class AnalyticsService:
             sum(dwell_times) / len(dwell_times) if dwell_times else 0.0
         )
 
-        # エンゲージメント率（いいね+シェア+コメント）/ PV
+        # エンゲージメント率 (いいね+シェア+コメント) / PV
         total_engagements = len(like_events) + len(share_events) + len(comment_events)
         engagement_rate = (
             (total_engagements / len(page_view_events) * 100)
@@ -731,11 +731,20 @@ class AnalyticsService:
 
         stats = content_stats.limit(limit).all()
 
+        # 記事IDのリストを作成
+        article_ids = [stat.content_id for stat in stats if stat.content_id]
+
+        # 一度のクエリで全ての記事情報を取得（N+1問題の回避）
+        articles_dict = {}
+        if article_ids:
+            articles = self.db.query(Article).filter(Article.id.in_(article_ids)).all()
+            articles_dict = {article.id: article for article in articles}
+
         # 記事情報を取得してランキングを作成
         rankings = []
         for stat in stats:
             article_id = stat.content_id
-            article = self.db.query(Article).filter(Article.id == article_id).first()
+            article = articles_dict.get(article_id) if article_id else None
 
             if article:
                 total_engagement = stat.likes + stat.shares + stat.comments

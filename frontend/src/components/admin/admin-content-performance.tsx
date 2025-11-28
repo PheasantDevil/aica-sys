@@ -1,5 +1,7 @@
 "use client";
 
+import { format } from "date-fns";
+import { BarChart3, Eye, Heart, MessageSquare, Share2, TrendingUp } from "lucide-react";
 import { type ComponentType, useCallback, useEffect, useMemo, useState } from "react";
 import {
   CartesianGrid,
@@ -11,8 +13,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { format } from "date-fns";
-import { BarChart3, Eye, Heart, MessageSquare, Share2, TrendingUp } from "lucide-react";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useApiCall } from "@/hooks/use-api";
@@ -181,6 +181,7 @@ export function AdminContentPerformance() {
                   setSortBy(e.target.value as "page_views" | "engagement" | "conversions")
                 }
                 className="rounded-md bg-slate-950 border border-slate-800 text-slate-100 px-3 py-2 text-sm"
+                aria-label="ソート順を選択"
               >
                 <option value="page_views">ページビュー順</option>
                 <option value="engagement">エンゲージメント順</option>
@@ -220,6 +221,15 @@ export function AdminContentPerformance() {
                       key={article.article_id}
                       className="border-b border-slate-800 hover:bg-slate-800/50 cursor-pointer"
                       onClick={() => setSelectedArticleId(article.article_id)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setSelectedArticleId(article.article_id);
+                        }
+                      }}
+                      tabIndex={0}
+                      role="button"
+                      aria-label={`記事「${article.article_title}」の詳細を表示`}
                     >
                       <td className="py-3 px-4">{index + 1}</td>
                       <td className="py-3 px-4">

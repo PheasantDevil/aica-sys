@@ -241,15 +241,15 @@ async def get_article_performance_detail(
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Get article performance detail error: {e}")
-        raise HTTPException(status_code=500, detail="分析取得に失敗しました")
+        logger.exception("Get article performance detail error")
+        raise HTTPException(status_code=500, detail="分析取得に失敗しました") from e
 
 
 @router.get("/article-rankings")
 async def get_article_rankings(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
-    sort_by: str = "page_views",
+    sort_by: SortByOption = "page_views",
     limit: int = 20,
     db: Session = Depends(get_db),
 ):
@@ -263,8 +263,10 @@ async def get_article_rankings(
         )
         return {"success": True, "rankings": rankings}
     except Exception as e:
-        logger.error(f"Get article rankings error: {e}")
-        raise HTTPException(status_code=500, detail="ランキング取得に失敗しました")
+        logger.exception("Get article rankings error")
+        raise HTTPException(
+            status_code=500, detail="ランキング取得に失敗しました"
+        ) from e
 
 
 @router.get("/kpis")

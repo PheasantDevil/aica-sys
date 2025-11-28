@@ -1,6 +1,4 @@
 import { AdminContentPerformance } from "@/components/admin/admin-content-performance";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { Suspense } from "react";
 
 export default function AdminContentPerformancePage() {
   return (
@@ -13,9 +11,7 @@ export default function AdminContentPerformancePage() {
         </p>
       </div>
 
-      <Suspense fallback={<LoadingSpinner />}>
-        <AdminContentPerformance />
-      </Suspense>
+      <AdminContentPerformance />
     </div>
   );
 }
