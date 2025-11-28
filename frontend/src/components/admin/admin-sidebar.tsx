@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, LineChart, Link2, LogOut } from "lucide-react";
+import { FileText, LayoutDashboard, LineChart, Link2, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -30,6 +30,11 @@ const navItems = [
     href: "/admin/affiliate-analytics",
     label: "クリック統計",
     icon: LineChart,
+  },
+  {
+    href: "/admin/content-performance",
+    label: "記事パフォーマンス",
+    icon: FileText,
   },
 ];
 

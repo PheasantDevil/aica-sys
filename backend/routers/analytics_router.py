@@ -5,7 +5,7 @@ Phase 9-5: Analytics and reports
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -15,6 +15,8 @@ from database import get_db
 from services.analytics_service import AnalyticsService
 
 logger = logging.getLogger(__name__)
+
+SortByOption = Literal["page_views", "engagement", "conversions"]
 
 router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 
@@ -218,6 +220,55 @@ async def get_content_performance(
     except Exception as e:
         logger.error(f"Get content performance error: {e}")
         raise HTTPException(status_code=500, detail="取得に失敗しました")
+
+
+@router.get("/article-performance/{article_id}")
+async def get_article_performance_detail(
+    article_id: str,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    db: Session = Depends(get_db),
+):
+    """記事別の詳細パフォーマンス分析を取得"""
+    try:
+        service = AnalyticsService(db)
+        resolved_end = end_date or datetime.utcnow()
+        resolved_start = start_date or (resolved_end - timedelta(days=30))
+        performance = await service.get_article_performance_detail(
+            article_id, resolved_start, resolved_end
+        )
+        if "error" in performance:
+            raise HTTPException(status_code=404, detail=performance["error"])
+        return {"success": True, "performance": performance}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception("Get article performance detail error")
+        raise HTTPException(status_code=500, detail="分析取得に失敗しました") from e
+
+
+@router.get("/article-rankings")
+async def get_article_rankings(
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    sort_by: SortByOption = "page_views",
+    limit: int = 20,
+    db: Session = Depends(get_db),
+):
+    """記事ランキングを取得"""
+    try:
+        service = AnalyticsService(db)
+        resolved_end = end_date or datetime.utcnow()
+        resolved_start = start_date or (resolved_end - timedelta(days=30))
+        rankings = await service.get_article_rankings(
+            resolved_start, resolved_end, sort_by=sort_by, limit=limit
+        )
+        return {"success": True, "rankings": rankings}
+    except Exception as e:
+        logger.exception("Get article rankings error")
+        raise HTTPException(
+            status_code=500, detail="ランキング取得に失敗しました"
+        ) from e
 
 
 @router.get("/kpis")

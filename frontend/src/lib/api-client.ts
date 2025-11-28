@@ -265,6 +265,37 @@ export class ApiClient {
     return this.request(`/api/analytics/user-behavior${suffix}`);
   }
 
+  async getArticlePerformanceDetail(params: {
+    articleId: string;
+    startDate?: string;
+    endDate?: string;
+  }): Promise<ApiResponse<{ success: boolean; performance: any }>> {
+    const searchParams = new URLSearchParams();
+    if (params.startDate) searchParams.append("start_date", params.startDate);
+    if (params.endDate) searchParams.append("end_date", params.endDate);
+
+    const suffix = searchParams.toString() ? `?${searchParams.toString()}` : "";
+    return this.request(
+      `/api/analytics/article-performance/${encodeURIComponent(params.articleId)}${suffix}`,
+    );
+  }
+
+  async getArticleRankings(params?: {
+    startDate?: string;
+    endDate?: string;
+    sortBy?: "page_views" | "engagement" | "conversions";
+    limit?: number;
+  }): Promise<ApiResponse<{ success: boolean; rankings: any }>> {
+    const searchParams = new URLSearchParams();
+    if (params?.startDate) searchParams.append("start_date", params.startDate);
+    if (params?.endDate) searchParams.append("end_date", params.endDate);
+    if (params?.sortBy) searchParams.append("sort_by", params.sortBy);
+    if (params?.limit) searchParams.append("limit", params.limit.toString());
+
+    const suffix = searchParams.toString() ? `?${searchParams.toString()}` : "";
+    return this.request(`/api/analytics/article-rankings${suffix}`);
+  }
+
   async recordInteraction(
     userId: string,
     contentId: string,
