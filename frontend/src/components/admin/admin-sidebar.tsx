@@ -2,7 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { BarChart3, FileText, LayoutDashboard, LineChart, Link2, LogOut } from "lucide-react";
+import {
+  BarChart3,
+  FileText,
+  LayoutDashboard,
+  LineChart,
+  Link2,
+  LogOut,
+  TrendingUp,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -44,7 +52,7 @@ const navItems = [
   {
     href: "/admin/business-insights",
     label: "ビジネスインサイト",
-    icon: LineChart,
+    icon: TrendingUp,
   },
 ];
 

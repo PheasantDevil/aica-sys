@@ -4,11 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useApiCall } from "@/hooks/use-api";
 import { apiClient } from "@/lib/api-client";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { type ComponentType, useCallback, useEffect, useMemo, useState } from "react";
 import {
-  Bar,
-  BarChart,
   CartesianGrid,
   Legend,
   Line,
@@ -21,8 +19,6 @@ import {
 
 const LineChartSafe = LineChart as unknown as ComponentType<any>;
 const LineSafe = Line as unknown as ComponentType<any>;
-const BarChartSafe = BarChart as unknown as ComponentType<any>;
-const BarSafe = Bar as unknown as ComponentType<any>;
 const CartesianGridSafe = CartesianGrid as unknown as ComponentType<any>;
 const XAxisSafe = XAxis as unknown as ComponentType<any>;
 const YAxisSafe = YAxis as unknown as ComponentType<any>;
@@ -91,7 +87,7 @@ export function AdminBusinessInsights() {
   const mrrTrendData = useMemo(() => {
     return (insights?.revenue?.mrr_trend ?? []).map((point) => ({
       period: point.period,
-      label: format(new Date(point.period), "yyyy/MM"),
+      label: format(parseISO(point.period), "yyyy/MM"),
       mrr: point.mrr,
     }));
   }, [insights]);
@@ -100,7 +96,7 @@ export function AdminBusinessInsights() {
     const trend = insights?.behavior?.trend ?? [];
     return trend.map((point: any) => ({
       date: point.date,
-      label: format(new Date(point.date), "MM/dd"),
+      label: format(parseISO(point.date), "MM/dd"),
       pageViews: point.page_views,
       conversions: point.conversions,
     }));
@@ -117,8 +113,8 @@ export function AdminBusinessInsights() {
   }, [insights]);
 
   const dateLabel = insights
-    ? `${format(new Date(insights.period.start), "yyyy/MM/dd")} - ${format(
-        new Date(insights.period.end),
+    ? `${format(parseISO(insights.period.start), "yyyy/MM/dd")} - ${format(
+        parseISO(insights.period.end),
         "yyyy/MM/dd",
       )}`
     : "-";
@@ -243,7 +239,11 @@ export function AdminBusinessInsights() {
             <CardDescription>PVとコンバージョンの推移</CardDescription>
           </CardHeader>
           <CardContent className="h-80">
-            {behaviorTrend.length ? (
+            {loading && !insights ? (
+              <div className="flex h-full items-center justify-center">
+                <LoadingSpinner />
+              </div>
+            ) : behaviorTrend.length ? (
               <ResponsiveContainerSafe width="100%" height="100%">
                 <LineChartSafe data={behaviorTrend}>
                   <CartesianGridSafe strokeDasharray="3 3" stroke="#334155" />

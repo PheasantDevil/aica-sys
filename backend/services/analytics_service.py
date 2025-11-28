@@ -365,15 +365,46 @@ class AnalyticsService:
         self, start_date: datetime, end_date: datetime
     ) -> Dict[str, Any]:
         """ビジネスインサイトを統合して返す"""
-        revenue_report = await self.get_revenue_report(start_date, end_date)
-        user_growth = await self.get_user_growth_analytics(start_date, end_date)
-        user_behavior = await self.get_user_behavior_analytics(start_date, end_date)
-        content_performance = await self.get_content_performance(
-            start_date, end_date, limit=5
-        )
-        article_rankings = await self.get_article_rankings(
-            start_date, end_date, sort_by="page_views", limit=5
-        )
+        errors: List[str] = []
+
+        try:
+            revenue_report = await self.get_revenue_report(start_date, end_date)
+        except Exception as e:
+            logger.warning(f"Failed to get revenue report: {e}")
+            revenue_report = {}
+            errors.append("revenue")
+
+        try:
+            user_growth = await self.get_user_growth_analytics(start_date, end_date)
+        except Exception as e:
+            logger.warning(f"Failed to get user growth: {e}")
+            user_growth = {}
+            errors.append("user_growth")
+
+        try:
+            user_behavior = await self.get_user_behavior_analytics(start_date, end_date)
+        except Exception as e:
+            logger.warning(f"Failed to get user behavior: {e}")
+            user_behavior = {}
+            errors.append("behavior")
+
+        try:
+            content_performance = await self.get_content_performance(
+                start_date, end_date, limit=5
+            )
+        except Exception as e:
+            logger.warning(f"Failed to get content performance: {e}")
+            content_performance = {}
+            errors.append("content")
+
+        try:
+            article_rankings = await self.get_article_rankings(
+                start_date, end_date, sort_by="page_views", limit=5
+            )
+        except Exception as e:
+            logger.warning(f"Failed to get article rankings: {e}")
+            article_rankings = {}
+            errors.append("top_articles")
 
         return {
             "period": {
@@ -390,6 +421,7 @@ class AnalyticsService:
             "content": content_performance,
             "top_articles": article_rankings.get("rankings", []),
             "alerts": revenue_report.get("alerts", []),
+            "errors": errors if errors else None,
         }
 
     async def get_user_growth_analytics(
