@@ -220,6 +220,53 @@ async def get_content_performance(
         raise HTTPException(status_code=500, detail="取得に失敗しました")
 
 
+@router.get("/article-performance/{article_id}")
+async def get_article_performance_detail(
+    article_id: str,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    db: Session = Depends(get_db),
+):
+    """記事別の詳細パフォーマンス分析を取得"""
+    try:
+        service = AnalyticsService(db)
+        resolved_end = end_date or datetime.utcnow()
+        resolved_start = start_date or (resolved_end - timedelta(days=30))
+        performance = await service.get_article_performance_detail(
+            article_id, resolved_start, resolved_end
+        )
+        if "error" in performance:
+            raise HTTPException(status_code=404, detail=performance["error"])
+        return {"success": True, "performance": performance}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Get article performance detail error: {e}")
+        raise HTTPException(status_code=500, detail="分析取得に失敗しました")
+
+
+@router.get("/article-rankings")
+async def get_article_rankings(
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    sort_by: str = "page_views",
+    limit: int = 20,
+    db: Session = Depends(get_db),
+):
+    """記事ランキングを取得"""
+    try:
+        service = AnalyticsService(db)
+        resolved_end = end_date or datetime.utcnow()
+        resolved_start = start_date or (resolved_end - timedelta(days=30))
+        rankings = await service.get_article_rankings(
+            resolved_start, resolved_end, sort_by=sort_by, limit=limit
+        )
+        return {"success": True, "rankings": rankings}
+    except Exception as e:
+        logger.error(f"Get article rankings error: {e}")
+        raise HTTPException(status_code=500, detail="ランキング取得に失敗しました")
+
+
 @router.get("/kpis")
 async def get_kpis(db: Session = Depends(get_db)):
     """主要KPIを取得"""

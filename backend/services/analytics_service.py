@@ -471,6 +471,317 @@ class AnalyticsService:
             "period": {"start": start_date.isoformat(), "end": end_date.isoformat()},
         }
 
+    async def get_article_performance_detail(
+        self,
+        article_id: str,
+        start_date: datetime,
+        end_date: datetime,
+    ) -> Dict[str, Any]:
+        """記事別の詳細パフォーマンス分析を取得"""
+        from models.content import Article
+
+        # 記事情報を取得
+        article = self.db.query(Article).filter(Article.id == article_id).first()
+        if not article:
+            return {
+                "error": "Article not found",
+                "article_id": article_id,
+            }
+
+        # 期間内のイベントを取得
+        events = (
+            self.db.query(AnalyticsEventDB)
+            .filter(
+                AnalyticsEventDB.properties["content_id"].astext == article_id,
+                AnalyticsEventDB.created_at >= start_date,
+                AnalyticsEventDB.created_at <= end_date,
+            )
+            .order_by(AnalyticsEventDB.created_at.asc())
+            .all()
+        )
+
+        if not events:
+            return {
+                "article_id": article_id,
+                "article_title": article.title,
+                "period": {
+                    "start": start_date.isoformat(),
+                    "end": end_date.isoformat(),
+                },
+                "metrics": {
+                    "page_views": 0,
+                    "unique_users": 0,
+                    "average_time_on_page": 0.0,
+                    "engagement_rate": 0.0,
+                    "conversion_rate": 0.0,
+                },
+                "engagement": {
+                    "likes": 0,
+                    "shares": 0,
+                    "comments": 0,
+                },
+                "trend": [],
+            }
+
+        # イベントタイプ別に分類
+        page_view_events = [
+            e for e in events if e.event_type in ("page_view", "content_view")
+        ]
+        like_events = [e for e in events if e.event_type == "like"]
+        share_events = [e for e in events if e.event_type == "share"]
+        comment_events = [e for e in events if e.event_type == "comment"]
+        conversion_events = [e for e in events if e.event_type == "conversion"]
+
+        # ユニークユーザー数
+        unique_users = {e.user_id for e in events if e.user_id is not None}
+
+        # 滞在時間の計算
+        dwell_times = []
+        for event in page_view_events:
+            props = event.properties or {}
+            duration = props.get("duration")
+            if duration is not None:
+                try:
+                    dwell_times.append(float(duration))
+                except (TypeError, ValueError):
+                    pass
+
+        average_time_on_page = (
+            sum(dwell_times) / len(dwell_times) if dwell_times else 0.0
+        )
+
+        # エンゲージメント率（いいね+シェア+コメント）/ PV
+        total_engagements = len(like_events) + len(share_events) + len(comment_events)
+        engagement_rate = (
+            (total_engagements / len(page_view_events) * 100)
+            if page_view_events
+            else 0.0
+        )
+
+        # コンバージョン率
+        conversion_rate = (
+            (len(conversion_events) / len(page_view_events) * 100)
+            if page_view_events
+            else 0.0
+        )
+
+        # 日次トレンド
+        trend_map: Dict[str, Dict[str, Any]] = defaultdict(
+            lambda: {
+                "date": "",
+                "page_views": 0,
+                "likes": 0,
+                "shares": 0,
+                "comments": 0,
+                "conversions": 0,
+            }
+        )
+
+        for event in events:
+            day_key = event.created_at.date().isoformat()
+            bucket = trend_map[day_key]
+            bucket["date"] = day_key
+
+            if event.event_type in ("page_view", "content_view"):
+                bucket["page_views"] += 1
+            elif event.event_type == "like":
+                bucket["likes"] += 1
+            elif event.event_type == "share":
+                bucket["shares"] += 1
+            elif event.event_type == "comment":
+                bucket["comments"] += 1
+            elif event.event_type == "conversion":
+                bucket["conversions"] += 1
+
+        trend_list: List[Dict[str, Any]] = []
+        current = start_date.date()
+        end_date_only = end_date.date()
+        while current <= end_date_only:
+            key = current.isoformat()
+            bucket = trend_map.get(
+                key,
+                {
+                    "date": key,
+                    "page_views": 0,
+                    "likes": 0,
+                    "shares": 0,
+                    "comments": 0,
+                    "conversions": 0,
+                },
+            )
+            trend_list.append(bucket)
+            current += timedelta(days=1)
+
+        return {
+            "article_id": article_id,
+            "article_title": article.title,
+            "article_published_at": (
+                article.published_at.isoformat() if article.published_at else None
+            ),
+            "period": {
+                "start": start_date.isoformat(),
+                "end": end_date.isoformat(),
+            },
+            "metrics": {
+                "page_views": len(page_view_events),
+                "unique_users": len(unique_users),
+                "average_time_on_page": round(average_time_on_page, 2),
+                "engagement_rate": round(engagement_rate, 2),
+                "conversion_rate": round(conversion_rate, 2),
+            },
+            "engagement": {
+                "likes": len(like_events),
+                "shares": len(share_events),
+                "comments": len(comment_events),
+            },
+            "trend": trend_list,
+        }
+
+    async def get_article_rankings(
+        self,
+        start_date: datetime,
+        end_date: datetime,
+        sort_by: str = "page_views",
+        limit: int = 20,
+    ) -> Dict[str, Any]:
+        """記事ランキングを取得"""
+        from models.content import Article
+
+        # イベントから記事別の集計
+        content_stats = (
+            self.db.query(
+                AnalyticsEventDB.properties["content_id"].label("content_id"),
+                func.count(
+                    func.case(
+                        (
+                            AnalyticsEventDB.event_type.in_(
+                                ("page_view", "content_view")
+                            ),
+                            1,
+                        )
+                    )
+                ).label("page_views"),
+                func.count(func.case((AnalyticsEventDB.event_type == "like", 1))).label(
+                    "likes"
+                ),
+                func.count(
+                    func.case((AnalyticsEventDB.event_type == "share", 1))
+                ).label("shares"),
+                func.count(
+                    func.case((AnalyticsEventDB.event_type == "comment", 1))
+                ).label("comments"),
+                func.count(
+                    func.case((AnalyticsEventDB.event_type == "conversion", 1))
+                ).label("conversions"),
+                func.count(func.distinct(AnalyticsEventDB.user_id)).label(
+                    "unique_users"
+                ),
+            )
+            .filter(
+                AnalyticsEventDB.created_at >= start_date,
+                AnalyticsEventDB.created_at <= end_date,
+            )
+            .group_by(AnalyticsEventDB.properties["content_id"])
+        )
+
+        # ソート順を決定
+        if sort_by == "page_views":
+            content_stats = content_stats.order_by(
+                func.count(
+                    func.case(
+                        (
+                            AnalyticsEventDB.event_type.in_(
+                                ("page_view", "content_view")
+                            ),
+                            1,
+                        )
+                    )
+                ).desc()
+            )
+        elif sort_by == "engagement":
+            # エンゲージメント = likes + shares + comments
+            content_stats = content_stats.order_by(
+                (
+                    func.count(func.case((AnalyticsEventDB.event_type == "like", 1)))
+                    + func.count(func.case((AnalyticsEventDB.event_type == "share", 1)))
+                    + func.count(
+                        func.case((AnalyticsEventDB.event_type == "comment", 1))
+                    )
+                ).desc()
+            )
+        elif sort_by == "conversions":
+            content_stats = content_stats.order_by(
+                func.count(
+                    func.case((AnalyticsEventDB.event_type == "conversion", 1))
+                ).desc()
+            )
+        else:
+            content_stats = content_stats.order_by(
+                func.count(
+                    func.case(
+                        (
+                            AnalyticsEventDB.event_type.in_(
+                                ("page_view", "content_view")
+                            ),
+                            1,
+                        )
+                    )
+                ).desc()
+            )
+
+        stats = content_stats.limit(limit).all()
+
+        # 記事情報を取得してランキングを作成
+        rankings = []
+        for stat in stats:
+            article_id = stat.content_id
+            article = self.db.query(Article).filter(Article.id == article_id).first()
+
+            if article:
+                total_engagement = stat.likes + stat.shares + stat.comments
+                engagement_rate = (
+                    (total_engagement / stat.page_views * 100)
+                    if stat.page_views > 0
+                    else 0.0
+                )
+                conversion_rate = (
+                    (stat.conversions / stat.page_views * 100)
+                    if stat.page_views > 0
+                    else 0.0
+                )
+
+                rankings.append(
+                    {
+                        "article_id": article_id,
+                        "article_title": article.title,
+                        "article_published_at": (
+                            article.published_at.isoformat()
+                            if article.published_at
+                            else None
+                        ),
+                        "metrics": {
+                            "page_views": stat.page_views,
+                            "unique_users": stat.unique_users,
+                            "likes": stat.likes,
+                            "shares": stat.shares,
+                            "comments": stat.comments,
+                            "conversions": stat.conversions,
+                            "engagement_rate": round(engagement_rate, 2),
+                            "conversion_rate": round(conversion_rate, 2),
+                        },
+                    }
+                )
+
+        return {
+            "rankings": rankings,
+            "sort_by": sort_by,
+            "period": {
+                "start": start_date.isoformat(),
+                "end": end_date.isoformat(),
+            },
+            "count": len(rankings),
+        }
+
     # KPI計算
     async def calculate_kpis(self) -> Dict[str, Any]:
         """主要KPIを計算"""
