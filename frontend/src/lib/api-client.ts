@@ -308,6 +308,18 @@ export class ApiClient {
     return this.request(`/api/analytics/revenue-report${suffix}`);
   }
 
+  async getBusinessInsights(params?: {
+    startDate?: string;
+    endDate?: string;
+  }): Promise<ApiResponse<{ success: boolean; insights: any }>> {
+    const searchParams = new URLSearchParams();
+    if (params?.startDate) searchParams.append("start_date", params.startDate);
+    if (params?.endDate) searchParams.append("end_date", params.endDate);
+
+    const suffix = searchParams.toString() ? `?${searchParams.toString()}` : "";
+    return this.request(`/api/analytics/business-insights${suffix}`);
+  }
+
   async recordInteraction(
     userId: string,
     contentId: string,

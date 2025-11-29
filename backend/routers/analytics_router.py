@@ -190,6 +190,26 @@ async def get_revenue_report(
         ) from e
 
 
+@router.get("/business-insights")
+async def get_business_insights(
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    db: Session = Depends(get_db),
+):
+    """ビジネスインサイトダッシュボード用データを取得"""
+    try:
+        service = AnalyticsService(db)
+        resolved_end = end_date or datetime.utcnow()
+        resolved_start = start_date or (resolved_end - timedelta(days=90))
+        insights = await service.get_business_insights(resolved_start, resolved_end)
+        return {"success": True, "insights": insights}
+    except Exception as e:
+        logger.exception("Get business insights error")
+        raise HTTPException(
+            status_code=500, detail="インサイトの取得に失敗しました"
+        ) from e
+
+
 @router.get("/user-growth")
 async def get_user_growth_analytics(
     start_date: datetime, end_date: datetime, db: Session = Depends(get_db)
