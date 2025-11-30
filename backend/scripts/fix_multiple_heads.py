@@ -19,7 +19,7 @@ def get_heads():
     backend_path = Path(__file__).parent.parent
     alembic_cfg = Config(str(backend_path / "alembic.ini"))
     alembic_cfg.set_main_option("script_location", str(backend_path / "alembic"))
-    
+
     script = ScriptDirectory.from_config(alembic_cfg)
     heads = script.get_revisions("heads")
     return [str(head.revision) for head in heads]
@@ -30,7 +30,7 @@ def get_current_revision():
     from sqlalchemy import text
 
     from database import engine
-    
+
     try:
         with engine.connect() as conn:
             result = conn.execute(text("SELECT version_num FROM alembic_version"))
@@ -48,11 +48,11 @@ def create_merge_migration(heads):
     backend_path = Path(__file__).parent.parent
     alembic_cfg = Config(str(backend_path / "alembic.ini"))
     alembic_cfg.set_main_option("script_location", str(backend_path / "alembic"))
-    
+
     # Create merge migration
     heads_str = " ".join(heads)
     print(f"🔧 Creating merge migration for heads: {heads_str}")
-    
+
     try:
         command.revision(
             alembic_cfg,
@@ -65,6 +65,7 @@ def create_merge_migration(heads):
     except Exception as e:
         print(f"❌ Failed to create merge migration: {e}")
         import traceback
+
         traceback.print_exc()
         return False
 
@@ -76,12 +77,12 @@ def select_primary_head(heads, current_revisions):
         if head in current_revisions:
             print(f"✅ Database is at {head}, using as primary head")
             return head
-    
+
     # Otherwise, use the first head (could be improved with more logic)
     if heads:
         print(f"⚠️  No matching head in database, using first head: {heads[0]}")
         return heads[0]
-    
+
     return None
 
 
@@ -89,16 +90,18 @@ def main():
     """Main function to fix multiple heads."""
     print("🔍 Checking for multiple head revisions...")
     heads = get_heads()
-    
+
     if len(heads) <= 1:
         print("✅ Single head revision (no fix needed)")
         return
-    
+
     print(f"❌ Found {len(heads)} head revisions: {', '.join(heads)}")
-    
+
     current_revisions = get_current_revision()
-    print(f"📊 Current database revision(s): {', '.join(current_revisions) if current_revisions else 'None'}")
-    
+    print(
+        f"📊 Current database revision(s): {', '.join(current_revisions) if current_revisions else 'None'}"
+    )
+
     # Try to create a merge migration
     print("\n🔧 Attempting to create merge migration...")
     if create_merge_migration(heads):
@@ -109,7 +112,9 @@ def main():
         print("\n💡 Manual fix required:")
         print("   1. Identify which head should be the primary")
         print("   2. Create merge migration manually:")
-        print(f"      alembic revision --autogenerate -m 'merge heads' --head {heads[0]} --head {heads[1]}")
+        print(
+            f"      alembic revision --autogenerate -m 'merge heads' --head {heads[0]} --head {heads[1]}"
+        )
         print("   3. Or stamp to the correct head if one is already applied:")
         primary = select_primary_head(heads, current_revisions)
         if primary:
@@ -119,4 +124,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
