@@ -95,6 +95,28 @@ jobs:
       #         print(f"Applied migrations: {', '.join(versions)}")
       #     EOF
 
+      - name: Detect and fix migration issues
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ DATABASE_URL not set, skipping migration checks"
+            exit 0
+          fi
+          cd backend
+          echo "🔍 Detecting migration issues..."
+          python3 scripts/detect_migration_issues.py || HAS_ISSUES=1
+          HAS_ISSUES=${HAS_ISSUES:-0}
+          if [ $HAS_ISSUES -ne 0 ]; then
+            echo "⚠️ Migration issues detected, attempting auto-fix..."
+            python3 scripts/auto_fix_migrations.py || {
+              echo "❌ Auto-fix failed, but continuing..."
+              echo "⚠️ Manual intervention may be required"
+            }
+          else
+            echo "✅ No migration issues detected"
+          fi
+
       - name: Run database migrations
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -117,12 +139,27 @@ jobs:
           if [ $NEEDS_4741 -ne 0 ]; then
             echo "Fixing migration chain..."
             python3 scripts/fix_migration_chain.py
-            echo "🚀 Applying migrations..."
-            python3 -m alembic upgrade head
-          else
-            echo "🚀 Applying any pending migrations..."
-            python3 -m alembic upgrade head
           fi
+
+          # Try to upgrade, with fallback for multiple heads
+          echo "🚀 Applying migrations..."
+          if python3 -m alembic upgrade head 2>&1 | grep -q "Multiple head revisions"; then
+            echo "⚠️ Multiple head revisions detected, attempting to fix..."
+            python3 scripts/fix_multiple_heads.py || {
+              echo "❌ Could not automatically fix multiple heads"
+              echo "💡 Trying to use 'heads' instead of 'head'..."
+              python3 -m alembic upgrade heads || {
+                echo "❌ Migration failed"
+                exit 1
+              }
+            }
+            # Retry after fix
+            python3 -m alembic upgrade head || {
+              echo "❌ Migration still failed after fix attempt"
+              exit 1
+            }
+          fi
+
           echo "✅ Migrations completed"
           python3 -m alembic current
 
@@ -228,15 +265,43 @@ jobs:
           git commit -m "chore: Update daily trend data [skip ci]"
           git push
 
+      - name: Collect error details
+        if: failure()
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          cd backend
+          ERROR_DETAILS=""
+
+          # Check for migration issues
+          if python3 scripts/detect_migration_issues.py 2>&1; then
+            ERROR_DETAILS="${ERROR_DETAILS}\n\n## Migration Issues\n\`\`\`\n$(python3 scripts/detect_migration_issues.py 2>&1)\n\`\`\`"
+          fi
+
+          # Check Alembic status
+          if [ -n "$DATABASE_URL" ]; then
+            ERROR_DETAILS="${ERROR_DETAILS}\n\n## Alembic Status\n\`\`\`\n$(python3 -m alembic current 2>&1 || echo 'Failed to get current revision')\n\`\`\`"
+            ERROR_DETAILS="${ERROR_DETAILS}\n\n## Migration History\n\`\`\`\n$(python3 -m alembic history 2>&1 | head -20 || echo 'Failed to get history')\n\`\`\`"
+          fi
+
+          echo "ERROR_DETAILS<<EOF" >> $GITHUB_ENV
+          echo "$ERROR_DETAILS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Notify on failure
         if: failure()
         uses: actions/github-script@v7
+        env:
+          ERROR_DETAILS: ${{ env.ERROR_DETAILS }}
         with:
           script: |
+            const errorDetails = process.env.ERROR_DETAILS || '';
+            const body = `Daily trend analysis failed on ${new Date().toISOString()}\n\n**Workflow Run:** [View Details](${context.payload.repository.html_url}/actions/runs/${context.runId})\n\n**Common Issues:**\n- Migration conflicts (duplicate revision IDs or multiple heads)\n- Database connection issues\n- Missing dependencies\n- Script errors\n${errorDetails ? `\n**Error Details:**${errorDetails}` : ''}\n\n**Auto-Fix Attempted:** The workflow now includes automatic migration issue detection and fixing. If this issue persists, manual intervention may be required.`;
+
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: '❌ Daily Trend Analysis Failed',
-              body: `Daily trend analysis failed on ${new Date().toISOString()}\n\nCheck the [workflow run](${context.payload.repository.html_url}/actions/runs/${context.runId}) for details.`,
-              labels: ['automation', 'bug']
+              body: body,
+              labels: ['automation', 'bug', 'migration']
             })
