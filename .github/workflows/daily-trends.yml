@@ -140,7 +140,7 @@ jobs:
             echo "Fixing migration chain..."
             python3 scripts/fix_migration_chain.py
           fi
-          
+
           # Try to upgrade, with fallback for multiple heads
           echo "🚀 Applying migrations..."
           if python3 -m alembic upgrade head 2>&1 | grep -q "Multiple head revisions"; then
@@ -159,7 +159,7 @@ jobs:
               exit 1
             }
           fi
-          
+
           echo "✅ Migrations completed"
           python3 -m alembic current
 
@@ -272,18 +272,18 @@ jobs:
         run: |
           cd backend
           ERROR_DETAILS=""
-          
+
           # Check for migration issues
           if python3 scripts/detect_migration_issues.py 2>&1; then
             ERROR_DETAILS="${ERROR_DETAILS}\n\n## Migration Issues\n\`\`\`\n$(python3 scripts/detect_migration_issues.py 2>&1)\n\`\`\`"
           fi
-          
+
           # Check Alembic status
           if [ -n "$DATABASE_URL" ]; then
             ERROR_DETAILS="${ERROR_DETAILS}\n\n## Alembic Status\n\`\`\`\n$(python3 -m alembic current 2>&1 || echo 'Failed to get current revision')\n\`\`\`"
             ERROR_DETAILS="${ERROR_DETAILS}\n\n## Migration History\n\`\`\`\n$(python3 -m alembic history 2>&1 | head -20 || echo 'Failed to get history')\n\`\`\`"
           fi
-          
+
           echo "ERROR_DETAILS<<EOF" >> $GITHUB_ENV
           echo "$ERROR_DETAILS" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -297,7 +297,7 @@ jobs:
           script: |
             const errorDetails = process.env.ERROR_DETAILS || '';
             const body = `Daily trend analysis failed on ${new Date().toISOString()}\n\n**Workflow Run:** [View Details](${context.payload.repository.html_url}/actions/runs/${context.runId})\n\n**Common Issues:**\n- Migration conflicts (duplicate revision IDs or multiple heads)\n- Database connection issues\n- Missing dependencies\n- Script errors\n${errorDetails ? `\n**Error Details:**${errorDetails}` : ''}\n\n**Auto-Fix Attempted:** The workflow now includes automatic migration issue detection and fixing. If this issue persists, manual intervention may be required.`;
-            
+
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,

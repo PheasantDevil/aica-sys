@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Fix duplicate revision IDs by renaming one of them."""
-import sys
 import re
 import secrets
-from pathlib import Path
+import sys
 from collections import defaultdict
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 

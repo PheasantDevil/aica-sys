@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """Detect migration issues like duplicate revision IDs and multiple heads."""
-import sys
-from pathlib import Path
-from collections import defaultdict
 import re
+import sys
+from collections import defaultdict
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 
 try:
-    from alembic.script import ScriptDirectory
     from alembic.config import Config
+    from alembic.script import ScriptDirectory
     ALEMBIC_AVAILABLE = True
 except ImportError:
     ALEMBIC_AVAILABLE = False

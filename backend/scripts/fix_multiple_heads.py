@@ -6,9 +6,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.resolve()))
 
 try:
-    from alembic.script import ScriptDirectory
-    from alembic.config import Config
     from alembic import command
+    from alembic.config import Config
+    from alembic.script import ScriptDirectory
 except ImportError:
     print("❌ Alembic not installed")
     sys.exit(1)
@@ -28,6 +28,7 @@ def get_heads():
 def get_current_revision():
     """Get current database revision."""
     from sqlalchemy import text
+
     from database import engine
     
     try:

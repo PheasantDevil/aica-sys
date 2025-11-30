@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Automatically detect and fix common migration issues."""
-import sys
 import importlib.util
+import sys
 from pathlib import Path
 
 backend_path = Path(__file__).parent.parent
