@@ -1,6 +1,6 @@
 """add valid_until and session_id to affiliate
 
-Revision ID: 2a3b4c5d6e7f
+Revision ID: 9e13f1c94b71
 Revises: 1cf2ab5a8998
 Create Date: 2025-11-19 22:00:00.000000
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "2a3b4c5d6e7f"
+revision: str = "9e13f1c94b71"
 down_revision: Union[str, Sequence[str], None] = "1cf2ab5a8998"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
