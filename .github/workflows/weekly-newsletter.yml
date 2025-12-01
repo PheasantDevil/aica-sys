@@ -13,6 +13,10 @@ on:
       - "scripts/generate_newsletter.py"
       - ".github/workflows/weekly-newsletter.yml"
 
+concurrency:
+  group: weekly-newsletter-generation
+  cancel-in-progress: false
+
 jobs:
   generate-newsletter:
     name: Generate Weekly Newsletter

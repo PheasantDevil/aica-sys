@@ -15,6 +15,10 @@ on:
       - "scripts/generate_daily_article.py"
       - ".github/workflows/daily-articles.yml"
 
+concurrency:
+  group: daily-article-generation
+  cancel-in-progress: false
+
 jobs:
   generate-articles:
     name: Generate Daily Articles
