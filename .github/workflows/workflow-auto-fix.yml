@@ -21,7 +21,7 @@ jobs:
   analyze-error:
     name: Analyze Workflow Error
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.event == 'schedule' && github.event.workflow_run.conclusion == 'failure' }}
+    if: ${{ (github.event.workflow_run.event == 'schedule' || github.event.workflow_run.event == 'workflow_dispatch') && github.event.workflow_run.conclusion == 'failure' }}
     permissions:
       contents: read
       actions: read
