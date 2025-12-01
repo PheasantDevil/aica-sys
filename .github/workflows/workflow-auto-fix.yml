@@ -334,43 +334,45 @@ jobs:
             const errorType = '${{ needs.analyze-error.outputs.error_type }}';
             const changedFiles = `${{ steps.changed-files.outputs.changed_files }}`;
             
+            const body = `## 自動修正
+
+            このPRは、ワークフローエラーの自動修正です。
+
+            **元のワークフロー**: ${workflowName}
+            **エラータイプ**: ${errorType}
+            **元のワークフロー実行**: [View Run](${workflowRunUrl})
+
+            ### 変更内容
+
+            \`\`\`
+            ${changedFiles}
+            \`\`\`
+
+            ### 修正内容
+
+            - ${errorType === 'format' ? 'フォーマットエラーを修正（black, isort, prettier）' : ''}
+            - ${errorType === 'migration' ? 'マイグレーションエラーを修正' : ''}
+            - ${errorType === 'dependency' ? '依存関係エラーを修正' : ''}
+            - ${errorType === 'lint' ? 'リンターエラーを修正（自動修正可能なもののみ）' : ''}
+
+            ### 検証
+
+            修正後、以下の検証を実行しました：
+            - フォーマットチェック
+            - リンターチェック
+            - 型チェック（該当する場合）
+
+            ### 注意事項
+
+            このPRは自動生成されました。マージ前に内容を確認してください。`;
+
             const pr = await github.rest.pulls.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `🔧 Auto-fix: ${errorType} error in ${workflowName}`,
               head: branchName,
               base: 'main',
-              body: `## 自動修正
-
-このPRは、ワークフローエラーの自動修正です。
-
-**元のワークフロー**: ${workflowName}
-**エラータイプ**: ${errorType}
-**元のワークフロー実行**: [View Run](${workflowRunUrl})
-
-### 変更内容
-
-\`\`\`
-${changedFiles}
-\`\`\`
-
-### 修正内容
-
-- ${errorType === 'format' ? 'フォーマットエラーを修正（black, isort, prettier）' : ''}
-- ${errorType === 'migration' ? 'マイグレーションエラーを修正' : ''}
-- ${errorType === 'dependency' ? '依存関係エラーを修正' : ''}
-- ${errorType === 'lint' ? 'リンターエラーを修正（自動修正可能なもののみ）' : ''}
-
-### 検証
-
-修正後、以下の検証を実行しました：
-- フォーマットチェック
-- リンターチェック
-- 型チェック（該当する場合）
-
-### 注意事項
-
-このPRは自動生成されました。マージ前に内容を確認してください。`,
+              body,
               labels: ['auto-fix', 'workflow'],
             });
             
@@ -495,26 +497,28 @@ ${changedFiles}
             const errorType = '${{ needs.analyze-error.outputs.error_type }}';
             const prUrl = '${{ steps.pr-info.outputs.pr_url }}';
             
+            const issueBody = `自動修正が失敗しました。手動での対応が必要です。
+
+            **元のワークフロー**: ${workflowName}
+            **エラータイプ**: ${errorType}
+            **元のワークフロー実行**: [View Run](${workflowRunUrl})
+            **修正PR**: ${prUrl ? `[View PR](${prUrl})` : 'PR作成失敗'}
+
+            ### 対応方法
+
+            1. PRを確認して修正内容をレビュー
+            2. 必要に応じて手動で修正を追加
+            3. 修正後にワークフローを再実行して確認
+
+            ### 注意事項
+
+            このエラーは自動修正を試みましたが、検証に失敗しました。手動での対応をお願いします。`;
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `⚠️ Auto-fix failed: ${errorType} error in ${workflowName}`,
-              body: `自動修正が失敗しました。手動での対応が必要です。
-
-**元のワークフロー**: ${workflowName}
-**エラータイプ**: ${errorType}
-**元のワークフロー実行**: [View Run](${workflowRunUrl})
-**修正PR**: ${prUrl ? `[View PR](${prUrl})` : 'PR作成失敗'}
-
-### 対応方法
-
-1. PRを確認して修正内容をレビュー
-2. 必要に応じて手動で修正を追加
-3. 修正後にワークフローを再実行して確認
-
-### 注意事項
-
-このエラーは自動修正を試みましたが、検証に失敗しました。手動での対応をお願いします。`,
+              body: issueBody,
               labels: ['auto-fix-failed', 'workflow', 'bug'],
             });
 
@@ -535,31 +539,33 @@ ${changedFiles}
             const workflowRunUrl = '${{ needs.analyze-error.outputs.workflow_run_url }}';
             const errorMessage = '${{ needs.analyze-error.outputs.error_message }}';
             
+            const manualIssueBody = `ワークフローが失敗しましたが、自動修正ができないエラーのため手動での対応が必要です。
+
+            **ワークフロー**: ${workflowName}
+            **実行URL**: [View Run](${workflowRunUrl})
+
+            ### エラー内容
+
+            \`\`\`
+            ${errorMessage || 'エラーメッセージを取得できませんでした'}
+            \`\`\`
+
+            ### 対応方法
+
+            1. ワークフロー実行ログを確認
+            2. エラーの原因を特定
+            3. 手動で修正を実施
+            4. 修正後にワークフローを再実行して確認
+
+            ### 注意事項
+
+            このエラーは自動修正の対象外です。手動での対応をお願いします。`;
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `⚠️ Manual fix required: ${workflowName} workflow failed`,
-              body: `ワークフローが失敗しましたが、自動修正ができないエラーのため手動での対応が必要です。
-
-**ワークフロー**: ${workflowName}
-**実行URL**: [View Run](${workflowRunUrl})
-
-### エラー内容
-
-\`\`\`
-${errorMessage || 'エラーメッセージを取得できませんでした'}
-\`\`\`
-
-### 対応方法
-
-1. ワークフロー実行ログを確認
-2. エラーの原因を特定
-3. 手動で修正を実施
-4. 修正後にワークフローを再実行して確認
-
-### 注意事項
-
-このエラーは自動修正の対象外です。手動での対応をお願いします。`,
+              body: manualIssueBody,
               labels: ['workflow', 'bug', 'manual-fix'],
             });
 
