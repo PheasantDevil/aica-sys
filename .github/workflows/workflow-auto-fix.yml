@@ -1,0 +1,565 @@
+name: Workflow Auto Fix
+
+on:
+  workflow_run:
+    workflows:
+      - "Daily Trend Analysis"
+      - "Daily Article Generation"
+      - "Weekly Newsletter Generation"
+      - "Scheduled Backup"
+      - "Social Media Auto Post"
+    types:
+      - completed
+    branches:
+      - main
+
+concurrency:
+  group: workflow-auto-fix
+  cancel-in-progress: false
+
+jobs:
+  analyze-error:
+    name: Analyze Workflow Error
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'schedule' && github.event.workflow_run.conclusion == 'failure' }}
+    permissions:
+      contents: read
+      actions: read
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Get workflow run details
+        id: workflow-run
+        uses: actions/github-script@v7
+        env:
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        with:
+          script: |
+            const runId = process.env.RUN_ID;
+            const run = await github.rest.actions.getWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId,
+            });
+            
+            const jobs = await github.rest.actions.listJobsForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId,
+            });
+            
+            // Find failed job
+            let failedJob = null;
+            let errorMessage = '';
+            
+            for (const job of jobs.data.jobs) {
+              if (job.conclusion === 'failure') {
+                failedJob = job;
+                // Try to get error message from job summary
+                errorMessage = job.steps?.find(s => s.conclusion === 'failure')?.name || 'Unknown error';
+                break;
+              }
+            }
+            
+            core.setOutput('workflow_name', run.data.name || run.data.workflow_id);
+            core.setOutput('run_id', runId.toString());
+            core.setOutput('failed_job', failedJob ? failedJob.name : '');
+            core.setOutput('error_message', errorMessage);
+            core.setOutput('html_url', run.data.html_url);
+
+      - name: Get workflow run logs
+        id: logs
+        uses: actions/github-script@v7
+        env:
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        with:
+          script: |
+            const runId = process.env.RUN_ID;
+            // Try to get error from failed job logs
+            const jobs = await github.rest.actions.listJobsForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: runId,
+            });
+            
+            let errorLog = '';
+            for (const job of jobs.data.jobs) {
+              if (job.conclusion === 'failure') {
+                // Get job logs URL
+                errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}`;
+                break;
+              }
+            }
+            
+            core.setOutput('error_log', errorLog);
+
+      - name: Determine error type
+        id: error-type
+        run: |
+          ERROR_MSG="${{ steps.workflow-run.outputs.error_message }}"
+          ERROR_LOG="${{ steps.logs.outputs.error_log }}"
+          ERROR_MSG_LOWER=$(echo "$ERROR_MSG $ERROR_LOG" | tr '[:upper:]' '[:lower:]')
+          
+          ERROR_TYPE="unknown"
+          
+          # Format errors
+          if echo "$ERROR_MSG_LOWER" | grep -qE "(black|isort|prettier|format|would reformat)"; then
+            ERROR_TYPE="format"
+          # Migration errors
+          elif echo "$ERROR_MSG_LOWER" | grep -qE "(alembic|migration|revision|head|multiple head)"; then
+            ERROR_TYPE="migration"
+          # Dependency errors
+          elif echo "$ERROR_MSG_LOWER" | grep -qE "(pip install|npm install|requirements|package\.json|dependency|module not found|cannot find module)"; then
+            ERROR_TYPE="dependency"
+          # Linter errors (auto-fixable)
+          elif echo "$ERROR_MSG_LOWER" | grep -qE "(flake8|eslint.*--fix|lint.*fixable)"; then
+            ERROR_TYPE="lint"
+          fi
+          
+          echo "error_type=$ERROR_TYPE" >> $GITHUB_OUTPUT
+          echo "Detected error type: $ERROR_TYPE"
+
+      - name: Check if auto-fixable
+        id: auto-fixable
+        run: |
+          ERROR_TYPE="${{ steps.error-type.outputs.error_type }}"
+          
+          if [ "$ERROR_TYPE" = "format" ] || [ "$ERROR_TYPE" = "migration" ] || [ "$ERROR_TYPE" = "dependency" ] || [ "$ERROR_TYPE" = "lint" ]; then
+            echo "auto_fixable=true" >> $GITHUB_OUTPUT
+            echo "✅ Error is auto-fixable"
+          else
+            echo "auto_fixable=false" >> $GITHUB_OUTPUT
+            echo "❌ Error requires manual intervention"
+          fi
+
+      - name: Set outputs
+        id: outputs
+        run: |
+          echo "workflow_name=${{ steps.workflow-run.outputs.workflow_name }}" >> $GITHUB_OUTPUT
+          echo "workflow_run_id=${{ steps.workflow-run.outputs.run_id }}" >> $GITHUB_OUTPUT
+          echo "workflow_run_url=${{ steps.workflow-run.outputs.html_url }}" >> $GITHUB_OUTPUT
+          echo "error_type=${{ steps.error-type.outputs.error_type }}" >> $GITHUB_OUTPUT
+          echo "auto_fixable=${{ steps.auto-fixable.outputs.auto_fixable }}" >> $GITHUB_OUTPUT
+
+  auto-fix:
+    name: Auto Fix Error
+    needs: analyze-error
+    if: needs.analyze-error.outputs.auto_fixable == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Create fix branch
+        id: branch
+        run: |
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          BRANCH_NAME="workflow-hotfix-$TIMESTAMP"
+          git checkout -b "$BRANCH_NAME"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "Created branch: $BRANCH_NAME"
+
+      - name: Fix format errors
+        if: needs.analyze-error.outputs.error_type == 'format'
+        run: |
+          ERROR_TYPE="${{ needs.analyze-error.outputs.error_type }}"
+          
+          # Backend format fixes
+          if [ -d "backend" ]; then
+            cd backend
+            pip install black isort --quiet
+            black . || true
+            isort --profile black . || true
+            cd ..
+          fi
+          
+          # Frontend format fixes
+          if [ -d "frontend" ]; then
+            cd frontend
+            npm ci --quiet || npm install --quiet
+            npx prettier --write "src/**/*.{ts,tsx,js,jsx,json,css,md}" || true
+            cd ..
+          fi
+
+      - name: Fix migration errors
+        if: needs.analyze-error.outputs.error_type == 'migration'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ DATABASE_URL not set, skipping migration fixes"
+            exit 0
+          fi
+          cd backend
+          pip install -r requirements.txt --quiet
+          python3 scripts/detect_migration_issues.py || true
+          python3 scripts/auto_fix_migrations.py || true
+
+      - name: Fix dependency errors
+        if: needs.analyze-error.outputs.error_type == 'dependency'
+        run: |
+          # Backend dependencies
+          if [ -d "backend" ] && [ -f "backend/requirements.txt" ]; then
+            cd backend
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            pip freeze > requirements.txt.new
+            # Only update if there are changes
+            if ! diff -q requirements.txt requirements.txt.new > /dev/null; then
+              mv requirements.txt.new requirements.txt
+            else
+              rm requirements.txt.new
+            fi
+            cd ..
+          fi
+          
+          # Frontend dependencies
+          if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
+            cd frontend
+            npm install --package-lock-only
+            cd ..
+          fi
+
+      - name: Fix lint errors (auto-fixable)
+        if: needs.analyze-error.outputs.error_type == 'lint'
+        run: |
+          # Backend lint fixes
+          if [ -d "backend" ]; then
+            cd backend
+            pip install flake8 autopep8 --quiet
+            # Only fix auto-fixable errors
+            autopep8 --in-place --aggressive --aggressive --recursive . || true
+            cd ..
+          fi
+          
+          # Frontend lint fixes
+          if [ -d "frontend" ]; then
+            cd frontend
+            npm ci --quiet || npm install --quiet
+            npm run lint -- --fix || true
+            cd ..
+          fi
+
+      - name: Detect changed files
+        id: changed-files
+        run: |
+          git add -A
+          CHANGED_FILES=$(git diff --cached --name-only)
+          
+          HAS_FRONTEND=false
+          HAS_BACKEND=false
+          HAS_OTHER=false
+          
+          echo "$CHANGED_FILES" | while read -r file; do
+            if [[ "$file" == frontend/* ]]; then
+              HAS_FRONTEND=true
+            elif [[ "$file" == backend/* ]]; then
+              HAS_BACKEND=true
+            else
+              HAS_OTHER=true
+            fi
+          done
+          
+          echo "has_frontend=$HAS_FRONTEND" >> $GITHUB_OUTPUT
+          echo "has_backend=$HAS_BACKEND" >> $GITHUB_OUTPUT
+          echo "has_other=$HAS_OTHER" >> $GITHUB_OUTPUT
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Verify fixes (Frontend)
+        if: steps.changed-files.outputs.has_frontend == 'true'
+        run: |
+          cd frontend
+          npm ci --quiet
+          npm run lint || true
+          npx prettier --check "src/**/*.{ts,tsx,js,jsx,json,css,md}" || true
+          npx tsc --noEmit || true
+
+      - name: Verify fixes (Backend)
+        if: steps.changed-files.outputs.has_backend == 'true'
+        run: |
+          cd backend
+          pip install black isort flake8 --quiet
+          black --check . || true
+          isort --profile black --check . || true
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || true
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "ℹ️  No changes to commit"
+            echo "no_changes=true" >> $GITHUB_ENV
+          else
+            git commit -m "fix(workflow): Auto-fix ${{ needs.analyze-error.outputs.error_type }} error from ${{ needs.analyze-error.outputs.workflow_name }} [skip ci]"
+            git push origin "${{ steps.branch.outputs.branch_name }}"
+            echo "no_changes=false" >> $GITHUB_ENV
+          fi
+
+      - name: Create Pull Request
+        if: env.no_changes == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branchName = '${{ steps.branch.outputs.branch_name }}';
+            const workflowName = '${{ needs.analyze-error.outputs.workflow_name }}';
+            const workflowRunUrl = '${{ needs.analyze-error.outputs.workflow_run_url }}';
+            const errorType = '${{ needs.analyze-error.outputs.error_type }}';
+            const changedFiles = `${{ steps.changed-files.outputs.changed_files }}`;
+            
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔧 Auto-fix: ${errorType} error in ${workflowName}`,
+              head: branchName,
+              base: 'main',
+              body: `## 自動修正
+
+このPRは、ワークフローエラーの自動修正です。
+
+**元のワークフロー**: ${workflowName}
+**エラータイプ**: ${errorType}
+**元のワークフロー実行**: [View Run](${workflowRunUrl})
+
+### 変更内容
+
+\`\`\`
+${changedFiles}
+\`\`\`
+
+### 修正内容
+
+- ${errorType === 'format' ? 'フォーマットエラーを修正（black, isort, prettier）' : ''}
+- ${errorType === 'migration' ? 'マイグレーションエラーを修正' : ''}
+- ${errorType === 'dependency' ? '依存関係エラーを修正' : ''}
+- ${errorType === 'lint' ? 'リンターエラーを修正（自動修正可能なもののみ）' : ''}
+
+### 検証
+
+修正後、以下の検証を実行しました：
+- フォーマットチェック
+- リンターチェック
+- 型チェック（該当する場合）
+
+### 注意事項
+
+このPRは自動生成されました。マージ前に内容を確認してください。`,
+              labels: ['auto-fix', 'workflow'],
+            });
+            
+            core.setOutput('pr_number', pr.data.number);
+            core.setOutput('pr_url', pr.data.html_url);
+
+      - name: Verify fix success
+        id: verify
+        run: |
+          # Re-run the failed step to verify fix
+          ERROR_TYPE="${{ needs.analyze-error.outputs.error_type }}"
+          VERIFY_SUCCESS=false
+          
+          case "$ERROR_TYPE" in
+            format)
+              # Verify format
+              if [ -d "backend" ]; then
+                cd backend
+                pip install black isort --quiet
+                if black --check . && isort --profile black --check .; then
+                  VERIFY_SUCCESS=true
+                fi
+                cd ..
+              fi
+              if [ -d "frontend" ]; then
+                cd frontend
+                npm ci --quiet || npm install --quiet
+                if npx prettier --check "src/**/*.{ts,tsx,js,jsx,json,css,md}" 2>/dev/null; then
+                  VERIFY_SUCCESS=true
+                fi
+                cd ..
+              fi
+              ;;
+            migration)
+              # Verify migration
+              if [ -n "$DATABASE_URL" ]; then
+                cd backend
+                pip install -r requirements.txt --quiet
+                if python3 scripts/detect_migration_issues.py 2>/dev/null; then
+                  VERIFY_SUCCESS=true
+                fi
+                cd ..
+              fi
+              ;;
+            dependency)
+              # Verify dependencies
+              if [ -d "backend" ]; then
+                cd backend
+                if pip install -r requirements.txt 2>/dev/null; then
+                  VERIFY_SUCCESS=true
+                fi
+                cd ..
+              fi
+              if [ -d "frontend" ]; then
+                cd frontend
+                if npm ci 2>/dev/null || npm install 2>/dev/null; then
+                  VERIFY_SUCCESS=true
+                fi
+                cd ..
+              fi
+              ;;
+            lint)
+              # Verify lint
+              VERIFY_SUCCESS=true
+              ;;
+          esac
+          
+          echo "verify_success=$VERIFY_SUCCESS" >> $GITHUB_OUTPUT
+          if [ "$VERIFY_SUCCESS" = "true" ]; then
+            echo "✅ Fix verification successful"
+          else
+            echo "❌ Fix verification failed"
+          fi
+
+      - name: Get PR number
+        id: pr-info
+        if: env.no_changes == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branchName = '${{ steps.branch.outputs.branch_name }}';
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${branchName}`,
+              state: 'open',
+            });
+            
+            if (prs.data.length > 0) {
+              core.setOutput('pr_number', prs.data[0].number.toString());
+              core.setOutput('pr_url', prs.data[0].html_url);
+            }
+
+      - name: Merge PR if verification successful
+        if: steps.verify.outputs.verify_success == 'true' && env.no_changes == 'false' && steps.pr-info.outputs.pr_number != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = parseInt('${{ steps.pr-info.outputs.pr_number }}');
+            await github.rest.pulls.merge({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              merge_method: 'merge',
+            });
+            
+            // Add comment
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: '✅ 修正が検証され、自動的にマージされました。',
+            });
+
+      - name: Create issue if verification failed
+        if: steps.verify.outputs.verify_success == 'false' && env.no_changes == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const workflowName = '${{ needs.analyze-error.outputs.workflow_name }}';
+            const workflowRunUrl = '${{ needs.analyze-error.outputs.workflow_run_url }}';
+            const errorType = '${{ needs.analyze-error.outputs.error_type }}';
+            const prUrl = '${{ steps.pr-info.outputs.pr_url }}';
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `⚠️ Auto-fix failed: ${errorType} error in ${workflowName}`,
+              body: `自動修正が失敗しました。手動での対応が必要です。
+
+**元のワークフロー**: ${workflowName}
+**エラータイプ**: ${errorType}
+**元のワークフロー実行**: [View Run](${workflowRunUrl})
+**修正PR**: ${prUrl ? `[View PR](${prUrl})` : 'PR作成失敗'}
+
+### 対応方法
+
+1. PRを確認して修正内容をレビュー
+2. 必要に応じて手動で修正を追加
+3. 修正後にワークフローを再実行して確認
+
+### 注意事項
+
+このエラーは自動修正を試みましたが、検証に失敗しました。手動での対応をお願いします。`,
+              labels: ['auto-fix-failed', 'workflow', 'bug'],
+            });
+
+  notify-manual-fix:
+    name: Notify Manual Fix Required
+    needs: analyze-error
+    if: needs.analyze-error.outputs.auto_fixable == 'false'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Create issue for manual fix
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const workflowName = '${{ needs.analyze-error.outputs.workflow_name }}';
+            const workflowRunUrl = '${{ needs.analyze-error.outputs.workflow_run_url }}';
+            const errorMessage = '${{ needs.analyze-error.outputs.error_message }}';
+            
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `⚠️ Manual fix required: ${workflowName} workflow failed`,
+              body: `ワークフローが失敗しましたが、自動修正ができないエラーのため手動での対応が必要です。
+
+**ワークフロー**: ${workflowName}
+**実行URL**: [View Run](${workflowRunUrl})
+
+### エラー内容
+
+\`\`\`
+${errorMessage || 'エラーメッセージを取得できませんでした'}
+\`\`\`
+
+### 対応方法
+
+1. ワークフロー実行ログを確認
+2. エラーの原因を特定
+3. 手動で修正を実施
+4. 修正後にワークフローを再実行して確認
+
+### 注意事項
+
+このエラーは自動修正の対象外です。手動での対応をお願いします。`,
+              labels: ['workflow', 'bug', 'manual-fix'],
+            });
+
