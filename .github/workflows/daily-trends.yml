@@ -14,6 +14,10 @@ on:
       - "scripts/analyze_trends.py"
       - ".github/workflows/daily-trends.yml"
 
+concurrency:
+  group: daily-trend-analysis
+  cancel-in-progress: false
+
 jobs:
   analyze-trends:
     name: Analyze Daily Trends
