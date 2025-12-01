@@ -2,7 +2,7 @@
 
 ## 概要
 
-スケジュール実行型ワークフローでエラーが発生した際に、自動的にエラーを検出・修正し、PRを作成してマージまで行う機能です。
+スケジュール実行型ワークフローでエラーが発生した際に、自動的にエラーを検出・修正し、PR を作成してマージまで行う機能です。
 
 ## アーキテクチャ概要
 
@@ -83,29 +83,29 @@ PR作成            Issue作成
 - **Backend**: lint, format, type-check, migration
 - **その他**: 汎用検証
 
-### 6. PR作成とマージ
+### 6. PR 作成とマージ
 
 - 修正ブランチ `workflow-hotfix-{timestamp}` を作成
-- PRを作成（`workflow-hotfix-{timestamp}` → `main`）
+- PR を作成（`workflow-hotfix-{timestamp}` → `main`）
 - 検証が成功した場合、自動的にマージ
-- 検証が失敗した場合、Issueを作成して手動対応を依頼
+- 検証が失敗した場合、Issue を作成して手動対応を依頼
 
 ## 対象ワークフロー
 
 以下のスケジュール実行型ワークフローを監視します：
 
-1. **Daily Trend Analysis** - 毎日午前10時（JST）
-2. **Daily Article Generation** - 平日午前9時（JST）
-3. **Weekly Newsletter Generation** - 毎週月曜日午前8時（JST）
-4. **Scheduled Backup** - 毎日午前3時（JST）
-5. **Social Media Auto Post** - 毎日12:00（JST）
+1. **Daily Trend Analysis** - 毎日午前 10 時（JST）
+2. **Daily Article Generation** - 平日午前 9 時（JST）
+3. **Weekly Newsletter Generation** - 毎週月曜日午前 8 時（JST）
+4. **Scheduled Backup** - 毎日午前 3 時（JST）
+5. **Social Media Auto Post** - 毎日 12:00（JST）
 
 ## 修正可能なエラー
 
 ### 自動修正可能
 
 - ✅ フォーマットエラー（black, isort, prettier）
-- ✅ マイグレーションエラー（重複リビジョンID、複数のhead）
+- ✅ マイグレーションエラー（重複リビジョン ID、複数の head）
 - ✅ 依存関係エラー（requirements.txt, package.json）
 - ✅ 一部のリンターエラー（自動修正可能なもの）
 
@@ -120,28 +120,28 @@ PR作成            Issue作成
 
 ### 修正成功時
 
-- PRコメントに成功メッセージを追加
-- PRが自動的にマージされる
+- PR コメントに成功メッセージを追加
+- PR が自動的にマージされる
 
 ### 修正失敗時
 
-- Issueを作成（手動対応依頼）
-- PRコメントに失敗メッセージを追加
+- Issue を作成（手動対応依頼）
+- PR コメントに失敗メッセージを追加
 
 ### 自動修正不可時
 
-- Issueを作成（手動対応依頼）
+- Issue を作成（手動対応依頼）
 - エラーの詳細情報を含む
 
 ## 設定
 
-### Concurrency制御
+### Concurrency 制御
 
 各スケジュール実行型ワークフローに `concurrency` を設定しています：
 
 ```yaml
 concurrency:
-  group: {workflow-name}
+  group: { workflow-name }
   cancel-in-progress: false
 ```
 
@@ -152,8 +152,8 @@ concurrency:
 自動修正ワークフローには以下の権限が必要です：
 
 - `contents: write` - コードの修正とコミット
-- `pull-requests: write` - PRの作成とマージ
-- `issues: write` - Issueの作成
+- `pull-requests: write` - PR の作成とマージ
+- `issues: write` - Issue の作成
 
 ## トラブルシューティング
 
@@ -165,18 +165,17 @@ concurrency:
 
 ### 修正が失敗する
 
-1. PRを確認して修正内容をレビュー
+1. PR を確認して修正内容をレビュー
 2. 必要に応じて手動で修正を追加
 3. 修正後にワークフローを再実行して確認
 
 ### 無限ループの防止
 
-- 修正回数は1回のみ
+- 修正回数は 1 回のみ
 - 同じエラーが繰り返される場合は手動対応に切り替え
 
 ## 今後の拡張予定
 
-- LINE通知機能の追加
+- LINE 通知機能の追加
 - より多くのエラータイプへの対応
 - 修正履歴の記録と分析
-
