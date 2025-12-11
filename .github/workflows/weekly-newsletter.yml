@@ -93,9 +93,9 @@ jobs:
           SCRIPT_OUTPUT=$(python3 scripts/generate_newsletter.py 2>&1)
           SCRIPT_EXIT_CODE=$?
           echo "$SCRIPT_OUTPUT"
-          
+
           set -e  # エラーで停止を有効化
-          
+
           if [ $SCRIPT_EXIT_CODE -ne 0 ]; then
             echo "::error::Newsletter generation failed"
             echo "ERROR_MESSAGE<<EOF" >> $GITHUB_ENV

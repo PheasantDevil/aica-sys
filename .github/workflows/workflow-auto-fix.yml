@@ -47,17 +47,17 @@ jobs:
               repo: context.repo.repo,
               run_id: runId,
             });
-            
+
             const jobs = await github.rest.actions.listJobsForWorkflowRun({
               owner: context.repo.owner,
               repo: context.repo.repo,
               run_id: runId,
             });
-            
+
             // Find failed job
             let failedJob = null;
             let errorMessage = '';
-            
+
             for (const job of jobs.data.jobs) {
               if (job.conclusion === 'failure') {
                 failedJob = job;
@@ -66,7 +66,7 @@ jobs:
                 break;
               }
             }
-            
+
             core.setOutput('workflow_name', run.data.name || run.data.workflow_id);
             core.setOutput('run_id', runId.toString());
             core.setOutput('failed_job', failedJob ? failedJob.name : '');
@@ -86,10 +86,10 @@ jobs:
               repo: context.repo.repo,
               run_id: runId,
             });
-            
+
             let errorLog = '';
             let errorStep = '';
-            
+
             for (const job of jobs.data.jobs) {
               if (job.conclusion === 'failure') {
                 // 失敗したステップの詳細を取得
@@ -133,7 +133,7 @@ jobs:
                 break;
               }
             }
-            
+
             core.setOutput('error_log', errorLog);
             core.setOutput('error_step', errorStep);
 
@@ -143,12 +143,12 @@ jobs:
           ERROR_MSG="${{ steps.workflow-run.outputs.error_message }}"
           ERROR_LOG="${{ steps.logs.outputs.error_log }}"
           ERROR_STEP="${{ steps.logs.outputs.error_step }}"
-          
+
           # すべての情報を結合して分析
           ALL_ERROR_INFO=$(echo "$ERROR_MSG $ERROR_LOG $ERROR_STEP" | tr '[:upper:]' '[:lower:]')
-          
+
           ERROR_TYPE="unknown"
-          
+
           # 詳細なパターンマッチング
           if echo "$ALL_ERROR_INFO" | grep -qE "(black|isort|prettier|format|would reformat)"; then
             ERROR_TYPE="format"
@@ -163,10 +163,10 @@ jobs:
           elif echo "$ALL_ERROR_INFO" | grep -qE "(flake8|eslint.*--fix|lint.*fixable|pylint)"; then
             ERROR_TYPE="lint"
           fi
-          
+
           echo "error_type=$ERROR_TYPE" >> $GITHUB_OUTPUT
           echo "Detected error type: $ERROR_TYPE"
-          
+
           # デバッグ情報を出力
           echo "Error message: $ERROR_MSG"
           echo "Error step: $ERROR_STEP"
@@ -176,7 +176,7 @@ jobs:
         id: auto-fixable
         run: |
           ERROR_TYPE="${{ steps.error-type.outputs.error_type }}"
-          
+
           if [ "$ERROR_TYPE" = "format" ] || [ "$ERROR_TYPE" = "migration" ] || [ "$ERROR_TYPE" = "migration_multiple_heads" ] || [ "$ERROR_TYPE" = "migration_missing_revision" ] || [ "$ERROR_TYPE" = "dependency" ] || [ "$ERROR_TYPE" = "lint" ]; then
             echo "auto_fixable=true" >> $GITHUB_OUTPUT
             echo "✅ Error is auto-fixable"
@@ -227,18 +227,18 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           # 最新のmainを取得
           git fetch origin main
           git checkout main
           git pull origin main
-          
+
           # 作業ブランチを作成
           TIMESTAMP=$(date +%Y%m%d-%H%M%S)
           WORKFLOW_NAME="${{ needs.analyze-error.outputs.workflow_name }}"
           WORKFLOW_NAME_CLEAN=$(echo "$WORKFLOW_NAME" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
           BRANCH_NAME="workflow-hotfix-${WORKFLOW_NAME_CLEAN}-${TIMESTAMP}"
-          
+
           git checkout -b "$BRANCH_NAME"
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "Created branch: $BRANCH_NAME from latest main"
@@ -247,7 +247,7 @@ jobs:
         if: needs.analyze-error.outputs.error_type == 'format'
         run: |
           ERROR_TYPE="${{ needs.analyze-error.outputs.error_type }}"
-          
+
           # Backend format fixes
           if [ -d "backend" ]; then
             cd backend
@@ -256,7 +256,7 @@ jobs:
             isort --profile black . || true
             cd ..
           fi
-          
+
           # Frontend format fixes
           if [ -d "frontend" ]; then
             cd frontend
@@ -271,7 +271,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           ERROR_TYPE="${{ needs.analyze-error.outputs.error_type }}"
-          
+
           case "$ERROR_TYPE" in
             format)
               echo "🔧 Fixing format errors..."
@@ -371,11 +371,11 @@ jobs:
         run: |
           git add -A
           CHANGED_FILES=$(git diff --cached --name-only)
-          
+
           HAS_FRONTEND=false
           HAS_BACKEND=false
           HAS_OTHER=false
-          
+
           echo "$CHANGED_FILES" | while read -r file; do
             if [[ "$file" == frontend/* ]]; then
               HAS_FRONTEND=true
@@ -385,7 +385,7 @@ jobs:
               HAS_OTHER=true
             fi
           done
-          
+
           echo "has_frontend=$HAS_FRONTEND" >> $GITHUB_OUTPUT
           echo "has_backend=$HAS_BACKEND" >> $GITHUB_OUTPUT
           echo "has_other=$HAS_OTHER" >> $GITHUB_OUTPUT
@@ -415,7 +415,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           if git diff --quiet && git diff --staged --quiet; then
             echo "ℹ️  No changes to commit"
             echo "no_changes=true" >> $GITHUB_ENV
@@ -435,7 +435,7 @@ jobs:
             const workflowRunUrl = '${{ needs.analyze-error.outputs.workflow_run_url }}';
             const errorType = '${{ needs.analyze-error.outputs.error_type }}';
             const changedFiles = `${{ steps.changed-files.outputs.changed_files }}`;
-            
+
             const body = `## 自動修正
 
             このPRは、ワークフローエラーの自動修正です。
@@ -477,7 +477,7 @@ jobs:
               body,
               labels: ['auto-fix', 'workflow'],
             });
-            
+
             core.setOutput('pr_number', pr.data.number);
             core.setOutput('pr_url', pr.data.html_url);
 
@@ -487,7 +487,7 @@ jobs:
           # Re-run the failed step to verify fix
           ERROR_TYPE="${{ needs.analyze-error.outputs.error_type }}"
           VERIFY_SUCCESS=false
-          
+
           case "$ERROR_TYPE" in
             format)
               # Verify format
@@ -541,7 +541,7 @@ jobs:
               VERIFY_SUCCESS=true
               ;;
           esac
-          
+
           echo "verify_success=$VERIFY_SUCCESS" >> $GITHUB_OUTPUT
           if [ "$VERIFY_SUCCESS" = "true" ]; then
             echo "✅ Fix verification successful"
@@ -562,7 +562,7 @@ jobs:
               head: `${context.repo.owner}:${branchName}`,
               state: 'open',
             });
-            
+
             if (prs.data.length > 0) {
               core.setOutput('pr_number', prs.data[0].number.toString());
               core.setOutput('pr_url', prs.data[0].html_url);
@@ -576,19 +576,19 @@ jobs:
         with:
           script: |
             const prNumber = parseInt(process.env.PR_NUMBER || '${{ steps.pr-info.outputs.pr_number }}');
-            
+
             if (!prNumber || isNaN(prNumber)) {
               core.setFailed('PR number not found');
               return;
             }
-            
+
             // PRのステータスを確認（CIチェックは待たない）
             const pr = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber,
             });
-            
+
             // マージ可能か確認（CIチェックの完了は待たない）
             if (pr.data.mergeable !== false) {
               await github.rest.pulls.merge({
@@ -622,7 +622,7 @@ jobs:
             const workflowRunUrl = '${{ needs.analyze-error.outputs.workflow_run_url }}';
             const errorType = '${{ needs.analyze-error.outputs.error_type }}';
             const prUrl = '${{ steps.pr-info.outputs.pr_url }}';
-            
+
             const issueBody = `自動修正が失敗しました。手動での対応が必要です。
 
             **元のワークフロー**: ${workflowName}
@@ -664,7 +664,7 @@ jobs:
             const workflowName = '${{ needs.analyze-error.outputs.workflow_name }}';
             const workflowRunUrl = '${{ needs.analyze-error.outputs.workflow_run_url }}';
             const errorMessage = '${{ needs.analyze-error.outputs.error_message }}';
-            
+
             const manualIssueBody = `ワークフローが失敗しましたが、自動修正ができないエラーのため手動での対応が必要です。
 
             **ワークフロー**: ${workflowName}
@@ -694,4 +694,3 @@ jobs:
               body: manualIssueBody,
               labels: ['workflow', 'bug', 'manual-fix'],
             });
-

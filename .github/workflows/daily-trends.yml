@@ -132,16 +132,16 @@ jobs:
           fi
           cd backend
           echo "⬆️ Running migrations..."
-          
+
           # マイグレーション実行を変数に保存
           MIGRATION_OUTPUT=$(python3 -m alembic upgrade head 2>&1)
           MIGRATION_EXIT_CODE=$?
-          
+
           # エラー出力を必ず表示
           echo "$MIGRATION_OUTPUT"
-          
+
           set -e  # エラーで停止を有効化
-          
+
           # エラータイプに応じた処理
           if [ $MIGRATION_EXIT_CODE -ne 0 ]; then
             if echo "$MIGRATION_OUTPUT" | grep -q "Multiple head revisions"; then
