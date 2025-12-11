@@ -125,43 +125,64 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          set -e
+          set +e  # 一時的にエラーで停止しない
           if [ -z "$DATABASE_URL" ]; then
             echo "⚠️ DATABASE_URL not set, skipping migrations"
             exit 0
           fi
           cd backend
           echo "⬆️ Running migrations..."
-          python3 -m alembic history || echo "⚠️ Could not get migration history"
-          echo ""
-          echo "📊 Current revision:"
-          python3 -m alembic current || echo "⚠️ No current revision"
-          echo ""
-          echo "🔍 Checking if migration 4741adeef488 needs to be applied..."
-          python3 scripts/check_migration_4741.py || NEEDS_4741=1
-          NEEDS_4741=${NEEDS_4741:-0}
-          if [ $NEEDS_4741 -ne 0 ]; then
-            echo "Fixing migration chain..."
-            python3 scripts/fix_migration_chain.py
-          fi
-
-          # Try to upgrade, with fallback for multiple heads
-          echo "🚀 Applying migrations..."
-          if python3 -m alembic upgrade head 2>&1 | grep -q "Multiple head revisions"; then
-            echo "⚠️ Multiple head revisions detected, attempting to fix..."
-            python3 scripts/fix_multiple_heads.py || {
-              echo "❌ Could not automatically fix multiple heads"
-              echo "💡 Trying to use 'heads' instead of 'head'..."
-              python3 -m alembic upgrade heads || {
-                echo "❌ Migration failed"
+          
+          # マイグレーション実行を変数に保存
+          MIGRATION_OUTPUT=$(python3 -m alembic upgrade head 2>&1)
+          MIGRATION_EXIT_CODE=$?
+          
+          # エラー出力を必ず表示
+          echo "$MIGRATION_OUTPUT"
+          
+          set -e  # エラーで停止を有効化
+          
+          # エラータイプに応じた処理
+          if [ $MIGRATION_EXIT_CODE -ne 0 ]; then
+            if echo "$MIGRATION_OUTPUT" | grep -q "Multiple head revisions"; then
+              echo "::error::Multiple head revisions detected"
+              echo "ERROR_TYPE=migration_multiple_heads" >> $GITHUB_ENV
+              echo "ERROR_MESSAGE<<EOF" >> $GITHUB_ENV
+              echo "$MIGRATION_OUTPUT" >> $GITHUB_ENV
+              echo "EOF" >> $GITHUB_ENV
+              echo "⚠️ Attempting to fix multiple heads..."
+              python3 scripts/fix_multiple_heads.py || {
+                echo "::error::Could not automatically fix multiple heads"
                 exit 1
               }
-            }
-            # Retry after fix
-            python3 -m alembic upgrade head || {
-              echo "❌ Migration still failed after fix attempt"
+              # Retry after fix
+              python3 -m alembic upgrade head || {
+                echo "::error::Migration still failed after fix attempt"
+                exit 1
+              }
+            elif echo "$MIGRATION_OUTPUT" | grep -qE "(Can't locate revision|revision.*not found|target revision.*doesn't exist)"; then
+              echo "::error::Missing revision detected"
+              echo "ERROR_TYPE=migration_missing_revision" >> $GITHUB_ENV
+              echo "ERROR_MESSAGE<<EOF" >> $GITHUB_ENV
+              echo "$MIGRATION_OUTPUT" >> $GITHUB_ENV
+              echo "EOF" >> $GITHUB_ENV
+              echo "⚠️ Attempting to fix migration chain..."
+              python3 scripts/fix_migration_chain.py || {
+                echo "::error::Could not fix migration chain"
+                exit 1
+              }
+              python3 -m alembic upgrade head || {
+                echo "::error::Migration failed after chain fix"
+                exit 1
+              }
+            else
+              echo "::error::Migration failed with unknown error"
+              echo "ERROR_TYPE=migration" >> $GITHUB_ENV
+              echo "ERROR_MESSAGE<<EOF" >> $GITHUB_ENV
+              echo "$MIGRATION_OUTPUT" >> $GITHUB_ENV
+              echo "EOF" >> $GITHUB_ENV
               exit 1
-            }
+            fi
           fi
 
           echo "✅ Migrations completed"
