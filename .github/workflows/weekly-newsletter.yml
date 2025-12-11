@@ -89,7 +89,20 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          python3 scripts/generate_newsletter.py
+          set +e  # 一時的にエラーで停止しない
+          SCRIPT_OUTPUT=$(python3 scripts/generate_newsletter.py 2>&1)
+          SCRIPT_EXIT_CODE=$?
+          echo "$SCRIPT_OUTPUT"
+
+          set -e  # エラーで停止を有効化
+
+          if [ $SCRIPT_EXIT_CODE -ne 0 ]; then
+            echo "::error::Newsletter generation failed"
+            echo "ERROR_MESSAGE<<EOF" >> $GITHUB_ENV
+            echo "$SCRIPT_OUTPUT" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+            exit 1
+          fi
 
       - name: Notify on failure
         if: failure()
