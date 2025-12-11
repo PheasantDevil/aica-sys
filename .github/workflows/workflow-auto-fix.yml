@@ -81,7 +81,6 @@ jobs:
         with:
           script: |
             const runId = process.env.RUN_ID;
-            // Try to get error from failed job logs
             const jobs = await github.rest.actions.listJobsForWorkflowRun({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -89,48 +88,96 @@ jobs:
             });
             
             let errorLog = '';
+            let errorStep = '';
+            
             for (const job of jobs.data.jobs) {
               if (job.conclusion === 'failure') {
-                // Get job logs URL
-                errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}`;
+                // 失敗したステップの詳細を取得
+                try {
+                  const steps = await github.rest.actions.listJobsForWorkflowRunAttempt({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    run_id: runId,
+                    attempt_number: job.run_attempt || 1,
+                  });
+                  
+                  // 失敗したステップを特定
+                  const failedStep = steps.data.steps.find(s => s.conclusion === 'failure');
+                  
+                  if (failedStep) {
+                    errorStep = failedStep.name;
+                    
+                    // ログを取得（GitHub APIの制限により、ログの一部のみ取得可能）
+                    try {
+                      const logResponse = await github.rest.actions.downloadJobLogsForWorkflowRun({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        job_id: job.id,
+                      });
+                      
+                      // ログの最後の2000行を取得（エラーが含まれる可能性が高い）
+                      const logLines = logResponse.data.split('\n');
+                      const recentLines = logLines.slice(-2000).join('\n');
+                      errorLog = recentLines;
+                    } catch (logError) {
+                      // ログ取得に失敗した場合は、ステップ名とURLを使用
+                      errorLog = `Step: ${failedStep.name}\nJob URL: ${job.html_url}\nNote: Could not fetch full logs: ${logError.message}`;
+                    }
+                  } else {
+                    errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}`;
+                  }
+                } catch (e) {
+                  // ステップ情報取得に失敗した場合
+                  errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}\nNote: Could not fetch step details: ${e.message}`;
+                }
                 break;
               }
             }
             
             core.setOutput('error_log', errorLog);
+            core.setOutput('error_step', errorStep);
 
       - name: Determine error type
         id: error-type
         run: |
           ERROR_MSG="${{ steps.workflow-run.outputs.error_message }}"
           ERROR_LOG="${{ steps.logs.outputs.error_log }}"
-          ERROR_MSG_LOWER=$(echo "$ERROR_MSG $ERROR_LOG" | tr '[:upper:]' '[:lower:]')
+          ERROR_STEP="${{ steps.logs.outputs.error_step }}"
+          
+          # すべての情報を結合して分析
+          ALL_ERROR_INFO=$(echo "$ERROR_MSG $ERROR_LOG $ERROR_STEP" | tr '[:upper:]' '[:lower:]')
           
           ERROR_TYPE="unknown"
           
-          # Format errors
-          if echo "$ERROR_MSG_LOWER" | grep -qE "(black|isort|prettier|format|would reformat)"; then
+          # 詳細なパターンマッチング
+          if echo "$ALL_ERROR_INFO" | grep -qE "(black|isort|prettier|format|would reformat)"; then
             ERROR_TYPE="format"
-          # Migration errors
-          elif echo "$ERROR_MSG_LOWER" | grep -qE "(alembic|migration|revision|head|multiple head)"; then
+          elif echo "$ALL_ERROR_INFO" | grep -qE "(multiple head revisions|multiple head)"; then
+            ERROR_TYPE="migration_multiple_heads"
+          elif echo "$ALL_ERROR_INFO" | grep -qE "(can't locate revision|revision.*not found|target revision.*doesn't exist)"; then
+            ERROR_TYPE="migration_missing_revision"
+          elif echo "$ALL_ERROR_INFO" | grep -qE "(alembic|migration|revision|head)"; then
             ERROR_TYPE="migration"
-          # Dependency errors
-          elif echo "$ERROR_MSG_LOWER" | grep -qE "(pip install|npm install|requirements|package\.json|dependency|module not found|cannot find module)"; then
+          elif echo "$ALL_ERROR_INFO" | grep -qE "(pip install|npm install|requirements|package\.json|dependency|module not found|cannot find module|package.*not found)"; then
             ERROR_TYPE="dependency"
-          # Linter errors (auto-fixable)
-          elif echo "$ERROR_MSG_LOWER" | grep -qE "(flake8|eslint.*--fix|lint.*fixable)"; then
+          elif echo "$ALL_ERROR_INFO" | grep -qE "(flake8|eslint.*--fix|lint.*fixable|pylint)"; then
             ERROR_TYPE="lint"
           fi
           
           echo "error_type=$ERROR_TYPE" >> $GITHUB_OUTPUT
           echo "Detected error type: $ERROR_TYPE"
+          
+          # デバッグ情報を出力
+          echo "Error message: $ERROR_MSG"
+          echo "Error step: $ERROR_STEP"
+          echo "Error log preview: ${ERROR_LOG:0:500}..."
 
       - name: Check if auto-fixable
         id: auto-fixable
         run: |
           ERROR_TYPE="${{ steps.error-type.outputs.error_type }}"
           
-          if [ "$ERROR_TYPE" = "format" ] || [ "$ERROR_TYPE" = "migration" ] || [ "$ERROR_TYPE" = "dependency" ] || [ "$ERROR_TYPE" = "lint" ]; then
+          if [ "$ERROR_TYPE" = "format" ] || [ "$ERROR_TYPE" = "migration" ] || [ "$ERROR_TYPE" = "migration_multiple_heads" ] || [ "$ERROR_TYPE" = "migration_missing_revision" ] || [ "$ERROR_TYPE" = "dependency" ] || [ "$ERROR_TYPE" = "lint" ]; then
             echo "auto_fixable=true" >> $GITHUB_OUTPUT
             echo "✅ Error is auto-fixable"
           else
@@ -158,11 +205,12 @@ jobs:
       issues: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout latest main
         uses: actions/checkout@v4
         with:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -174,14 +222,26 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Create fix branch
+      - name: Create fix branch from latest main
         id: branch
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 最新のmainを取得
+          git fetch origin main
+          git checkout main
+          git pull origin main
+          
+          # 作業ブランチを作成
           TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-          BRANCH_NAME="workflow-hotfix-$TIMESTAMP"
+          WORKFLOW_NAME="${{ needs.analyze-error.outputs.workflow_name }}"
+          WORKFLOW_NAME_CLEAN=$(echo "$WORKFLOW_NAME" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+          BRANCH_NAME="workflow-hotfix-${WORKFLOW_NAME_CLEAN}-${TIMESTAMP}"
+          
           git checkout -b "$BRANCH_NAME"
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-          echo "Created branch: $BRANCH_NAME"
+          echo "Created branch: $BRANCH_NAME from latest main"
 
       - name: Fix format errors
         if: needs.analyze-error.outputs.error_type == 'format'
@@ -205,64 +265,106 @@ jobs:
             cd ..
           fi
 
-      - name: Fix migration errors
-        if: needs.analyze-error.outputs.error_type == 'migration'
+      - name: Apply fixes based on error type
         env:
+          ERROR_TYPE: ${{ needs.analyze-error.outputs.error_type }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          if [ -z "$DATABASE_URL" ]; then
-            echo "⚠️ DATABASE_URL not set, skipping migration fixes"
-            exit 0
-          fi
-          cd backend
-          pip install -r requirements.txt --quiet
-          python3 scripts/detect_migration_issues.py || true
-          python3 scripts/auto_fix_migrations.py || true
-
-      - name: Fix dependency errors
-        if: needs.analyze-error.outputs.error_type == 'dependency'
-        run: |
-          # Backend dependencies
-          if [ -d "backend" ] && [ -f "backend/requirements.txt" ]; then
-            cd backend
-            pip install --upgrade pip
-            pip install -r requirements.txt
-            pip freeze > requirements.txt.new
-            # Only update if there are changes
-            if ! diff -q requirements.txt requirements.txt.new > /dev/null; then
-              mv requirements.txt.new requirements.txt
-            else
-              rm requirements.txt.new
-            fi
-            cd ..
-          fi
+          ERROR_TYPE="${{ needs.analyze-error.outputs.error_type }}"
           
-          # Frontend dependencies
-          if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
-            cd frontend
-            npm install --package-lock-only
-            cd ..
-          fi
-
-      - name: Fix lint errors (auto-fixable)
-        if: needs.analyze-error.outputs.error_type == 'lint'
-        run: |
-          # Backend lint fixes
-          if [ -d "backend" ]; then
-            cd backend
-            pip install flake8 autopep8 --quiet
-            # Only fix auto-fixable errors
-            autopep8 --in-place --aggressive --aggressive --recursive . || true
-            cd ..
-          fi
-          
-          # Frontend lint fixes
-          if [ -d "frontend" ]; then
-            cd frontend
-            npm ci --quiet || npm install --quiet
-            npm run lint -- --fix || true
-            cd ..
-          fi
+          case "$ERROR_TYPE" in
+            format)
+              echo "🔧 Fixing format errors..."
+              # Backend format fixes
+              if [ -d "backend" ]; then
+                cd backend
+                pip install black isort --quiet
+                black . || true
+                isort --profile black . || true
+                cd ..
+              fi
+              # Frontend format fixes
+              if [ -d "frontend" ]; then
+                cd frontend
+                npm ci --quiet || npm install --quiet
+                npx prettier --write "src/**/*.{ts,tsx,js,jsx,json,css,md}" || true
+                cd ..
+              fi
+              ;;
+            migration_multiple_heads)
+              echo "🔧 Fixing multiple heads migration error..."
+              if [ -z "$DATABASE_URL" ]; then
+                echo "⚠️ DATABASE_URL not set, skipping migration fixes"
+                exit 0
+              fi
+              cd backend
+              pip install -r requirements.txt --quiet
+              python3 scripts/fix_multiple_heads.py || true
+              cd ..
+              ;;
+            migration_missing_revision)
+              echo "🔧 Fixing missing revision migration error..."
+              if [ -z "$DATABASE_URL" ]; then
+                echo "⚠️ DATABASE_URL not set, skipping migration fixes"
+                exit 0
+              fi
+              cd backend
+              pip install -r requirements.txt --quiet
+              python3 scripts/fix_migration_chain.py || true
+              cd ..
+              ;;
+            migration)
+              echo "🔧 Fixing general migration errors..."
+              if [ -z "$DATABASE_URL" ]; then
+                echo "⚠️ DATABASE_URL not set, skipping migration fixes"
+                exit 0
+              fi
+              cd backend
+              pip install -r requirements.txt --quiet
+              python3 scripts/detect_migration_issues.py || true
+              python3 scripts/auto_fix_migrations.py || true
+              cd ..
+              ;;
+            dependency)
+              echo "🔧 Fixing dependency errors..."
+              # Backend dependencies
+              if [ -d "backend" ] && [ -f "backend/requirements.txt" ]; then
+                cd backend
+                pip install --upgrade pip
+                pip install -r requirements.txt
+                pip freeze > requirements.txt.new
+                if ! diff -q requirements.txt requirements.txt.new > /dev/null; then
+                  mv requirements.txt.new requirements.txt
+                else
+                  rm requirements.txt.new
+                fi
+                cd ..
+              fi
+              # Frontend dependencies
+              if [ -d "frontend" ] && [ -f "frontend/package.json" ]; then
+                cd frontend
+                npm install --package-lock-only
+                cd ..
+              fi
+              ;;
+            lint)
+              echo "🔧 Fixing lint errors..."
+              # Backend lint fixes
+              if [ -d "backend" ]; then
+                cd backend
+                pip install flake8 autopep8 --quiet
+                autopep8 --in-place --aggressive --aggressive --recursive . || true
+                cd ..
+              fi
+              # Frontend lint fixes
+              if [ -d "frontend" ]; then
+                cd frontend
+                npm ci --quiet || npm install --quiet
+                npm run lint -- --fix || true
+                cd ..
+              fi
+              ;;
+          esac
 
       - name: Detect changed files
         id: changed-files
@@ -351,7 +453,7 @@ jobs:
             ### 修正内容
 
             - ${errorType === 'format' ? 'フォーマットエラーを修正（black, isort, prettier）' : ''}
-            - ${errorType === 'migration' ? 'マイグレーションエラーを修正' : ''}
+            - ${errorType.startsWith('migration') ? 'マイグレーションエラーを修正' : ''}
             - ${errorType === 'dependency' ? '依存関係エラーを修正' : ''}
             - ${errorType === 'lint' ? 'リンターエラーを修正（自動修正可能なもののみ）' : ''}
 
@@ -406,7 +508,7 @@ jobs:
                 cd ..
               fi
               ;;
-            migration)
+            migration*)
               # Verify migration
               if [ -n "$DATABASE_URL" ]; then
                 cd backend
@@ -467,25 +569,49 @@ jobs:
             }
 
       - name: Merge PR if verification successful
-        if: steps.verify.outputs.verify_success == 'true' && env.no_changes == 'false' && steps.pr-info.outputs.pr_number != ''
+        if: steps.verify.outputs.verify_success == 'true' && env.no_changes == 'false'
         uses: actions/github-script@v7
+        env:
+          PR_NUMBER: ${{ steps.create-pr.outputs.pr_number }}
         with:
           script: |
-            const prNumber = parseInt('${{ steps.pr-info.outputs.pr_number }}');
-            await github.rest.pulls.merge({
+            const prNumber = parseInt(process.env.PR_NUMBER || '${{ steps.pr-info.outputs.pr_number }}');
+            
+            if (!prNumber || isNaN(prNumber)) {
+              core.setFailed('PR number not found');
+              return;
+            }
+            
+            // PRのステータスを確認（CIチェックは待たない）
+            const pr = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber,
-              merge_method: 'merge',
             });
             
-            // Add comment
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: '✅ 修正が検証され、自動的にマージされました。',
-            });
+            // マージ可能か確認（CIチェックの完了は待たない）
+            if (pr.data.mergeable !== false) {
+              await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                merge_method: 'squash',
+                commit_title: `fix(workflow): Auto-fix ${{ needs.analyze-error.outputs.error_type }} error`,
+              });
+              
+              // コメントを追加
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body: '✅ 修正が検証され、自動的にマージされました。',
+              });
+              
+              core.setOutput('merged', 'true');
+            } else {
+              core.setOutput('merged', 'false');
+              console.log('PR is not mergeable. State:', pr.data.mergeable_state);
+            }
 
       - name: Create issue if verification failed
         if: steps.verify.outputs.verify_success == 'false' && env.no_changes == 'false'
