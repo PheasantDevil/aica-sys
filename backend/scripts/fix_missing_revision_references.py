@@ -75,7 +75,9 @@ def fix_missing_revision_reference(file_path, missing_revision, replacement_revi
         )
 
         file_path.write_text(content, encoding="utf-8")
-        print(f"✅ Fixed {file_path.name}: {missing_revision} -> {replacement_revision}")
+        print(
+            f"✅ Fixed {file_path.name}: {missing_revision} -> {replacement_revision}"
+        )
         return True
 
     except Exception as e:
@@ -126,4 +128,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

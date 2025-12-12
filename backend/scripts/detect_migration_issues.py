@@ -88,9 +88,7 @@ def detect_missing_revision_references():
         try:
             content = file_path.read_text(encoding="utf-8")
             # Extract down_revision
-            match = re.search(
-                r'down_revision\s*[:=]\s*["\']([a-f0-9]+)["\']', content
-            )
+            match = re.search(r'down_revision\s*[:=]\s*["\']([a-f0-9]+)["\']', content)
             if match:
                 down_revision = match.group(1)
                 if down_revision not in existing_revisions and down_revision != "None":

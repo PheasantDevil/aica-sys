@@ -59,7 +59,9 @@ def auto_fix_all():
 
         missing_refs = detect_missing_revision_references()
         if missing_refs:
-            print(f"❌ Found {len(missing_refs)} file(s) with missing revision references")
+            print(
+                f"❌ Found {len(missing_refs)} file(s) with missing revision references"
+            )
             available_revisions = get_available_revisions()
             if available_revisions:
                 backend_path = Path(__file__).parent.parent
