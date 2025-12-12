@@ -48,13 +48,14 @@ def auto_fix_all():
     # Step 1: Check for missing revision references
     print("\n[1/4] Checking for missing revision references...")
     try:
+        from pathlib import Path
+
         from detect_migration_issues import detect_missing_revision_references
         from fix_missing_revision_references import (
-            fix_missing_revision_reference,
             find_suitable_revision,
+            fix_missing_revision_reference,
             get_available_revisions,
         )
-        from pathlib import Path
 
         missing_refs = detect_missing_revision_references()
         if missing_refs:

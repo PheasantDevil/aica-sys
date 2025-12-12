@@ -200,12 +200,16 @@ jobs:
         run: |
           ERROR_TYPE="${{ steps.error-type.outputs.error_type }}"
 
+          echo "🔍 Checking if error is auto-fixable..."
+          echo "Error type: $ERROR_TYPE"
+
           if [ "$ERROR_TYPE" = "format" ] || [ "$ERROR_TYPE" = "migration" ] || [ "$ERROR_TYPE" = "migration_multiple_heads" ] || [ "$ERROR_TYPE" = "migration_missing_revision" ] || [ "$ERROR_TYPE" = "dependency" ] || [ "$ERROR_TYPE" = "lint" ]; then
             echo "auto_fixable=true" >> $GITHUB_OUTPUT
             echo "✅ Error is auto-fixable"
           else
             echo "auto_fixable=false" >> $GITHUB_OUTPUT
             echo "❌ Error requires manual intervention"
+            echo "⚠️ Unknown error type: $ERROR_TYPE"
           fi
 
       - name: Set outputs
@@ -220,7 +224,7 @@ jobs:
   auto-fix:
     name: Auto Fix Error
     needs: analyze-error
-    if: needs.analyze-error.outputs.auto_fixable == 'true'
+    if: needs.analyze-error.outputs.auto_fixable == 'true' && needs.analyze-error.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: write
