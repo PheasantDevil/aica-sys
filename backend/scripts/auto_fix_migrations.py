@@ -126,9 +126,16 @@ def auto_fix_all():
     print("\n[4/4] Verifying fixes...")
     duplicates_after = detect_duplicate_revisions()
     heads_after = get_heads()
+    missing_refs_after = detect_missing_revision_references()
 
     if duplicates_after:
         print(f"❌ Still have {len(duplicates_after)} duplicate revision ID(s)")
+        return False
+
+    if missing_refs_after:
+        print(
+            f"❌ Still have {len(missing_refs_after)} file(s) with missing revision references"
+        )
         return False
 
     if len(heads_after) > 1:
