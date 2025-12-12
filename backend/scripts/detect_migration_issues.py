@@ -88,6 +88,8 @@ def detect_missing_revision_references():
             print(f"⚠️ Error reading {file_path.name}: {e}")
         except Exception as e:
             print(f"⚠️ Unexpected error reading {file_path.name}: {e}")
+            # Re-raise to avoid hiding logic errors
+            raise
 
     return [
         (fname, down_rev)

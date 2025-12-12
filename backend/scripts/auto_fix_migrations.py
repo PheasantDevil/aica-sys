@@ -62,7 +62,11 @@ def auto_fix_all():
                 f"❌ Found {len(missing_refs)} file(s) with missing revision references"
             )
             available_revisions = get_available_revisions()
-            if available_revisions:
+            if not available_revisions:
+                print(
+                    "⚠️ No available revisions found; cannot auto-fix missing references"
+                )
+            else:
                 versions_path = backend_path / "alembic" / "versions"
                 for file_name, missing_revision in missing_refs:
                     file_path = versions_path / file_name
@@ -76,11 +80,17 @@ def auto_fix_all():
                             issues_fixed = True
         else:
             print("✅ No missing revision references")
-    except Exception as e:
+    except (OSError, ImportError) as e:
         print(f"⚠️ Could not process missing revision references: {e}")
         import traceback
 
         traceback.print_exc()
+    except Exception as e:
+        print(f"❌ Unexpected error processing missing revision references: {e}")
+        import traceback
+
+        traceback.print_exc()
+        raise
 
     # Step 2: Check for duplicate revisions
     print("\n[2/4] Checking for duplicate revision IDs...")
