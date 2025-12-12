@@ -154,7 +154,7 @@ jobs:
             ERROR_TYPE="format"
           elif echo "$ALL_ERROR_INFO" | grep -qE "(multiple head revisions|multiple head)"; then
             ERROR_TYPE="migration_multiple_heads"
-          elif echo "$ALL_ERROR_INFO" | grep -qE "(can't locate revision|revision.*not found|target revision.*doesn't exist)"; then
+          elif echo "$ALL_ERROR_INFO" | grep -qE "(can't locate revision|revision.*not found|target revision.*doesn't exist|is not present|keyerror.*revision|referenced from.*is not present)"; then
             ERROR_TYPE="migration_missing_revision"
           elif echo "$ALL_ERROR_INFO" | grep -qE "(alembic|migration|revision|head)"; then
             ERROR_TYPE="migration"
