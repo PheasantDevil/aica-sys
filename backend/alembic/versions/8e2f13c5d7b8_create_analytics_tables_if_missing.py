@@ -1,7 +1,7 @@
 """create analytics tables if missing
 
 Revision ID: 8e2f13c5d7b8
-Revises: 7f1ab3c4d5e6
+Revises: 4741adeef488
 Create Date: 2025-11-25 12:30:00.000000
 
 """
@@ -14,7 +14,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = "8e2f13c5d7b8"
-down_revision: Union[str, Sequence[str], None] = "7f1ab3c4d5e6"
+down_revision: Union[str, Sequence[str], None] = "4741adeef488"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
