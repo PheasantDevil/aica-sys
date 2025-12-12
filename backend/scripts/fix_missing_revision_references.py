@@ -69,24 +69,26 @@ def find_suitable_revision(missing_revision, available_revisions):
 def fix_missing_revision_reference(file_path, missing_revision, replacement_revision):
     """Fix a migration file that references a missing revision."""
     try:
+        missing_esc = re.escape(missing_revision)
         content = file_path.read_text(encoding="utf-8")
         original_content = content
 
-        # Replace down_revision
+        # Replace down_revision (with type annotation)
         content = re.sub(
-            rf'down_revision\s*:\s*Union\[str,\s*Sequence\[str\],\s*None\]\s*=\s*["\']{missing_revision}["\']',
+            rf'down_revision\s*:\s*Union\[str,\s*Sequence\[str\],\s*None\]\s*=\s*["\']{missing_esc}["\']',
             f'down_revision: Union[str, Sequence[str], None] = "{replacement_revision}"',
             content,
         )
+        # Replace down_revision (simple assignment)
         content = re.sub(
-            rf'down_revision\s*=\s*["\']{missing_revision}["\']',
+            rf'down_revision\s*=\s*["\']{missing_esc}["\']',
             f'down_revision = "{replacement_revision}"',
             content,
         )
 
         # Also update in docstring if present
         content = re.sub(
-            rf"Revises:\s*{missing_revision}",
+            rf"Revises:\s*{missing_esc}",
             f"Revises: {replacement_revision}",
             content,
         )
@@ -103,6 +105,9 @@ def fix_missing_revision_reference(file_path, missing_revision, replacement_revi
 
     except (OSError, UnicodeDecodeError) as e:
         print(f"❌ I/O error fixing {file_path.name}: {e}")
+        return False
+    except re.error as e:
+        print(f"❌ Regex error fixing {file_path.name}: {e}")
         return False
     except Exception as e:
         print(f"❌ Unexpected error fixing {file_path.name}: {e}")
