@@ -64,39 +64,36 @@ def detect_missing_revision_references():
         print("❌ Migration versions directory not found")
         return []
 
-    # Get all existing revision IDs
     existing_revisions = set()
+    down_revision_map = {}  # file_name -> down_revision
+
     for file_path in versions_path.glob("*.py"):
         if file_path.name == "__init__.py":
             continue
 
         try:
             content = file_path.read_text(encoding="utf-8")
+            # Extract revision ID
             match = re.search(r'revision\s*[:=]\s*["\']([a-f0-9]+)["\']', content)
             if match:
-                revision_id = match.group(1)
-                existing_revisions.add(revision_id)
-        except Exception as e:
-            print(f"⚠️ Error reading {file_path.name}: {e}")
+                existing_revisions.add(match.group(1))
 
-    # Check for missing revision references
-    missing_refs = []
-    for file_path in versions_path.glob("*.py"):
-        if file_path.name == "__init__.py":
-            continue
-
-        try:
-            content = file_path.read_text(encoding="utf-8")
             # Extract down_revision
-            match = re.search(r'down_revision\s*[:=]\s*["\']([a-f0-9]+)["\']', content)
-            if match:
-                down_revision = match.group(1)
-                if down_revision not in existing_revisions and down_revision != "None":
-                    missing_refs.append((file_path.name, down_revision))
-        except Exception as e:
+            down_match = re.search(
+                r'down_revision\s*[:=]\s*["\']([a-f0-9]+)["\']', content
+            )
+            if down_match:
+                down_revision_map[file_path.name] = down_match.group(1)
+        except (OSError, UnicodeDecodeError) as e:
             print(f"⚠️ Error reading {file_path.name}: {e}")
+        except Exception as e:
+            print(f"⚠️ Unexpected error reading {file_path.name}: {e}")
 
-    return missing_refs
+    return [
+        (fname, down_rev)
+        for fname, down_rev in down_revision_map.items()
+        if down_rev not in existing_revisions
+    ]
 
 
 def detect_multiple_heads():

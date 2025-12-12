@@ -27,14 +27,29 @@ def get_available_revisions():
             match = re.search(r'revision\s*[:=]\s*["\']([a-f0-9]+)["\']', content)
             if match:
                 revisions.add(match.group(1))
-        except Exception:
-            pass
+        except (OSError, UnicodeDecodeError) as e:
+            print(f"⚠️ Error reading {file_path.name}: {e}")
+        except Exception as e:
+            print(f"⚠️ Unexpected error reading {file_path.name}: {e}")
 
     return revisions
 
 
 def find_suitable_revision(missing_revision, available_revisions):
-    """Find a suitable revision to replace the missing one."""
+    """Find a suitable revision to replace the missing one.
+
+    Note: This is a best-effort heuristic. It prioritizes common revision IDs
+    but may not always produce a valid migration chain. For more accurate
+    results, consider analyzing the migration DAG (revision/down_revision
+    relationships).
+
+    Args:
+        missing_revision: The missing revision ID (unused, kept for API compatibility)
+        available_revisions: Set of available revision IDs
+
+    Returns:
+        A suitable revision ID, or None if none found
+    """
     # Common revision IDs that are likely to exist
     common_revisions = ["223a0ac841bb", "4741adeef488", "1cf2ab5a8998"]
 
@@ -44,6 +59,7 @@ def find_suitable_revision(missing_revision, available_revisions):
             return rev
 
     # If no common revision found, return the first available (usually the base)
+    # Note: This is arbitrary and may not produce a valid chain
     if available_revisions:
         return sorted(available_revisions)[0]
 
@@ -54,6 +70,7 @@ def fix_missing_revision_reference(file_path, missing_revision, replacement_revi
     """Fix a migration file that references a missing revision."""
     try:
         content = file_path.read_text(encoding="utf-8")
+        original_content = content
 
         # Replace down_revision
         content = re.sub(
@@ -74,14 +91,21 @@ def fix_missing_revision_reference(file_path, missing_revision, replacement_revi
             content,
         )
 
+        if content == original_content:
+            print(f"⚠️ No changes made to {file_path.name} - pattern may not match")
+            return False
+
         file_path.write_text(content, encoding="utf-8")
         print(
             f"✅ Fixed {file_path.name}: {missing_revision} -> {replacement_revision}"
         )
         return True
 
+    except (OSError, UnicodeDecodeError) as e:
+        print(f"❌ I/O error fixing {file_path.name}: {e}")
+        return False
     except Exception as e:
-        print(f"❌ Error fixing {file_path.name}: {e}")
+        print(f"❌ Unexpected error fixing {file_path.name}: {e}")
         import traceback
 
         traceback.print_exc()
@@ -105,6 +129,7 @@ def main():
         sys.exit(1)
 
     fixed_count = 0
+    failed_count = 0
     backend_path = Path(__file__).parent.parent
     versions_path = backend_path / "alembic" / "versions"
 
@@ -114,15 +139,20 @@ def main():
 
         if not replacement:
             print(f"⚠️ Could not find suitable replacement for {file_name}")
+            failed_count += 1
             continue
 
         if fix_missing_revision_reference(file_path, missing_revision, replacement):
             fixed_count += 1
+        else:
+            failed_count += 1
 
     if fixed_count > 0:
         print(f"\n✅ Fixed {fixed_count} file(s)")
-    else:
-        print("\n❌ Could not fix any files")
+    if failed_count > 0:
+        print(f"\n❌ Failed to fix {failed_count} file(s)")
+
+    if failed_count > 0:
         sys.exit(1)
 
 

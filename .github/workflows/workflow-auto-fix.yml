@@ -27,6 +27,12 @@ jobs:
       actions: read
       issues: write
       pull-requests: write
+    outputs:
+      workflow_name: ${{ steps.outputs.outputs.workflow_name }}
+      workflow_run_id: ${{ steps.outputs.outputs.workflow_run_id }}
+      workflow_run_url: ${{ steps.outputs.outputs.workflow_run_url }}
+      error_type: ${{ steps.outputs.outputs.error_type }}
+      auto_fixable: ${{ steps.outputs.outputs.auto_fixable }}
 
     steps:
       - name: Checkout code

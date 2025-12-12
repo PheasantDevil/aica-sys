@@ -27,14 +27,22 @@ fix_dup_module = import_module_from_file(
 fix_heads_module = import_module_from_file(
     "fix_multiple_heads", scripts_path / "fix_multiple_heads.py"
 )
+fix_refs_module = import_module_from_file(
+    "fix_missing_revision_references",
+    scripts_path / "fix_missing_revision_references.py",
+)
 
 detect_duplicate_revisions = detect_module.detect_duplicate_revisions
 detect_multiple_heads = detect_module.detect_multiple_heads
+detect_missing_revision_references = detect_module.detect_missing_revision_references
 find_duplicate_revisions = fix_dup_module.find_duplicate_revisions
 fix_duplicate_revision = fix_dup_module.fix_duplicate_revision
 get_heads = fix_heads_module.get_heads
 get_current_revision = fix_heads_module.get_current_revision
 create_merge_migration = fix_heads_module.create_merge_migration
+fix_missing_revision_reference = fix_refs_module.fix_missing_revision_reference
+find_suitable_revision = fix_refs_module.find_suitable_revision
+get_available_revisions = fix_refs_module.get_available_revisions
 
 
 def auto_fix_all():
@@ -48,15 +56,6 @@ def auto_fix_all():
     # Step 1: Check for missing revision references
     print("\n[1/4] Checking for missing revision references...")
     try:
-        from pathlib import Path
-
-        from detect_migration_issues import detect_missing_revision_references
-        from fix_missing_revision_references import (
-            find_suitable_revision,
-            fix_missing_revision_reference,
-            get_available_revisions,
-        )
-
         missing_refs = detect_missing_revision_references()
         if missing_refs:
             print(
@@ -64,7 +63,6 @@ def auto_fix_all():
             )
             available_revisions = get_available_revisions()
             if available_revisions:
-                backend_path = Path(__file__).parent.parent
                 versions_path = backend_path / "alembic" / "versions"
                 for file_name, missing_revision in missing_refs:
                     file_path = versions_path / file_name
@@ -78,8 +76,11 @@ def auto_fix_all():
                             issues_fixed = True
         else:
             print("✅ No missing revision references")
-    except ImportError:
-        print("⚠️ Could not import missing revision fix module, skipping")
+    except Exception as e:
+        print(f"⚠️ Could not process missing revision references: {e}")
+        import traceback
+
+        traceback.print_exc()
 
     # Step 2: Check for duplicate revisions
     print("\n[2/4] Checking for duplicate revision IDs...")
