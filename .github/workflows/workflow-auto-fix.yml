@@ -101,34 +101,57 @@ jobs:
                     attempt_number: job.run_attempt || 1,
                   });
                   
+                  // レスポンス構造を確認（複数の可能性に対応）
+                  let stepsData = [];
+                  if (steps.data?.steps) {
+                    stepsData = steps.data.steps;
+                  } else if (steps.data?.jobs?.[0]?.steps) {
+                    stepsData = steps.data.jobs[0].steps;
+                  } else if (Array.isArray(steps.data)) {
+                    stepsData = steps.data;
+                  }
+                  
                   // 失敗したステップを特定
-                  const failedStep = steps.data.steps.find(s => s.conclusion === 'failure');
+                  const failedStep = stepsData.find(s => s.conclusion === 'failure');
                   
                   if (failedStep) {
                     errorStep = failedStep.name;
+                  }
+                  
+                  // ログを取得（フォールバック処理を改善）
+                  try {
+                    const logResponse = await github.rest.actions.downloadJobLogsForWorkflowRun({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      job_id: job.id,
+                    });
                     
-                    // ログを取得（GitHub APIの制限により、ログの一部のみ取得可能）
-                    try {
-                      const logResponse = await github.rest.actions.downloadJobLogsForWorkflowRun({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        job_id: job.id,
-                      });
-                      
-                      // ログの最後の2000行を取得（エラーが含まれる可能性が高い）
-                      const logLines = logResponse.data.split('\n');
-                      const recentLines = logLines.slice(-2000).join('\n');
-                      errorLog = recentLines;
-                    } catch (logError) {
-                      // ログ取得に失敗した場合は、ステップ名とURLを使用
+                    // ログの最後の2000行を取得（エラーが含まれる可能性が高い）
+                    const logLines = logResponse.data.split('\n');
+                    const recentLines = logLines.slice(-2000).join('\n');
+                    errorLog = recentLines;
+                  } catch (logError) {
+                    // ログ取得に失敗した場合は、ステップ名とURLを使用
+                    if (failedStep) {
                       errorLog = `Step: ${failedStep.name}\nJob URL: ${job.html_url}\nNote: Could not fetch full logs: ${logError.message}`;
+                    } else {
+                      errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}\nNote: Could not fetch logs: ${logError.message}`;
                     }
-                  } else {
-                    errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}`;
                   }
                 } catch (e) {
-                  // ステップ情報取得に失敗した場合
-                  errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}\nNote: Could not fetch step details: ${e.message}`;
+                  // ステップ情報取得に失敗した場合、ログダウンロードAPIを直接使用
+                  try {
+                    const logResponse = await github.rest.actions.downloadJobLogsForWorkflowRun({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      job_id: job.id,
+                    });
+                    const logLines = logResponse.data.split('\n');
+                    const recentLines = logLines.slice(-2000).join('\n');
+                    errorLog = recentLines;
+                  } catch (fallbackError) {
+                    errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}\nNote: Could not fetch step details: ${e.message}\nCould not fetch logs: ${fallbackError.message}`;
+                  }
                 }
                 break;
               }
