@@ -45,8 +45,41 @@ def auto_fix_all():
     print("🔍 Migration Auto-Fix Tool")
     print("=" * 60)
 
-    # Step 1: Check for duplicate revisions
-    print("\n[1/3] Checking for duplicate revision IDs...")
+    # Step 1: Check for missing revision references
+    print("\n[1/4] Checking for missing revision references...")
+    try:
+        from detect_migration_issues import detect_missing_revision_references
+        from fix_missing_revision_references import (
+            fix_missing_revision_reference,
+            find_suitable_revision,
+            get_available_revisions,
+        )
+        from pathlib import Path
+
+        missing_refs = detect_missing_revision_references()
+        if missing_refs:
+            print(f"❌ Found {len(missing_refs)} file(s) with missing revision references")
+            available_revisions = get_available_revisions()
+            if available_revisions:
+                backend_path = Path(__file__).parent.parent
+                versions_path = backend_path / "alembic" / "versions"
+                for file_name, missing_revision in missing_refs:
+                    file_path = versions_path / file_name
+                    replacement = find_suitable_revision(
+                        missing_revision, available_revisions
+                    )
+                    if replacement:
+                        if fix_missing_revision_reference(
+                            file_path, missing_revision, replacement
+                        ):
+                            issues_fixed = True
+        else:
+            print("✅ No missing revision references")
+    except ImportError:
+        print("⚠️ Could not import missing revision fix module, skipping")
+
+    # Step 2: Check for duplicate revisions
+    print("\n[2/4] Checking for duplicate revision IDs...")
     duplicates = detect_duplicate_revisions()
 
     if duplicates:
@@ -63,8 +96,8 @@ def auto_fix_all():
     else:
         print("✅ No duplicate revision IDs")
 
-    # Step 2: Check for multiple heads
-    print("\n[2/3] Checking for multiple head revisions...")
+    # Step 3: Check for multiple heads
+    print("\n[3/4] Checking for multiple head revisions...")
     heads = get_heads()
 
     if len(heads) > 1:
@@ -85,8 +118,8 @@ def auto_fix_all():
     else:
         print("✅ Single head revision")
 
-    # Step 3: Verify fixes
-    print("\n[3/3] Verifying fixes...")
+    # Step 4: Verify fixes
+    print("\n[4/4] Verifying fixes...")
     duplicates_after = detect_duplicate_revisions()
     heads_after = get_heads()
 
