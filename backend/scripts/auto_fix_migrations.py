@@ -27,14 +27,22 @@ fix_dup_module = import_module_from_file(
 fix_heads_module = import_module_from_file(
     "fix_multiple_heads", scripts_path / "fix_multiple_heads.py"
 )
+fix_refs_module = import_module_from_file(
+    "fix_missing_revision_references",
+    scripts_path / "fix_missing_revision_references.py",
+)
 
 detect_duplicate_revisions = detect_module.detect_duplicate_revisions
 detect_multiple_heads = detect_module.detect_multiple_heads
+detect_missing_revision_references = detect_module.detect_missing_revision_references
 find_duplicate_revisions = fix_dup_module.find_duplicate_revisions
 fix_duplicate_revision = fix_dup_module.fix_duplicate_revision
 get_heads = fix_heads_module.get_heads
 get_current_revision = fix_heads_module.get_current_revision
 create_merge_migration = fix_heads_module.create_merge_migration
+fix_missing_revision_reference = fix_refs_module.fix_missing_revision_reference
+find_suitable_revision = fix_refs_module.find_suitable_revision
+get_available_revisions = fix_refs_module.get_available_revisions
 
 
 def auto_fix_all():
@@ -45,8 +53,47 @@ def auto_fix_all():
     print("🔍 Migration Auto-Fix Tool")
     print("=" * 60)
 
-    # Step 1: Check for duplicate revisions
-    print("\n[1/3] Checking for duplicate revision IDs...")
+    # Step 1: Check for missing revision references
+    print("\n[1/4] Checking for missing revision references...")
+    try:
+        missing_refs = detect_missing_revision_references()
+        if missing_refs:
+            print(
+                f"❌ Found {len(missing_refs)} file(s) with missing revision references"
+            )
+            available_revisions = get_available_revisions()
+            if not available_revisions:
+                print(
+                    "⚠️ No available revisions found; cannot auto-fix missing references"
+                )
+            else:
+                versions_path = backend_path / "alembic" / "versions"
+                for file_name, missing_revision in missing_refs:
+                    file_path = versions_path / file_name
+                    replacement = find_suitable_revision(
+                        missing_revision, available_revisions
+                    )
+                    if replacement:
+                        if fix_missing_revision_reference(
+                            file_path, missing_revision, replacement
+                        ):
+                            issues_fixed = True
+        else:
+            print("✅ No missing revision references")
+    except (OSError, ImportError) as e:
+        print(f"⚠️ Could not process missing revision references: {e}")
+        import traceback
+
+        traceback.print_exc()
+    except Exception as e:
+        print(f"❌ Unexpected error processing missing revision references: {e}")
+        import traceback
+
+        traceback.print_exc()
+        raise
+
+    # Step 2: Check for duplicate revisions
+    print("\n[2/4] Checking for duplicate revision IDs...")
     duplicates = detect_duplicate_revisions()
 
     if duplicates:
@@ -63,8 +110,8 @@ def auto_fix_all():
     else:
         print("✅ No duplicate revision IDs")
 
-    # Step 2: Check for multiple heads
-    print("\n[2/3] Checking for multiple head revisions...")
+    # Step 3: Check for multiple heads
+    print("\n[3/4] Checking for multiple head revisions...")
     heads = get_heads()
 
     if len(heads) > 1:
@@ -85,13 +132,20 @@ def auto_fix_all():
     else:
         print("✅ Single head revision")
 
-    # Step 3: Verify fixes
-    print("\n[3/3] Verifying fixes...")
+    # Step 4: Verify fixes
+    print("\n[4/4] Verifying fixes...")
     duplicates_after = detect_duplicate_revisions()
     heads_after = get_heads()
+    missing_refs_after = detect_missing_revision_references()
 
     if duplicates_after:
         print(f"❌ Still have {len(duplicates_after)} duplicate revision ID(s)")
+        return False
+
+    if missing_refs_after:
+        print(
+            f"❌ Still have {len(missing_refs_after)} file(s) with missing revision references"
+        )
         return False
 
     if len(heads_after) > 1:

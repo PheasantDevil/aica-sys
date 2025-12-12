@@ -27,6 +27,12 @@ jobs:
       actions: read
       issues: write
       pull-requests: write
+    outputs:
+      workflow_name: ${{ steps.outputs.outputs.workflow_name }}
+      workflow_run_id: ${{ steps.outputs.outputs.workflow_run_id }}
+      workflow_run_url: ${{ steps.outputs.outputs.workflow_run_url }}
+      error_type: ${{ steps.outputs.outputs.error_type }}
+      auto_fixable: ${{ steps.outputs.outputs.auto_fixable }}
 
     steps:
       - name: Checkout code
@@ -101,34 +107,57 @@ jobs:
                     attempt_number: job.run_attempt || 1,
                   });
                   
+                  // レスポンス構造を確認（複数の可能性に対応）
+                  let stepsData = [];
+                  if (steps.data?.steps) {
+                    stepsData = steps.data.steps;
+                  } else if (steps.data?.jobs?.[0]?.steps) {
+                    stepsData = steps.data.jobs[0].steps;
+                  } else if (Array.isArray(steps.data)) {
+                    stepsData = steps.data;
+                  }
+                  
                   // 失敗したステップを特定
-                  const failedStep = steps.data.steps.find(s => s.conclusion === 'failure');
+                  const failedStep = stepsData.find(s => s.conclusion === 'failure');
                   
                   if (failedStep) {
                     errorStep = failedStep.name;
+                  }
+                  
+                  // ログを取得（フォールバック処理を改善）
+                  try {
+                    const logResponse = await github.rest.actions.downloadJobLogsForWorkflowRun({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      job_id: job.id,
+                    });
                     
-                    // ログを取得（GitHub APIの制限により、ログの一部のみ取得可能）
-                    try {
-                      const logResponse = await github.rest.actions.downloadJobLogsForWorkflowRun({
-                        owner: context.repo.owner,
-                        repo: context.repo.repo,
-                        job_id: job.id,
-                      });
-                      
-                      // ログの最後の2000行を取得（エラーが含まれる可能性が高い）
-                      const logLines = logResponse.data.split('\n');
-                      const recentLines = logLines.slice(-2000).join('\n');
-                      errorLog = recentLines;
-                    } catch (logError) {
-                      // ログ取得に失敗した場合は、ステップ名とURLを使用
+                    // ログの最後の2000行を取得（エラーが含まれる可能性が高い）
+                    const logLines = logResponse.data.split('\n');
+                    const recentLines = logLines.slice(-2000).join('\n');
+                    errorLog = recentLines;
+                  } catch (logError) {
+                    // ログ取得に失敗した場合は、ステップ名とURLを使用
+                    if (failedStep) {
                       errorLog = `Step: ${failedStep.name}\nJob URL: ${job.html_url}\nNote: Could not fetch full logs: ${logError.message}`;
+                    } else {
+                      errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}\nNote: Could not fetch logs: ${logError.message}`;
                     }
-                  } else {
-                    errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}`;
                   }
                 } catch (e) {
-                  // ステップ情報取得に失敗した場合
-                  errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}\nNote: Could not fetch step details: ${e.message}`;
+                  // ステップ情報取得に失敗した場合、ログダウンロードAPIを直接使用
+                  try {
+                    const logResponse = await github.rest.actions.downloadJobLogsForWorkflowRun({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      job_id: job.id,
+                    });
+                    const logLines = logResponse.data.split('\n');
+                    const recentLines = logLines.slice(-2000).join('\n');
+                    errorLog = recentLines;
+                  } catch (fallbackError) {
+                    errorLog = `Job: ${job.name} failed. Check logs at: ${job.html_url}\nNote: Could not fetch step details: ${e.message}\nCould not fetch logs: ${fallbackError.message}`;
+                  }
                 }
                 break;
               }
@@ -154,7 +183,7 @@ jobs:
             ERROR_TYPE="format"
           elif echo "$ALL_ERROR_INFO" | grep -qE "(multiple head revisions|multiple head)"; then
             ERROR_TYPE="migration_multiple_heads"
-          elif echo "$ALL_ERROR_INFO" | grep -qE "(can't locate revision|revision.*not found|target revision.*doesn't exist)"; then
+          elif echo "$ALL_ERROR_INFO" | grep -qE "(can't locate revision|revision.*not found|target revision.*doesn't exist|is not present|keyerror.*revision|referenced from.*is not present)"; then
             ERROR_TYPE="migration_missing_revision"
           elif echo "$ALL_ERROR_INFO" | grep -qE "(alembic|migration|revision|head)"; then
             ERROR_TYPE="migration"
@@ -177,12 +206,16 @@ jobs:
         run: |
           ERROR_TYPE="${{ steps.error-type.outputs.error_type }}"
 
+          echo "🔍 Checking if error is auto-fixable..."
+          echo "Error type: $ERROR_TYPE"
+
           if [ "$ERROR_TYPE" = "format" ] || [ "$ERROR_TYPE" = "migration" ] || [ "$ERROR_TYPE" = "migration_multiple_heads" ] || [ "$ERROR_TYPE" = "migration_missing_revision" ] || [ "$ERROR_TYPE" = "dependency" ] || [ "$ERROR_TYPE" = "lint" ]; then
             echo "auto_fixable=true" >> $GITHUB_OUTPUT
             echo "✅ Error is auto-fixable"
           else
             echo "auto_fixable=false" >> $GITHUB_OUTPUT
             echo "❌ Error requires manual intervention"
+            echo "⚠️ Unknown error type: $ERROR_TYPE"
           fi
 
       - name: Set outputs
@@ -197,7 +230,7 @@ jobs:
   auto-fix:
     name: Auto Fix Error
     needs: analyze-error
-    if: needs.analyze-error.outputs.auto_fixable == 'true'
+    if: needs.analyze-error.outputs.auto_fixable == 'true' && needs.analyze-error.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: write

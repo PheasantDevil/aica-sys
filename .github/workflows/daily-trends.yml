@@ -160,7 +160,7 @@ jobs:
                 echo "::error::Migration still failed after fix attempt"
                 exit 1
               }
-            elif echo "$MIGRATION_OUTPUT" | grep -qE "(Can't locate revision|revision.*not found|target revision.*doesn't exist)"; then
+            elif echo "$MIGRATION_OUTPUT" | grep -qE "(Can't locate revision|revision.*not found|target revision.*doesn't exist|is not present|KeyError.*revision|referenced from.*is not present)"; then
               echo "::error::Missing revision detected"
               echo "ERROR_TYPE=migration_missing_revision" >> $GITHUB_ENV
               echo "ERROR_MESSAGE<<EOF" >> $GITHUB_ENV

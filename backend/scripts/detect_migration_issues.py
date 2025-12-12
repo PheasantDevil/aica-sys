@@ -55,6 +55,49 @@ def detect_duplicate_revisions():
     return duplicates
 
 
+def detect_missing_revision_references():
+    """Detect migration files that reference non-existent revisions."""
+    backend_path = Path(__file__).parent.parent
+    versions_path = backend_path / "alembic" / "versions"
+
+    if not versions_path.exists():
+        print("❌ Migration versions directory not found")
+        return []
+
+    existing_revisions = set()
+    down_revision_map = {}  # file_name -> down_revision
+
+    for file_path in versions_path.glob("*.py"):
+        if file_path.name == "__init__.py":
+            continue
+
+        try:
+            content = file_path.read_text(encoding="utf-8")
+            # Extract revision ID
+            match = re.search(r'revision\s*[:=]\s*["\']([a-f0-9]+)["\']', content)
+            if match:
+                existing_revisions.add(match.group(1))
+
+            # Extract down_revision
+            down_match = re.search(
+                r'down_revision\s*[:=]\s*["\']([a-f0-9]+)["\']', content
+            )
+            if down_match:
+                down_revision_map[file_path.name] = down_match.group(1)
+        except (OSError, UnicodeDecodeError) as e:
+            print(f"⚠️ Error reading {file_path.name}: {e}")
+        except Exception as e:
+            print(f"⚠️ Unexpected error reading {file_path.name}: {e}")
+            # Re-raise to avoid hiding logic errors
+            raise
+
+    return [
+        (fname, down_rev)
+        for fname, down_rev in down_revision_map.items()
+        if down_rev not in existing_revisions
+    ]
+
+
 def detect_multiple_heads():
     """Detect multiple head revisions using Alembic."""
     if not ALEMBIC_AVAILABLE:
@@ -92,6 +135,17 @@ def main():
                 print(f"     - {file}")
     else:
         print("✅ No duplicate revision IDs found")
+
+    print("\n🔍 Checking for missing revision references...")
+    missing_refs = detect_missing_revision_references()
+
+    if missing_refs:
+        issues_found = True
+        print("❌ Found migration files referencing non-existent revisions:")
+        for file_name, missing_revision in missing_refs:
+            print(f"   {file_name} references missing revision: {missing_revision}")
+    else:
+        print("✅ No missing revision references found")
 
     print("\n🔍 Checking for multiple head revisions...")
     if not ALEMBIC_AVAILABLE:
