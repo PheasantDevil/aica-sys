@@ -175,6 +175,14 @@ jobs:
                 echo "::error::Migration failed after chain fix"
                 exit 1
               }
+            elif echo "$MIGRATION_OUTPUT" | grep -qE "(duplicatecolumn|duplicate column|column.*already exists|already exist)"; then
+              echo "::error::Duplicate column detected"
+              echo "ERROR_TYPE=migration_duplicate_column" >> $GITHUB_ENV
+              echo "ERROR_MESSAGE<<EOF" >> $GITHUB_ENV
+              echo "$MIGRATION_OUTPUT" >> $GITHUB_ENV
+              echo "EOF" >> $GITHUB_ENV
+              echo "⚠️ Duplicate column error detected - manual intervention may be required"
+              exit 1
             else
               echo "::error::Migration failed with unknown error"
               echo "ERROR_TYPE=migration" >> $GITHUB_ENV
