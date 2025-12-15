@@ -189,6 +189,8 @@ jobs:
             ERROR_TYPE="migration_multiple_heads"
           elif echo "$ALL_ERROR_INFO" | grep -qE "(can't locate revision|revision.*not found|target revision.*doesn't exist|is not present|keyerror.*revision|referenced from.*is not present)"; then
             ERROR_TYPE="migration_missing_revision"
+          elif echo "$ALL_ERROR_INFO" | grep -qE "(duplicatecolumn|duplicate column|column.*already exists|already exist)"; then
+            ERROR_TYPE="migration_duplicate_column"
           elif echo "$ALL_ERROR_INFO" | grep -qE "(alembic|migration|revision|head)"; then
             ERROR_TYPE="migration"
           elif echo "$ALL_ERROR_INFO" | grep -qE "(pip install|npm install|requirements|package\.json|dependency|module not found|cannot find module|package.*not found)"; then
@@ -349,6 +351,15 @@ jobs:
               pip install -r requirements.txt --quiet
               python3 scripts/fix_migration_chain.py || true
               cd ..
+              ;;
+            migration_duplicate_column)
+              echo "🔧 Duplicate column error detected..."
+              echo "⚠️ This error typically requires manual intervention:"
+              echo "   1. Check which migration is trying to add an existing column"
+              echo "   2. Either modify the migration to check if column exists before adding"
+              echo "   3. Or mark the migration as already applied if the column was added manually"
+              echo "⚠️ Auto-fix is not available for duplicate column errors"
+              exit 1
               ;;
             migration)
               echo "🔧 Fixing general migration errors..."
