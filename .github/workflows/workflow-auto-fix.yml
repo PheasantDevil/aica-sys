@@ -173,8 +173,12 @@ jobs:
           ERROR_LOG="${{ steps.logs.outputs.error_log }}"
           ERROR_STEP="${{ steps.logs.outputs.error_step }}"
 
+          # ERROR_LOGを安全に処理（特殊文字をエスケープ、長すぎる場合は切り詰め）
+          # 改行をスペースに置換し、制御文字を削除
+          SAFE_ERROR_LOG=$(echo "$ERROR_LOG" | tr '\n' ' ' | tr -d '\000-\037' | head -c 10000)
+          
           # すべての情報を結合して分析
-          ALL_ERROR_INFO=$(echo "$ERROR_MSG $ERROR_LOG $ERROR_STEP" | tr '[:upper:]' '[:lower:]')
+          ALL_ERROR_INFO=$(echo "$ERROR_MSG $SAFE_ERROR_LOG $ERROR_STEP" | tr '[:upper:]' '[:lower:]')
 
           ERROR_TYPE="unknown"
 
