@@ -176,7 +176,7 @@ jobs:
           # ERROR_LOGを安全に処理（特殊文字をエスケープ、長すぎる場合は切り詰め）
           # 改行をスペースに置換し、制御文字を削除
           SAFE_ERROR_LOG=$(echo "$ERROR_LOG" | tr '\n' ' ' | tr -d '\000-\037' | head -c 10000)
-          
+
           # すべての情報を結合して分析
           ALL_ERROR_INFO=$(echo "$ERROR_MSG $SAFE_ERROR_LOG $ERROR_STEP" | tr '[:upper:]' '[:lower:]')
 
@@ -353,6 +353,8 @@ jobs:
               cd ..
               ;;
             migration_duplicate_column)
+              # This case should be unreachable (auto_fixable=false skips this job),
+              # but kept as defensive fallback with helpful error guidance.
               echo "🔧 Duplicate column error detected..."
               echo "⚠️ This error typically requires manual intervention:"
               echo "   1. Check which migration is trying to add an existing column"
