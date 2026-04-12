@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Automatically detect and fix common migration issues."""
+
 import importlib.util
 import sys
 from pathlib import Path

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fix migration files that reference non-existent revisions."""
+
 import re
 import sys
 from pathlib import Path

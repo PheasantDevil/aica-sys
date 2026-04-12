@@ -9,7 +9,6 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
 import aiohttp
-import asyncpg
 import psutil
 from fastapi import Depends
 from sqlalchemy.orm import Session

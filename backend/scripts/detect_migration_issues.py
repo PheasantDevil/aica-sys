@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Detect migration issues like duplicate revision IDs and multiple heads."""
+
 import re
 import sys
 from collections import defaultdict

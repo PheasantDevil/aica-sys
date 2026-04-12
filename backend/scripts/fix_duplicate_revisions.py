@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fix duplicate revision IDs by renaming one of them."""
+
 import re
 import secrets
 import sys

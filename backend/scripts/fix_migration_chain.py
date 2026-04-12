@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fix broken migration chain by stamping to appropriate revision."""
+
 import sys
 from pathlib import Path
 
