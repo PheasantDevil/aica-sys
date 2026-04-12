@@ -164,14 +164,22 @@ jobs:
             }
 
             core.setOutput('error_log', errorLog);
+            core.setOutput(
+              'error_log_b64',
+              Buffer.from(errorLog || '', 'utf8').toString('base64'),
+            );
             core.setOutput('error_step', errorStep);
 
       - name: Determine error type
         id: error-type
         run: |
           ERROR_MSG="${{ steps.workflow-run.outputs.error_message }}"
-          ERROR_LOG="${{ steps.logs.outputs.error_log }}"
+          ERROR_LOG_B64="${{ steps.logs.outputs.error_log_b64 }}"
           ERROR_STEP="${{ steps.logs.outputs.error_step }}"
+          ERROR_LOG=""
+          if [ -n "$ERROR_LOG_B64" ]; then
+            ERROR_LOG=$(printf '%s' "$ERROR_LOG_B64" | base64 -d 2>/dev/null || true)
+          fi
 
           # ERROR_LOGを安全に処理（特殊文字をエスケープ、長すぎる場合は切り詰め）
           # 改行をスペースに置換し、制御文字を削除

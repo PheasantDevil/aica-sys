@@ -43,8 +43,8 @@ backup_database() {
     log_info "データベースをバックアップ中..."
     
     if [ ! -f "$DB_FILE" ]; then
-        log_error "データベースファイルが見つかりません: $DB_FILE"
-        return 1
+        log_warning "データベースファイルが見つかりません: $DB_FILE（CI/本番PostgreSQLではローカルDB無しのためスキップ）"
+        return 0
     fi
     
     # SQLiteバックアップ
@@ -99,8 +99,8 @@ create_backup_manifest() {
     "config": "${BACKUP_NAME}.env.production"
   },
   "sizes": {
-    "database": "$(du -h "$BACKUP_DIR/${BACKUP_NAME}.db" | cut -f1)",
-    "total": "$(du -sh "$BACKUP_DIR/${BACKUP_NAME}"* | awk '{s+=$1}END{print s}')"
+    "database": "$(if [ -f "$BACKUP_DIR/${BACKUP_NAME}.db" ]; then du -h "$BACKUP_DIR/${BACKUP_NAME}.db" | cut -f1; else echo "n/a"; fi)",
+    "total": "$(du -sh "$BACKUP_DIR/${BACKUP_NAME}"* 2>/dev/null | awk '{s+=$1}END{print s}' || echo "n/a")"
   }
 }
 EOF
@@ -146,7 +146,11 @@ main() {
     cleanup_old_backups
     
     # サマリー
-    BACKUP_SIZE=$(du -h "$BACKUP_DIR/${BACKUP_NAME}.tar.gz" | cut -f1)
+    if [ -f "$BACKUP_DIR/${BACKUP_NAME}.tar.gz" ]; then
+      BACKUP_SIZE=$(du -h "$BACKUP_DIR/${BACKUP_NAME}.tar.gz" | cut -f1)
+    else
+      BACKUP_SIZE="n/a"
+    fi
     
     echo ""
     log_success "バックアップ完了！"
