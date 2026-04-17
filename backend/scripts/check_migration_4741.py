@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Check if migration 4741adeef488 is applied."""
+
 import sys
 from pathlib import Path
 

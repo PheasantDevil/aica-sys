@@ -143,11 +143,9 @@ def check_database_health() -> dict:
             pool_info = get_connection_info()
 
             # Get database size
-            size_result = conn.execute(
-                """
+            size_result = conn.execute("""
                 SELECT pg_size_pretty(pg_database_size(current_database())) as db_size
-            """
-            ).fetchone()
+            """).fetchone()
 
             return {
                 "status": "healthy",

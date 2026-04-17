@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Fix multiple head revisions by creating a merge migration or selecting the correct head."""
+
 import sys
 from pathlib import Path
 

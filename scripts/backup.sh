@@ -43,6 +43,10 @@ backup_database() {
     log_info "データベースをバックアップ中..."
     
     if [ ! -f "$DB_FILE" ]; then
+        if [ "${ALLOW_MISSING_DB:-0}" = "1" ] || [ "${CI:-}" = "true" ]; then
+            log_warning "データベースファイルが見つかりません: $DB_FILE（ALLOW_MISSING_DB=1 または CI=true のためスキップ）"
+            return 0
+        fi
         log_error "データベースファイルが見つかりません: $DB_FILE"
         return 1
     fi
@@ -87,6 +91,11 @@ backup_config() {
 
 create_backup_manifest() {
     log_info "バックアップマニフェストを作成中..."
+    local total_size
+    total_size=$(du -sh "$BACKUP_DIR/${BACKUP_NAME}"* 2>/dev/null | awk '{s+=$1}END{print s}')
+    if [ -z "${total_size//[[:space:]]/}" ]; then
+        total_size="n/a"
+    fi
     
     cat > "$BACKUP_DIR/${BACKUP_NAME}_manifest.json" <<EOF
 {
@@ -99,8 +108,8 @@ create_backup_manifest() {
     "config": "${BACKUP_NAME}.env.production"
   },
   "sizes": {
-    "database": "$(du -h "$BACKUP_DIR/${BACKUP_NAME}.db" | cut -f1)",
-    "total": "$(du -sh "$BACKUP_DIR/${BACKUP_NAME}"* | awk '{s+=$1}END{print s}')"
+    "database": "$(if [ -f "$BACKUP_DIR/${BACKUP_NAME}.db" ]; then du -h "$BACKUP_DIR/${BACKUP_NAME}.db" | cut -f1; else echo "n/a"; fi)",
+    "total": "${total_size}"
   }
 }
 EOF
@@ -146,7 +155,11 @@ main() {
     cleanup_old_backups
     
     # サマリー
-    BACKUP_SIZE=$(du -h "$BACKUP_DIR/${BACKUP_NAME}.tar.gz" | cut -f1)
+    if [ -f "$BACKUP_DIR/${BACKUP_NAME}.tar.gz" ]; then
+      BACKUP_SIZE=$(du -h "$BACKUP_DIR/${BACKUP_NAME}.tar.gz" | cut -f1)
+    else
+      BACKUP_SIZE="n/a"
+    fi
     
     echo ""
     log_success "バックアップ完了！"
