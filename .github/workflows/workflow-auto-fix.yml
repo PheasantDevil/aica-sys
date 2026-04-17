@@ -207,7 +207,7 @@ jobs:
             ERROR_TYPE="lint"
           fi
 
-          echo "error_type=$ERROR_TYPE" >> $GITHUB_OUTPUT
+          echo "error_type=$ERROR_TYPE" >> "$GITHUB_OUTPUT"
           echo "Detected error type: $ERROR_TYPE"
 
           # デバッグ情報を出力
