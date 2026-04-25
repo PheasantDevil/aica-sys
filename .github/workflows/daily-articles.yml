@@ -52,9 +52,77 @@ jobs:
           cd backend
           pip list | grep -E "(requests|feedparser|sqlalchemy)" || exit 1
 
-      - name: Check database connection
+      - name: Resolve DATABASE_URL for Supabase pooler
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "ACTIVE_DATABASE_URL=" >> "$GITHUB_ENV"
+            echo "⚠️ DATABASE_URL not set"
+            exit 0
+          fi
+
+          python3 <<'PY'
+          import os
+          from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
+          import psycopg2
+
+          db_url = os.environ["DATABASE_URL"]
+
+          def with_sslmode_require(url: str) -> str:
+            p = urlparse(url)
+            params = dict(parse_qsl(p.query, keep_blank_values=True))
+            params.setdefault("sslmode", "require")
+            return urlunparse(
+              (p.scheme, p.netloc, p.path or "/postgres", p.params, urlencode(params), p.fragment)
+            )
+
+          def candidate_direct_url(url: str) -> str | None:
+            p = urlparse(url)
+            host = p.hostname or ""
+            username = p.username or ""
+            if not host.endswith("pooler.supabase.com"):
+              return None
+            if not username.startswith("postgres."):
+              return None
+            project_ref = username.split(".", 1)[1]
+            if not project_ref:
+              return None
+            password = p.password or ""
+            port = 5432
+            netloc = f"postgres:{password}@db.{project_ref}.supabase.co:{port}"
+            converted = urlunparse((p.scheme, netloc, p.path or "/postgres", p.params, p.query, p.fragment))
+            return with_sslmode_require(converted)
+
+          def can_connect(url: str) -> bool:
+            try:
+              conn = psycopg2.connect(url, connect_timeout=5)
+              conn.close()
+              return True
+            except Exception as e:
+              print(f"Database connectivity check failed: {e.__class__.__name__}: {e}")
+              return False
+
+          original = with_sslmode_require(db_url)
+          direct = candidate_direct_url(original)
+
+          active = original
+          source = "original"
+
+          if not can_connect(original) and direct:
+            if can_connect(direct):
+              active = direct
+              source = "supabase-direct-fallback"
+
+          print(f"::add-mask::{active}")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as f:
+            f.write(f"ACTIVE_DATABASE_URL={active}\n")
+          print(f"Resolved DATABASE_URL source: {source}")
+          PY
+
+      - name: Check database connection
+        env:
+          DATABASE_URL: ${{ env.ACTIVE_DATABASE_URL }}
         run: |
           if [ -z "$DATABASE_URL" ]; then
             echo "⚠️ DATABASE_URL not set, skipping database connection check"
@@ -64,7 +132,7 @@ jobs:
 
       - name: Run database migrations
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ env.ACTIVE_DATABASE_URL }}
         run: |
           set +e  # 一時的にエラーで停止しない
           if [ -z "$DATABASE_URL" ]; then
@@ -103,7 +171,7 @@ jobs:
       - name: Run article generation
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ env.ACTIVE_DATABASE_URL }}
         run: |
           python3 scripts/generate_daily_article.py
 
