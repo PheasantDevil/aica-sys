@@ -58,7 +58,6 @@ jobs:
         run: |
           if [ -z "$DATABASE_URL" ]; then
             echo "ACTIVE_DATABASE_URL=" >> "$GITHUB_ENV"
-            echo "DATABASE_URL_SOURCE=missing" >> "$GITHUB_ENV"
             echo "⚠️ DATABASE_URL not set"
             exit 0
           fi
@@ -100,7 +99,8 @@ jobs:
               conn = psycopg2.connect(url, connect_timeout=5)
               conn.close()
               return True
-            except Exception:
+            except Exception as e:
+              print(f"Database connectivity check failed: {e.__class__.__name__}: {e}")
               return False
 
           original = with_sslmode_require(db_url)
@@ -114,11 +114,9 @@ jobs:
               active = direct
               source = "supabase-direct-fallback"
 
+          print(f"::add-mask::{active}")
           with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as f:
             f.write(f"ACTIVE_DATABASE_URL={active}\n")
-            f.write(f"DATABASE_URL_SOURCE={source}\n")
-
-          print(f"::add-mask::{active}")
           print(f"Resolved DATABASE_URL source: {source}")
           PY
 
