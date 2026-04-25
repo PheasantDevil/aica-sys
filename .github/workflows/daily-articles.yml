@@ -106,15 +106,20 @@ jobs:
           original = with_sslmode_require(db_url)
           direct = candidate_direct_url(original)
 
-          active = original
-          source = "original"
+          active = ""
+          source = "unreachable"
 
-          if not can_connect(original) and direct:
-            if can_connect(direct):
-              active = direct
-              source = "supabase-direct-fallback"
+          if can_connect(original):
+            active = original
+            source = "original"
+          elif direct and can_connect(direct):
+            active = direct
+            source = "supabase-direct-fallback"
+          else:
+            print("No reachable DATABASE_URL candidate found; downstream DB steps will be skipped.")
 
-          print(f"::add-mask::{active}")
+          if active:
+            print(f"::add-mask::{active}")
           with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as f:
             f.write(f"ACTIVE_DATABASE_URL={active}\n")
           print(f"Resolved DATABASE_URL source: {source}")
@@ -173,6 +178,10 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           DATABASE_URL: ${{ env.ACTIVE_DATABASE_URL }}
         run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "⚠️ ACTIVE_DATABASE_URL not resolved, skipping article generation"
+            exit 0
+          fi
           python3 scripts/generate_daily_article.py
 
       - name: Notify on failure
