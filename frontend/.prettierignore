@@ -8,6 +8,8 @@ dist
 # Generated files
 *.min.js
 *.min.css
+playwright-report
+test-results
 
 # Logs
 *.log

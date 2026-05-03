@@ -110,7 +110,7 @@ class NotificationDB(Base):
     content = Column(Text)
     link = Column(String, nullable=True)
     is_read = Column(Boolean, default=False)
-    metadata = Column(JSON, nullable=True)
+    notification_metadata = Column("metadata", JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 
