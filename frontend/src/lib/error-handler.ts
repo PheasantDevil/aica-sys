@@ -25,6 +25,7 @@ export interface AlertConfig {
 
 class ErrorHandler {
   private errors: ErrorLog[] = [];
+  private originalFetch: typeof window.fetch | null = null;
   private alertConfig: AlertConfig = {
     enabled: true,
     threshold: 5,
@@ -72,14 +73,22 @@ class ErrorHandler {
   }
 
   private setupNetworkErrorHandling() {
-    const originalFetch = window.fetch;
+    if (this.originalFetch) {
+      return;
+    }
+
+    this.originalFetch = window.fetch;
     const self = this;
 
     window.fetch = async function (...args) {
-      try {
-        const response = await originalFetch.apply(this, args);
+      const requestUrl = typeof args[0] === "string" ? args[0] : args[0]?.toString() || "";
+      const isInternalErrorReporting =
+        requestUrl.includes("/api/analytics/error") || requestUrl.includes("/api/alerts/error");
 
-        if (!response.ok) {
+      try {
+        const response = await self.originalFetch!.apply(this, args);
+
+        if (!response.ok && !isInternalErrorReporting) {
           self.handleError({
             message: `Network request failed: ${response.status} ${response.statusText}`,
             severity: response.status >= 500 ? "high" : "medium",
@@ -94,6 +103,10 @@ class ErrorHandler {
 
         return response;
       } catch (error) {
+        if (isInternalErrorReporting) {
+          throw error;
+        }
+
         const errorMessage = error instanceof Error ? error.message : String(error);
         const errorStack = error instanceof Error ? error.stack : undefined;
 
@@ -179,7 +192,8 @@ class ErrorHandler {
       }
 
       // Send to custom analytics endpoint
-      await fetch("/api/analytics/error", {
+      const safeFetch = this.originalFetch || fetch;
+      await safeFetch("/api/analytics/error", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -215,8 +229,9 @@ class ErrorHandler {
     };
 
     try {
+      const safeFetch = this.originalFetch || fetch;
       for (const endpoint of this.alertConfig.endpoints) {
-        await fetch(endpoint, {
+        await safeFetch(endpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

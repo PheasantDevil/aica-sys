@@ -171,7 +171,7 @@ export class SecurityUtils {
 
   static async getCSRFToken(): Promise<string> {
     try {
-      const response = await fetch("/api/csrf-token", {
+      const response = await fetch("/api/csrf/token", {
         method: "GET",
         credentials: "include",
       });
@@ -181,7 +181,7 @@ export class SecurityUtils {
       }
 
       const data = await response.json();
-      return data.csrf_token;
+      return data.token || this.generateCSRFToken();
     } catch (error) {
       console.error("Error getting CSRF token:", error);
       return this.generateCSRFToken();
