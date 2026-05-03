@@ -172,7 +172,7 @@ class SubscriptionEventDB(Base):
     event_type = Column(String)  # created, upgraded, downgraded, canceled, renewed
     from_plan = Column(String, nullable=True)
     to_plan = Column(String, nullable=True)
-    metadata = Column(JSON, nullable=True)
+    event_metadata = Column("metadata", JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 

@@ -50,6 +50,7 @@ jest.mock("next-auth/react", () => ({
     data: null,
     status: "unauthenticated",
   })),
+  SessionProvider: ({ children }) => children,
   signIn: jest.fn(),
   signOut: jest.fn(),
   getSession: jest.fn(),

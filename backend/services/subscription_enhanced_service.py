@@ -446,7 +446,7 @@ class SubscriptionEnhancedService:
             event_type=event_type,
             from_plan=from_plan,
             to_plan=to_plan,
-            metadata=metadata,
+            event_metadata=metadata,
         )
         self.db.add(event)
         self.db.commit()

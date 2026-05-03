@@ -288,7 +288,7 @@ class EngagementService:
             title=title,
             content=content,
             link=link,
-            metadata=metadata,
+            notification_metadata=metadata,
         )
         self.db.add(notification)
         self.db.commit()
