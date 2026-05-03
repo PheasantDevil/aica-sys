@@ -155,3 +155,7 @@ temp/
 .env*.local
 # TypeScript build info
 *.tsbuildinfo
+
+# Playwright artifacts
+frontend/playwright/***
+frontend/playwright-report/***
