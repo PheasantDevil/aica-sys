@@ -35,6 +35,18 @@ export class ApiClient {
     return this.csrfToken;
   }
 
+  private isBrowserProxyMode(): boolean {
+    return typeof window !== "undefined" && /^https?:\/\//.test(this.baseURL);
+  }
+
+  private buildRequestUrl(endpoint: string): string {
+    const normalizedEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+    if (this.isBrowserProxyMode()) {
+      return `/api/proxy${normalizedEndpoint}`;
+    }
+    return `${this.baseURL}${normalizedEndpoint}`;
+  }
+
   async request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
     // Check rate limit
     if (!apiRateLimiter.isAllowed()) {
@@ -43,7 +55,7 @@ export class ApiClient {
       };
     }
 
-    const url = `${this.baseURL}${endpoint}`;
+    const url = this.buildRequestUrl(endpoint);
 
     // Get security headers
     const sessionId = SecurityUtils.getSessionId();
@@ -141,7 +153,6 @@ export class ApiClient {
 
     const queryString = searchParams.toString();
     const endpoint = queryString ? `/articles?${queryString}` : "/articles";
-
     return this.request(endpoint);
   }
 
