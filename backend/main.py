@@ -3,8 +3,10 @@ AICA-SyS Backend Main Application
 AI-driven Content Curation & Automated Sales System
 """
 
+import asyncio
 import logging
 import os
+from contextlib import suppress
 
 import uvicorn
 from dotenv import load_dotenv
@@ -30,6 +32,7 @@ load_dotenv()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+content_sync_task: asyncio.Task | None = None
 
 # Create FastAPI app
 app = FastAPI(
@@ -98,6 +101,60 @@ async def detailed_health_check():
     """Detailed health check with performance metrics"""
     health_status = performance_metrics.get_stats()
     return health_status
+
+
+async def _periodic_content_sync():
+    from database import SessionLocal
+    from services.content_sync_service import get_content_sync_service
+
+    interval_seconds = int(os.getenv("CONTENT_SYNC_INTERVAL_SECONDS", "600"))
+    sync_service = get_content_sync_service()
+
+    while True:
+        db = SessionLocal()
+        try:
+            stats = sync_service.sync_published_content(db)
+            if stats["scanned"] > 0:
+                logger.info(
+                    "[content-sync][startup-task] scanned=%s article=%s newsletter=%s trend=%s",
+                    stats["scanned"],
+                    stats["article_upserts"],
+                    stats["newsletter_upserts"],
+                    stats["trend_upserts"],
+                )
+        except Exception:
+            logger.exception("Periodic content sync failed")
+        finally:
+            db.close()
+
+        await asyncio.sleep(interval_seconds)
+
+
+@app.on_event("startup")
+async def start_background_content_sync():
+    global content_sync_task
+    if os.getenv("ENABLE_CONTENT_SYNC", "true").lower() != "true":
+        logger.info("Background content sync disabled by ENABLE_CONTENT_SYNC")
+        return
+
+    if content_sync_task and not content_sync_task.done():
+        return
+
+    content_sync_task = asyncio.create_task(_periodic_content_sync())
+    logger.info("Background content sync task started")
+
+
+@app.on_event("shutdown")
+async def stop_background_content_sync():
+    global content_sync_task
+    if not content_sync_task:
+        return
+
+    content_sync_task.cancel()
+    with suppress(asyncio.CancelledError):
+        await content_sync_task
+    content_sync_task = None
+    logger.info("Background content sync task stopped")
 
 
 # Import routers

@@ -2,6 +2,8 @@
 Content API router for AICA-SyS
 """
 
+import logging
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -11,8 +13,12 @@ from database import get_db
 from models.automated_content import AutomatedContentDB, ContentStatus, ContentType
 from models.collection import AnalysisResult
 from models.content import Article, Newsletter, Trend
+from services.content_sync_service import get_content_sync_service
 
 router = APIRouter(prefix="/api/content", tags=["content"])
+_last_sync_at: Optional[datetime] = None
+_sync_interval = timedelta(minutes=5)
+logger = logging.getLogger(__name__)
 
 
 def _to_int(value, default=0):
@@ -91,6 +97,29 @@ def _automated_to_trend(content: AutomatedContentDB) -> dict:
     }
 
 
+def _ensure_core_tables_synced(db: Session) -> None:
+    global _last_sync_at
+    now = datetime.utcnow()
+    if _last_sync_at and now - _last_sync_at < _sync_interval:
+        return
+
+    try:
+        sync_service = get_content_sync_service()
+        stats = sync_service.sync_published_content(db)
+        _last_sync_at = now
+
+        if stats["scanned"] > 0:
+            logger.info(
+                f"[content-sync] scanned={stats['scanned']} "
+                f"article={stats['article_upserts']} "
+                f"newsletter={stats['newsletter_upserts']} "
+                f"trend={stats['trend_upserts']}"
+            )
+    except Exception:
+        # Synchronization failure must not block read API responses.
+        logger.exception("Failed to synchronize automated content into core tables")
+
+
 @router.get("/articles")
 async def get_articles(
     skip: int = Query(0, ge=0),
@@ -99,6 +128,7 @@ async def get_articles(
     db: Session = Depends(get_db),
 ):
     """Get list of articles"""
+    _ensure_core_tables_synced(db)
     query = db.query(Article)
 
     if is_premium is not None:
@@ -155,6 +185,7 @@ async def get_newsletters(
     db: Session = Depends(get_db),
 ):
     """Get list of newsletters"""
+    _ensure_core_tables_synced(db)
     newsletters = db.query(Newsletter).offset(skip).limit(limit).all()
     total = db.query(Newsletter).count()
 
@@ -204,6 +235,7 @@ async def get_trends(
     db: Session = Depends(get_db),
 ):
     """Get list of trends"""
+    _ensure_core_tables_synced(db)
     query = db.query(Trend)
 
     if category:
