@@ -1,18 +1,20 @@
 "use client";
 
+import { getSanitizedGaId } from "./analytics-config";
+
 declare global {
   interface Window {
     gtag: (...args: any[]) => void;
   }
 }
 
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "";
+export const GA_TRACKING_ID = getSanitizedGaId(process.env.NEXT_PUBLIC_GA_ID);
 
 export class Analytics {
   private static isInitialized = false;
 
   static init() {
-    if (typeof window === "undefined" || this.isInitialized) return;
+    if (typeof window === "undefined" || this.isInitialized || !GA_TRACKING_ID) return;
 
     // Load Google Analytics script
     const script = document.createElement("script");
