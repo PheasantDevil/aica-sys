@@ -17,6 +17,7 @@ export default function ArticlesPage() {
   });
 
   const { articles, isLoading, error } = useArticles(filters);
+  const hasArticles = articles.length > 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -38,20 +39,20 @@ export default function ArticlesPage() {
           <ArticleFilters filters={filters} onFiltersChange={setFilters} />
         </div>
 
-        {isLoading ? (
+        {isLoading && !hasArticles ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="h-64 animate-pulse bg-muted rounded-lg"></div>
             ))}
           </div>
-        ) : error ? (
+        ) : error && !hasArticles ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">記事の読み込みに失敗しました</p>
             <Button variant="outline" className="mt-4">
               再試行
             </Button>
           </div>
-        ) : articles.length === 0 ? (
+        ) : !hasArticles ? (
           <div className="text-center py-12">
             <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">記事が見つかりません</h3>
@@ -59,14 +60,21 @@ export default function ArticlesPage() {
             <Button variant="outline">フィルターをリセット</Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
+          <>
+            {error ? (
+              <div className="mb-4 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                最新データ取得に失敗したため、利用可能な記事を表示しています。
+              </div>
+            ) : null}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {articles.map((article) => (
+                <ArticleCard key={article.id} article={article} />
+              ))}
+            </div>
+          </>
         )}
 
-        {articles.length > 0 && (
+        {hasArticles && (
           <div className="mt-12 text-center">
             <Button variant="outline">さらに読み込む</Button>
           </div>
