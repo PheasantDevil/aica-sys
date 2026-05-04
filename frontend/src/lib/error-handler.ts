@@ -84,11 +84,13 @@ class ErrorHandler {
       const requestUrl = typeof args[0] === "string" ? args[0] : args[0]?.toString() || "";
       const isInternalErrorReporting =
         requestUrl.includes("/api/analytics/error") || requestUrl.includes("/api/alerts/error");
+      const isApiRequest = requestUrl.includes("/api/");
 
       try {
         const response = await self.originalFetch!.apply(this, args);
 
-        if (!response.ok && !isInternalErrorReporting) {
+        // Ignore non-API requests and expected 4xx responses to avoid noisy telemetry.
+        if (!isInternalErrorReporting && isApiRequest && response.status >= 500) {
           self.handleError({
             message: `Network request failed: ${response.status} ${response.statusText}`,
             severity: response.status >= 500 ? "high" : "medium",
@@ -104,6 +106,10 @@ class ErrorHandler {
         return response;
       } catch (error) {
         if (isInternalErrorReporting) {
+          throw error;
+        }
+
+        if (!isApiRequest) {
           throw error;
         }
 
