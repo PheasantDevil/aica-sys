@@ -9,6 +9,7 @@ import { Plus, Mail } from "lucide-react";
 
 export default function NewslettersPage() {
   const { newsletters, isLoading, error } = useNewsletters();
+  const hasNewsletters = newsletters.length > 0;
 
   return (
     <div className="min-h-screen bg-background">
@@ -28,20 +29,20 @@ export default function NewslettersPage() {
           </div>
         </div>
 
-        {isLoading ? (
+        {isLoading && !hasNewsletters ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Array.from({ length: 6 }).map((_, i) => (
               <div key={i} className="h-64 animate-pulse bg-muted rounded-lg"></div>
             ))}
           </div>
-        ) : error ? (
+        ) : error && !hasNewsletters ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">ニュースレターの読み込みに失敗しました</p>
             <Button variant="outline" className="mt-4">
               再試行
             </Button>
           </div>
-        ) : newsletters.length === 0 ? (
+        ) : !hasNewsletters ? (
           <div className="text-center py-12">
             <Mail className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">ニュースレターがありません</h3>
@@ -52,14 +53,21 @@ export default function NewslettersPage() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {newsletters.map((newsletter) => (
-              <NewsletterCard key={newsletter.id} newsletter={newsletter} />
-            ))}
-          </div>
+          <>
+            {error ? (
+              <div className="mb-4 rounded-md border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+                最新データ取得に失敗したため、利用可能なニュースレターを表示しています。
+              </div>
+            ) : null}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {newsletters.map((newsletter) => (
+                <NewsletterCard key={newsletter.id} newsletter={newsletter} />
+              ))}
+            </div>
+          </>
         )}
 
-        {newsletters.length > 0 && (
+        {hasNewsletters && (
           <div className="mt-12 text-center">
             <Button variant="outline">さらに読み込む</Button>
           </div>
