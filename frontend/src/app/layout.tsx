@@ -3,6 +3,7 @@ import { ErrorProvider } from "@/components/ErrorProvider";
 import PerformanceMonitor from "@/components/PerformanceMonitor";
 import { PerformanceProvider } from "@/components/PerformanceProvider";
 import { Providers } from "@/components/providers";
+import { getSanitizedGaId } from "@/lib/analytics-config";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
@@ -19,7 +20,7 @@ const inter = Inter({
 
 const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://aica-sys.vercel.app";
 const GOOGLE_SITE_VERIFICATION = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID;
+const GA_MEASUREMENT_ID = getSanitizedGaId(process.env.NEXT_PUBLIC_GA_ID);
 const DEFAULT_DESCRIPTION =
   "TypeScriptエコシステム特化型のAI自動コンテンツ生成・販売システム。最新トレンド、技術記事、ニュースレターを自動配信。";
 const DEFAULT_KEYWORDS = [
