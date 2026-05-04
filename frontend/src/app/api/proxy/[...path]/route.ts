@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { resolveBackendUrl } from "@/lib/backend-url";
 
-const BACKEND_URL = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const BACKEND_URL = resolveBackendUrl();
 
 const METHODS_WITHOUT_BODY = new Set(["GET", "HEAD"]);
 const CONTENT_FALLBACK_PATHS = new Set(["articles", "newsletters", "trends"]);
@@ -23,6 +24,7 @@ function getFallbackResponse(path: string): NextResponse | null {
           title: "TypeScript 5.0の新機能とベストプラクティス",
           description:
             "バックエンド疎通に失敗したため、フォールバック記事を表示しています。環境復旧後に最新データへ切り替わります。",
+          content: "",
           category: "tutorial",
           tags: ["TypeScript", "Fallback"],
           publishedAt: "2024-01-15T10:00:00Z",
@@ -45,11 +47,13 @@ function getFallbackResponse(path: string): NextResponse | null {
           id: "fallback-newsletter-1",
           title: "TypeScript Weekly フォールバック版",
           description: "バックエンド未接続時の代替ニュースレターです。",
+          content: "",
           publishedAt: "2024-01-15T10:00:00Z",
           subscribers: 1000,
           openRate: 75,
           clickRate: 25,
           isPremium: false,
+          tags: ["Fallback"],
         },
       ],
       total: 1,

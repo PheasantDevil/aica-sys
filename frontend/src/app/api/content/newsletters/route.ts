@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { resolveBackendUrl } from "@/lib/backend-url";
 
-const BACKEND_URL = process.env.BACKEND_URL || "http://127.0.0.1:8000";
+const BACKEND_URL = resolveBackendUrl();
 
 export async function GET(request: NextRequest) {
   try {
