@@ -1,52 +1,28 @@
 {
-  "date": "2025-11-25T02:47:33.777987",
+  "date": "2026-05-04T04:39:24.670674",
   "top_trends": [
+    [
+      "using",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
     [
       "with",
       {
-        "score": 210,
-        "count": 7,
-        "sources": ["hacker_news", "dev_to", "tech_crunch"],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": ["hacker_news", "dev_to"],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "openai",
-      {
-        "score": 90,
+        "score": 60,
         "count": 3,
-        "sources": ["hacker_news", "dev_to", "tech_crunch"],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": ["hacker_news", "dev_to"],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "built",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": ["hacker_news", "dev_to"],
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
         "related_keywords": [],
         "related_topics": []
       }
@@ -56,47 +32,101 @@
       {
         "score": 60,
         "count": 3,
-        "sources": ["hacker_news", "dev_to"],
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "software",
+      "your",
       {
-        "score": 40,
-        "count": 2,
-        "sources": ["hacker_news", "tech_crunch"],
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "open",
+      "accurate",
       {
         "score": 40,
         "count": 2,
-        "sources": ["hacker_news", "dev_to"],
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "tool",
+      "spirit",
       {
         "score": 40,
         "count": 2,
-        "sources": ["hacker_news", "dev_to"],
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "which",
+      "agent",
       {
         "score": 40,
         "count": 2,
-        "sources": ["hacker_news", "dev_to"],
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "when",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "doctors",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "actors",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
         "related_keywords": [],
         "related_topics": []
       }
@@ -104,71 +134,72 @@
   ],
   "rising_trends": [
     {
+      "keyword": "using",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
       "keyword": "with",
-      "score": 210,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "your",
-      "score": 100,
-      "growth_rate": "+733.3%",
-      "is_new": false
-    },
-    {
-      "keyword": "openai",
-      "score": 90,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "from",
-      "score": 80,
-      "growth_rate": "+788.9%",
-      "is_new": false
-    },
-    {
-      "keyword": "built",
-      "score": 80,
-      "growth_rate": "+400.0%",
+      "score": 60,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
       "keyword": "what",
       "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "software",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "open",
-      "score": 40,
-      "growth_rate": "+122.2%",
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "which",
+      "keyword": "your",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "accurate",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "gemini",
+      "keyword": "spirit",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "agent",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "when",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "doctors",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "actors",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 16,
-    "Mobile": 1,
-    "DevOps": 5,
-    "Web": 3
+    "AI": 12,
+    "DevOps": 3,
+    "Security": 1,
+    "Web": 2,
+    "Mobile": 1
   },
-  "total_sources": 59
+  "total_sources": 60
 }
