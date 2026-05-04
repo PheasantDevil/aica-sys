@@ -29,6 +29,38 @@ interface Filters {
   search: string;
 }
 
+function normalizeAuthor(rawAuthor: any): { name: string; avatar?: string } {
+  if (typeof rawAuthor === "string" && rawAuthor.trim()) {
+    return { name: rawAuthor };
+  }
+  if (rawAuthor && typeof rawAuthor === "object") {
+    return {
+      name: rawAuthor.name ?? "AICA-SyS",
+      avatar: rawAuthor.avatar,
+    };
+  }
+  return { name: "AICA-SyS" };
+}
+
+function normalizeArticle(article: any): Article {
+  const rawTags = article?.tags;
+  return {
+    id: String(article?.id ?? ""),
+    title: article?.title ?? "Untitled",
+    description: article?.description ?? article?.summary ?? "",
+    content: article?.content ?? "",
+    author: normalizeAuthor(article?.author),
+    category: article?.category ?? "general",
+    tags: Array.isArray(rawTags) ? rawTags : [],
+    publishedAt: article?.publishedAt ?? article?.published_at ?? new Date().toISOString(),
+    readTime: Number(article?.readTime ?? article?.read_time ?? 0),
+    views: Number(article?.views ?? 0),
+    likes: Number(article?.likes ?? 0),
+    isPremium: Boolean(article?.isPremium ?? article?.is_premium ?? false),
+    imageUrl: article?.imageUrl ?? article?.image_url,
+  };
+}
+
 export function useArticles(filters: Filters) {
   const { data: session } = useSession();
 
@@ -45,7 +77,7 @@ export function useArticles(filters: Filters) {
         throw new Error(response.error);
       }
 
-      return response.data?.articles || [];
+      return (response.data?.articles || []).map(normalizeArticle);
     },
     // モックデータを返す（実際の実装ではAPIから取得）
     placeholderData: () => [

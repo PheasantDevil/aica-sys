@@ -17,6 +17,23 @@ interface Newsletter {
   tags: string[];
 }
 
+function normalizeNewsletter(newsletter: any): Newsletter {
+  const rawTags = newsletter?.tags;
+  return {
+    id: String(newsletter?.id ?? ""),
+    title: newsletter?.title ?? "Untitled",
+    description: newsletter?.description ?? newsletter?.summary ?? "",
+    content: newsletter?.content ?? "",
+    publishedAt: newsletter?.publishedAt ?? newsletter?.published_at ?? new Date().toISOString(),
+    subscribers: Number(newsletter?.subscribers ?? 0),
+    openRate: Number(newsletter?.openRate ?? newsletter?.open_rate ?? 0),
+    clickRate: Number(newsletter?.clickRate ?? newsletter?.click_rate ?? 0),
+    isPremium: Boolean(newsletter?.isPremium ?? newsletter?.is_premium ?? false),
+    imageUrl: newsletter?.imageUrl ?? newsletter?.image_url,
+    tags: Array.isArray(rawTags) ? rawTags : [],
+  };
+}
+
 export function useNewsletters() {
   const query = useQuery({
     queryKey: ["newsletters"],
@@ -27,7 +44,7 @@ export function useNewsletters() {
         throw new Error(response.error);
       }
 
-      return response.data?.newsletters || [];
+      return (response.data?.newsletters || []).map(normalizeNewsletter);
     },
     // モックデータを返す（実際の実装ではAPIから取得）
     placeholderData: () => [
