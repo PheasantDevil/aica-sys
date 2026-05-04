@@ -18,11 +18,15 @@ logger = logging.getLogger(__name__)
 class ContentSyncService:
     """Synchronize published automated content into articles/newsletters/trends."""
 
-    def sync_published_content(self, db: Session, limit: Optional[int] = None) -> Dict[str, int]:
+    def sync_published_content(
+        self, db: Session, limit: Optional[int] = None
+    ) -> Dict[str, int]:
         query = db.query(AutomatedContentDB).filter(
             AutomatedContentDB.status == ContentStatus.PUBLISHED.value
         )
-        query = query.order_by(AutomatedContentDB.updated_at.asc(), AutomatedContentDB.id.asc())
+        query = query.order_by(
+            AutomatedContentDB.updated_at.asc(), AutomatedContentDB.id.asc()
+        )
 
         if limit:
             query = query.limit(limit)
@@ -67,7 +71,9 @@ class ContentSyncService:
         article.content = automated.content or ""
         article.summary = automated.summary or (automated.content or "")[:240]
         article.tags = self._as_list(metadata.get("tags"))
-        article.published_at = automated.published_at or automated.created_at or datetime.utcnow()
+        article.published_at = (
+            automated.published_at or automated.created_at or datetime.utcnow()
+        )
         article.author = str(metadata.get("author", "AICA-SyS"))
         article.read_time = self._as_int(metadata.get("read_time"), default=5)
         article.is_premium = self._as_bool(metadata.get("is_premium"), default=False)
@@ -122,7 +128,11 @@ class ContentSyncService:
 
     @staticmethod
     def _stable_uuid(automated: AutomatedContentDB) -> str:
-        return str(uuid.uuid5(uuid.NAMESPACE_URL, f"aica-sys:{automated.content_type}:{automated.id}"))
+        return str(
+            uuid.uuid5(
+                uuid.NAMESPACE_URL, f"aica-sys:{automated.content_type}:{automated.id}"
+            )
+        )
 
     @staticmethod
     def _as_list(value: Any) -> list:
