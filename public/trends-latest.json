@@ -1,40 +1,28 @@
 {
-  "date": "2026-05-05T04:15:31.981892",
+  "date": "2026-05-06T04:33:04.031205",
   "top_trends": [
     [
-      "from",
+      "agents",
       {
-        "score": 100,
-        "count": 5,
+        "score": 140,
+        "count": 7,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "openai",
+      "your",
       {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 80,
+        "score": 120,
         "count": 4,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "tech_crunch",
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -43,83 +31,18 @@
     [
       "with",
       {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "about",
-      {
         "score": 60,
         "count": 3,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "when",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "story",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "race",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "raises",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "gets",
+      "this",
       {
         "score": 60,
         "count": 3,
@@ -130,77 +53,152 @@
         "related_keywords": [],
         "related_topics": []
       }
+    ],
+    [
+      "sorry",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "write",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "more",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "build",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "context",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
     ]
   ],
   "rising_trends": [
     {
-      "keyword": "from",
-      "score": 100,
-      "growth_rate": "+300.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "openai",
-      "score": 100,
+      "keyword": "agents",
+      "score": 140,
       "growth_rate": "+233.3%",
       "is_new": false
     },
     {
-      "keyword": "what",
-      "score": 80,
-      "growth_rate": "+788.9%",
+      "keyword": "your",
+      "score": 120,
+      "growth_rate": "+1233.3%",
       "is_new": false
     },
     {
       "keyword": "with",
-      "score": 80,
-      "growth_rate": "+788.9%",
-      "is_new": false
-    },
-    {
-      "keyword": "about",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "story",
+      "keyword": "this",
       "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "race",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "raises",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "gets",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
+      "growth_rate": "+566.7%",
+      "is_new": false
     },
     {
       "keyword": "sorry",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
+    },
+    {
+      "keyword": "what",
+      "score": 40,
+      "growth_rate": "+344.4%",
+      "is_new": false
+    },
+    {
+      "keyword": "write",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "more",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "build",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "context",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 17,
+    "AI": 19,
+    "DevOps": 9,
+    "Mobile": 3,
     "Security": 1,
-    "Database": 1,
-    "DevOps": 3,
-    "Mobile": 1,
     "Web": 2
   },
-  "total_sources": 60
+  "total_sources": 59
 }
