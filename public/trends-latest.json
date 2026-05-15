@@ -1,54 +1,14 @@
 {
-  "date": "2026-05-14T04:41:54.664503",
+  "date": "2026-05-15T04:48:28.830616",
   "top_trends": [
     [
       "what",
       {
-        "score": 140,
-        "count": 7,
+        "score": 120,
+        "count": 6,
         "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "with",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "linux",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -57,24 +17,11 @@
     [
       "that",
       {
-        "score": 60,
-        "count": 3,
+        "score": 80,
+        "count": 4,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "model",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -83,36 +30,10 @@
     [
       "your",
       {
-        "score": 60,
-        "count": 3,
+        "score": 80,
+        "count": 4,
         "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "like",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "history",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
+          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -120,13 +41,91 @@
       }
     ],
     [
-      "year",
+      "actually",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "from",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "first",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "codex",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "linux",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "hacking",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "been",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -136,54 +135,36 @@
   "rising_trends": [
     {
       "keyword": "what",
-      "score": 140,
-      "growth_rate": "+1066.7%",
+      "score": 120,
+      "growth_rate": "+900.0%",
       "is_new": false
-    },
-    {
-      "keyword": "with",
-      "score": 100,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "from",
-      "score": 90,
-      "growth_rate": "NEW",
-      "is_new": true
     },
     {
       "keyword": "that",
-      "score": 60,
+      "score": 80,
       "growth_rate": "+400.0%",
       "is_new": false
     },
     {
       "keyword": "your",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "like",
-      "score": 60,
+      "score": 80,
       "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "history",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "keyword": "actually",
+      "score": 80,
+      "growth_rate": "+400.0%",
+      "is_new": false
     },
     {
-      "keyword": "year",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "keyword": "first",
+      "score": 60,
+      "growth_rate": "+400.0%",
+      "is_new": false
     },
     {
-      "keyword": "python",
+      "keyword": "codex",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -193,13 +174,31 @@
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
+    },
+    {
+      "keyword": "been",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "company",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "will",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "Web": 2,
-    "DevOps": 7,
-    "AI": 16,
-    "Database": 2
+    "AI": 18,
+    "Mobile": 1,
+    "DevOps": 4,
+    "Web": 1
   },
-  "total_sources": 60
+  "total_sources": 59
 }
