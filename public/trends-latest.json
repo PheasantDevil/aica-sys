@@ -1,12 +1,13 @@
 {
-  "date": "2026-05-15T04:48:28.830616",
+  "date": "2026-05-18T05:05:28.182779",
   "top_trends": [
     [
-      "what",
+      "that",
       {
-        "score": 120,
-        "count": 6,
+        "score": 150,
+        "count": 5,
         "sources": [
+          "hacker_news",
           "dev_to",
           "tech_crunch"
         ],
@@ -15,13 +16,13 @@
       }
     ],
     [
-      "that",
+      "with",
       {
-        "score": 80,
-        "count": 4,
+        "score": 120,
+        "count": 6,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -30,10 +31,49 @@
     [
       "your",
       {
-        "score": 80,
-        "count": 4,
+        "score": 120,
+        "count": 6,
         "sources": [
-          "dev_to",
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "don't",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "could",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -43,50 +83,11 @@
     [
       "actually",
       {
-        "score": 80,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
           "dev_to",
           "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "first",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "codex",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -98,34 +99,34 @@
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "hacking",
+      "code",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "been",
+      "agents",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -134,55 +135,49 @@
   ],
   "rising_trends": [
     {
-      "keyword": "what",
-      "score": 120,
-      "growth_rate": "+900.0%",
+      "keyword": "that",
+      "score": 150,
+      "growth_rate": "+150.0%",
       "is_new": false
     },
     {
-      "keyword": "that",
-      "score": 80,
-      "growth_rate": "+400.0%",
+      "keyword": "with",
+      "score": 120,
+      "growth_rate": "+380.0%",
       "is_new": false
     },
     {
       "keyword": "your",
-      "score": 80,
-      "growth_rate": "+300.0%",
+      "score": 120,
+      "growth_rate": "+1233.3%",
       "is_new": false
+    },
+    {
+      "keyword": "what",
+      "score": 100,
+      "growth_rate": "+525.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "don't",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "could",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
       "keyword": "actually",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "first",
       "score": 60,
-      "growth_rate": "+400.0%",
+      "growth_rate": "+275.0%",
       "is_new": false
     },
     {
-      "keyword": "codex",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "hacking",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "been",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "company",
+      "keyword": "code",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -192,13 +187,20 @@
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
+    },
+    {
+      "keyword": "trust",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 18,
     "Mobile": 1,
-    "DevOps": 4,
-    "Web": 1
+    "AI": 22,
+    "Web": 2,
+    "DevOps": 1,
+    "Security": 1
   },
-  "total_sources": 59
+  "total_sources": 60
 }
