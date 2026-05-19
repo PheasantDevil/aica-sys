@@ -1,46 +1,6 @@
 {
-  "date": "2026-05-18T05:05:28.182779",
+  "date": "2026-05-19T04:58:40.392037",
   "top_trends": [
-    [
-      "that",
-      {
-        "score": 150,
-        "count": 5,
-        "sources": [
-          "hacker_news",
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "with",
-      {
-        "score": 120,
-        "count": 6,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 120,
-        "count": 6,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
     [
       "what",
       {
@@ -55,10 +15,10 @@
       }
     ],
     [
-      "don't",
+      "your",
       {
-        "score": 60,
-        "count": 3,
+        "score": 80,
+        "count": 4,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -68,7 +28,20 @@
       }
     ],
     [
-      "could",
+      "with",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "against",
       {
         "score": 60,
         "count": 3,
@@ -81,12 +54,12 @@
       }
     ],
     [
-      "actually",
+      "anthropic",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
-          "dev_to",
+          "hacker_news",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -94,7 +67,7 @@
       }
     ],
     [
-      "linux",
+      "github",
       {
         "score": 40,
         "count": 2,
@@ -107,26 +80,52 @@
       }
     ],
     [
-      "code",
+      "elon",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "agents",
+      "musk",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "dev_to"
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "lost",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "lawsuit",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,72 +134,70 @@
   ],
   "rising_trends": [
     {
-      "keyword": "that",
-      "score": 150,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "with",
-      "score": 120,
-      "growth_rate": "+380.0%",
+      "keyword": "what",
+      "score": 100,
+      "growth_rate": "+138.1%",
       "is_new": false
     },
     {
       "keyword": "your",
-      "score": 120,
-      "growth_rate": "+1233.3%",
+      "score": 80,
+      "growth_rate": "+220.0%",
       "is_new": false
     },
     {
-      "keyword": "what",
-      "score": 100,
-      "growth_rate": "+525.0%",
+      "keyword": "with",
+      "score": 80,
+      "growth_rate": "+220.0%",
       "is_new": false
     },
     {
-      "keyword": "don't",
+      "keyword": "against",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "could",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "actually",
-      "score": 60,
-      "growth_rate": "+275.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "code",
+      "keyword": "anthropic",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "will",
+      "keyword": "github",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "trust",
+      "keyword": "elon",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "musk",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "lost",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "lawsuit",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Mobile": 1,
-    "AI": 22,
-    "Web": 2,
-    "DevOps": 1,
-    "Security": 1
+    "AI": 20,
+    "Security": 2,
+    "DevOps": 1
   },
   "total_sources": 60
 }
