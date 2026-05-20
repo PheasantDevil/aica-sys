@@ -1,27 +1,15 @@
 {
-  "date": "2026-05-19T04:58:40.392037",
+  "date": "2026-05-20T05:02:31.199632",
   "top_trends": [
-    [
-      "what",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
     [
       "your",
       {
-        "score": 80,
-        "count": 4,
+        "score": 240,
+        "count": 8,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -30,37 +18,53 @@
     [
       "with",
       {
-        "score": 80,
+        "score": 210,
+        "count": 7,
+        "sources": [
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "from",
+      {
+        "score": 150,
+        "count": 5,
+        "sources": [
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "google",
+      {
+        "score": 120,
+        "count": 6,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "gemini",
+      {
+        "score": 120,
         "count": 4,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "against",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "anthropic",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -69,23 +73,49 @@
     [
       "github",
       {
-        "score": 40,
-        "count": 2,
+        "score": 80,
+        "count": 4,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "elon",
+      "2026",
       {
-        "score": 40,
-        "count": 2,
+        "score": 80,
+        "count": 4,
         "sources": [
-          "hacker_news",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "tool",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agents",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -93,38 +123,12 @@
       }
     ],
     [
-      "musk",
+      "just",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "lost",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "lawsuit",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
+          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -134,70 +138,71 @@
   ],
   "rising_trends": [
     {
-      "keyword": "what",
-      "score": 100,
-      "growth_rate": "+138.1%",
-      "is_new": false
-    },
-    {
       "keyword": "your",
-      "score": 80,
-      "growth_rate": "+220.0%",
+      "score": 240,
+      "growth_rate": "+300.0%",
       "is_new": false
     },
     {
       "keyword": "with",
-      "score": 80,
-      "growth_rate": "+220.0%",
+      "score": 210,
+      "growth_rate": "+740.0%",
       "is_new": false
     },
     {
-      "keyword": "against",
-      "score": 60,
-      "growth_rate": "+566.7%",
+      "keyword": "from",
+      "score": 150,
+      "growth_rate": "+66.7%",
       "is_new": false
     },
     {
-      "keyword": "anthropic",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "keyword": "google",
+      "score": 120,
+      "growth_rate": "+122.2%",
+      "is_new": false
+    },
+    {
+      "keyword": "gemini",
+      "score": 120,
+      "growth_rate": "+650.0%",
+      "is_new": false
     },
     {
       "keyword": "github",
-      "score": 40,
+      "score": 80,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "2026",
+      "score": 80,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "elon",
-      "score": 40,
+      "keyword": "tool",
+      "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "musk",
-      "score": 40,
+      "keyword": "just",
+      "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "lost",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "lawsuit",
+      "keyword": "cloud",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 20,
+    "AI": 24,
     "Security": 2,
-    "DevOps": 1
+    "Web": 2,
+    "DevOps": 2
   },
   "total_sources": 60
 }
