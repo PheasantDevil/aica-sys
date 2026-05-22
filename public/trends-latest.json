@@ -1,28 +1,15 @@
 {
-  "date": "2026-05-21T05:08:23.714335",
+  "date": "2026-05-22T04:59:13.772459",
   "top_trends": [
-    [
-      "your",
-      {
-        "score": 180,
-        "count": 9,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
     [
       "with",
       {
-        "score": 180,
-        "count": 6,
+        "score": 240,
+        "count": 8,
         "sources": [
-          "hacker_news",
+          "tech_crunch",
           "dev_to",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -31,51 +18,38 @@
     [
       "from",
       {
-        "score": 120,
-        "count": 4,
+        "score": 180,
+        "count": 6,
         "sources": [
-          "hacker_news",
+          "tech_crunch",
           "dev_to",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "over",
+      "your",
+      {
+        "score": 160,
+        "count": 8,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "will",
       {
         "score": 80,
         "count": 4,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "2026",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -84,50 +58,76 @@
     [
       "google",
       {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "search",
+      {
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "github",
+      "waymo",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "being",
+      "robotaxis",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "spacex",
+      "into",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "worth",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -136,70 +136,70 @@
   ],
   "rising_trends": [
     {
-      "keyword": "your",
-      "score": 180,
-      "growth_rate": "+1025.0%",
-      "is_new": false
-    },
-    {
       "keyword": "with",
-      "score": 180,
-      "growth_rate": "+400.0%",
+      "score": 240,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
       "keyword": "from",
-      "score": 120,
-      "growth_rate": "+100.0%",
+      "score": 180,
+      "growth_rate": "+620.0%",
       "is_new": false
     },
     {
-      "keyword": "over",
+      "keyword": "your",
+      "score": 160,
+      "growth_rate": "+344.4%",
+      "is_new": false
+    },
+    {
+      "keyword": "will",
       "score": 80,
-      "growth_rate": "+300.0%",
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "what",
-      "score": 80,
-      "growth_rate": "+122.2%",
+      "keyword": "search",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "waymo",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "robotaxis",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "into",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "worth",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "that",
+      "score": 40,
+      "growth_rate": "+60.0%",
       "is_new": false
-    },
-    {
-      "keyword": "being",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "spacex",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "videos",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "agent",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "engineering",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
     }
   ],
   "categories": {
-    "AI": 18,
-    "DevOps": 4,
-    "Web": 2
+    "AI": 15,
+    "Mobile": 1,
+    "DevOps": 3
   },
-  "total_sources": 60
+  "total_sources": 59
 }
