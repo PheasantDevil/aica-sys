@@ -1,25 +1,11 @@
 {
-  "date": "2026-05-22T04:59:13.772459",
+  "date": "2026-05-25T05:18:41.956250",
   "top_trends": [
-    [
-      "with",
-      {
-        "score": 240,
-        "count": 8,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
     [
       "from",
       {
-        "score": 180,
-        "count": 6,
+        "score": 150,
+        "count": 5,
         "sources": [
           "tech_crunch",
           "dev_to",
@@ -30,10 +16,10 @@
       }
     ],
     [
-      "your",
+      "with",
       {
-        "score": 160,
-        "count": 8,
+        "score": 120,
+        "count": 6,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -43,12 +29,39 @@
       }
     ],
     [
-      "will",
+      "using",
+      {
+        "score": 120,
+        "count": 4,
+        "sources": [
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "deepseek",
       {
         "score": 80,
         "count": 4,
         "sources": [
-          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -69,64 +82,49 @@
       }
     ],
     [
-      "search",
+      "your",
       {
         "score": 60,
-        "count": 3,
+        "count": 6,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "waymo",
+      "this",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "tech_crunch",
-          "hacker_news"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "robotaxis",
+      "gemma",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 4,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "into",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "worth",
+      "hours",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -136,70 +134,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "with",
-      "score": 240,
-      "growth_rate": "+566.7%",
+      "keyword": "from",
+      "score": 150,
+      "growth_rate": "+500.0%",
       "is_new": false
     },
     {
-      "keyword": "from",
-      "score": 180,
-      "growth_rate": "+620.0%",
+      "keyword": "with",
+      "score": 120,
+      "growth_rate": "+650.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "using",
+      "score": 120,
+      "growth_rate": "+500.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "deepseek",
+      "score": 80,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "what",
+      "score": 80,
+      "growth_rate": "+300.0%",
       "is_new": false
     },
     {
       "keyword": "your",
-      "score": 160,
-      "growth_rate": "+344.4%",
+      "score": 60,
+      "growth_rate": "+275.0%",
       "is_new": false
     },
     {
-      "keyword": "will",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "search",
+      "keyword": "this",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "waymo",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "robotaxis",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "into",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "worth",
+      "keyword": "gemma",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "that",
+      "keyword": "hours",
       "score": 40,
-      "growth_rate": "+60.0%",
-      "is_new": false
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "build",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 15,
+    "Web": 1,
+    "DevOps": 5,
+    "AI": 11,
     "Mobile": 1,
-    "DevOps": 3
+    "Security": 1
   },
   "total_sources": 59
 }
