@@ -1,5 +1,5 @@
 {
-  "date": "2026-05-26T05:01:50.713505",
+  "date": "2026-05-27T05:13:22.169424",
   "top_trends": [
     [
       "what",
@@ -16,10 +16,10 @@
       }
     ],
     [
-      "when",
+      "from",
       {
-        "score": 90,
-        "count": 3,
+        "score": 120,
+        "count": 4,
         "sources": [
           "tech_crunch",
           "dev_to",
@@ -43,46 +43,7 @@
       }
     ],
     [
-      "about",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "2026",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "google",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "using",
+      "build",
       {
         "score": 60,
         "count": 3,
@@ -95,7 +56,7 @@
       }
     ],
     [
-      "from",
+      "with",
       {
         "score": 60,
         "count": 3,
@@ -108,10 +69,35 @@
       }
     ],
     [
-      "front",
+      "this",
       {
         "score": 60,
         "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "gemma",
+      {
+        "score": 50,
+        "count": 5,
+        "sources": [
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "does",
+      {
+        "score": 40,
+        "count": 2,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -121,10 +107,23 @@
       }
     ],
     [
-      "that",
+      "made",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "blocks",
+      {
+        "score": 40,
+        "count": 2,
         "sources": [
           "tech_crunch",
           "hacker_news"
@@ -142,46 +141,22 @@
       "is_new": false
     },
     {
-      "keyword": "when",
-      "score": 90,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "about",
-      "score": 80,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "using",
-      "score": 60,
-      "growth_rate": "+200.0%",
-      "is_new": false
-    },
-    {
       "keyword": "from",
-      "score": 60,
-      "growth_rate": "+140.0%",
+      "score": 120,
+      "growth_rate": "+650.0%",
       "is_new": false
     },
     {
-      "keyword": "front",
+      "keyword": "build",
       "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
+      "growth_rate": "+400.0%",
+      "is_new": false
     },
     {
-      "keyword": "that",
+      "keyword": "with",
       "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "than",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "growth_rate": "+66.7%",
+      "is_new": false
     },
     {
       "keyword": "does",
@@ -190,17 +165,40 @@
       "is_new": true
     },
     {
-      "keyword": "actually",
+      "keyword": "made",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "blocks",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "learned",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "online",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "more",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 14,
-    "Web": 1,
-    "DevOps": 2,
-    "Security": 1
+    "Web": 2,
+    "AI": 12,
+    "DevOps": 3
   },
   "total_sources": 59
 }
