@@ -1,29 +1,29 @@
 {
-  "date": "2026-05-27T05:13:22.169424",
+  "date": "2026-05-28T05:07:32.307742",
   "top_trends": [
     [
-      "what",
+      "with",
       {
-        "score": 150,
-        "count": 5,
+        "score": 270,
+        "count": 9,
         "sources": [
+          "hacker_news",
           "tech_crunch",
-          "dev_to",
-          "hacker_news"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "from",
+      "google",
       {
-        "score": 120,
-        "count": 4,
+        "score": 240,
+        "count": 8,
         "sources": [
+          "hacker_news",
           "tech_crunch",
-          "dev_to",
-          "hacker_news"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -35,46 +35,7 @@
         "score": 80,
         "count": 4,
         "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "build",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "with",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "this",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
+          "hacker_news",
           "dev_to"
         ],
         "related_keywords": [],
@@ -84,8 +45,8 @@
     [
       "gemma",
       {
-        "score": 50,
-        "count": 5,
+        "score": 70,
+        "count": 7,
         "sources": [
           "dev_to"
         ],
@@ -94,39 +55,78 @@
       }
     ],
     [
-      "does",
+      "what",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "made",
+      "more",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "blocks",
+      "won't",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "after",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "employee",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "charged",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,70 +135,70 @@
   ],
   "rising_trends": [
     {
-      "keyword": "what",
-      "score": 150,
-      "growth_rate": "+837.5%",
+      "keyword": "google",
+      "score": 240,
+      "growth_rate": "+200.0%",
       "is_new": false
     },
     {
-      "keyword": "from",
-      "score": 120,
-      "growth_rate": "+650.0%",
+      "keyword": "gemma",
+      "score": 70,
+      "growth_rate": "+75.0%",
       "is_new": false
-    },
-    {
-      "keyword": "build",
-      "score": 60,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "with",
-      "score": 60,
-      "growth_rate": "+66.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "does",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "made",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "blocks",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "learned",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "online",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
     },
     {
       "keyword": "more",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "won't",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "after",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "employee",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "charged",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "polymarket",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "insider",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "trading",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Web": 2,
-    "AI": 12,
-    "DevOps": 3
+    "AI": 19,
+    "DevOps": 7,
+    "Web": 1
   },
   "total_sources": 59
 }
