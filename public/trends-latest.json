@@ -1,52 +1,15 @@
 {
-  "date": "2026-05-29T05:12:08.702019",
+  "date": "2026-06-01T06:00:13.040178",
   "top_trends": [
-    [
-      "with",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "gemma",
-      {
-        "score": 60,
-        "count": 6,
-        "sources": [
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "most",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
     [
       "what",
       {
-        "score": 60,
-        "count": 3,
+        "score": 120,
+        "count": 4,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -55,8 +18,21 @@
     [
       "your",
       {
-        "score": 50,
-        "count": 5,
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "code",
+      {
+        "score": 40,
+        "count": 4,
         "sources": [
           "dev_to"
         ],
@@ -65,12 +41,12 @@
       }
     ],
     [
-      "trying",
+      "local",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -78,12 +54,25 @@
       }
     ],
     [
-      "rocket",
+      "people",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "using",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -91,12 +80,25 @@
       }
     ],
     [
-      "florida",
+      "build",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "need",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -104,26 +106,26 @@
       }
     ],
     [
-      "blue",
+      "this",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "glenn",
+      "doesn’t",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -132,72 +134,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "with",
-      "score": 100,
-      "growth_rate": "+177.8%",
-      "is_new": false
-    },
-    {
-      "keyword": "most",
-      "score": 60,
-      "growth_rate": "+566.7%",
+      "keyword": "what",
+      "score": 120,
+      "growth_rate": "+380.0%",
       "is_new": false
     },
     {
       "keyword": "your",
-      "score": 50,
-      "growth_rate": "+66.7%",
+      "score": 80,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "trying",
+      "keyword": "code",
+      "score": 40,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "local",
+      "score": 40,
+      "growth_rate": "+900.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "people",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "rocket",
+      "keyword": "build",
+      "score": 40,
+      "growth_rate": "+233.3%",
+      "is_new": false
+    },
+    {
+      "keyword": "need",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "florida",
+      "keyword": "doesn’t",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "blue",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "glenn",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "during",
+      "keyword": "github",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
       "keyword": "agent",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "score": 30,
+      "growth_rate": "+150.0%",
+      "is_new": false
     }
   ],
   "categories": {
-    "DevOps": 5,
-    "AI": 22,
-    "Security": 1,
+    "Web": 4,
+    "AI": 21,
+    "DevOps": 4,
     "Database": 1,
-    "Web": 2
+    "Mobile": 1
   },
   "total_sources": 60
 }
