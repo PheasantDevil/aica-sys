@@ -1,15 +1,54 @@
 {
-  "date": "2026-06-03T06:02:24.329224",
+  "date": "2026-06-04T05:54:45.332730",
   "top_trends": [
     [
-      "using",
+      "with",
       {
-        "score": 90,
+        "score": 180,
+        "count": 6,
+        "sources": [
+          "hacker_news",
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "spent",
+      {
+        "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "tool",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "coding",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -21,32 +60,7 @@
         "score": 60,
         "count": 3,
         "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "after",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
           "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
           "dev_to"
         ],
         "related_keywords": [],
@@ -54,78 +68,65 @@
       }
     ],
     [
-      "parts",
+      "this",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
           "tech_crunch",
-          "hacker_news"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "operating",
+      "built",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "left",
+      "could",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "about",
+      "made",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "surveillance",
+      "turn",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "writing",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -134,70 +135,71 @@
   ],
   "rising_trends": [
     {
-      "keyword": "using",
-      "score": 90,
-      "growth_rate": "+125.0%",
+      "keyword": "with",
+      "score": 180,
+      "growth_rate": "+800.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "spent",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "tool",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "coding",
+      "score": 60,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
       "keyword": "your",
       "score": 60,
-      "growth_rate": "+275.0%",
+      "growth_rate": "+140.0%",
       "is_new": false
     },
     {
-      "keyword": "what",
-      "score": 40,
-      "growth_rate": "+233.3%",
-      "is_new": false
-    },
-    {
-      "keyword": "parts",
+      "keyword": "built",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "operating",
+      "keyword": "could",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "left",
+      "keyword": "made",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "about",
+      "keyword": "turn",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "surveillance",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "writing",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "that",
+      "keyword": "signal",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 21,
-    "Web": 4,
-    "DevOps": 2
+    "AI": 19,
+    "DevOps": 7,
+    "Security": 1,
+    "Web": 1
   },
-  "total_sources": 60
+  "total_sources": 59
 }
