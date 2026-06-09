@@ -1,81 +1,40 @@
 {
-  "date": "2026-06-08T05:29:04.705095",
+  "date": "2026-06-09T05:03:20.299826",
   "top_trends": [
     [
-      "from",
+      "apple",
       {
-        "score": 180,
+        "score": 120,
         "count": 6,
         "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "what",
-      {
-        "score": 150,
-        "count": 5,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "after",
+      "real",
       {
         "score": 90,
         "count": 3,
         "sources": [
-          "tech_crunch",
+          "hacker_news",
           "dev_to",
-          "hacker_news"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "data",
+      "built",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
+          "hacker_news",
           "dev_to"
         ],
         "related_keywords": [],
@@ -83,26 +42,52 @@
       }
     ],
     [
-      "breaches",
+      "more",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "hiring",
+      "build",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "developers",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "siri",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -114,21 +99,34 @@
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "learn",
+      "what",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "tools",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -137,71 +135,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "from",
-      "score": 180,
-      "growth_rate": "+620.0%",
+      "keyword": "apple",
+      "score": 120,
+      "growth_rate": "+122.2%",
       "is_new": false
     },
     {
-      "keyword": "after",
+      "keyword": "real",
       "score": 90,
       "growth_rate": "+900.0%",
       "is_new": false
     },
     {
-      "keyword": "data",
+      "keyword": "more",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "that",
+      "keyword": "build",
+      "score": 60,
+      "growth_rate": "+233.3%",
+      "is_new": false
+    },
+    {
+      "keyword": "developers",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "breaches",
+      "keyword": "siri",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "hiring",
+      "keyword": "tools",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "with",
-      "score": 40,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "learn",
+      "keyword": "called",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "don't",
+      "keyword": "bets",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "battery",
+      "keyword": "cheaper",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "DevOps": 4,
-    "AI": 17,
-    "Mobile": 1,
-    "Web": 4
+    "AI": 22,
+    "Web": 3,
+    "DevOps": 3,
+    "Database": 1,
+    "Mobile": 1
   },
   "total_sources": 59
 }
