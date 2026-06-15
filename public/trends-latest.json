@@ -1,29 +1,40 @@
 {
-  "date": "2026-06-12T05:29:31.406060",
+  "date": "2026-06-15T06:21:54.983292",
   "top_trends": [
     [
-      "that",
+      "your",
       {
-        "score": 240,
-        "count": 8,
+        "score": 100,
+        "count": 5,
         "sources": [
           "hacker_news",
-          "dev_to",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "from",
+      "what",
       {
-        "score": 150,
-        "count": 5,
+        "score": 80,
+        "count": 4,
         "sources": [
           "hacker_news",
-          "dev_to",
-          "tech_crunch"
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "into",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -43,25 +54,51 @@
       }
     ],
     [
-      "built",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "tool",
+      "years",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "dev_to",
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "only",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "with",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "model",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -69,64 +106,26 @@
       }
     ],
     [
-      "fable",
+      "most",
       {
         "score": 40,
-        "count": 4,
+        "count": 2,
         "sources": [
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "ever",
+      "future",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
           "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "game",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "coding",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "developer",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,14 +134,20 @@
   ],
   "rising_trends": [
     {
-      "keyword": "that",
-      "score": 240,
+      "keyword": "your",
+      "score": 100,
       "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "from",
-      "score": 150,
+      "keyword": "what",
+      "score": 80,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "into",
+      "score": 80,
       "growth_rate": "+400.0%",
       "is_new": false
     },
@@ -153,52 +158,47 @@
       "is_new": false
     },
     {
-      "keyword": "built",
-      "score": 80,
-      "growth_rate": "+788.9%",
-      "is_new": false
-    },
-    {
-      "keyword": "tool",
+      "keyword": "only",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "fable",
-      "score": 40,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "ever",
+      "keyword": "model",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "game",
-      "score": 40,
-      "growth_rate": "+344.4%",
-      "is_new": false
-    },
-    {
-      "keyword": "coding",
+      "keyword": "most",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "developer",
+      "keyword": "future",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "write",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "after",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 14,
-    "DevOps": 4,
-    "Security": 1
+    "Web": 1,
+    "DevOps": 5,
+    "AI": 15,
+    "Database": 1
   },
   "total_sources": 60
 }
