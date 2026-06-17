@@ -1,13 +1,39 @@
 {
-  "date": "2026-06-16T06:32:11.101182",
+  "date": "2026-06-17T06:08:22.846275",
   "top_trends": [
     [
-      "with",
+      "make",
       {
         "score": 120,
         "count": 4,
         "sources": [
-          "hacker_news",
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "more",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
           "tech_crunch",
           "dev_to"
         ],
@@ -18,10 +44,22 @@
     [
       "about",
       {
-        "score": 120,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
           "tech_crunch",
           "dev_to"
         ],
@@ -30,38 +68,12 @@
       }
     ],
     [
-      "game",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "code",
+      "with",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
+          "tech_crunch",
           "dev_to"
         ],
         "related_keywords": [],
@@ -69,64 +81,52 @@
       }
     ],
     [
-      "into",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "models",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "found",
+      "android",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "faces",
+      "spacex",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "system",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "world",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,71 +135,70 @@
   ],
   "rising_trends": [
     {
-      "keyword": "with",
-      "score": 120,
-      "growth_rate": "+300.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "about",
+      "keyword": "make",
       "score": 120,
       "growth_rate": "+650.0%",
       "is_new": false
     },
     {
-      "keyword": "game",
+      "keyword": "more",
       "score": 80,
-      "growth_rate": "+788.9%",
-      "is_new": false
-    },
-    {
-      "keyword": "what",
-      "score": 80,
-      "growth_rate": "+788.9%",
-      "is_new": false
-    },
-    {
-      "keyword": "code",
-      "score": 60,
       "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "into",
+      "keyword": "your",
+      "score": 80,
+      "growth_rate": "+220.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "about",
       "score": 60,
       "growth_rate": "+275.0%",
       "is_new": false
     },
     {
-      "keyword": "models",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "your",
-      "score": 40,
-      "growth_rate": "+60.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "found",
+      "keyword": "android",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "faces",
+      "keyword": "spacex",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "system",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "world",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "apple",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "hide",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 17,
-    "DevOps": 4,
-    "Mobile": 1,
-    "Security": 1
+    "Mobile": 4,
+    "AI": 14,
+    "DevOps": 3
   },
   "total_sources": 60
 }
