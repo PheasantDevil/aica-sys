@@ -1,27 +1,14 @@
 {
-  "date": "2026-06-17T06:08:22.846275",
+  "date": "2026-06-18T05:54:00.502455",
   "top_trends": [
     [
-      "make",
+      "more",
       {
         "score": 120,
         "count": 4,
         "sources": [
+          "dev_to",
           "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "more",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -31,18 +18,31 @@
     [
       "your",
       {
-        "score": 80,
-        "count": 4,
+        "score": 100,
+        "count": 5,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "about",
+      "than",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "year",
       {
         "score": 60,
         "count": 3,
@@ -55,13 +55,25 @@
       }
     ],
     [
-      "that",
+      "show",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 4,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "writing",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -70,23 +82,10 @@
     [
       "with",
       {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "android",
-      {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -94,12 +93,12 @@
       }
     ],
     [
-      "spacex",
+      "image",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -107,12 +106,12 @@
       }
     ],
     [
-      "system",
+      "building",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -120,7 +119,7 @@
       }
     ],
     [
-      "world",
+      "startup",
       {
         "score": 40,
         "count": 2,
@@ -135,70 +134,71 @@
   ],
   "rising_trends": [
     {
-      "keyword": "make",
+      "keyword": "more",
       "score": 120,
       "growth_rate": "+650.0%",
       "is_new": false
     },
     {
-      "keyword": "more",
-      "score": 80,
+      "keyword": "your",
+      "score": 100,
+      "growth_rate": "+300.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "than",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "year",
+      "score": 60,
       "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "your",
-      "score": 80,
-      "growth_rate": "+220.0%",
+      "keyword": "show",
+      "score": 40,
+      "growth_rate": "+344.4%",
       "is_new": false
     },
     {
-      "keyword": "about",
-      "score": 60,
-      "growth_rate": "+275.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "android",
+      "keyword": "writing",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "spacex",
+      "keyword": "image",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "system",
+      "keyword": "building",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "world",
+      "keyword": "startup",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "apple",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "hide",
+      "keyword": "google",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Mobile": 4,
-    "AI": 14,
-    "DevOps": 3
+    "Security": 1,
+    "AI": 15,
+    "DevOps": 4,
+    "Mobile": 1
   },
-  "total_sources": 60
+  "total_sources": 59
 }
