@@ -1,14 +1,13 @@
 {
-  "date": "2026-06-18T05:54:00.502455",
+  "date": "2026-06-19T06:15:46.718001",
   "top_trends": [
     [
-      "more",
+      "built",
       {
-        "score": 120,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
           "dev_to",
-          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -18,8 +17,34 @@
     [
       "your",
       {
-        "score": 100,
-        "count": 5,
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "game",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "into",
+      {
+        "score": 60,
+        "count": 3,
         "sources": [
           "dev_to",
           "tech_crunch"
@@ -29,10 +54,36 @@
       }
     ],
     [
-      "than",
+      "challenge",
       {
         "score": 60,
         "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "more",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "after",
+      {
+        "score": 40,
+        "count": 2,
         "sources": [
           "tech_crunch",
           "hacker_news"
@@ -42,37 +93,12 @@
       }
     ],
     [
-      "year",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "writing",
+      "chips",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -80,20 +106,7 @@
       }
     ],
     [
-      "with",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "image",
+      "found",
       {
         "score": 40,
         "count": 2,
@@ -117,88 +130,76 @@
         "related_keywords": [],
         "related_topics": []
       }
-    ],
-    [
-      "startup",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
     ]
   ],
   "rising_trends": [
     {
-      "keyword": "more",
-      "score": 120,
-      "growth_rate": "+650.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "your",
-      "score": 100,
-      "growth_rate": "+300.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "than",
+      "keyword": "built",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "year",
+      "keyword": "your",
+      "score": 60,
+      "growth_rate": "+140.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "game",
+      "score": 60,
+      "growth_rate": "+275.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "into",
+      "score": 60,
+      "growth_rate": "+275.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "challenge",
       "score": 60,
       "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "show",
-      "score": 40,
-      "growth_rate": "+344.4%",
+      "keyword": "more",
+      "score": 60,
+      "growth_rate": "+275.0%",
       "is_new": false
     },
     {
-      "keyword": "writing",
+      "keyword": "after",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "image",
+      "keyword": "chips",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "building",
+      "keyword": "demo",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "startup",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "google",
+      "keyword": "apps",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Security": 1,
-    "AI": 15,
-    "DevOps": 4,
-    "Mobile": 1
+    "Security": 2,
+    "AI": 17,
+    "Web": 2,
+    "Mobile": 2,
+    "DevOps": 3
   },
   "total_sources": 59
 }
