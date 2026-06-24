@@ -1,67 +1,41 @@
 {
-  "date": "2026-06-23T04:58:08.666314",
+  "date": "2026-06-24T05:01:10.399335",
   "top_trends": [
     [
       "with",
       {
-        "score": 240,
-        "count": 12,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 180,
-        "count": 6,
-        "sources": [
-          "tech_crunch",
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "built",
-      {
         "score": 100,
         "count": 5,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "game",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agents",
+      {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "meta",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -70,48 +44,48 @@
     [
       "data",
       {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
-        "score": 70,
-        "count": 7,
-        "sources": [
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "help",
-      {
         "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "inline",
+      "from",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
           "dev_to"
         ],
         "related_keywords": [],
@@ -119,13 +93,39 @@
       }
     ],
     [
-      "claude",
+      "under",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
-          "tech_crunch",
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "words",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
           "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "time",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,71 +135,69 @@
   "rising_trends": [
     {
       "keyword": "with",
-      "score": 240,
-      "growth_rate": "+100.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "your",
-      "score": 180,
-      "growth_rate": "+350.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "built",
       "score": 100,
-      "growth_rate": "+1011.1%",
+      "growth_rate": "+66.7%",
       "is_new": false
     },
     {
-      "keyword": "data",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "show",
-      "score": 70,
-      "growth_rate": "+337.5%",
-      "is_new": false
-    },
-    {
-      "keyword": "help",
-      "score": 60,
+      "keyword": "agents",
+      "score": 90,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "claude",
+      "keyword": "meta",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "write",
+      "keyword": "data",
       "score": 60,
+      "growth_rate": "+275.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "from",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "what",
+      "score": 40,
+      "growth_rate": "+150.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "under",
+      "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "here",
-      "score": 60,
+      "keyword": "words",
+      "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "puzzle",
-      "score": 60,
+      "keyword": "time",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "agent",
+      "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 33,
-    "DevOps": 8,
-    "Web": 3,
-    "Mobile": 2,
-    "Database": 1
+    "DevOps": 2,
+    "Security": 1,
+    "AI": 14
   },
-  "total_sources": 118
+  "total_sources": 60
 }
