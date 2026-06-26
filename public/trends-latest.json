@@ -1,53 +1,29 @@
 {
-  "date": "2026-06-25T05:03:14.637991",
+  "date": "2026-06-26T05:06:59.878697",
   "top_trends": [
     [
       "that",
       {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "built",
-      {
-        "score": 60,
-        "count": 3,
+        "score": 180,
+        "count": 6,
         "sources": [
           "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "code",
+      "with",
       {
-        "score": 60,
-        "count": 3,
+        "score": 150,
+        "count": 5,
         "sources": [
           "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "data",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -56,6 +32,32 @@
     [
       "what",
       {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "apple",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
         "score": 60,
         "count": 3,
         "sources": [
@@ -67,20 +69,20 @@
       }
     ],
     [
-      "challenge",
+      "agents",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "first",
+      "read",
       {
         "score": 40,
         "count": 2,
@@ -93,7 +95,7 @@
       }
     ],
     [
-      "anthropic",
+      "time",
       {
         "score": 40,
         "count": 2,
@@ -106,12 +108,12 @@
       }
     ],
     [
-      "says",
+      "people",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -119,13 +121,13 @@
       }
     ],
     [
-      "users",
+      "world",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -134,72 +136,70 @@
   ],
   "rising_trends": [
     {
-      "keyword": "built",
-      "score": 60,
-      "growth_rate": "+566.7%",
+      "keyword": "that",
+      "score": 180,
+      "growth_rate": "+125.0%",
       "is_new": false
     },
     {
-      "keyword": "code",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "data",
-      "score": 60,
-      "growth_rate": "+275.0%",
+      "keyword": "with",
+      "score": 150,
+      "growth_rate": "+837.5%",
       "is_new": false
     },
     {
       "keyword": "what",
-      "score": 60,
-      "growth_rate": "+275.0%",
+      "score": 100,
+      "growth_rate": "+525.0%",
       "is_new": false
     },
     {
-      "keyword": "challenge",
+      "keyword": "apple",
       "score": 60,
-      "growth_rate": "+400.0%",
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "first",
+      "keyword": "read",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "anthropic",
+      "keyword": "people",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "says",
+      "keyword": "world",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "users",
+      "keyword": "last",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "employees",
+      "keyword": "still",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "build",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 16,
-    "DevOps": 2,
-    "Security": 1,
-    "Database": 2,
-    "Web": 2
+    "AI": 18,
+    "DevOps": 4,
+    "Web": 1
   },
-  "total_sources": 60
+  "total_sources": 59
 }
