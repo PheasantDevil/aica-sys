@@ -1,15 +1,27 @@
 {
-  "date": "2026-06-26T05:06:59.878697",
+  "date": "2026-06-29T05:29:07.979281",
   "top_trends": [
     [
-      "that",
+      "from",
       {
-        "score": 180,
-        "count": 6,
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "code",
+      {
+        "score": 60,
+        "count": 3,
         "sources": [
           "dev_to",
-          "hacker_news",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -18,12 +30,23 @@
     [
       "with",
       {
-        "score": 150,
-        "count": 5,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "dev_to",
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -32,10 +55,22 @@
     [
       "what",
       {
-        "score": 100,
-        "count": 5,
+        "score": 40,
+        "count": 4,
         "sources": [
-          "dev_to",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "memory",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -43,46 +78,7 @@
       }
     ],
     [
-      "apple",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "agents",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "read",
+      "that",
       {
         "score": 40,
         "count": 2,
@@ -95,7 +91,7 @@
       }
     ],
     [
-      "time",
+      "still",
       {
         "score": 40,
         "count": 2,
@@ -108,12 +104,12 @@
       }
     ],
     [
-      "people",
+      "openai",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -121,13 +117,13 @@
       }
     ],
     [
-      "world",
+      "live",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -136,49 +132,25 @@
   ],
   "rising_trends": [
     {
-      "keyword": "that",
-      "score": 180,
-      "growth_rate": "+125.0%",
+      "keyword": "from",
+      "score": 80,
+      "growth_rate": "+788.9%",
       "is_new": false
     },
     {
-      "keyword": "with",
-      "score": 150,
-      "growth_rate": "+837.5%",
-      "is_new": false
-    },
-    {
-      "keyword": "what",
-      "score": 100,
-      "growth_rate": "+525.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "apple",
+      "keyword": "code",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "read",
+      "keyword": "what",
       "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "growth_rate": "+150.0%",
+      "is_new": false
     },
     {
-      "keyword": "people",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "world",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "last",
+      "keyword": "memory",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -190,16 +162,34 @@
       "is_new": true
     },
     {
-      "keyword": "build",
+      "keyword": "openai",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "live",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "more",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "takes",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 18,
-    "DevOps": 4,
-    "Web": 1
+    "AI": 19,
+    "DevOps": 5,
+    "Web": 2
   },
-  "total_sources": 59
+  "total_sources": 60
 }
