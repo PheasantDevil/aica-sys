@@ -1,27 +1,54 @@
 {
-  "date": "2026-06-29T05:29:07.979281",
+  "date": "2026-06-30T05:00:36.734967",
   "top_trends": [
     [
-      "from",
+      "model",
       {
-        "score": 80,
+        "score": 120,
         "count": 4,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "code",
+      "coding",
       {
-        "score": 60,
-        "count": 3,
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 80,
+        "count": 4,
         "sources": [
           "dev_to",
-          "hacker_news"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -31,34 +58,22 @@
       "with",
       {
         "score": 60,
+        "count": 6,
+        "sources": [
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "free",
+      {
+        "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "dev_to"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -68,9 +83,8 @@
       "memory",
       {
         "score": 40,
-        "count": 2,
+        "count": 4,
         "sources": [
-          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -78,52 +92,39 @@
       }
     ],
     [
-      "that",
+      "south",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "still",
+      "game",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "openai",
+      "happens",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "live",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -132,55 +133,61 @@
   ],
   "rising_trends": [
     {
-      "keyword": "from",
+      "keyword": "model",
+      "score": 120,
+      "growth_rate": "+500.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "coding",
+      "score": 100,
+      "growth_rate": "+300.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "what",
+      "score": 80,
+      "growth_rate": "+400.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "your",
       "score": 80,
       "growth_rate": "+788.9%",
       "is_new": false
     },
     {
-      "keyword": "code",
+      "keyword": "with",
       "score": 60,
-      "growth_rate": "+566.7%",
+      "growth_rate": "+140.0%",
       "is_new": false
     },
     {
-      "keyword": "what",
-      "score": 40,
-      "growth_rate": "+150.0%",
-      "is_new": false
+      "keyword": "free",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "memory",
+      "keyword": "south",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "still",
+      "keyword": "game",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "openai",
+      "keyword": "happens",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "live",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "more",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "takes",
+      "keyword": "when",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -188,8 +195,10 @@
   ],
   "categories": {
     "AI": 19,
-    "DevOps": 5,
-    "Web": 2
+    "DevOps": 1,
+    "Database": 1,
+    "Web": 1,
+    "Mobile": 1
   },
   "total_sources": 60
 }
