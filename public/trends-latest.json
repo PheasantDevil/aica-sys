@@ -1,38 +1,39 @@
 {
-  "date": "2026-06-30T05:00:36.734967",
+  "date": "2026-07-01T05:20:19.549519",
   "top_trends": [
     [
-      "model",
+      "from",
       {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "coding",
-      {
-        "score": 100,
+        "score": 150,
         "count": 5,
         "sources": [
+          "tech_crunch",
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "what",
+      "google",
       {
-        "score": 80,
-        "count": 4,
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "code",
+      {
+        "score": 60,
+        "count": 3,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -42,32 +43,20 @@
       }
     ],
     [
-      "your",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "with",
+      "long",
       {
         "score": 60,
-        "count": 6,
+        "count": 3,
         "sources": [
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "free",
+      "built",
       {
         "score": 60,
         "count": 3,
@@ -80,7 +69,33 @@
       }
     ],
     [
-      "memory",
+      "your",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "this",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "claude",
       {
         "score": 40,
         "count": 4,
@@ -92,25 +107,11 @@
       }
     ],
     [
-      "south",
+      "engineer",
       {
         "score": 40,
-        "count": 2,
+        "count": 4,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "game",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
           "dev_to"
         ],
         "related_keywords": [],
@@ -118,7 +119,7 @@
       }
     ],
     [
-      "happens",
+      "after",
       {
         "score": 40,
         "count": 2,
@@ -133,71 +134,70 @@
   ],
   "rising_trends": [
     {
-      "keyword": "model",
-      "score": 120,
-      "growth_rate": "+500.0%",
+      "keyword": "from",
+      "score": 150,
+      "growth_rate": "+837.5%",
       "is_new": false
     },
     {
-      "keyword": "coding",
-      "score": 100,
-      "growth_rate": "+300.0%",
+      "keyword": "google",
+      "score": 90,
+      "growth_rate": "+900.0%",
       "is_new": false
     },
     {
-      "keyword": "what",
-      "score": 80,
-      "growth_rate": "+400.0%",
+      "keyword": "code",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "long",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "built",
+      "score": 60,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
       "keyword": "your",
-      "score": 80,
-      "growth_rate": "+788.9%",
-      "is_new": false
-    },
-    {
-      "keyword": "with",
       "score": 60,
-      "growth_rate": "+140.0%",
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "free",
+      "keyword": "this",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "south",
+      "keyword": "claude",
       "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "growth_rate": "+150.0%",
+      "is_new": false
     },
     {
-      "keyword": "game",
+      "keyword": "engineer",
       "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "growth_rate": "+233.3%",
+      "is_new": false
     },
     {
-      "keyword": "happens",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "when",
+      "keyword": "after",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 19,
-    "DevOps": 1,
-    "Database": 1,
-    "Web": 1,
+    "DevOps": 3,
+    "AI": 13,
+    "Web": 2,
     "Mobile": 1
   },
   "total_sources": 60
