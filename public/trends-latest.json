@@ -1,5 +1,5 @@
 {
-  "date": "2026-07-01T05:20:19.549519",
+  "date": "2026-07-02T04:56:19.242638",
   "top_trends": [
     [
       "from",
@@ -7,61 +7,75 @@
         "score": 150,
         "count": 5,
         "sources": [
+          "dev_to",
           "tech_crunch",
-          "hacker_news",
-          "dev_to"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "google",
+      "with",
+      {
+        "score": 120,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "first",
       {
         "score": 90,
         "count": 3,
         "sources": [
+          "dev_to",
           "tech_crunch",
-          "hacker_news",
-          "dev_to"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "code",
+      "what",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "long",
+      "2026",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "built",
+      "after",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
+          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -69,33 +83,7 @@
       }
     ],
     [
-      "your",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "this",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "claude",
+      "show",
       {
         "score": 40,
         "count": 4,
@@ -107,7 +95,7 @@
       }
     ],
     [
-      "engineer",
+      "your",
       {
         "score": 40,
         "count": 4,
@@ -119,13 +107,26 @@
       }
     ],
     [
-      "after",
+      "harness",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -140,65 +141,64 @@
       "is_new": false
     },
     {
-      "keyword": "google",
+      "keyword": "with",
+      "score": 120,
+      "growth_rate": "+380.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "first",
       "score": 90,
-      "growth_rate": "+900.0%",
+      "growth_rate": "+125.0%",
       "is_new": false
     },
     {
-      "keyword": "code",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "long",
+      "keyword": "2026",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "built",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "your",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "this",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "claude",
+      "keyword": "show",
       "score": 40,
       "growth_rate": "+150.0%",
       "is_new": false
     },
     {
-      "keyword": "engineer",
+      "keyword": "your",
       "score": 40,
-      "growth_rate": "+233.3%",
+      "growth_rate": "+344.4%",
       "is_new": false
     },
     {
-      "keyword": "after",
+      "keyword": "harness",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
+    },
+    {
+      "keyword": "open",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "sound",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "apple",
+      "score": 40,
+      "growth_rate": "+344.4%",
+      "is_new": false
     }
   ],
   "categories": {
-    "DevOps": 3,
-    "AI": 13,
-    "Web": 2,
-    "Mobile": 1
+    "DevOps": 2,
+    "AI": 17,
+    "Web": 2
   },
-  "total_sources": 60
+  "total_sources": 59
 }
