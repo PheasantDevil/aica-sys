@@ -1,82 +1,15 @@
 {
-  "date": "2026-07-06T05:08:58.123743",
+  "date": "2026-07-07T04:50:19.309502",
   "top_trends": [
-    [
-      "with",
-      {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "about",
-      {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
     [
       "from",
       {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "code",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 80,
+        "score": 120,
         "count": 4,
         "sources": [
+          "hacker_news",
           "tech_crunch",
           "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "game",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -85,10 +18,63 @@
     [
       "that",
       {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "open",
+      {
         "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "models",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "context",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
           "dev_to"
         ],
         "related_keywords": [],
@@ -98,22 +84,10 @@
     [
       "what",
       {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "engineer",
-      {
         "score": 40,
-        "count": 4,
+        "count": 2,
         "sources": [
+          "hacker_news",
           "dev_to"
         ],
         "related_keywords": [],
@@ -121,13 +95,39 @@
       }
     ],
     [
-      "will",
+      "actually",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agents",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "microsoft",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -136,61 +136,61 @@
   ],
   "rising_trends": [
     {
-      "keyword": "with",
+      "keyword": "from",
       "score": 120,
-      "growth_rate": "+100.0%",
+      "growth_rate": "+380.0%",
       "is_new": false
     },
     {
-      "keyword": "about",
-      "score": 120,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "will",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "customers",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "coding",
-      "score": 40,
-      "growth_rate": "+60.0%",
+      "keyword": "that",
+      "score": 90,
+      "growth_rate": "+125.0%",
       "is_new": false
     },
     {
-      "keyword": "been",
+      "keyword": "open",
+      "score": 60,
+      "growth_rate": "+400.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "models",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "context",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "future",
+      "keyword": "actually",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "need",
+      "keyword": "agents",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "agent",
+      "keyword": "microsoft",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "year",
+      "keyword": "still",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "escape",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -198,10 +198,10 @@
   ],
   "categories": {
     "AI": 21,
-    "Web": 4,
-    "DevOps": 5,
+    "Web": 2,
     "Security": 1,
-    "Mobile": 1
+    "Mobile": 1,
+    "DevOps": 1
   },
-  "total_sources": 60
+  "total_sources": 59
 }
