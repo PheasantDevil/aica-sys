@@ -1,66 +1,14 @@
 {
-  "date": "2026-07-08T04:12:33.075167",
+  "date": "2026-07-09T04:50:58.289556",
   "top_trends": [
     [
       "with",
       {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "july",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "time",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
-        "score": 50,
+        "score": 150,
         "count": 5,
         "sources": [
+          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -68,12 +16,52 @@
       }
     ],
     [
-      "still",
+      "which",
       {
-        "score": 40,
-        "count": 2,
+        "score": 90,
+        "count": 3,
         "sources": [
-          "hacker_news",
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "grok",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "releases",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "startup",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
           "dev_to"
         ],
         "related_keywords": [],
@@ -81,39 +69,52 @@
       }
     ],
     [
-      "years",
+      "settlement",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "video",
+      "have",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "that",
+      "open",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "source",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -125,8 +126,8 @@
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,73 +136,71 @@
   ],
   "rising_trends": [
     {
-      "keyword": "with",
-      "score": 120,
-      "growth_rate": "+650.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "july",
+      "keyword": "which",
       "score": 90,
-      "growth_rate": "+125.0%",
+      "growth_rate": "+900.0%",
       "is_new": false
     },
     {
-      "keyword": "time",
+      "keyword": "grok",
       "score": 60,
-      "growth_rate": "+400.0%",
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "still",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "years",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "video",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "from",
-      "score": 40,
-      "growth_rate": "+60.0%",
+      "keyword": "releases",
+      "score": 60,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "free",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "software",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "what",
-      "score": 40,
-      "growth_rate": "+122.2%",
+      "keyword": "startup",
+      "score": 60,
+      "growth_rate": "+566.7%",
       "is_new": false
+    },
+    {
+      "keyword": "settlement",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "have",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "open",
+      "score": 40,
+      "growth_rate": "+233.3%",
+      "is_new": false
+    },
+    {
+      "keyword": "source",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "robotics",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "4.5,",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 21,
+    "AI": 18,
     "Security": 1,
-    "DevOps": 2,
-    "Database": 1,
-    "Web": 3,
-    "Mobile": 1
+    "Web": 2,
+    "DevOps": 3
   },
   "total_sources": 60
 }
