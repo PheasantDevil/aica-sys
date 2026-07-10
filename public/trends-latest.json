@@ -1,13 +1,40 @@
 {
-  "date": "2026-07-09T04:50:58.289556",
+  "date": "2026-07-10T04:49:06.773222",
   "top_trends": [
+    [
+      "just",
+      {
+        "score": 180,
+        "count": 6,
+        "sources": [
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
     [
       "with",
       {
-        "score": 150,
+        "score": 180,
+        "count": 6,
+        "sources": [
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 100,
         "count": 5,
         "sources": [
-          "tech_crunch",
           "dev_to",
           "hacker_news"
         ],
@@ -16,26 +43,12 @@
       }
     ],
     [
-      "which",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "grok",
+      "it's",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -43,33 +56,7 @@
       }
     ],
     [
-      "releases",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "startup",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "settlement",
+      "gpt-5.6",
       {
         "score": 40,
         "count": 2,
@@ -82,20 +69,7 @@
       }
     ],
     [
-      "have",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "open",
+      "person",
       {
         "score": 40,
         "count": 2,
@@ -108,7 +82,7 @@
       }
     ],
     [
-      "source",
+      "being",
       {
         "score": 40,
         "count": 2,
@@ -121,7 +95,33 @@
       }
     ],
     [
-      "from",
+      "anthropic",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "more",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "than",
       {
         "score": 40,
         "count": 2,
@@ -136,71 +136,73 @@
   ],
   "rising_trends": [
     {
-      "keyword": "which",
-      "score": 90,
-      "growth_rate": "+900.0%",
+      "keyword": "just",
+      "score": 180,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "grok",
+      "keyword": "with",
+      "score": 180,
+      "growth_rate": "+1025.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "your",
+      "score": 100,
+      "growth_rate": "+525.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "it's",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "releases",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "startup",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "settlement",
+      "keyword": "gpt-5.6",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "have",
+      "keyword": "person",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "open",
-      "score": 40,
-      "growth_rate": "+233.3%",
-      "is_new": false
-    },
-    {
-      "keyword": "source",
+      "keyword": "being",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "robotics",
+      "keyword": "anthropic",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "4.5,",
+      "keyword": "more",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "than",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 18,
+    "AI": 20,
+    "Database": 1,
     "Security": 1,
+    "Mobile": 1,
     "Web": 2,
     "DevOps": 3
   },
-  "total_sources": 60
+  "total_sources": 59
 }
