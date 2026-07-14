@@ -1,66 +1,28 @@
 {
-  "date": "2026-07-13T04:28:23.765161",
+  "date": "2026-07-14T03:55:12.707327",
   "top_trends": [
+    [
+      "more",
+      {
+        "score": 120,
+        "count": 4,
+        "sources": [
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
     [
       "code",
       {
         "score": 100,
         "count": 5,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "write",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "with",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "articles",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -69,10 +31,48 @@
     [
       "what",
       {
-        "score": 40,
-        "count": 2,
+        "score": 80,
+        "count": 4,
         "sources": [
-          "hacker_news",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 60,
+        "count": 6,
+        "sources": [
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "just",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
           "dev_to"
         ],
         "related_keywords": [],
@@ -80,52 +80,52 @@
       }
     ],
     [
-      "claude",
+      "against",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "reading",
+      "live",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "learned",
+      "through",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "free",
+      "game",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -134,60 +134,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "write",
+      "keyword": "more",
+      "score": 120,
+      "growth_rate": "+200.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "code",
+      "score": 100,
+      "growth_rate": "+233.3%",
+      "is_new": false
+    },
+    {
+      "keyword": "what",
+      "score": 80,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "show",
       "score": 60,
-      "growth_rate": "+566.7%",
+      "growth_rate": "+140.0%",
       "is_new": false
     },
     {
-      "keyword": "articles",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "claude",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "reading",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "learned",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "free",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "without",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "it's",
-      "score": 20,
-      "growth_rate": "+122.2%",
+      "keyword": "just",
+      "score": 60,
+      "growth_rate": "+66.7%",
       "is_new": false
+    },
+    {
+      "keyword": "against",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "live",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "through",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "game",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "make",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
+    "Mobile": 1,
     "AI": 20,
+    "DevOps": 4,
     "Database": 1,
-    "DevOps": 2,
-    "Web": 1,
-    "Security": 1
+    "Web": 2
   },
-  "total_sources": 60
+  "total_sources": 59
 }
