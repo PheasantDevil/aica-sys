@@ -1,8 +1,22 @@
 {
-  "date": "2026-07-14T03:55:12.707327",
+  "date": "2026-07-15T03:56:38.524749",
   "top_trends": [
     [
-      "more",
+      "with",
+      {
+        "score": 150,
+        "count": 5,
+        "sources": [
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
       {
         "score": 120,
         "count": 4,
@@ -16,37 +30,12 @@
       }
     ],
     [
-      "code",
+      "from",
       {
         "score": 100,
         "count": 5,
         "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
           "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
-        "score": 60,
-        "count": 6,
-        "sources": [
           "hacker_news"
         ],
         "related_keywords": [],
@@ -56,6 +45,19 @@
     [
       "your",
       {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "website",
+      {
         "score": 60,
         "count": 3,
         "sources": [
@@ -67,20 +69,46 @@
       }
     ],
     [
-      "just",
+      "model",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "tech_crunch",
-          "dev_to"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "against",
+      "when",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "cash",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "training",
       {
         "score": 40,
         "count": 2,
@@ -93,38 +121,12 @@
       }
     ],
     [
-      "live",
+      "warning",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "through",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "game",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -134,72 +136,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "more",
+      "keyword": "that",
       "score": 120,
       "growth_rate": "+200.0%",
       "is_new": false
     },
     {
-      "keyword": "code",
+      "keyword": "from",
       "score": 100,
-      "growth_rate": "+233.3%",
+      "growth_rate": "+150.0%",
       "is_new": false
     },
     {
-      "keyword": "what",
-      "score": 80,
-      "growth_rate": "+100.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "show",
+      "keyword": "website",
       "score": 60,
-      "growth_rate": "+140.0%",
-      "is_new": false
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "just",
+      "keyword": "model",
       "score": 60,
-      "growth_rate": "+66.7%",
-      "is_new": false
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "against",
+      "keyword": "when",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "live",
+      "keyword": "cash",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "through",
+      "keyword": "training",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "game",
+      "keyword": "warning",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "make",
+      "keyword": "public",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "stop",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Mobile": 1,
-    "AI": 20,
-    "DevOps": 4,
-    "Database": 1,
-    "Web": 2
+    "Web": 4,
+    "AI": 21,
+    "DevOps": 5,
+    "Security": 2,
+    "Mobile": 1
   },
   "total_sources": 59
 }
