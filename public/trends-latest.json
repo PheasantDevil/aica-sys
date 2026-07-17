@@ -1,15 +1,42 @@
 {
-  "date": "2026-07-16T03:59:19.205640",
+  "date": "2026-07-17T03:58:20.896333",
   "top_trends": [
     [
       "with",
       {
-        "score": 150,
+        "score": 180,
+        "count": 6,
+        "sources": [
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "after",
+      {
+        "score": 100,
         "count": 5,
         "sources": [
           "tech_crunch",
-          "hacker_news",
           "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -18,38 +45,22 @@
     [
       "open",
       {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "more",
-      {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
-      {
         "score": 80,
         "count": 4,
         "sources": [
-          "hacker_news",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "built",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
           "dev_to"
         ],
         "related_keywords": [],
@@ -57,26 +68,13 @@
       }
     ],
     [
-      "should",
+      "chat",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "have",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -85,50 +83,50 @@
     [
       "source",
       {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "than",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "video",
-      {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
           "dev_to",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "made",
+      "claude",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "tired",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "going",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -137,64 +135,59 @@
   ],
   "rising_trends": [
     {
+      "keyword": "after",
+      "score": 100,
+      "growth_rate": "+300.0%",
+      "is_new": false
+    },
+    {
       "keyword": "open",
-      "score": 120,
-      "growth_rate": "+200.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "more",
-      "score": 120,
-      "growth_rate": "+200.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "that",
       "score": 80,
-      "growth_rate": "+1900.0%",
+      "growth_rate": "+185.7%",
       "is_new": false
     },
     {
-      "keyword": "should",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
+      "keyword": "built",
+      "score": 40,
+      "growth_rate": "+150.0%",
+      "is_new": false
     },
     {
-      "keyword": "video",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "made",
+      "keyword": "chat",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "codex",
+      "keyword": "source",
+      "score": 40,
+      "growth_rate": "+233.3%",
+      "is_new": false
+    },
+    {
+      "keyword": "tired",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "file",
+      "keyword": "going",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "agents",
+      "keyword": "launch",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Database": 2,
-    "AI": 16,
-    "Web": 4,
+    "AI": 18,
+    "DevOps": 6,
+    "Security": 2,
+    "Web": 2,
     "Mobile": 1
   },
   "total_sources": 59
