@@ -1,15 +1,15 @@
 {
-  "date": "2026-07-17T03:58:20.896333",
+  "date": "2026-07-20T04:34:25.908068",
   "top_trends": [
     [
-      "with",
+      "what",
       {
         "score": 180,
         "count": 6,
         "sources": [
-          "tech_crunch",
           "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -18,11 +18,40 @@
     [
       "after",
       {
-        "score": 100,
-        "count": 5,
+        "score": 120,
+        "count": 4,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "free",
+      {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -31,10 +60,9 @@
     [
       "your",
       {
-        "score": 90,
+        "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
           "dev_to",
           "hacker_news"
         ],
@@ -43,45 +71,20 @@
       }
     ],
     [
-      "open",
+      "world",
       {
-        "score": 80,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "built",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "chat",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "source",
+      "with",
       {
         "score": 40,
         "count": 2,
@@ -94,7 +97,7 @@
       }
     ],
     [
-      "claude",
+      "code",
       {
         "score": 40,
         "count": 2,
@@ -107,7 +110,7 @@
       }
     ],
     [
-      "tired",
+      "rust",
       {
         "score": 40,
         "count": 2,
@@ -120,13 +123,13 @@
       }
     ],
     [
-      "going",
+      "hardware",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,60 +138,70 @@
   ],
   "rising_trends": [
     {
+      "keyword": "what",
+      "score": 180,
+      "growth_rate": "+1025.0%",
+      "is_new": false
+    },
+    {
       "keyword": "after",
-      "score": 100,
-      "growth_rate": "+300.0%",
+      "score": 120,
+      "growth_rate": "+380.0%",
       "is_new": false
     },
     {
-      "keyword": "open",
-      "score": 80,
-      "growth_rate": "+185.7%",
+      "keyword": "that",
+      "score": 90,
+      "growth_rate": "+462.5%",
       "is_new": false
     },
     {
-      "keyword": "built",
+      "keyword": "free",
+      "score": 90,
+      "growth_rate": "+900.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "your",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "world",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "with",
       "score": 40,
-      "growth_rate": "+150.0%",
+      "growth_rate": "+60.0%",
       "is_new": false
     },
     {
-      "keyword": "chat",
+      "keyword": "rust",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "source",
-      "score": 40,
-      "growth_rate": "+233.3%",
-      "is_new": false
-    },
-    {
-      "keyword": "tired",
+      "keyword": "hardware",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "going",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "launch",
+      "keyword": "coding",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 18,
-    "DevOps": 6,
-    "Security": 2,
-    "Web": 2,
-    "Mobile": 1
+    "AI": 14,
+    "Web": 4,
+    "DevOps": 3
   },
-  "total_sources": 59
+  "total_sources": 60
 }
