@@ -1,93 +1,15 @@
 {
-  "date": "2026-07-21T04:13:41.047361",
+  "date": "2026-07-22T04:15:09.011561",
   "top_trends": [
     [
-      "your",
+      "with",
       {
-        "score": 120,
-        "count": 4,
+        "score": 210,
+        "count": 7,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "founder",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "most",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "year",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "ai-powered",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "after",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -96,22 +18,24 @@
     [
       "openai",
       {
-        "score": 40,
-        "count": 2,
+        "score": 90,
+        "count": 3,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "kimi",
+      "that",
       {
-        "score": 20,
-        "count": 2,
+        "score": 80,
+        "count": 4,
         "sources": [
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -119,11 +43,90 @@
       }
     ],
     [
-      "physics",
+      "apple",
       {
-        "score": 20,
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "hugging",
+      {
+        "score": 40,
         "count": 2,
         "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "face",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "jack",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "dorsey",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agents",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "says",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -133,66 +136,71 @@
   ],
   "rising_trends": [
     {
-      "keyword": "your",
-      "score": 120,
-      "growth_rate": "+650.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "what",
-      "score": 80,
-      "growth_rate": "+122.2%",
-      "is_new": false
-    },
-    {
-      "keyword": "founder",
-      "score": 40,
-      "growth_rate": "+900.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "most",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "year",
-      "score": 40,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "ai-powered",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "after",
-      "score": 40,
-      "growth_rate": "+60.0%",
+      "keyword": "with",
+      "score": 210,
+      "growth_rate": "+740.0%",
       "is_new": false
     },
     {
       "keyword": "openai",
+      "score": 90,
+      "growth_rate": "+125.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "that",
+      "score": 80,
+      "growth_rate": "+400.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "apple",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "hugging",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "code",
-      "score": 20,
-      "growth_rate": "+66.7%",
-      "is_new": false
+      "keyword": "face",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "jack",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "dorsey",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "agents",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "says",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 21,
-    "DevOps": 7,
-    "Database": 1,
-    "Web": 1,
-    "Mobile": 2
+    "AI": 18,
+    "DevOps": 5,
+    "Security": 2,
+    "Web": 2
   },
-  "total_sources": 60
+  "total_sources": 59
 }
