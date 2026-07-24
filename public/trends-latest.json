@@ -1,20 +1,6 @@
 {
-  "date": "2026-07-23T04:13:19.417703",
+  "date": "2026-07-24T04:12:34.842789",
   "top_trends": [
-    [
-      "after",
-      {
-        "score": 150,
-        "count": 5,
-        "sources": [
-          "dev_to",
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
     [
       "with",
       {
@@ -22,34 +8,21 @@
         "count": 4,
         "sources": [
           "dev_to",
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "that",
+      "claude",
       {
         "score": 90,
         "count": 3,
         "sources": [
           "dev_to",
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "dev_to",
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -70,10 +43,10 @@
       }
     ],
     [
-      "should",
+      "that",
       {
-        "score": 60,
-        "count": 3,
+        "score": 80,
+        "count": 4,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -83,51 +56,76 @@
       }
     ],
     [
-      "know",
+      "startup",
       {
         "score": 60,
         "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "gemma",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "build",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "against",
-      {
-        "score": 40,
-        "count": 2,
         "sources": [
           "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "software",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "into",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agents",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
           "hacker_news"
         ],
         "related_keywords": [],
@@ -137,28 +135,16 @@
   ],
   "rising_trends": [
     {
-      "keyword": "after",
-      "score": 150,
-      "growth_rate": "+500.0%",
-      "is_new": false
-    },
-    {
       "keyword": "with",
       "score": 120,
-      "growth_rate": "+233.3%",
+      "growth_rate": "+200.0%",
       "is_new": false
     },
     {
-      "keyword": "that",
+      "keyword": "claude",
       "score": 90,
-      "growth_rate": "+650.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "what",
-      "score": 80,
-      "growth_rate": "+122.2%",
-      "is_new": false
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
       "keyword": "your",
@@ -167,41 +153,54 @@
       "is_new": false
     },
     {
-      "keyword": "should",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "know",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "gemma",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "build",
-      "score": 60,
-      "growth_rate": "+300.0%",
+      "keyword": "that",
+      "score": 80,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "against",
+      "keyword": "startup",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "what",
+      "score": 60,
+      "growth_rate": "+66.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "software",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "into",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "show",
+      "score": 40,
+      "growth_rate": "+166.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "models",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 23,
-    "DevOps": 8,
-    "Database": 2,
-    "Web": 1
+    "AI": 22,
+    "DevOps": 6,
+    "Web": 3,
+    "Security": 2,
+    "Mobile": 2
   },
   "total_sources": 60
 }
