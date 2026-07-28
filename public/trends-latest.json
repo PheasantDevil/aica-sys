@@ -1,13 +1,53 @@
 {
-  "date": "2026-07-27T04:34:45.511743",
+  "date": "2026-07-28T03:58:50.328260",
   "top_trends": [
+    [
+      "with",
+      {
+        "score": 150,
+        "count": 5,
+        "sources": [
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
     [
       "that",
       {
         "score": 120,
         "count": 4,
         "sources": [
-          "hacker_news",
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "build",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
           "dev_to",
           "tech_crunch"
         ],
@@ -18,49 +58,10 @@
     [
       "after",
       {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "teaching",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
         "score": 40,
-        "count": 4,
+        "count": 2,
         "sources": [
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -68,65 +69,65 @@
       }
     ],
     [
-      "face",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "make",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "more",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "i've",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "founder",
+      "2026",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "dev_to",
-          "tech_crunch"
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "through",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "open",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "months",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "from",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,66 +136,72 @@
   ],
   "rising_trends": [
     {
+      "keyword": "with",
+      "score": 150,
+      "growth_rate": "+206.1%",
+      "is_new": false
+    },
+    {
       "keyword": "that",
       "score": 120,
       "growth_rate": "+650.0%",
       "is_new": false
     },
     {
-      "keyword": "after",
-      "score": 90,
-      "growth_rate": "+125.0%",
+      "keyword": "build",
+      "score": 60,
+      "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "your",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "teaching",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "show",
-      "score": 40,
-      "growth_rate": "+166.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "make",
+      "keyword": "2026",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "more",
+      "keyword": "through",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "i've",
+      "keyword": "open",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "founder",
+      "keyword": "months",
       "score": 40,
-      "growth_rate": "+900.0%",
-      "is_new": false
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "from",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "control",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "over",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "DevOps": 6,
-    "Database": 1,
-    "AI": 15,
+    "AI": 17,
+    "DevOps": 4,
+    "Web": 6,
     "Security": 2,
-    "Web": 3
+    "Mobile": 1
   },
-  "total_sources": 60
+  "total_sources": 59
 }
