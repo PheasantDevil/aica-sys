@@ -1,14 +1,14 @@
 {
-  "date": "2026-07-28T03:58:50.328260",
+  "date": "2026-07-29T04:09:57.443650",
   "top_trends": [
     [
       "with",
       {
-        "score": 150,
-        "count": 5,
+        "score": 120,
+        "count": 4,
         "sources": [
-          "dev_to",
           "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -16,13 +16,27 @@
       }
     ],
     [
-      "that",
+      "security",
       {
-        "score": 120,
-        "count": 4,
+        "score": 90,
+        "count": 3,
         "sources": [
-          "dev_to",
           "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agents",
+      {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -36,98 +50,85 @@
         "count": 3,
         "sources": [
           "dev_to",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "build",
+      "browser",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "dev_to",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "after",
+      "building",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "attack",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "button",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "give",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "over",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "2026",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "through",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "open",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "months",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -136,55 +137,49 @@
   ],
   "rising_trends": [
     {
-      "keyword": "with",
-      "score": 150,
-      "growth_rate": "+206.1%",
+      "keyword": "security",
+      "score": 90,
+      "growth_rate": "+900.0%",
       "is_new": false
     },
     {
-      "keyword": "that",
-      "score": 120,
-      "growth_rate": "+650.0%",
+      "keyword": "agents",
+      "score": 90,
+      "growth_rate": "+125.0%",
       "is_new": false
     },
     {
-      "keyword": "build",
+      "keyword": "your",
       "score": 60,
-      "growth_rate": "+300.0%",
+      "growth_rate": "+275.0%",
       "is_new": false
     },
     {
-      "keyword": "2026",
+      "keyword": "browser",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "building",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "through",
+      "keyword": "attack",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "open",
+      "keyword": "button",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "months",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "from",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "control",
+      "keyword": "give",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -194,14 +189,19 @@
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
+    },
+    {
+      "keyword": "ready",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 17,
-    "DevOps": 4,
-    "Web": 6,
-    "Security": 2,
-    "Mobile": 1
+    "Security": 3,
+    "AI": 15,
+    "Web": 5,
+    "DevOps": 6
   },
-  "total_sources": 59
+  "total_sources": 60
 }
