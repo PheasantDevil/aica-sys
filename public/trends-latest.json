@@ -1,69 +1,12 @@
 {
-  "date": "2026-07-30T03:54:58.446490",
+  "date": "2026-07-31T04:20:32.088190",
   "top_trends": [
     [
       "that",
       {
-        "score": 150,
-        "count": 5,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "agents",
-      {
-        "score": 150,
-        "count": 5,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "security",
-      {
-        "score": 120,
+        "score": 80,
         "count": 4,
         "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "agent",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "2026",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
           "dev_to",
           "hacker_news"
         ],
@@ -78,7 +21,71 @@
         "count": 4,
         "sources": [
           "tech_crunch",
-          "dev_to"
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "apple",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "built",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "2026",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "says",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "google",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -86,19 +93,6 @@
     ],
     [
       "from",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "chain",
       {
         "score": 40,
         "count": 2,
@@ -111,7 +105,7 @@
       }
     ],
     [
-      "running",
+      "three",
       {
         "score": 40,
         "count": 2,
@@ -124,12 +118,12 @@
       }
     ],
     [
-      "first",
+      "real",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -140,70 +134,72 @@
   "rising_trends": [
     {
       "keyword": "that",
-      "score": 150,
-      "growth_rate": "+66.7%",
+      "score": 80,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "agents",
-      "score": 150,
+      "keyword": "with",
+      "score": 80,
+      "growth_rate": "+220.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "apple",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "built",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "says",
+      "score": 40,
       "growth_rate": "+150.0%",
       "is_new": false
     },
     {
-      "keyword": "security",
-      "score": 120,
-      "growth_rate": "+1233.3%",
-      "is_new": false
-    },
-    {
-      "keyword": "agent",
-      "score": 90,
-      "growth_rate": "+275.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "2026",
-      "score": 90,
-      "growth_rate": "+125.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "chain",
+      "keyword": "google",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "running",
+      "keyword": "three",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "first",
+      "keyword": "real",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "july",
+      "keyword": "cloud",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "will",
+      "keyword": "public",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 21,
-    "DevOps": 7,
+    "AI": 19,
     "Security": 4,
-    "Web": 4
+    "DevOps": 7,
+    "Mobile": 1,
+    "Database": 1,
+    "Web": 3
   },
   "total_sources": 59
 }
