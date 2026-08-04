@@ -1,14 +1,53 @@
 {
-  "date": "2026-08-03T04:27:57.940747",
+  "date": "2026-08-04T04:10:55.352472",
   "top_trends": [
     [
-      "still",
+      "what",
+      {
+        "score": 140,
+        "count": 7,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
       {
         "score": 100,
         "count": 5,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "open",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "with",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -17,23 +56,23 @@
     [
       "your",
       {
-        "score": 90,
+        "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "show",
+      "source",
       {
-        "score": 80,
-        "count": 8,
+        "score": 40,
+        "count": 2,
         "sources": [
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -41,37 +80,12 @@
       }
     ],
     [
-      "tools",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "says",
+      "kimi",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -79,52 +93,39 @@
       }
     ],
     [
-      "from",
+      "code",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "linux",
+      "first",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "make",
+      "replacing",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "global",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -133,58 +134,71 @@
   ],
   "rising_trends": [
     {
-      "keyword": "still",
+      "keyword": "what",
+      "score": 140,
+      "growth_rate": "+775.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "that",
       "score": 100,
       "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "show",
-      "score": 80,
-      "growth_rate": "+100.0%",
+      "keyword": "open",
+      "score": 60,
+      "growth_rate": "+185.7%",
       "is_new": false
     },
     {
-      "keyword": "tools",
-      "score": 80,
-      "growth_rate": "+566.7%",
+      "keyword": "with",
+      "score": 60,
+      "growth_rate": "+200.0%",
       "is_new": false
     },
     {
-      "keyword": "what",
-      "score": 40,
-      "growth_rate": "+150.0%",
+      "keyword": "your",
+      "score": 60,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "says",
-      "score": 40,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "linux",
+      "keyword": "source",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "global",
+      "keyword": "kimi",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "built",
-      "score": 20,
-      "growth_rate": "+122.2%",
-      "is_new": false
+      "keyword": "code",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "replacing",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "finally",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 13,
-    "Web": 3,
-    "DevOps": 1
+    "AI": 15,
+    "DevOps": 7,
+    "Database": 1,
+    "Web": 2
   },
   "total_sources": 60
 }
