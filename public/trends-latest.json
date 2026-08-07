@@ -1,14 +1,13 @@
 {
-  "date": "2026-08-06T04:09:20.215905",
+  "date": "2026-08-07T03:48:20.988437",
   "top_trends": [
     [
-      "code",
+      "your",
       {
-        "score": 90,
+        "score": 60,
         "count": 3,
         "sources": [
           "dev_to",
-          "hacker_news",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -18,8 +17,8 @@
     [
       "what",
       {
-        "score": 70,
-        "count": 7,
+        "score": 40,
+        "count": 4,
         "sources": [
           "dev_to"
         ],
@@ -28,33 +27,7 @@
       }
     ],
     [
-      "muse",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "changes",
+      "open",
       {
         "score": 40,
         "count": 2,
@@ -67,7 +40,7 @@
       }
     ],
     [
-      "google",
+      "free",
       {
         "score": 40,
         "count": 2,
@@ -80,7 +53,7 @@
       }
     ],
     [
-      "jeff",
+      "users",
       {
         "score": 40,
         "count": 2,
@@ -93,12 +66,12 @@
       }
     ],
     [
-      "dean",
+      "into",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -106,12 +79,12 @@
       }
     ],
     [
-      "agent",
+      "it's",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -119,12 +92,38 @@
       }
     ],
     [
-      "product",
+      "learn",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "with",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "this",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -134,70 +133,69 @@
   ],
   "rising_trends": [
     {
-      "keyword": "code",
-      "score": 90,
-      "growth_rate": "+125.0%",
+      "keyword": "your",
+      "score": 60,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
       "keyword": "what",
-      "score": 70,
-      "growth_rate": "+337.5%",
+      "score": 40,
+      "growth_rate": "+150.0%",
       "is_new": false
     },
     {
-      "keyword": "muse",
-      "score": 60,
-      "growth_rate": "+900.0%",
+      "keyword": "open",
+      "score": 40,
+      "growth_rate": "+90.5%",
       "is_new": false
     },
     {
-      "keyword": "that",
-      "score": 60,
-      "growth_rate": "+275.0%",
+      "keyword": "free",
+      "score": 40,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "changes",
+      "keyword": "users",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "jeff",
+      "keyword": "into",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "dean",
+      "keyword": "it's",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "agent",
+      "keyword": "learn",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "product",
+      "keyword": "calling",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "can't",
+      "keyword": "hack",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 16,
-    "Mobile": 1,
-    "DevOps": 3
+    "DevOps": 7,
+    "AI": 12
   },
   "total_sources": 60
 }
