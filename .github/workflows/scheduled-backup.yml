@@ -39,7 +39,7 @@ jobs:
 
       - name: Upload backup to storage
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: daily-backup-${{ github.run_number }}
           path: backups/*.tar.gz
