@@ -1,105 +1,14 @@
 {
-  "date": "2026-08-10T03:10:06.221340",
+  "date": "2026-08-11T03:03:06.270976",
   "top_trends": [
     [
-      "what",
+      "your",
       {
-        "score": 140,
-        "count": 7,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "everything",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "this",
-      {
-        "score": 60,
-        "count": 3,
+        "score": 100,
+        "count": 5,
         "sources": [
           "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "more",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "when",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "word",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "content",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -108,8 +17,73 @@
     [
       "with",
       {
-        "score": 40,
-        "count": 2,
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "mark",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "stop",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "have",
+      {
+        "score": 60,
+        "count": 3,
         "sources": [
           "dev_to",
           "tech_crunch"
@@ -119,12 +93,39 @@
       }
     ],
     [
-      "your",
+      "model",
       {
-        "score": 30,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agent",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "attacks",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -133,66 +134,71 @@
   ],
   "rising_trends": [
     {
-      "keyword": "what",
-      "score": 140,
-      "growth_rate": "+775.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "everything",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "more",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "when",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "word",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "content",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "with",
-      "score": 40,
-      "growth_rate": "+344.4%",
-      "is_new": false
-    },
-    {
       "keyword": "your",
-      "score": 30,
-      "growth_rate": "+150.0%",
+      "score": 100,
+      "growth_rate": "+66.7%",
       "is_new": false
     },
     {
-      "keyword": "building",
-      "score": 20,
+      "keyword": "mark",
+      "score": 60,
       "growth_rate": "+400.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "stop",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "have",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "model",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "attacks",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "system",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "management",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "cyber",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "show",
+      "score": 20,
+      "growth_rate": "+66.7%",
       "is_new": false
     }
   ],
   "categories": {
-    "AI": 11,
-    "DevOps": 4,
-    "Database": 1,
-    "Web": 3,
-    "Security": 1
+    "AI": 20,
+    "Security": 1,
+    "Web": 1,
+    "DevOps": 1
   },
   "total_sources": 60
 }
