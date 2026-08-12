@@ -1,86 +1,74 @@
 {
-  "date": "2026-08-11T03:03:06.270976",
+  "date": "2026-08-12T03:21:41.137936",
   "top_trends": [
     [
-      "your",
+      "with",
       {
-        "score": 100,
-        "count": 5,
+        "score": 120,
+        "count": 6,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "with",
+      "linux",
+      {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "from",
       {
         "score": 80,
         "count": 4,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "that",
+      "into",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "mark",
+      "company",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "stop",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "have",
+      "their",
       {
         "score": 60,
         "count": 3,
@@ -93,12 +81,11 @@
       }
     ],
     [
-      "model",
+      "show",
       {
         "score": 40,
-        "count": 2,
+        "count": 4,
         "sources": [
-          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -106,26 +93,39 @@
       }
     ],
     [
-      "agent",
+      "openai’s",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "attacks",
+      "after",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "making",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -134,69 +134,69 @@
   ],
   "rising_trends": [
     {
-      "keyword": "your",
-      "score": 100,
-      "growth_rate": "+66.7%",
+      "keyword": "with",
+      "score": 120,
+      "growth_rate": "+100.0%",
       "is_new": false
     },
     {
-      "keyword": "mark",
-      "score": 60,
-      "growth_rate": "+400.0%",
+      "keyword": "linux",
+      "score": 90,
+      "growth_rate": "+900.0%",
       "is_new": false
     },
     {
-      "keyword": "stop",
+      "keyword": "from",
+      "score": 80,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "company",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "have",
+      "keyword": "their",
       "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "model",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "attacks",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "system",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "management",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "cyber",
-      "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
       "keyword": "show",
-      "score": 20,
-      "growth_rate": "+66.7%",
+      "score": 40,
+      "growth_rate": "+150.0%",
       "is_new": false
+    },
+    {
+      "keyword": "openai’s",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "after",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "making",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "working",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 20,
-    "Security": 1,
+    "AI": 13,
+    "Security": 2,
     "Web": 1,
     "DevOps": 1
   },
