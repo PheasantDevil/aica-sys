@@ -1,12 +1,13 @@
 {
-  "date": "2026-08-12T03:21:41.137936",
+  "date": "2026-08-13T03:25:03.223806",
   "top_trends": [
     [
-      "with",
+      "that",
       {
-        "score": 120,
-        "count": 6,
+        "score": 90,
+        "count": 3,
         "sources": [
+          "tech_crunch",
           "hacker_news",
           "dev_to"
         ],
@@ -15,21 +16,7 @@
       }
     ],
     [
-      "linux",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
+      "with",
       {
         "score": 80,
         "count": 4,
@@ -42,26 +29,13 @@
       }
     ],
     [
-      "into",
+      "what",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "company",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -73,53 +47,80 @@
         "score": 60,
         "count": 3,
         "sources": [
-          "dev_to",
-          "tech_crunch"
+          "tech_crunch",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "show",
+      "some",
       {
-        "score": 40,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news"
+          "tech_crunch",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "openai’s",
+      "finally",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "happy",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "after",
+      "model",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "making",
+      "javascript",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "giving",
       {
         "score": 40,
         "count": 2,
@@ -135,70 +136,72 @@
   "rising_trends": [
     {
       "keyword": "with",
-      "score": 120,
-      "growth_rate": "+100.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "linux",
-      "score": 90,
-      "growth_rate": "+900.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "from",
       "score": 80,
       "growth_rate": "+100.0%",
       "is_new": false
     },
     {
-      "keyword": "company",
+      "keyword": "some",
       "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "their",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "show",
-      "score": 40,
-      "growth_rate": "+150.0%",
+      "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "openai’s",
+      "keyword": "finally",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "happy",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "after",
+      "keyword": "javascript",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "making",
+      "keyword": "giving",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "working",
+      "keyword": "keep",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "agents",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "someone",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "raises",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 13,
-    "Security": 2,
-    "Web": 1,
-    "DevOps": 1
+    "AI": 21,
+    "Database": 1,
+    "Mobile": 2,
+    "DevOps": 3,
+    "Web": 4,
+    "Security": 2
   },
-  "total_sources": 60
+  "total_sources": 59
 }
