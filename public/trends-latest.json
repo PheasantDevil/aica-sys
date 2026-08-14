@@ -1,15 +1,15 @@
 {
-  "date": "2026-08-13T03:25:03.223806",
+  "date": "2026-08-14T03:22:44.295600",
   "top_trends": [
     [
       "that",
       {
-        "score": 90,
-        "count": 3,
+        "score": 120,
+        "count": 4,
         "sources": [
+          "dev_to",
           "tech_crunch",
-          "hacker_news",
-          "dev_to"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -18,115 +18,116 @@
     [
       "with",
       {
+        "score": 120,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "works",
+      {
         "score": 80,
         "count": 4,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "what",
+      "game",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "their",
+      "agents",
       {
         "score": 60,
         "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "gemini",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "gpt-5.6",
+      {
+        "score": 40,
+        "count": 2,
         "sources": [
           "tech_crunch",
-          "dev_to"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "some",
+      "harness",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
           "tech_crunch",
-          "dev_to"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "finally",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "happy",
+      "been",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "model",
+      "from",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "javascript",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "giving",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,73 +136,71 @@
   ],
   "rising_trends": [
     {
+      "keyword": "that",
+      "score": 120,
+      "growth_rate": "+1233.3%",
+      "is_new": false
+    },
+    {
       "keyword": "with",
+      "score": 120,
+      "growth_rate": "+200.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "works",
       "score": 80,
-      "growth_rate": "+100.0%",
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "some",
+      "keyword": "game",
       "score": 60,
-      "growth_rate": "+300.0%",
+      "growth_rate": "+566.7%",
       "is_new": false
-    },
-    {
-      "keyword": "finally",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "happy",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "javascript",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "giving",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "keep",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
     },
     {
       "keyword": "agents",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "gemini",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "someone",
+      "keyword": "gpt-5.6",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "raises",
+      "keyword": "harness",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "been",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "will",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 21,
-    "Database": 1,
-    "Mobile": 2,
-    "DevOps": 3,
-    "Web": 4,
-    "Security": 2
+    "AI": 19,
+    "Web": 3,
+    "Security": 1,
+    "DevOps": 1
   },
-  "total_sources": 59
+  "total_sources": 60
 }
