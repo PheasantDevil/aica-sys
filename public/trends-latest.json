@@ -1,13 +1,104 @@
 {
-  "date": "2026-08-18T02:14:12.322504",
+  "date": "2026-08-19T02:16:43.117134",
   "top_trends": [
+    [
+      "with",
+      {
+        "score": 240,
+        "count": 8,
+        "sources": [
+          "hacker_news",
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "using",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
     [
       "your",
       {
-        "score": 120,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
           "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "desktop",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "does",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "software",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "cursor",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
           "hacker_news",
           "tech_crunch"
         ],
@@ -16,64 +107,12 @@
       }
     ],
     [
-      "with",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "puppy",
+      "launches",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "think",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "notes",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
+          "hacker_news",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -83,46 +122,11 @@
     [
       "github",
       {
-        "score": 30,
-        "count": 3,
-        "sources": [
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "computer",
-      {
-        "score": 20,
+        "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 20,
-        "count": 2,
-        "sources": [
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "built",
-      {
-        "score": 20,
-        "count": 2,
-        "sources": [
-          "dev_to"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -131,46 +135,70 @@
   ],
   "rising_trends": [
     {
-      "keyword": "from",
+      "keyword": "with",
+      "score": 240,
+      "growth_rate": "+471.4%",
+      "is_new": false
+    },
+    {
+      "keyword": "that",
+      "score": 80,
+      "growth_rate": "+788.9%",
+      "is_new": false
+    },
+    {
+      "keyword": "using",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "your",
       "score": 60,
       "growth_rate": "+275.0%",
       "is_new": false
     },
     {
-      "keyword": "puppy",
-      "score": 40,
-      "growth_rate": "+900.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "think",
+      "keyword": "desktop",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "notes",
+      "keyword": "does",
+      "score": 40,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "software",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "cursor",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "launches",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
       "keyword": "github",
-      "score": 30,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "built",
-      "score": 20,
-      "growth_rate": "+122.2%",
+      "score": 40,
+      "growth_rate": "+233.3%",
       "is_new": false
     }
   ],
   "categories": {
-    "DevOps": 6,
-    "AI": 20,
-    "Web": 3
+    "DevOps": 3,
+    "AI": 12,
+    "Web": 2
   },
   "total_sources": 60
 }
