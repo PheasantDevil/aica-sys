@@ -1,28 +1,28 @@
 {
-  "date": "2026-08-19T02:16:43.117134",
+  "date": "2026-08-20T02:15:45.098453",
   "top_trends": [
     [
       "with",
       {
-        "score": 240,
-        "count": 8,
+        "score": 270,
+        "count": 9,
         "sources": [
           "hacker_news",
-          "dev_to",
-          "tech_crunch"
+          "tech_crunch",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "that",
+      "google",
       {
-        "score": 80,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
           "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -42,12 +42,51 @@
       }
     ],
     [
+      "native",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
       "your",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "dev_to",
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "openrouter",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -55,7 +94,20 @@
       }
     ],
     [
-      "desktop",
+      "stripe",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "source",
       {
         "score": 40,
         "count": 2,
@@ -68,65 +120,13 @@
       }
     ],
     [
-      "does",
+      "code",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
           "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "software",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "cursor",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "launches",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "github",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -136,18 +136,24 @@
   "rising_trends": [
     {
       "keyword": "with",
-      "score": 240,
-      "growth_rate": "+471.4%",
+      "score": 270,
+      "growth_rate": "+1587.5%",
       "is_new": false
     },
     {
-      "keyword": "that",
-      "score": 80,
-      "growth_rate": "+788.9%",
-      "is_new": false
+      "keyword": "google",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
       "keyword": "using",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "native",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
@@ -159,46 +165,41 @@
       "is_new": false
     },
     {
-      "keyword": "desktop",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "does",
-      "score": 40,
+      "keyword": "that",
+      "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "software",
+      "keyword": "openrouter",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "cursor",
+      "keyword": "stripe",
       "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "launches",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "github",
-      "score": 40,
-      "growth_rate": "+233.3%",
+      "growth_rate": "+344.4%",
       "is_new": false
+    },
+    {
+      "keyword": "source",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "code",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "DevOps": 3,
-    "AI": 12,
-    "Web": 2
+    "AI": 16,
+    "Database": 1,
+    "Web": 3,
+    "DevOps": 3
   },
   "total_sources": 60
 }
