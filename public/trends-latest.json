@@ -1,49 +1,9 @@
 {
-  "date": "2026-08-21T02:22:03.420957",
+  "date": "2026-08-24T02:21:19.700425",
   "top_trends": [
     [
       "with",
       {
-        "score": 300,
-        "count": 10,
-        "sources": [
-          "hacker_news",
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "does",
-      {
         "score": 60,
         "count": 3,
         "sources": [
@@ -55,13 +15,39 @@
       }
     ],
     [
-      "actually",
+      "just",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "tech_crunch",
           "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "code",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "chip",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -70,10 +56,10 @@
     [
       "what",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
-          "tech_crunch",
+          "hacker_news",
           "dev_to"
         ],
         "related_keywords": [],
@@ -81,20 +67,7 @@
       }
     ],
     [
-      "using",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "content",
+      "about",
       {
         "score": 40,
         "count": 2,
@@ -107,7 +80,7 @@
       }
     ],
     [
-      "while",
+      "teaching",
       {
         "score": 40,
         "count": 2,
@@ -120,13 +93,39 @@
       }
     ],
     [
-      "html",
+      "like",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
           "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "engineering",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "over",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -136,70 +135,70 @@
   "rising_trends": [
     {
       "keyword": "with",
-      "score": 300,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "your",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "does",
       "score": 60,
-      "growth_rate": "+900.0%",
+      "growth_rate": "+140.0%",
       "is_new": false
     },
     {
-      "keyword": "actually",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "what",
-      "score": 60,
-      "growth_rate": "+200.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "using",
+      "keyword": "just",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "content",
+      "keyword": "chip",
+      "score": 40,
+      "growth_rate": "+900.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "what",
+      "score": 40,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "about",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "while",
+      "keyword": "teaching",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "html",
+      "keyword": "like",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "this",
+      "keyword": "engineering",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
+    },
+    {
+      "keyword": "over",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "using",
+      "score": 40,
+      "growth_rate": "+344.4%",
+      "is_new": false
     }
   ],
   "categories": {
-    "AI": 16,
-    "Web": 4,
-    "DevOps": 3,
-    "Security": 1
+    "AI": 19,
+    "Mobile": 1,
+    "Web": 3,
+    "DevOps": 4
   },
-  "total_sources": 59
+  "total_sources": 60
 }
