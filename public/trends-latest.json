@@ -1,51 +1,13 @@
 {
-  "date": "2026-08-24T02:21:19.700425",
+  "date": "2026-08-25T02:16:41.167539",
   "top_trends": [
     [
-      "with",
+      "that",
       {
-        "score": 60,
-        "count": 3,
+        "score": 240,
+        "count": 8,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "just",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "code",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "chip",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
+          "dev_to",
           "hacker_news",
           "tech_crunch"
         ],
@@ -56,70 +18,56 @@
     [
       "what",
       {
-        "score": 40,
-        "count": 2,
+        "score": 100,
+        "count": 5,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "about",
+      "agent",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "with",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "disrupt",
       {
         "score": 40,
-        "count": 2,
+        "count": 4,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "teaching",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "like",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "engineering",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "over",
+      "could",
       {
         "score": 40,
         "count": 2,
@@ -130,75 +78,127 @@
         "related_keywords": [],
         "related_topics": []
       }
+    ],
+    [
+      "host",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "security",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "build",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "html",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
     ]
   ],
   "rising_trends": [
     {
-      "keyword": "with",
-      "score": 60,
-      "growth_rate": "+140.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "just",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "chip",
-      "score": 40,
-      "growth_rate": "+900.0%",
+      "keyword": "that",
+      "score": 240,
+      "growth_rate": "+1400.0%",
       "is_new": false
     },
     {
       "keyword": "what",
-      "score": 40,
-      "growth_rate": "+100.0%",
+      "score": 100,
+      "growth_rate": "+66.7%",
       "is_new": false
     },
     {
-      "keyword": "about",
+      "keyword": "agent",
+      "score": 80,
+      "growth_rate": "+400.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "disrupt",
+      "score": 40,
+      "growth_rate": "+233.3%",
+      "is_new": false
+    },
+    {
+      "keyword": "could",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "teaching",
+      "keyword": "host",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "like",
+      "keyword": "security",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "engineering",
+      "keyword": "build",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "over",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "using",
+      "keyword": "your",
       "score": 40,
       "growth_rate": "+344.4%",
       "is_new": false
+    },
+    {
+      "keyword": "than",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 19,
-    "Mobile": 1,
-    "Web": 3,
-    "DevOps": 4
+    "AI": 16,
+    "DevOps": 4,
+    "Security": 2,
+    "Web": 2
   },
-  "total_sources": 60
+  "total_sources": 59
 }
