@@ -1,15 +1,15 @@
 {
-  "date": "2026-08-27T10:53:36.247783",
+  "date": "2026-08-28T12:29:07.592658",
   "top_trends": [
     [
-      "that",
+      "from",
       {
-        "score": 180,
-        "count": 6,
+        "score": 120,
+        "count": 4,
         "sources": [
           "hacker_news",
-          "dev_to",
-          "tech_crunch"
+          "tech_crunch",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -18,98 +18,94 @@
     [
       "with",
       {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "just",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "hugging",
-      {
         "score": 80,
         "count": 4,
         "sources": [
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "face",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "nvidia",
+      "modern",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "acquires",
+      "that",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "over",
+      "model",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "macos",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 50,
+        "count": 5,
+        "sources": [
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
       {
         "score": 40,
-        "count": 2,
+        "count": 4,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "data",
+      "built",
       {
         "score": 40,
         "count": 2,
@@ -122,13 +118,13 @@
       }
     ],
     [
-      "open",
+      "space",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -137,61 +133,49 @@
   ],
   "rising_trends": [
     {
-      "keyword": "that",
-      "score": 180,
-      "growth_rate": "+181.2%",
+      "keyword": "from",
+      "score": 120,
+      "growth_rate": "+650.0%",
       "is_new": false
     },
     {
-      "keyword": "just",
-      "score": 90,
-      "growth_rate": "+900.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "hugging",
+      "keyword": "with",
       "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "face",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "nvidia",
-      "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "acquires",
+      "keyword": "modern",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "data",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "open",
-      "score": 40,
-      "growth_rate": "+566.7%",
+      "keyword": "model",
+      "score": 60,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "harness",
+      "keyword": "macos",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "built",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "startup",
+      "keyword": "space",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "back",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -199,9 +183,8 @@
   ],
   "categories": {
     "AI": 16,
-    "Mobile": 1,
-    "DevOps": 6,
-    "Web": 3
+    "DevOps": 4,
+    "Web": 1
   },
-  "total_sources": 60
+  "total_sources": 59
 }
