@@ -1,5 +1,5 @@
 {
-  "date": "2026-08-28T12:29:07.592658",
+  "date": "2026-08-29T07:39:02.295928",
   "top_trends": [
     [
       "from",
@@ -133,46 +133,10 @@
   ],
   "rising_trends": [
     {
-      "keyword": "from",
-      "score": 120,
-      "growth_rate": "+650.0%",
-      "is_new": false
-    },
-    {
       "keyword": "with",
       "score": 80,
       "growth_rate": "+566.7%",
       "is_new": false
-    },
-    {
-      "keyword": "modern",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "model",
-      "score": 60,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "macos",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "built",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "space",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
     },
     {
       "keyword": "back",
