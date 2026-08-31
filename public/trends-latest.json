@@ -1,54 +1,29 @@
 {
-  "date": "2026-08-29T07:39:02.295928",
+  "date": "2026-08-31T06:38:27.789763",
   "top_trends": [
     [
-      "from",
+      "with",
       {
         "score": 120,
         "count": 4,
         "sources": [
-          "hacker_news",
           "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "with",
+      "from",
       {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "modern",
-      {
-        "score": 60,
+        "score": 90,
         "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -60,33 +35,21 @@
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "macos",
+      "what",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
+          "tech_crunch",
           "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
-        "score": 50,
-        "count": 5,
-        "sources": [
-          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -105,20 +68,59 @@
       }
     ],
     [
-      "built",
+      "build",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "space",
+      "building",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "code",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "whether",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "everything",
       {
         "score": 40,
         "count": 2,
@@ -134,20 +136,51 @@
   "rising_trends": [
     {
       "keyword": "with",
-      "score": 80,
-      "growth_rate": "+566.7%",
+      "score": 120,
+      "growth_rate": "+100.0%",
       "is_new": false
+    },
+    {
+      "keyword": "what",
+      "score": 60,
+      "growth_rate": "+140.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "building",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "whether",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "everything",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
       "keyword": "back",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
+    },
+    {
+      "keyword": "human",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 16,
-    "DevOps": 4,
+    "AI": 15,
+    "DevOps": 7,
+    "Security": 1,
     "Web": 1
   },
   "total_sources": 59
