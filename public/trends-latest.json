@@ -1,11 +1,11 @@
 {
-  "date": "2026-09-02T05:25:55.823452",
+  "date": "2026-09-03T05:27:49.963026",
   "top_trends": [
     [
       "with",
       {
-        "score": 80,
-        "count": 4,
+        "score": 100,
+        "count": 5,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -15,7 +15,7 @@
       }
     ],
     [
-      "that",
+      "code",
       {
         "score": 60,
         "count": 3,
@@ -28,39 +28,13 @@
       }
     ],
     [
-      "model",
+      "2026",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "launch",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "building",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -69,48 +43,10 @@
     [
       "what",
       {
-        "score": 40,
-        "count": 4,
+        "score": 50,
+        "count": 5,
         "sources": [
           "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "fable",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "next",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -128,51 +64,115 @@
         "related_keywords": [],
         "related_topics": []
       }
+    ],
+    [
+      "tech",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "three",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "made",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "world",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "service",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
     ]
   ],
   "rising_trends": [
     {
-      "keyword": "that",
-      "score": 60,
-      "growth_rate": "+66.7%",
+      "keyword": "tech",
+      "score": 40,
+      "growth_rate": "+233.3%",
       "is_new": false
     },
     {
-      "keyword": "launch",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "fable",
+      "keyword": "three",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "next",
+      "keyword": "made",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "google",
+      "keyword": "world",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "without",
+      "keyword": "service",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "cache",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 10,
-    "DevOps": 7,
-    "Mobile": 2,
-    "Web": 4
+    "AI": 20,
+    "DevOps": 4,
+    "Web": 3
   },
   "total_sources": 59
 }
