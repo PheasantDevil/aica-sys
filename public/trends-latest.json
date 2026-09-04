@@ -1,11 +1,25 @@
 {
-  "date": "2026-09-03T05:27:49.963026",
+  "date": "2026-09-04T05:28:07.487036",
   "top_trends": [
     [
       "with",
       {
-        "score": 100,
-        "count": 5,
+        "score": 240,
+        "count": 8,
+        "sources": [
+          "dev_to",
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "when",
+      {
+        "score": 80,
+        "count": 4,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -15,7 +29,7 @@
       }
     ],
     [
-      "code",
+      "ever",
       {
         "score": 60,
         "count": 3,
@@ -28,13 +42,13 @@
       }
     ],
     [
-      "2026",
+      "model",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -53,20 +67,7 @@
       }
     ],
     [
-      "google",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "tech",
+      "more",
       {
         "score": 40,
         "count": 2,
@@ -79,7 +80,7 @@
       }
     ],
     [
-      "three",
+      "just",
       {
         "score": 40,
         "count": 2,
@@ -92,7 +93,20 @@
       }
     ],
     [
-      "made",
+      "research",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "became",
       {
         "score": 40,
         "count": 2,
@@ -105,25 +119,12 @@
       }
     ],
     [
-      "world",
+      "programming",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "service",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -133,44 +134,68 @@
   ],
   "rising_trends": [
     {
-      "keyword": "tech",
-      "score": 40,
-      "growth_rate": "+233.3%",
+      "keyword": "with",
+      "score": 240,
+      "growth_rate": "+200.0%",
       "is_new": false
     },
     {
-      "keyword": "three",
+      "keyword": "when",
+      "score": 80,
+      "growth_rate": "+400.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "ever",
+      "score": 60,
+      "growth_rate": "+300.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "more",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "made",
+      "keyword": "just",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "world",
+      "keyword": "research",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "service",
+      "keyword": "became",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "cache",
+      "keyword": "programming",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "survival",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "first",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 20,
+    "AI": 24,
     "DevOps": 4,
     "Web": 3
   },
