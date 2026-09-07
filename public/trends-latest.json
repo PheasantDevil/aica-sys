@@ -1,15 +1,29 @@
 {
-  "date": "2026-09-04T05:28:07.487036",
+  "date": "2026-09-07T05:39:55.767202",
   "top_trends": [
     [
       "with",
       {
-        "score": 240,
-        "count": 8,
+        "score": 180,
+        "count": 6,
         "sources": [
           "dev_to",
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "just",
+      {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -29,7 +43,7 @@
       }
     ],
     [
-      "ever",
+      "your",
       {
         "score": 60,
         "count": 3,
@@ -42,32 +56,33 @@
       }
     ],
     [
-      "model",
+      "don't",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "dev_to",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "what",
+      "openai",
       {
-        "score": 50,
-        "count": 5,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "more",
+      "this",
       {
         "score": 40,
         "count": 2,
@@ -80,7 +95,7 @@
       }
     ],
     [
-      "just",
+      "python",
       {
         "score": 40,
         "count": 2,
@@ -93,25 +108,12 @@
       }
     ],
     [
-      "research",
+      "back",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "became",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -119,12 +121,12 @@
       }
     ],
     [
-      "programming",
+      "after",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -134,70 +136,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "with",
-      "score": 240,
-      "growth_rate": "+200.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "when",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "ever",
-      "score": 60,
-      "growth_rate": "+300.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "more",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
       "keyword": "just",
+      "score": 90,
+      "growth_rate": "+125.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "don't",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "openai",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "this",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "research",
+      "keyword": "python",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "became",
+      "keyword": "back",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "programming",
+      "keyword": "after",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "survival",
+      "keyword": "make",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "first",
+      "keyword": "every",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "engineering",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 24,
-    "DevOps": 4,
-    "Web": 3
+    "Security": 3,
+    "Web": 4,
+    "AI": 15,
+    "DevOps": 3,
+    "Database": 1
   },
   "total_sources": 59
 }
