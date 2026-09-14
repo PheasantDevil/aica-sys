@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-11T05:36:28.749135",
+  "date": "2026-09-14T05:45:58.467445",
   "top_trends": [
     [
       "from",
@@ -8,22 +8,8 @@
         "count": 5,
         "sources": [
           "hacker_news",
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -32,11 +18,10 @@
     [
       "what",
       {
-        "score": 120,
+        "score": 80,
         "count": 4,
         "sources": [
           "hacker_news",
-          "tech_crunch",
           "dev_to"
         ],
         "related_keywords": [],
@@ -44,10 +29,10 @@
       }
     ],
     [
-      "with",
+      "show",
       {
-        "score": 100,
-        "count": 5,
+        "score": 80,
+        "count": 4,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -57,7 +42,7 @@
       }
     ],
     [
-      "openai",
+      "after",
       {
         "score": 60,
         "count": 3,
@@ -70,20 +55,33 @@
       }
     ],
     [
-      "just",
+      "startups",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "about",
+      "have",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "mullenweg",
       {
         "score": 40,
         "count": 2,
@@ -96,7 +94,7 @@
       }
     ],
     [
-      "agents",
+      "returned",
       {
         "score": 40,
         "count": 2,
@@ -109,20 +107,20 @@
       }
     ],
     [
-      "away",
+      "attempted",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "will",
+      "board",
       {
         "score": 40,
         "count": 2,
@@ -137,71 +135,65 @@
   ],
   "rising_trends": [
     {
-      "keyword": "from",
-      "score": 150,
-      "growth_rate": "+316.7%",
+      "keyword": "show",
+      "score": 80,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "your",
-      "score": 120,
-      "growth_rate": "+1233.3%",
+      "keyword": "startups",
+      "score": 60,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "what",
-      "score": 120,
-      "growth_rate": "+650.0%",
-      "is_new": false
+      "keyword": "have",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "with",
-      "score": 100,
-      "growth_rate": "+138.1%",
-      "is_new": false
-    },
-    {
-      "keyword": "about",
+      "keyword": "mullenweg",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "agents",
+      "keyword": "returned",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "away",
+      "keyword": "attempted",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "will",
+      "keyword": "ouster",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "reveals",
+      "keyword": "better",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "critical",
+      "keyword": "easy",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Web": 2,
-    "AI": 21,
-    "DevOps": 3,
-    "Database": 1
+    "DevOps": 5,
+    "AI": 18,
+    "Database": 1,
+    "Web": 2
   },
   "total_sources": 60
 }
