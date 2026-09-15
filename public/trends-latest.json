@@ -1,15 +1,15 @@
 {
-  "date": "2026-09-14T05:45:58.467445",
+  "date": "2026-09-15T05:47:14.653839",
   "top_trends": [
     [
-      "from",
+      "with",
       {
-        "score": 150,
-        "count": 5,
+        "score": 180,
+        "count": 6,
         "sources": [
           "hacker_news",
-          "dev_to",
-          "tech_crunch"
+          "tech_crunch",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -29,7 +29,20 @@
       }
     ],
     [
-      "show",
+      "from",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "coding",
       {
         "score": 80,
         "count": 4,
@@ -42,7 +55,7 @@
       }
     ],
     [
-      "after",
+      "macos",
       {
         "score": 60,
         "count": 3,
@@ -55,33 +68,46 @@
       }
     ],
     [
-      "startups",
+      "show",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "have",
+      "your",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "dev_to",
-          "tech_crunch"
+          "tech_crunch",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "mullenweg",
+      "agent",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "company",
       {
         "score": 40,
         "count": 2,
@@ -94,33 +120,7 @@
       }
     ],
     [
-      "returned",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "attempted",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "board",
+      "openai",
       {
         "score": 40,
         "count": 2,
@@ -135,65 +135,53 @@
   ],
   "rising_trends": [
     {
-      "keyword": "show",
+      "keyword": "with",
+      "score": 180,
+      "growth_rate": "+1025.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "coding",
       "score": 80,
       "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "startups",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "have",
+      "keyword": "macos",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "mullenweg",
+      "keyword": "company",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "returned",
+      "keyword": "every",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "attempted",
+      "keyword": "amazon",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "ouster",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "better",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "easy",
+      "keyword": "code",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "DevOps": 5,
-    "AI": 18,
-    "Database": 1,
-    "Web": 2
+    "Mobile": 2,
+    "AI": 21,
+    "Security": 1,
+    "DevOps": 6
   },
-  "total_sources": 60
+  "total_sources": 59
 }
