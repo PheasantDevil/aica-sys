@@ -1,68 +1,26 @@
 {
-  "date": "2026-09-16T05:37:26.783153",
+  "date": "2026-09-17T05:42:44.154946",
   "top_trends": [
     [
-      "agents",
-      {
-        "score": 150,
-        "count": 5,
-        "sources": [
-          "dev_to",
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
+      "coding",
       {
         "score": 120,
         "count": 6,
         "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "have",
-      {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "dev_to",
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "make",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
+      "your",
       {
         "score": 80,
         "count": 4,
         "sources": [
-          "hacker_news",
+          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -70,52 +28,13 @@
       }
     ],
     [
-      "data",
+      "what",
       {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "into",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "meta",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "most",
-      {
-        "score": 60,
-        "count": 3,
+        "score": 80,
+        "count": 4,
         "sources": [
           "dev_to",
-          "hacker_news"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -127,7 +46,85 @@
         "score": 60,
         "count": 3,
         "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "engineering",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "make",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
           "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "than",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "live",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "just",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "says",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -137,46 +134,46 @@
   ],
   "rising_trends": [
     {
-      "keyword": "agents",
-      "score": 150,
-      "growth_rate": "+275.0%",
+      "keyword": "coding",
+      "score": 120,
+      "growth_rate": "+233.3%",
       "is_new": false
     },
     {
-      "keyword": "have",
-      "score": 120,
+      "keyword": "your",
+      "score": 80,
+      "growth_rate": "+300.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "engineering",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "than",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "live",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "says",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "that",
+      "score": 40,
       "growth_rate": "+100.0%",
       "is_new": false
-    },
-    {
-      "keyword": "make",
-      "score": 90,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "data",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "into",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "meta",
-      "score": 60,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "most",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
     },
     {
       "keyword": "them",
@@ -185,23 +182,17 @@
       "is_new": true
     },
     {
-      "keyword": "when",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "never",
+      "keyword": "they",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "DevOps": 3,
-    "AI": 23,
-    "Web": 1,
-    "Database": 1
+    "AI": 22,
+    "Database": 1,
+    "DevOps": 6,
+    "Web": 1
   },
-  "total_sources": 59
+  "total_sources": 60
 }
