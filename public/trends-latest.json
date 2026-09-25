@@ -1,42 +1,29 @@
 {
-  "date": "2026-09-24T05:50:46.143352",
+  "date": "2026-09-25T05:46:39.260134",
   "top_trends": [
-    [
-      "agent",
-      {
-        "score": 150,
-        "count": 5,
-        "sources": [
-          "tech_crunch",
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
     [
       "what",
       {
-        "score": 100,
-        "count": 5,
+        "score": 180,
+        "count": 6,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "this",
+      "your",
       {
-        "score": 90,
-        "count": 3,
+        "score": 120,
+        "count": 4,
         "sources": [
+          "dev_to",
           "tech_crunch",
-          "hacker_news",
-          "dev_to"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -48,20 +35,7 @@
         "score": 90,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "meta",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
+          "dev_to",
           "tech_crunch",
           "hacker_news"
         ],
@@ -70,11 +44,62 @@
       }
     ],
     [
-      "glasses",
+      "using",
       {
         "score": 60,
         "count": 3,
         "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "make",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "like",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
           "tech_crunch",
           "hacker_news"
         ],
@@ -83,12 +108,12 @@
       }
     ],
     [
-      "coming",
+      "software",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -96,39 +121,13 @@
       }
     ],
     [
-      "series",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "with",
+      "2026",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "tech_crunch",
           "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "just",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -137,22 +136,16 @@
   ],
   "rising_trends": [
     {
-      "keyword": "agent",
-      "score": 150,
-      "growth_rate": "+328.6%",
-      "is_new": false
-    },
-    {
       "keyword": "what",
-      "score": 100,
-      "growth_rate": "+66.7%",
+      "score": 180,
+      "growth_rate": "+125.0%",
       "is_new": false
     },
     {
-      "keyword": "this",
-      "score": 90,
-      "growth_rate": "NEW",
-      "is_new": true
+      "keyword": "your",
+      "score": 120,
+      "growth_rate": "+100.0%",
+      "is_new": false
     },
     {
       "keyword": "into",
@@ -161,47 +154,54 @@
       "is_new": false
     },
     {
-      "keyword": "meta",
-      "score": 80,
-      "growth_rate": "+300.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "glasses",
+      "keyword": "using",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "coming",
+      "keyword": "show",
+      "score": 40,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "make",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "series",
+      "keyword": "like",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "just",
+      "keyword": "software",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "says",
+      "keyword": "2026",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "taking",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 15,
-    "DevOps": 2,
+    "AI": 16,
+    "Security": 3,
+    "DevOps": 1,
     "Web": 2,
-    "Security": 1
+    "Mobile": 2
   },
-  "total_sources": 60
+  "total_sources": 59
 }
