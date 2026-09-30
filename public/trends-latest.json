@@ -1,93 +1,55 @@
 {
-  "date": "2026-09-29T06:33:50.738000",
+  "date": "2026-09-30T06:17:02.162657",
   "top_trends": [
     [
-      "what",
+      "from",
       {
-        "score": 120,
-        "count": 6,
+        "score": 240,
+        "count": 8,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "world",
+      "built",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "2026",
       {
         "score": 90,
         "count": 3,
         "sources": [
-          "hacker_news",
           "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "labs",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "best",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "posts",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "decision",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -96,10 +58,36 @@
     [
       "model",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "with",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "openai",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -107,12 +95,12 @@
       }
     ],
     [
-      "sonnet",
+      "your",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news",
+          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -120,13 +108,26 @@
       }
     ],
     [
-      "weather",
+      "been",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agents",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,72 +136,66 @@
   ],
   "rising_trends": [
     {
-      "keyword": "world",
+      "keyword": "from",
+      "score": 240,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "built",
+      "score": 100,
+      "growth_rate": "+66.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "2026",
       "score": 90,
-      "growth_rate": "+900.0%",
+      "growth_rate": "+125.0%",
       "is_new": false
     },
     {
-      "keyword": "labs",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "best",
+      "keyword": "openai",
       "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "posts",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "decision",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "model",
-      "score": 40,
       "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "sonnet",
+      "keyword": "been",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "weather",
+      "keyword": "agents",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "turned",
+      "keyword": "america.gov",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "nvidia",
+      "keyword": "where",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "years",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 16,
-    "DevOps": 6,
-    "Web": 4,
-    "Mobile": 1,
-    "Database": 1
+    "Web": 2,
+    "DevOps": 5,
+    "AI": 13,
+    "Database": 1,
+    "Mobile": 1
   },
   "total_sources": 60
 }
