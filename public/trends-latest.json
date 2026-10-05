@@ -1,14 +1,42 @@
 {
-  "date": "2026-10-02T06:40:04.338312",
+  "date": "2026-10-05T06:32:16.998791",
   "top_trends": [
     [
-      "first",
+      "from",
       {
-        "score": 80,
+        "score": 150,
+        "count": 5,
+        "sources": [
+          "hacker_news",
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "with",
+      {
+        "score": 140,
+        "count": 7,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 120,
         "count": 4,
         "sources": [
-          "dev_to",
-          "tech_crunch"
+          "hacker_news",
+          "tech_crunch",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -16,6 +44,19 @@
     ],
     [
       "that",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
       {
         "score": 60,
         "count": 3,
@@ -28,7 +69,20 @@
       }
     ],
     [
-      "opus",
+      "built",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "after",
       {
         "score": 40,
         "count": 2,
@@ -41,7 +95,20 @@
       }
     ],
     [
-      "will",
+      "turn",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "intelligence",
       {
         "score": 40,
         "count": 2,
@@ -54,77 +121,12 @@
       }
     ],
     [
-      "compiler",
+      "google",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "september",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "2026",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "design",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "know",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "with",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -134,61 +136,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "first",
-      "score": 80,
-      "growth_rate": "+400.0%",
+      "keyword": "with",
+      "score": 140,
+      "growth_rate": "+133.3%",
       "is_new": false
     },
     {
-      "keyword": "opus",
+      "keyword": "your",
+      "score": 120,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "that",
+      "score": 100,
+      "growth_rate": "+66.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "after",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "will",
+      "keyword": "turn",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "compiler",
+      "keyword": "intelligence",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "september",
+      "keyword": "google",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "design",
+      "keyword": "data",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "know",
+      "keyword": "center",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "(and",
+      "keyword": "developers",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "DevOps": 3,
-    "Web": 4,
-    "Mobile": 1,
-    "Database": 2,
-    "AI": 14,
-    "Security": 1
+    "AI": 17,
+    "Web": 2,
+    "DevOps": 9,
+    "Security": 1,
+    "Mobile": 1
   },
   "total_sources": 60
 }
