@@ -1,42 +1,15 @@
 {
-  "date": "2026-10-05T06:32:16.998791",
+  "date": "2026-10-06T07:10:18.533958",
   "top_trends": [
     [
-      "from",
+      "with",
       {
         "score": 150,
         "count": 5,
         "sources": [
+          "dev_to",
           "hacker_news",
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "with",
-      {
-        "score": 140,
-        "count": 7,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "tech_crunch",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -45,89 +18,115 @@
     [
       "that",
       {
-        "score": 100,
-        "count": 5,
+        "score": 80,
+        "count": 4,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "what",
+      "city",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "built",
+      "agent",
       {
         "score": 60,
         "count": 3,
         "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "open-weight",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
           "tech_crunch",
-          "dev_to"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "after",
+      "model",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "turn",
+      "without",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "intelligence",
+      "ended",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "google",
+      "node",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "search",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -137,71 +136,69 @@
   "rising_trends": [
     {
       "keyword": "with",
-      "score": 140,
-      "growth_rate": "+133.3%",
+      "score": 150,
+      "growth_rate": "+150.0%",
       "is_new": false
     },
     {
-      "keyword": "your",
-      "score": 120,
-      "growth_rate": "+100.0%",
+      "keyword": "city",
+      "score": 60,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "that",
-      "score": 100,
-      "growth_rate": "+66.7%",
+      "keyword": "agent",
+      "score": 60,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "after",
+      "keyword": "open-weight",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "turn",
+      "keyword": "without",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "intelligence",
+      "keyword": "ended",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "google",
+      "keyword": "node",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "data",
+      "keyword": "search",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "center",
+      "keyword": "real",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "developers",
+      "keyword": "public",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 17,
-    "Web": 2,
-    "DevOps": 9,
-    "Security": 1,
-    "Mobile": 1
+    "AI": 14,
+    "Web": 3,
+    "DevOps": 9
   },
   "total_sources": 60
 }
