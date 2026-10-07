@@ -1,11 +1,11 @@
 {
-  "date": "2026-10-06T07:10:18.533958",
+  "date": "2026-10-07T06:50:41.948310",
   "top_trends": [
     [
       "with",
       {
-        "score": 150,
-        "count": 5,
+        "score": 180,
+        "count": 6,
         "sources": [
           "dev_to",
           "hacker_news",
@@ -16,12 +16,50 @@
       }
     ],
     [
-      "that",
+      "what",
       {
-        "score": 80,
-        "count": 4,
+        "score": 100,
+        "count": 5,
         "sources": [
           "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "github",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 50,
+        "count": 5,
+        "sources": [
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "decision",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -29,10 +67,10 @@
       }
     ],
     [
-      "city",
+      "real",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -42,12 +80,12 @@
       }
     ],
     [
-      "agent",
+      "human",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
-          "dev_to",
+          "hacker_news",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -55,72 +93,33 @@
       }
     ],
     [
-      "open-weight",
+      "have",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "model",
+      "after",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "without",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "ended",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "node",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "search",
+      "2026",
       {
         "score": 40,
         "count": 2,
@@ -136,48 +135,18 @@
   "rising_trends": [
     {
       "keyword": "with",
-      "score": 150,
-      "growth_rate": "+150.0%",
+      "score": 180,
+      "growth_rate": "+200.0%",
       "is_new": false
     },
     {
-      "keyword": "city",
-      "score": 60,
-      "growth_rate": "+566.7%",
+      "keyword": "github",
+      "score": 100,
+      "growth_rate": "+1011.1%",
       "is_new": false
     },
     {
-      "keyword": "agent",
-      "score": 60,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "open-weight",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "without",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "ended",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "node",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "search",
+      "keyword": "decision",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -189,16 +158,46 @@
       "is_new": true
     },
     {
-      "keyword": "public",
+      "keyword": "human",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "have",
+      "score": 40,
+      "growth_rate": "+900.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "building",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "agents:",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "models",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "their",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 14,
-    "Web": 3,
-    "DevOps": 9
+    "AI": 16,
+    "DevOps": 8,
+    "Web": 3
   },
   "total_sources": 60
 }
