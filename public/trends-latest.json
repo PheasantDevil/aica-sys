@@ -1,29 +1,68 @@
 {
-  "date": "2026-10-08T06:59:01.430909",
+  "date": "2026-10-09T07:07:10.584007",
   "top_trends": [
     [
       "with",
       {
-        "score": 180,
-        "count": 6,
+        "score": 120,
+        "count": 4,
         "sources": [
-          "dev_to",
+          "tech_crunch",
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "into",
+      "about",
       {
-        "score": 150,
-        "count": 5,
+        "score": 90,
+        "count": 3,
         "sources": [
-          "dev_to",
+          "tech_crunch",
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "using",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "code",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -31,19 +70,6 @@
     ],
     [
       "your",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "github",
       {
         "score": 40,
         "count": 4,
@@ -55,78 +81,52 @@
       }
     ],
     [
-      "turn",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "everyone",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "agent",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "ascii",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "over",
+      "text",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "microsoft",
+      "it's",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "isn't",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,54 +135,70 @@
   ],
   "rising_trends": [
     {
-      "keyword": "with",
-      "score": 180,
-      "growth_rate": "+350.0%",
+      "keyword": "about",
+      "score": 90,
+      "growth_rate": "+900.0%",
       "is_new": false
     },
     {
-      "keyword": "into",
-      "score": 150,
-      "growth_rate": "+500.0%",
+      "keyword": "show",
+      "score": 60,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "everyone",
+      "keyword": "using",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "code",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "text",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "ascii",
+      "keyword": "it's",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "over",
+      "keyword": "isn't",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "microsoft",
+      "keyword": "models",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "even",
+      "keyword": "openai",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "think",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
+    "DevOps": 7,
     "AI": 16,
-    "DevOps": 11,
-    "Database": 1,
-    "Web": 3,
-    "Mobile": 1
+    "Web": 3
   },
   "total_sources": 60
 }
