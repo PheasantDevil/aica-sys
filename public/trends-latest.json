@@ -1,42 +1,14 @@
 {
-  "date": "2026-10-09T07:07:10.584007",
+  "date": "2026-10-12T06:56:44.935830",
   "top_trends": [
     [
-      "with",
+      "your",
       {
-        "score": 120,
+        "score": 80,
         "count": 4,
         "sources": [
-          "tech_crunch",
           "hacker_news",
           "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "about",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -56,32 +28,45 @@
       }
     ],
     [
-      "code",
+      "need",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "your",
+      "from",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "techcrunch",
       {
         "score": 40,
         "count": 4,
         "sources": [
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "text",
+      "with",
       {
         "score": 40,
         "count": 2,
@@ -94,7 +79,7 @@
       }
     ],
     [
-      "it's",
+      "build",
       {
         "score": 40,
         "count": 2,
@@ -107,7 +92,20 @@
       }
     ],
     [
-      "isn't",
+      "data",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
       {
         "score": 40,
         "count": 2,
@@ -120,7 +118,7 @@
       }
     ],
     [
-      "what",
+      "even",
       {
         "score": 40,
         "count": 2,
@@ -135,70 +133,59 @@
   ],
   "rising_trends": [
     {
-      "keyword": "about",
-      "score": 90,
-      "growth_rate": "+900.0%",
+      "keyword": "your",
+      "score": 80,
+      "growth_rate": "+60.0%",
       "is_new": false
     },
     {
-      "keyword": "show",
-      "score": 60,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "using",
+      "keyword": "need",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "code",
+      "keyword": "from",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "text",
+      "keyword": "techcrunch",
+      "score": 40,
+      "growth_rate": "+150.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "build",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "it's",
+      "keyword": "data",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "isn't",
+      "keyword": "even",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "models",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "openai",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "think",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "keyword": "still",
+      "score": 30,
+      "growth_rate": "+233.3%",
+      "is_new": false
     }
   ],
   "categories": {
-    "DevOps": 7,
-    "AI": 16,
-    "Web": 3
+    "AI": 7,
+    "Web": 4,
+    "Database": 1,
+    "DevOps": 2
   },
   "total_sources": 60
 }
