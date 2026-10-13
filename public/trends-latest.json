@@ -1,40 +1,29 @@
 {
-  "date": "2026-10-12T06:56:44.935830",
+  "date": "2026-10-13T07:20:30.622001",
   "top_trends": [
+    [
+      "that",
+      {
+        "score": 150,
+        "count": 5,
+        "sources": [
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
     [
       "your",
       {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "using",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "need",
-      {
-        "score": 60,
-        "count": 3,
+        "score": 150,
+        "count": 5,
         "sources": [
           "dev_to",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -43,62 +32,11 @@
     [
       "from",
       {
-        "score": 60,
-        "count": 3,
+        "score": 100,
+        "count": 5,
         "sources": [
           "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "techcrunch",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "with",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "build",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "data",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -107,24 +45,89 @@
     [
       "show",
       {
-        "score": 40,
-        "count": 2,
+        "score": 80,
+        "count": 4,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "even",
+      "into",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "software",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "says",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "across",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "using",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "open-source",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -133,58 +136,69 @@
   ],
   "rising_trends": [
     {
-      "keyword": "your",
-      "score": 80,
-      "growth_rate": "+60.0%",
+      "keyword": "that",
+      "score": 150,
+      "growth_rate": "+400.0%",
       "is_new": false
     },
     {
-      "keyword": "need",
-      "score": 60,
-      "growth_rate": "+566.7%",
+      "keyword": "your",
+      "score": 150,
+      "growth_rate": "+200.0%",
       "is_new": false
     },
     {
       "keyword": "from",
+      "score": 100,
+      "growth_rate": "+66.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "software",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "techcrunch",
-      "score": 40,
-      "growth_rate": "+150.0%",
-      "is_new": false
+      "keyword": "says",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "build",
+      "keyword": "across",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "data",
+      "keyword": "open-source",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "even",
+      "keyword": "background",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "still",
-      "score": 30,
-      "growth_rate": "+233.3%",
-      "is_new": false
+      "keyword": "muse",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "wonder",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 7,
-    "Web": 4,
-    "Database": 1,
+    "AI": 18,
+    "Web": 2,
     "DevOps": 2
   },
   "total_sources": 60
