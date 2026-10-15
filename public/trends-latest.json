@@ -1,29 +1,81 @@
 {
-  "date": "2026-10-14T05:47:02.308920",
+  "date": "2026-10-15T05:32:32.690187",
   "top_trends": [
     [
-      "your",
+      "that",
       {
-        "score": 270,
-        "count": 9,
+        "score": 100,
+        "count": 5,
         "sources": [
           "dev_to",
-          "hacker_news",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "that",
+      "agents",
       {
-        "score": 210,
-        "count": 7,
+        "score": 90,
+        "count": 3,
         "sources": [
           "dev_to",
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "know",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "better",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -32,8 +84,8 @@
     [
       "show",
       {
-        "score": 180,
-        "count": 9,
+        "score": 60,
+        "count": 3,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -43,63 +95,22 @@
       }
     ],
     [
-      "from",
+      "about",
       {
-        "score": 140,
-        "count": 7,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "says",
-      {
-        "score": 120,
-        "count": 6,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "every",
-      {
-        "score": 120,
+        "score": 40,
         "count": 4,
         "sources": [
-          "dev_to",
-          "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "into",
+      "when",
       {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "software",
-      {
-        "score": 100,
-        "count": 5,
+        "score": 40,
+        "count": 2,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -111,24 +122,11 @@
     [
       "with",
       {
-        "score": 100,
-        "count": 5,
+        "score": 40,
+        "count": 2,
         "sources": [
           "dev_to",
           "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "apple",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -137,71 +135,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "your",
-      "score": 270,
-      "growth_rate": "+440.0%",
-      "is_new": false
-    },
-    {
       "keyword": "that",
-      "score": 210,
-      "growth_rate": "+600.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "show",
-      "score": 180,
-      "growth_rate": "+200.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "from",
-      "score": 140,
-      "growth_rate": "+133.3%",
-      "is_new": false
-    },
-    {
-      "keyword": "says",
-      "score": 120,
-      "growth_rate": "+100.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "every",
-      "score": 120,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "software",
       "score": 100,
-      "growth_rate": "+66.7%",
+      "growth_rate": "+233.3%",
       "is_new": false
     },
     {
-      "keyword": "apple",
-      "score": 80,
-      "growth_rate": "+300.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "under",
-      "score": 60,
+      "keyword": "agents",
+      "score": 90,
       "growth_rate": "NEW",
       "is_new": true
+    },
+    {
+      "keyword": "what",
+      "score": 90,
+      "growth_rate": "+125.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "know",
+      "score": 60,
+      "growth_rate": "+400.0%",
+      "is_new": false
     },
     {
       "keyword": "better",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
+    },
+    {
+      "keyword": "when",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "features",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "social",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "they",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "biggest",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 34,
-    "Web": 5,
-    "DevOps": 5,
-    "Mobile": 1
+    "DevOps": 6,
+    "AI": 17,
+    "Mobile": 2,
+    "Database": 1,
+    "Web": 1
   },
-  "total_sources": 119
+  "total_sources": 60
 }
