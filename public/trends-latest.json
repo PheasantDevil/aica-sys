@@ -1,12 +1,13 @@
 {
-  "date": "2026-10-15T05:32:32.690187",
+  "date": "2026-10-16T05:25:12.579979",
   "top_trends": [
     [
       "that",
       {
-        "score": 100,
-        "count": 5,
+        "score": 210,
+        "count": 7,
         "sources": [
+          "tech_crunch",
           "dev_to",
           "hacker_news"
         ],
@@ -15,27 +16,13 @@
       }
     ],
     [
-      "agents",
+      "with",
       {
-        "score": 90,
-        "count": 3,
+        "score": 180,
+        "count": 6,
         "sources": [
-          "dev_to",
           "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "what",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
           "dev_to",
-          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -45,9 +32,10 @@
     [
       "your",
       {
-        "score": 80,
-        "count": 4,
+        "score": 150,
+        "count": 5,
         "sources": [
+          "tech_crunch",
           "dev_to",
           "hacker_news"
         ],
@@ -56,11 +44,12 @@
       }
     ],
     [
-      "know",
+      "from",
       {
-        "score": 60,
+        "score": 90,
         "count": 3,
         "sources": [
+          "tech_crunch",
           "dev_to",
           "hacker_news"
         ],
@@ -69,20 +58,7 @@
       }
     ],
     [
-      "better",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
+      "into",
       {
         "score": 60,
         "count": 3,
@@ -107,7 +83,20 @@
       }
     ],
     [
-      "when",
+      "meta",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "through",
       {
         "score": 40,
         "count": 2,
@@ -120,7 +109,20 @@
       }
     ],
     [
-      "with",
+      "what",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "doesn't",
       {
         "score": 40,
         "count": 2,
@@ -136,71 +138,71 @@
   "rising_trends": [
     {
       "keyword": "that",
-      "score": 100,
-      "growth_rate": "+233.3%",
+      "score": 210,
+      "growth_rate": "+328.6%",
       "is_new": false
     },
     {
-      "keyword": "agents",
-      "score": 90,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "what",
-      "score": 90,
-      "growth_rate": "+125.0%",
+      "keyword": "with",
+      "score": 180,
+      "growth_rate": "+328.6%",
       "is_new": false
     },
     {
-      "keyword": "know",
-      "score": 60,
-      "growth_rate": "+400.0%",
+      "keyword": "your",
+      "score": 150,
+      "growth_rate": "+275.0%",
       "is_new": false
     },
     {
-      "keyword": "better",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "when",
+      "keyword": "meta",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "features",
+      "keyword": "through",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "social",
+      "keyword": "doesn't",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "they",
+      "keyword": "design",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "biggest",
+      "keyword": "someone",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "model",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "rules",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "DevOps": 6,
-    "AI": 17,
-    "Mobile": 2,
-    "Database": 1,
-    "Web": 1
+    "Web": 2,
+    "AI": 19,
+    "DevOps": 3,
+    "Security": 1,
+    "Mobile": 1
   },
   "total_sources": 60
 }
