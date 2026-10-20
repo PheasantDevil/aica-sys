@@ -1,39 +1,13 @@
 {
-  "date": "2026-10-19T05:41:53.784880",
+  "date": "2026-10-20T05:39:45.204926",
   "top_trends": [
     [
-      "that",
+      "with",
       {
-        "score": 180,
-        "count": 6,
-        "sources": [
-          "dev_to",
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "your",
-      {
-        "score": 120,
-        "count": 6,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "about",
-      {
-        "score": 100,
+        "score": 150,
         "count": 5,
         "sources": [
+          "tech_crunch",
           "dev_to",
           "hacker_news"
         ],
@@ -42,13 +16,27 @@
       }
     ],
     [
-      "better",
+      "have",
+      {
+        "score": 120,
+        "count": 4,
+        "sources": [
+          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agents",
       {
         "score": 90,
         "count": 3,
         "sources": [
-          "dev_to",
           "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -69,7 +57,7 @@
       }
     ],
     [
-      "agents",
+      "from",
       {
         "score": 60,
         "count": 3,
@@ -82,24 +70,23 @@
       }
     ],
     [
-      "says",
+      "your",
       {
-        "score": 40,
-        "count": 4,
+        "score": 50,
+        "count": 5,
         "sources": [
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "through",
+      "openbsd",
       {
         "score": 40,
-        "count": 2,
+        "count": 4,
         "sources": [
-          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -107,7 +94,7 @@
       }
     ],
     [
-      "time",
+      "built",
       {
         "score": 40,
         "count": 2,
@@ -120,12 +107,25 @@
       }
     ],
     [
-      "into",
+      "running",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "models",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -135,15 +135,15 @@
   ],
   "rising_trends": [
     {
-      "keyword": "that",
-      "score": 180,
-      "growth_rate": "+267.3%",
+      "keyword": "with",
+      "score": 150,
+      "growth_rate": "+257.1%",
       "is_new": false
     },
     {
-      "keyword": "about",
-      "score": 100,
-      "growth_rate": "+150.0%",
+      "keyword": "have",
+      "score": 120,
+      "growth_rate": "+650.0%",
       "is_new": false
     },
     {
@@ -153,41 +153,54 @@
       "is_new": false
     },
     {
-      "keyword": "time",
+      "keyword": "openbsd",
+      "score": 40,
+      "growth_rate": "+150.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "built",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "someone",
+      "keyword": "running",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "based",
+      "keyword": "models",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "language",
+      "keyword": "microsoft",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "memory",
+      "keyword": "deal",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "building",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 13,
-    "Security": 1,
+    "AI": 17,
+    "Web": 1,
     "DevOps": 1,
-    "Web": 1
+    "Mobile": 2,
+    "Security": 1
   },
-  "total_sources": 60
+  "total_sources": 59
 }
