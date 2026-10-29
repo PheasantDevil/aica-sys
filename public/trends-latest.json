@@ -1,11 +1,11 @@
 {
-  "date": "2026-10-28T06:36:49.957957",
+  "date": "2026-10-29T06:44:33.716411",
   "top_trends": [
     [
-      "your",
+      "from",
       {
-        "score": 210,
-        "count": 7,
+        "score": 180,
+        "count": 6,
         "sources": [
           "dev_to",
           "tech_crunch",
@@ -16,20 +16,7 @@
       }
     ],
     [
-      "with",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
+      "security",
       {
         "score": 90,
         "count": 3,
@@ -43,7 +30,46 @@
       }
     ],
     [
-      "make",
+      "first",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "this",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "macbook",
       {
         "score": 60,
         "count": 3,
@@ -56,49 +82,10 @@
       }
     ],
     [
-      "built",
+      "agents",
       {
         "score": 60,
         "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "have",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "assistant",
-      {
-        "score": 40,
-        "count": 2,
         "sources": [
           "tech_crunch",
           "hacker_news"
@@ -108,7 +95,20 @@
       }
     ],
     [
-      "model",
+      "show",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "inside",
       {
         "score": 40,
         "count": 2,
@@ -121,7 +121,7 @@
       }
     ],
     [
-      "what",
+      "gemini",
       {
         "score": 40,
         "count": 2,
@@ -136,55 +136,55 @@
   ],
   "rising_trends": [
     {
-      "keyword": "your",
-      "score": 210,
-      "growth_rate": "+425.0%",
+      "keyword": "from",
+      "score": 180,
+      "growth_rate": "+100.0%",
       "is_new": false
     },
     {
-      "keyword": "with",
-      "score": 100,
-      "growth_rate": "+177.8%",
-      "is_new": false
-    },
-    {
-      "keyword": "that",
+      "keyword": "security",
       "score": 90,
-      "growth_rate": "+125.0%",
+      "growth_rate": "+900.0%",
       "is_new": false
     },
     {
-      "keyword": "have",
+      "keyword": "first",
+      "score": 80,
+      "growth_rate": "+400.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "macbook",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "assistant",
+      "keyword": "inside",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "most",
+      "keyword": "gemini",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "hiding",
+      "keyword": "history",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "boom",
+      "keyword": "through",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "github",
+      "keyword": "turns",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -197,9 +197,11 @@
     }
   ],
   "categories": {
-    "AI": 11,
-    "DevOps": 7,
+    "DevOps": 3,
+    "Security": 3,
+    "AI": 15,
+    "Mobile": 1,
     "Web": 2
   },
-  "total_sources": 60
+  "total_sources": 59
 }
