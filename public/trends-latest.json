@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-29T06:44:33.716411",
+  "date": "2026-10-30T06:46:25.871710",
   "top_trends": [
     [
       "from",
@@ -7,34 +7,7 @@
         "score": 180,
         "count": 6,
         "sources": [
-          "dev_to",
           "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "security",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "first",
-      {
-        "score": 80,
-        "count": 4,
-        "sources": [
           "dev_to",
           "hacker_news"
         ],
@@ -43,10 +16,10 @@
       }
     ],
     [
-      "this",
+      "show",
       {
-        "score": 60,
-        "count": 3,
+        "score": 100,
+        "count": 5,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -69,46 +42,59 @@
       }
     ],
     [
-      "macbook",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "agents",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
+      "model",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "dev_to",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "inside",
+      "will",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "says",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "binance",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "validation",
       {
         "score": 40,
         "count": 2,
@@ -121,7 +107,20 @@
       }
     ],
     [
-      "gemini",
+      "write",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
       {
         "score": 40,
         "count": 2,
@@ -142,66 +141,54 @@
       "is_new": false
     },
     {
-      "keyword": "security",
-      "score": 90,
-      "growth_rate": "+900.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "first",
-      "score": 80,
-      "growth_rate": "+400.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "macbook",
+      "keyword": "your",
       "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
+      "growth_rate": "+66.7%",
+      "is_new": false
     },
     {
-      "keyword": "inside",
+      "keyword": "binance",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "gemini",
+      "keyword": "validation",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "history",
+      "keyword": "write",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "through",
+      "keyword": "private",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "turns",
+      "keyword": "prime",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "their",
+      "keyword": "video",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
+    "AI": 14,
+    "Database": 1,
     "DevOps": 3,
-    "Security": 3,
-    "AI": 15,
-    "Mobile": 1,
-    "Web": 2
+    "Web": 4,
+    "Security": 1
   },
-  "total_sources": 59
+  "total_sources": 60
 }
