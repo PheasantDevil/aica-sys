@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-30T06:46:25.871710",
+  "date": "2026-11-02T07:11:29.265851",
   "top_trends": [
     [
       "from",
@@ -16,11 +16,12 @@
       }
     ],
     [
-      "show",
+      "about",
       {
-        "score": 100,
-        "count": 5,
+        "score": 90,
+        "count": 3,
         "sources": [
+          "tech_crunch",
           "dev_to",
           "hacker_news"
         ],
@@ -31,86 +32,8 @@
     [
       "your",
       {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "model",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "will",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "says",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "binance",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "validation",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "write",
-      {
-        "score": 40,
-        "count": 2,
+        "score": 80,
+        "count": 4,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -122,10 +45,86 @@
     [
       "what",
       {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "with",
+      {
+        "score": 70,
+        "count": 7,
+        "sources": [
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "more",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "make",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "built",
+      {
         "score": 40,
         "count": 2,
         "sources": [
           "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "like",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -137,58 +136,71 @@
     {
       "keyword": "from",
       "score": 180,
+      "growth_rate": "+500.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "about",
+      "score": 90,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "what",
+      "score": 80,
       "growth_rate": "+100.0%",
       "is_new": false
     },
     {
-      "keyword": "your",
+      "keyword": "more",
       "score": 60,
-      "growth_rate": "+66.7%",
-      "is_new": false
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "binance",
+      "keyword": "like",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "validation",
+      "keyword": "javascript",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "write",
+      "keyword": "just",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "private",
+      "keyword": "card",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "prime",
+      "keyword": "world",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "video",
+      "keyword": "into",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 14,
     "Database": 1,
-    "DevOps": 3,
-    "Web": 4,
-    "Security": 1
+    "AI": 12,
+    "Security": 1,
+    "Web": 3,
+    "Mobile": 1,
+    "DevOps": 1
   },
   "total_sources": 60
 }
