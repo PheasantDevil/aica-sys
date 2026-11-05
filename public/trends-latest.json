@@ -1,22 +1,8 @@
 {
-  "date": "2026-11-04T07:13:21.122367",
+  "date": "2026-11-05T07:41:16.469605",
   "top_trends": [
     [
-      "first",
-      {
-        "score": 90,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
+      "your",
       {
         "score": 80,
         "count": 4,
@@ -29,7 +15,7 @@
       }
     ],
     [
-      "open-source",
+      "don't",
       {
         "score": 60,
         "count": 3,
@@ -42,13 +28,52 @@
       }
     ],
     [
-      "game",
+      "with",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "hacker_news",
           "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "first",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "coding",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -57,8 +82,8 @@
     [
       "model",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -68,33 +93,7 @@
       }
     ],
     [
-      "data",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "years",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "system",
+      "conductor",
       {
         "score": 40,
         "count": 2,
@@ -107,20 +106,20 @@
       }
     ],
     [
-      "just",
+      "meta",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "still",
+      "after",
       {
         "score": 40,
         "count": 2,
@@ -135,67 +134,71 @@
   ],
   "rising_trends": [
     {
-      "keyword": "open-source",
+      "keyword": "don't",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "game",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "data",
-      "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
-    },
-    {
-      "keyword": "years",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "system",
+      "keyword": "coding",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "just",
+      "keyword": "conductor",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "still",
+      "keyword": "meta",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "demand",
+      "keyword": "after",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "declines",
+      "keyword": "technical",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "video",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "what's",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "openai",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "company",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Database": 1,
-    "AI": 21,
+    "AI": 23,
     "DevOps": 2,
     "Mobile": 1,
-    "Web": 1,
-    "Security": 1
+    "Web": 2
   },
-  "total_sources": 59
+  "total_sources": 60
 }
