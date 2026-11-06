@@ -1,8 +1,35 @@
 {
-  "date": "2026-11-05T07:41:16.469605",
+  "date": "2026-11-06T07:38:45.566644",
   "top_trends": [
     [
       "your",
+      {
+        "score": 160,
+        "count": 8,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "with",
+      {
+        "score": 90,
+        "count": 3,
+        "sources": [
+          "hacker_news",
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
       {
         "score": 80,
         "count": 4,
@@ -15,7 +42,7 @@
       }
     ],
     [
-      "don't",
+      "about",
       {
         "score": 60,
         "count": 3,
@@ -28,7 +55,7 @@
       }
     ],
     [
-      "with",
+      "what",
       {
         "score": 60,
         "count": 3,
@@ -41,13 +68,13 @@
       }
     ],
     [
-      "show",
+      "agent",
       {
         "score": 60,
         "count": 3,
         "sources": [
           "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -59,20 +86,7 @@
         "score": 60,
         "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "coding",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
+          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -80,7 +94,7 @@
       }
     ],
     [
-      "model",
+      "modern",
       {
         "score": 40,
         "count": 2,
@@ -93,39 +107,26 @@
       }
     ],
     [
-      "conductor",
+      "goodbye",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "meta",
+      "from",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "after",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -134,71 +135,65 @@
   ],
   "rising_trends": [
     {
-      "keyword": "don't",
-      "score": 60,
-      "growth_rate": "+566.7%",
+      "keyword": "your",
+      "score": 160,
+      "growth_rate": "+100.0%",
       "is_new": false
     },
     {
-      "keyword": "coding",
+      "keyword": "show",
+      "score": 80,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "agent",
+      "score": 60,
+      "growth_rate": "+300.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "modern",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "conductor",
+      "keyword": "goodbye",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "meta",
+      "keyword": "released",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "after",
+      "keyword": "local",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "technical",
+      "keyword": "become",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "video",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "what's",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "openai",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "company",
+      "keyword": "raising",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 23,
-    "DevOps": 2,
-    "Mobile": 1,
-    "Web": 2
+    "AI": 21,
+    "Web": 2,
+    "Security": 3,
+    "DevOps": 3
   },
-  "total_sources": 60
+  "total_sources": 59
 }
