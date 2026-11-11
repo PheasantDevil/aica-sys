@@ -1,11 +1,11 @@
 {
-  "date": "2026-11-10T07:59:13.817648",
+  "date": "2026-11-11T07:29:06.971414",
   "top_trends": [
     [
       "your",
       {
-        "score": 160,
-        "count": 8,
+        "score": 140,
+        "count": 7,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -15,10 +15,10 @@
       }
     ],
     [
-      "show",
+      "coding",
       {
-        "score": 80,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -28,7 +28,7 @@
       }
     ],
     [
-      "with",
+      "making",
       {
         "score": 60,
         "count": 3,
@@ -41,7 +41,7 @@
       }
     ],
     [
-      "first",
+      "with",
       {
         "score": 40,
         "count": 2,
@@ -54,7 +54,7 @@
       }
     ],
     [
-      "power",
+      "back",
       {
         "score": 40,
         "count": 2,
@@ -67,46 +67,7 @@
       }
     ],
     [
-      "over",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "this",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "files",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "time",
+      "home",
       {
         "score": 40,
         "count": 2,
@@ -130,64 +91,90 @@
         "related_keywords": [],
         "related_topics": []
       }
+    ],
+    [
+      "show",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "agent",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "modern",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
     ]
   ],
   "rising_trends": [
     {
       "keyword": "your",
-      "score": 160,
-      "growth_rate": "+100.0%",
+      "score": 140,
+      "growth_rate": "+75.0%",
       "is_new": false
     },
     {
-      "keyword": "power",
+      "keyword": "making",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "back",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "over",
+      "keyword": "home",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "this",
+      "keyword": "google",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "files",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "time",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "2026",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "fable",
-      "score": 30,
-      "growth_rate": "+233.3%",
+      "keyword": "macos",
+      "score": 20,
+      "growth_rate": "+400.0%",
       "is_new": false
     }
   ],
   "categories": {
-    "DevOps": 5,
-    "AI": 11,
-    "Database": 1,
-    "Web": 1,
-    "Security": 1
+    "DevOps": 4,
+    "AI": 19,
+    "Web": 3,
+    "Mobile": 1
   },
   "total_sources": 60
 }
