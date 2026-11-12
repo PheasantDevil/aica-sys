@@ -1,40 +1,14 @@
 {
-  "date": "2026-11-11T07:29:06.971414",
+  "date": "2026-11-12T07:57:05.961617",
   "top_trends": [
     [
       "your",
       {
-        "score": 140,
-        "count": 7,
+        "score": 160,
+        "count": 8,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "coding",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "making",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -43,37 +17,77 @@
     [
       "with",
       {
-        "score": 40,
-        "count": 2,
+        "score": 150,
+        "count": 5,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "back",
+      "jensen",
       {
-        "score": 40,
-        "count": 2,
+        "score": 120,
+        "count": 6,
         "sources": [
-          "hacker_news",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "home",
+      "huang",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "nvidia",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "oust",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -85,47 +99,34 @@
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "show",
+      "magic",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "agent",
+      "engine",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "modern",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -135,46 +136,70 @@
   "rising_trends": [
     {
       "keyword": "your",
-      "score": 140,
-      "growth_rate": "+75.0%",
+      "score": 160,
+      "growth_rate": "+150.0%",
       "is_new": false
     },
     {
-      "keyword": "making",
-      "score": 60,
-      "growth_rate": "+566.7%",
+      "keyword": "with",
+      "score": 150,
+      "growth_rate": "+66.7%",
       "is_new": false
     },
     {
-      "keyword": "back",
+      "keyword": "jensen",
+      "score": 120,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "huang",
+      "score": 100,
+      "growth_rate": "+233.3%",
+      "is_new": false
+    },
+    {
+      "keyword": "nvidia",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "home",
+      "keyword": "oust",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "google",
+      "keyword": "magic",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "macos",
-      "score": 20,
-      "growth_rate": "+400.0%",
-      "is_new": false
+      "keyword": "engine",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "more",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "fund",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
+    "AI": 14,
+    "Security": 1,
     "DevOps": 4,
-    "AI": 19,
-    "Web": 3,
-    "Mobile": 1
+    "Web": 2
   },
   "total_sources": 60
 }
