@@ -1,28 +1,29 @@
 {
-  "date": "2026-11-12T07:57:05.961617",
+  "date": "2026-11-13T07:35:30.728072",
   "top_trends": [
     [
-      "your",
+      "with",
       {
-        "score": 160,
-        "count": 8,
+        "score": 210,
+        "count": 7,
         "sources": [
           "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "with",
+      "your",
       {
-        "score": 150,
-        "count": 5,
+        "score": 180,
+        "count": 6,
         "sources": [
           "dev_to",
-          "tech_crunch",
-          "hacker_news"
+          "hacker_news",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -57,6 +58,19 @@
     [
       "show",
       {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "gemini",
+      {
         "score": 60,
         "count": 3,
         "sources": [
@@ -70,8 +84,8 @@
     [
       "nvidia",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
           "tech_crunch",
           "hacker_news"
@@ -81,10 +95,10 @@
       }
     ],
     [
-      "oust",
+      "open",
       {
-        "score": 40,
-        "count": 2,
+        "score": 60,
+        "count": 3,
         "sources": [
           "tech_crunch",
           "hacker_news"
@@ -94,7 +108,7 @@
       }
     ],
     [
-      "2026",
+      "built",
       {
         "score": 40,
         "count": 2,
@@ -107,20 +121,7 @@
       }
     ],
     [
-      "magic",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "engine",
+      "years",
       {
         "score": 40,
         "count": 2,
@@ -136,70 +137,69 @@
   "rising_trends": [
     {
       "keyword": "your",
-      "score": 160,
-      "growth_rate": "+150.0%",
+      "score": 180,
+      "growth_rate": "+181.2%",
       "is_new": false
     },
     {
-      "keyword": "with",
-      "score": 150,
+      "keyword": "show",
+      "score": 100,
       "growth_rate": "+66.7%",
       "is_new": false
     },
     {
-      "keyword": "jensen",
-      "score": 120,
-      "growth_rate": "+100.0%",
-      "is_new": false
+      "keyword": "gemini",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "huang",
-      "score": 100,
-      "growth_rate": "+233.3%",
-      "is_new": false
+      "keyword": "open",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "nvidia",
+      "keyword": "years",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "oust",
+      "keyword": "search",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "magic",
+      "keyword": "llms",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "engine",
+      "keyword": "cost",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "more",
+      "keyword": "keep",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "fund",
+      "keyword": "better",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 14,
-    "Security": 1,
-    "DevOps": 4,
-    "Web": 2
+    "AI": 16,
+    "Database": 1,
+    "DevOps": 1
   },
   "total_sources": 60
 }
