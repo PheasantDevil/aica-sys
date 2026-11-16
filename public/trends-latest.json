@@ -1,15 +1,15 @@
 {
-  "date": "2026-11-13T07:35:30.728072",
+  "date": "2026-11-16T07:38:33.413036",
   "top_trends": [
     [
       "with",
       {
-        "score": 210,
-        "count": 7,
+        "score": 120,
+        "count": 4,
         "sources": [
+          "tech_crunch",
           "dev_to",
-          "hacker_news",
-          "tech_crunch"
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -18,48 +18,8 @@
     [
       "your",
       {
-        "score": 180,
-        "count": 6,
-        "sources": [
-          "dev_to",
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "jensen",
-      {
-        "score": 120,
-        "count": 6,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "huang",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
-        "score": 100,
-        "count": 5,
+        "score": 80,
+        "count": 4,
         "sources": [
           "dev_to",
           "hacker_news"
@@ -69,7 +29,7 @@
       }
     ],
     [
-      "gemini",
+      "problem",
       {
         "score": 60,
         "count": 3,
@@ -82,33 +42,7 @@
       }
     ],
     [
-      "nvidia",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "open",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "tech_crunch",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "built",
+      "project",
       {
         "score": 40,
         "count": 2,
@@ -132,74 +66,127 @@
         "related_keywords": [],
         "related_topics": []
       }
+    ],
+    [
+      "seed",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "modern",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "write",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "plan",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "tech",
+      {
+        "score": 30,
+        "count": 3,
+        "sources": [
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
     ]
   ],
   "rising_trends": [
     {
-      "keyword": "your",
-      "score": 180,
-      "growth_rate": "+181.2%",
+      "keyword": "with",
+      "score": 120,
+      "growth_rate": "+1233.3%",
       "is_new": false
     },
     {
-      "keyword": "show",
-      "score": 100,
+      "keyword": "problem",
+      "score": 60,
+      "growth_rate": "+566.7%",
+      "is_new": false
+    },
+    {
+      "keyword": "project",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "seed",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "write",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "plan",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "tech",
+      "score": 30,
       "growth_rate": "+66.7%",
       "is_new": false
     },
     {
-      "keyword": "gemini",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "open",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "years",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "search",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "llms",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "cost",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "keep",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "better",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
+      "keyword": "being",
+      "score": 20,
+      "growth_rate": "+400.0%",
+      "is_new": false
     }
   ],
   "categories": {
+    "Web": 3,
     "AI": 16,
-    "Database": 1,
-    "DevOps": 1
+    "DevOps": 3,
+    "Security": 3
   },
   "total_sources": 60
 }
