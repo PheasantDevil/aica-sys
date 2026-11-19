@@ -1,12 +1,13 @@
 {
-  "date": "2026-11-18T08:11:14.669597",
+  "date": "2026-11-19T08:22:40.623944",
   "top_trends": [
     [
-      "nvidia",
+      "agents",
       {
         "score": 120,
-        "count": 6,
+        "count": 4,
         "sources": [
+          "dev_to",
           "hacker_news",
           "tech_crunch"
         ],
@@ -15,63 +16,13 @@
       }
     ],
     [
-      "down",
+      "from",
       {
-        "score": 60,
-        "count": 3,
+        "score": 100,
+        "count": 5,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "code",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
+          "dev_to",
           "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "after",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "years",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -80,10 +31,48 @@
     [
       "show",
       {
-        "score": 40,
-        "count": 2,
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "microsoft",
+      {
+        "score": 60,
+        "count": 3,
         "sources": [
           "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "that",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "radar",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
           "dev_to"
         ],
         "related_keywords": [],
@@ -91,39 +80,50 @@
       }
     ],
     [
-      "dead",
+      "satya",
       {
         "score": 40,
-        "count": 2,
+        "count": 4,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "with",
+      "nadella",
       {
         "score": 40,
-        "count": 2,
+        "count": 4,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "what",
+      "year",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "like",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "hacker_news",
-          "dev_to"
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -132,53 +132,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "nvidia",
-      "score": 120,
-      "growth_rate": "+200.0%",
+      "keyword": "from",
+      "score": 100,
+      "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "down",
+      "keyword": "microsoft",
       "score": 60,
-      "growth_rate": "+566.7%",
-      "is_new": false
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "code",
-      "score": 40,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "after",
-      "score": 40,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "dead",
+      "keyword": "radar",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "keep",
+      "keyword": "satya",
+      "score": 40,
+      "growth_rate": "+150.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "nadella",
+      "score": 40,
+      "growth_rate": "+150.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "year",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "huang’s",
-      "score": 30,
-      "growth_rate": "+233.3%",
-      "is_new": false
+      "keyword": "like",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "people",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "open-source",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "live",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
     }
   ],
   "categories": {
-    "AI": 16,
-    "DevOps": 4,
-    "Security": 3,
-    "Web": 1
+    "Security": 2,
+    "Web": 2,
+    "AI": 22,
+    "DevOps": 2,
+    "Mobile": 2
   },
-  "total_sources": 59
+  "total_sources": 60
 }
