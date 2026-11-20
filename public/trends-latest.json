@@ -1,14 +1,27 @@
 {
-  "date": "2026-11-19T08:22:40.623944",
+  "date": "2026-11-20T08:02:17.635140",
   "top_trends": [
     [
-      "agents",
+      "with",
       {
         "score": 120,
         "count": 4,
         "sources": [
-          "dev_to",
           "hacker_news",
+          "dev_to",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "your",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "dev_to",
           "tech_crunch"
         ],
         "related_keywords": [],
@@ -18,31 +31,18 @@
     [
       "from",
       {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
         "score": 80,
         "count": 4,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "microsoft",
+      "anthropic’s",
       {
         "score": 60,
         "count": 3,
@@ -80,44 +80,20 @@
       }
     ],
     [
-      "satya",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "nadella",
-      {
-        "score": 40,
-        "count": 4,
-        "sources": [
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "year",
+      "open",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
-          "hacker_news"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "like",
+      "tests",
       {
         "score": 40,
         "count": 2,
@@ -128,53 +104,49 @@
         "related_keywords": [],
         "related_topics": []
       }
+    ],
+    [
+      "open-source",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "show",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
     ]
   ],
   "rising_trends": [
     {
-      "keyword": "from",
-      "score": 100,
-      "growth_rate": "+300.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "microsoft",
+      "keyword": "anthropic’s",
       "score": 60,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "radar",
+      "keyword": "open",
       "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "satya",
-      "score": 40,
-      "growth_rate": "+150.0%",
+      "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "nadella",
-      "score": 40,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "year",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "like",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "people",
+      "keyword": "tests",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -186,18 +158,28 @@
       "is_new": true
     },
     {
-      "keyword": "live",
+      "keyword": "apple",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "could",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "this",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Security": 2,
-    "Web": 2,
-    "AI": 22,
-    "DevOps": 2,
-    "Mobile": 2
+    "AI": 16,
+    "Database": 3,
+    "Security": 2
   },
   "total_sources": 60
 }
