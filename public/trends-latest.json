@@ -1,28 +1,40 @@
 {
-  "date": "2026-11-20T08:02:17.635140",
+  "date": "2026-11-23T08:33:56.237771",
   "top_trends": [
     [
       "with",
       {
-        "score": 120,
-        "count": 4,
+        "score": 140,
+        "count": 7,
         "sources": [
           "hacker_news",
-          "dev_to",
-          "tech_crunch"
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "your",
+      "built",
       {
         "score": 100,
         "count": 5,
         "sources": [
-          "dev_to",
-          "tech_crunch"
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "what",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -42,37 +54,64 @@
       }
     ],
     [
-      "anthropic’s",
+      "your",
       {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "that",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "radar",
-      {
-        "score": 40,
+        "score": 80,
         "count": 4,
         "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "linux",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "people",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "learned",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "they",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "hacker_news",
           "dev_to"
         ],
         "related_keywords": [],
@@ -91,95 +130,76 @@
         "related_keywords": [],
         "related_topics": []
       }
-    ],
-    [
-      "tests",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "open-source",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "show",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
     ]
   ],
   "rising_trends": [
     {
-      "keyword": "anthropic’s",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
+      "keyword": "with",
+      "score": 140,
+      "growth_rate": "+366.7%",
+      "is_new": false
     },
     {
-      "keyword": "open",
-      "score": 40,
+      "keyword": "built",
+      "score": 100,
       "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "tests",
+      "keyword": "what",
+      "score": 100,
+      "growth_rate": "+150.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "linux",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "open-source",
+      "keyword": "people",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "apple",
+      "keyword": "learned",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "could",
+      "keyword": "they",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "this",
+      "keyword": "agentic",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "coding",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "made",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 16,
-    "Database": 3,
-    "Security": 2
+    "AI": 11,
+    "DevOps": 4,
+    "Security": 2,
+    "Mobile": 1,
+    "Database": 1
   },
   "total_sources": 60
 }
