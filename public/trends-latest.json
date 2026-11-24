@@ -1,11 +1,50 @@
 {
-  "date": "2026-11-23T08:33:56.237771",
+  "date": "2026-11-24T10:39:58.474271",
   "top_trends": [
     [
-      "with",
+      "jensen",
       {
-        "score": 140,
-        "count": 7,
+        "score": 120,
+        "count": 6,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "nvidia",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "huang",
+      {
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "hacker_news",
+          "tech_crunch"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "from",
+      {
+        "score": 100,
+        "count": 5,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -17,8 +56,34 @@
     [
       "built",
       {
-        "score": 100,
-        "count": 5,
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "with",
+      {
+        "score": 80,
+        "count": 4,
+        "sources": [
+          "hacker_news",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "this",
+      {
+        "score": 60,
+        "count": 3,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -30,102 +95,37 @@
     [
       "what",
       {
-        "score": 100,
-        "count": 5,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "from",
+      "code",
       {
-        "score": 80,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "your",
+      "agents",
       {
-        "score": 80,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "linux",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "people",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "learned",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "they",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "open",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "tech_crunch"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -134,72 +134,72 @@
   ],
   "rising_trends": [
     {
+      "keyword": "jensen",
+      "score": 120,
+      "growth_rate": "+233.3%",
+      "is_new": false
+    },
+    {
+      "keyword": "nvidia",
+      "score": 100,
+      "growth_rate": "+138.1%",
+      "is_new": false
+    },
+    {
+      "keyword": "huang",
+      "score": 100,
+      "growth_rate": "+233.3%",
+      "is_new": false
+    },
+    {
       "keyword": "with",
-      "score": 140,
-      "growth_rate": "+366.7%",
+      "score": 80,
+      "growth_rate": "+100.0%",
       "is_new": false
     },
     {
-      "keyword": "built",
-      "score": 100,
-      "growth_rate": "+300.0%",
-      "is_new": false
+      "keyword": "this",
+      "score": 60,
+      "growth_rate": "NEW",
+      "is_new": true
     },
     {
-      "keyword": "what",
-      "score": 100,
-      "growth_rate": "+150.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "linux",
+      "keyword": "smart",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "people",
+      "keyword": "more",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "learned",
+      "keyword": "rust",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "they",
+      "keyword": "about",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "agentic",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "coding",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "made",
+      "keyword": "tech",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 11,
+    "Database": 1,
     "DevOps": 4,
-    "Security": 2,
-    "Mobile": 1,
-    "Database": 1
+    "Web": 2,
+    "AI": 12,
+    "Mobile": 1
   },
   "total_sources": 60
 }
