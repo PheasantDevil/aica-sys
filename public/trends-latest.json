@@ -1,64 +1,13 @@
 {
-  "date": "2026-11-24T10:39:58.474271",
+  "date": "2026-11-25T09:30:32.976887",
   "top_trends": [
     [
-      "jensen",
+      "that",
       {
         "score": 120,
-        "count": 6,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "nvidia",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "huang",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "hacker_news",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "from",
-      {
-        "score": 100,
-        "count": 5,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "built",
-      {
-        "score": 80,
         "count": 4,
         "sources": [
+          "tech_crunch",
           "hacker_news",
           "dev_to"
         ],
@@ -69,8 +18,60 @@
     [
       "with",
       {
-        "score": 80,
-        "count": 4,
+        "score": 100,
+        "count": 5,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "from",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "tech_crunch",
+          "dev_to"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "nvidia",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "build",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "faster",
+      {
+        "score": 40,
+        "count": 2,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -80,10 +81,23 @@
       }
     ],
     [
-      "this",
+      "security",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "gemini",
+      {
+        "score": 40,
+        "count": 2,
         "sources": [
           "hacker_news",
           "dev_to"
@@ -93,39 +107,26 @@
       }
     ],
     [
-      "what",
+      "into",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
-          "dev_to",
-          "tech_crunch"
+          "hacker_news",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "code",
+      "anthropic",
       {
-        "score": 60,
-        "count": 3,
+        "score": 40,
+        "count": 2,
         "sources": [
-          "dev_to",
-          "tech_crunch"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "agents",
-      {
-        "score": 60,
-        "count": 3,
-        "sources": [
-          "dev_to",
-          "tech_crunch"
+          "tech_crunch",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
@@ -134,72 +135,72 @@
   ],
   "rising_trends": [
     {
-      "keyword": "jensen",
+      "keyword": "that",
       "score": 120,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "with",
+      "score": 100,
       "growth_rate": "+233.3%",
       "is_new": false
     },
     {
       "keyword": "nvidia",
-      "score": 100,
-      "growth_rate": "+138.1%",
+      "score": 40,
+      "growth_rate": "+60.0%",
       "is_new": false
     },
     {
-      "keyword": "huang",
-      "score": 100,
-      "growth_rate": "+233.3%",
-      "is_new": false
-    },
-    {
-      "keyword": "with",
-      "score": 80,
-      "growth_rate": "+100.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "this",
-      "score": 60,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "smart",
+      "keyword": "build",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "more",
+      "keyword": "faster",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "rust",
+      "keyword": "security",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "about",
+      "keyword": "gemini",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "tech",
+      "keyword": "into",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "anthropic",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "company",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "Database": 1,
-    "DevOps": 4,
-    "Web": 2,
-    "AI": 12,
-    "Mobile": 1
+    "AI": 18,
+    "Web": 1,
+    "Mobile": 1,
+    "DevOps": 1,
+    "Security": 2
   },
   "total_sources": 60
 }
