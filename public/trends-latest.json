@@ -1,48 +1,74 @@
 {
-  "date": "2026-11-25T09:30:32.976887",
+  "date": "2026-11-26T09:08:28.173781",
   "top_trends": [
     [
-      "that",
+      "code",
       {
         "score": 120,
         "count": 4,
         "sources": [
           "tech_crunch",
-          "hacker_news",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "with",
+      "your",
       {
-        "score": 100,
-        "count": 5,
+        "score": 120,
+        "count": 4,
         "sources": [
           "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "from",
+      "what",
       {
         "score": 60,
         "count": 3,
         "sources": [
-          "tech_crunch",
-          "dev_to"
+          "dev_to",
+          "hacker_news"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "nvidia",
+      "home",
+      {
+        "score": 60,
+        "count": 3,
+        "sources": [
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "holy",
+      {
+        "score": 40,
+        "count": 4,
+        "sources": [
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "1password",
       {
         "score": 40,
         "count": 2,
@@ -55,7 +81,7 @@
       }
     ],
     [
-      "build",
+      "secretly",
       {
         "score": 40,
         "count": 2,
@@ -68,20 +94,7 @@
       }
     ],
     [
-      "faster",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "security",
+      "york",
       {
         "score": 40,
         "count": 2,
@@ -94,38 +107,25 @@
       }
     ],
     [
-      "gemini",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "into",
-      {
-        "score": 40,
-        "count": 2,
-        "sources": [
-          "hacker_news",
-          "dev_to"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
-    [
-      "anthropic",
+      "over",
       {
         "score": 40,
         "count": 2,
         "sources": [
           "tech_crunch",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "tell",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -135,72 +135,71 @@
   ],
   "rising_trends": [
     {
-      "keyword": "that",
+      "keyword": "code",
       "score": 120,
       "growth_rate": "+100.0%",
       "is_new": false
     },
     {
-      "keyword": "with",
-      "score": 100,
-      "growth_rate": "+233.3%",
+      "keyword": "home",
+      "score": 60,
+      "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "nvidia",
-      "score": 40,
-      "growth_rate": "+60.0%",
-      "is_new": false
-    },
-    {
-      "keyword": "build",
+      "keyword": "holy",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "faster",
+      "keyword": "1password",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "security",
+      "keyword": "secretly",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "gemini",
+      "keyword": "york",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "into",
+      "keyword": "over",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "anthropic",
+      "keyword": "tell",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "company",
+      "keyword": "first",
+      "score": 40,
+      "growth_rate": "NEW",
+      "is_new": true
+    },
+    {
+      "keyword": "openai",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "AI": 18,
-    "Web": 1,
-    "Mobile": 1,
-    "DevOps": 1,
-    "Security": 2
+    "DevOps": 4,
+    "Security": 3,
+    "AI": 14,
+    "Database": 1
   },
   "total_sources": 60
 }
