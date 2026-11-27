@@ -1,27 +1,12 @@
 {
-  "date": "2026-11-26T09:08:28.173781",
+  "date": "2026-11-27T09:25:17.589860",
   "top_trends": [
-    [
-      "code",
-      {
-        "score": 120,
-        "count": 4,
-        "sources": [
-          "tech_crunch",
-          "dev_to",
-          "hacker_news"
-        ],
-        "related_keywords": [],
-        "related_topics": []
-      }
-    ],
     [
       "your",
       {
-        "score": 120,
+        "score": 80,
         "count": 4,
         "sources": [
-          "tech_crunch",
           "dev_to",
           "hacker_news"
         ],
@@ -30,7 +15,7 @@
       }
     ],
     [
-      "what",
+      "back",
       {
         "score": 60,
         "count": 3,
@@ -43,7 +28,7 @@
       }
     ],
     [
-      "home",
+      "can't",
       {
         "score": 60,
         "count": 3,
@@ -56,19 +41,20 @@
       }
     ],
     [
-      "holy",
+      "with",
       {
-        "score": 40,
-        "count": 4,
+        "score": 60,
+        "count": 3,
         "sources": [
-          "hacker_news"
+          "tech_crunch",
+          "dev_to"
         ],
         "related_keywords": [],
         "related_topics": []
       }
     ],
     [
-      "1password",
+      "chat",
       {
         "score": 40,
         "count": 2,
@@ -81,12 +67,12 @@
       }
     ],
     [
-      "secretly",
+      "made",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -94,12 +80,25 @@
       }
     ],
     [
-      "york",
+      "notes",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "tech_crunch",
+          "dev_to",
+          "hacker_news"
+        ],
+        "related_keywords": [],
+        "related_topics": []
+      }
+    ],
+    [
+      "manual",
+      {
+        "score": 40,
+        "count": 2,
+        "sources": [
+          "dev_to",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -120,12 +119,12 @@
       }
     ],
     [
-      "tell",
+      "years",
       {
         "score": 40,
         "count": 2,
         "sources": [
-          "dev_to",
+          "tech_crunch",
           "hacker_news"
         ],
         "related_keywords": [],
@@ -135,49 +134,49 @@
   ],
   "rising_trends": [
     {
-      "keyword": "code",
-      "score": 120,
-      "growth_rate": "+100.0%",
+      "keyword": "back",
+      "score": 60,
+      "growth_rate": "+300.0%",
       "is_new": false
     },
     {
-      "keyword": "home",
+      "keyword": "can't",
       "score": 60,
       "growth_rate": "+566.7%",
       "is_new": false
     },
     {
-      "keyword": "holy",
+      "keyword": "with",
+      "score": 60,
+      "growth_rate": "+100.0%",
+      "is_new": false
+    },
+    {
+      "keyword": "chat",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "1password",
+      "keyword": "made",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "secretly",
+      "keyword": "notes",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "york",
+      "keyword": "manual",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     },
     {
-      "keyword": "over",
-      "score": 40,
-      "growth_rate": "NEW",
-      "is_new": true
-    },
-    {
-      "keyword": "tell",
+      "keyword": "years",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
@@ -189,17 +188,18 @@
       "is_new": true
     },
     {
-      "keyword": "openai",
+      "keyword": "office",
       "score": 40,
       "growth_rate": "NEW",
       "is_new": true
     }
   ],
   "categories": {
-    "DevOps": 4,
-    "Security": 3,
     "AI": 14,
-    "Database": 1
+    "DevOps": 5,
+    "Mobile": 1,
+    "Security": 1,
+    "Web": 1
   },
   "total_sources": 60
 }
